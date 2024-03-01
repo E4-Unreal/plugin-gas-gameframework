@@ -15,34 +15,13 @@ void UGEHealthAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>
     GAMEPLAYATTRIBUTE_DOREPLIFETIME_CONDITION_NOTIFY(HealthRegenRate);
 }
 
-void UGEHealthAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)
-{
-    Super::PreAttributeChange(Attribute, NewValue);
-
-    if(Attribute == GetMaxHealthAttribute()) // 최대 체력
-    {
-        // 체력 비율 유지
-        AdjustAttributeForMaxChange(Health, MaxHealth, NewValue, GetHealthAttribute());
-    }
-}
-
 void UGEHealthAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
 {
     Super::PostGameplayEffectExecute(Data);
 
     const FGameplayAttribute& Attribute = Data.EvaluatedData.Attribute;
 
-    if(Attribute == GetHealthAttribute()) // 체력
-    {
-        // 0 <= 체력 <= 최대 체력
-        SetHealth(FMath::Clamp(GetHealth(), 0.f, GetMaxHealth()));
-    }
-    else if(Attribute == GetMaxHealthAttribute()) // 최대 체력
-    {
-        // 0 <= 최대 체력
-        SetMaxHealth(FMath::Max(GetMaxHealth(), 0.f));
-    }
-    else if(Attribute == GetDamageAttribute()) // 데미지
+    if(Attribute == GetDamageAttribute()) // 데미지
     {
         // 로컬 변수로 저장 후 Damage Attribute 값 초기화
         const float LocalDamage = GetDamage();
@@ -50,6 +29,33 @@ void UGEHealthAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCa
 
         // 데미지 처리
         TakeDamageByGameplayEffect(Data, LocalDamage);
+    }
+}
+
+void UGEHealthAttributeSet::ClampAttributes(const FGameplayAttribute& Attribute, float& NewValue) const
+{
+    Super::ClampAttributes(Attribute, NewValue);
+
+    if(Attribute == GetHealthAttribute()) // 체력
+    {
+        // 0 <= 체력 <= 최대 체력
+        NewValue = FMath::Clamp(NewValue, 0.f, GetMaxHealth());
+    }
+    else if(Attribute == GetMaxHealthAttribute()) // 최대 체력
+    {
+        // 0 <= 최대 체력
+        NewValue = FMath::Max(NewValue, 0.f);
+    }
+}
+
+void UGEHealthAttributeSet::AdjustAttributes(const FGameplayAttribute& Attribute, float OldValue, float NewValue)
+{
+    Super::AdjustAttributes(Attribute, OldValue, NewValue);
+
+    if(Attribute == GetMaxHealthAttribute()) // 최대 체력
+    {
+        // 체력 비율 유지
+        AdjustAttributeForMaxChange(Health, MaxHealth, OldValue, NewValue, GetHealthAttribute());
     }
 }
 

@@ -45,10 +45,14 @@ public:
 
     /* AttributeSet */
 
-    virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
     virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
 
 protected:
+    /* GEAttributeSetBase */
+
+    virtual void ClampAttributes(const FGameplayAttribute& Attribute, float& NewValue) const override;
+    virtual void AdjustAttributes(const FGameplayAttribute& Attribute, float OldValue, float NewValue) override;
+
     /* 메서드 */
 
     // 오버라이드 가능한 데미지 처리 메서드로 Health -= Damage 가 기본 구현되어 있습니다.

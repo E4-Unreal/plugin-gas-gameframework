@@ -26,11 +26,22 @@ class GASEXTENSION_API UGEAttributeSetBase : public UAttributeSet
 {
     GENERATED_BODY()
 
+public:
+    virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
+    virtual void PreAttributeBaseChange(const FGameplayAttribute& Attribute, float& NewValue) const override;
+    virtual void PostAttributeChange(const FGameplayAttribute& Attribute, float OldValue, float NewValue) override;
+
 protected:
     /*
      * MaxAttribute 값 변경 시 기존 Attribute / MaxAttribute 비율이 유지되도록 관련 Attribute 값을 변경합니다.
      * ex) 최대 체력 값이 변경되면 기존 체력 비율이 유지되도록 체력 값 역시 변경됩니다. (60/100 > 90/150)
      * 이 기능을 사용하는 경우 Attribute 초기화 시 MaxAttribute 값만 수정해도 자동으로 Attribute = MaxAttribute 로 설정됩니다.
      */
-    void AdjustAttributeForMaxChange(const FGameplayAttributeData& AffectedAttribute, const FGameplayAttributeData& MaxAttribute, const float NewMaxValue, const FGameplayAttribute& AffectedAttributeProperty) const;
+    void AdjustAttributeForMaxChange(const FGameplayAttributeData& AffectedAttribute, const FGameplayAttributeData& MaxAttribute, const float OldMaxValue, const float NewMaxValue, const FGameplayAttribute& AffectedAttributeProperty) const;
+
+    // Attribute의 Base 혹은 Current 값을 Clamp 합니다.
+    virtual void ClampAttributes(const FGameplayAttribute& Attribute, float& NewValue) const;
+
+    // MaxAttribute 값 변경 시 Attribute / MaxAttribute 의 비율을 유지합니다.
+    virtual void AdjustAttributes(const FGameplayAttribute& Attribute, float OldValue, float NewValue);
 };
