@@ -1,6 +1,6 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
-#include "GEAttributeSetBase.h"
+#include "AttributeSets/GEAttributeSetBase.h"
 
 #include "AbilitySystemComponent.h"
 

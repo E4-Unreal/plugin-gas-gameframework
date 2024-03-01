@@ -1,9 +1,9 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "GEGameplayAbilityBase.h"
+#include "Abilities/GEGameplayAbilityBase.h"
 
-#include "GEHealthAttributeSet.h"
+#include "AttributeSets/GEHealthAttributeSet.h"
 
 UGEGameplayAbilityBase::UGEGameplayAbilityBase()
 {
