@@ -1,0 +1,29 @@
+﻿// Fill out your copyright notice in the Description page of Project Settings.
+
+#pragma once
+
+#include "CoreMinimal.h"
+#include "GEGameplayAbilityBase.h"
+#include "GEGA_AutoActivatable.generated.h"
+
+/**
+ * Ability가 부여되는 즉시 자동으로 발동시키거나 소멸시킬 수 있는 GameplayAbility 클래스입니다.
+ */
+UCLASS()
+class GASEXTENSION_API UGEGA_AutoActivatable : public UGEGameplayAbilityBase
+{
+    GENERATED_BODY()
+
+    // true 설정 시 Ability가 부여되는 즉시 해당 Ability를 발동합니다.
+    UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Config", meta = (AllowPrivateAccess = true))
+    bool bActivateAbilityOnGranted = true;
+
+    // true 설정 시 Ability가 종료되는 즉시 해당 Ability를 제거합니다.
+    UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Config", meta = (AllowPrivateAccess = true))
+    bool bRemoveAfterActivation = true;
+
+public:
+    /* UGameplayAbility */
+
+    virtual void OnAvatarSet(const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilitySpec& Spec) override;
+};

@@ -7,7 +7,7 @@
 #include "GEGameplayAbilityBase.generated.h"
 
 /**
- *
+ * 기본 인스턴스 정책 및 태그가 설정된 기저 Ability입니다.
  */
 UCLASS(Blueprintable, BlueprintType)
 class GASEXTENSION_API UGEGameplayAbilityBase : public UGameplayAbility
@@ -16,13 +16,4 @@ class GASEXTENSION_API UGEGameplayAbilityBase : public UGameplayAbility
 
 public:
     UGEGameplayAbilityBase();
-
-    /* UGameplayAbility */
-
-    virtual void OnAvatarSet(const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilitySpec& Spec) override;
-
-    // true 설정 시 Ability가 부여되는 즉시 해당 Ability를 발동합니다.
-    // HitReact처럼 수동적인 Ability에서 사용합니다.
-    UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Config")
-    bool bActivateAbilityOnGranted = false;
 };
