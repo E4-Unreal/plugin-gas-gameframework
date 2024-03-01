@@ -22,38 +22,47 @@ class GASEXTENSION_API UGEAbilitySystemBase : public UAbilitySystemComponent
     TArray<TSubclassOf<UAttributeSet>> DefaultAttributes;
 
     // 기본 AttributeSet 을 초기화하기 위한 GameplayEffect 목록입니다.
-    UPROPERTY(EditAnywhere, Category = "Config", meta = (AllowPrivateAccess = true))
+    UPROPERTY(EditAnywhere, Category = "Config|Effects", meta = (AllowPrivateAccess = true))
     TArray<TSubclassOf<UGameplayEffect>> DefaultEffects;
 
-    // 게임 시작 후 적용할 GameplayEffect 목록입니다. ex) 리스폰 후 일정 시간 무적
-    UPROPERTY(EditAnywhere, Category = "Config", meta = (AllowPrivateAccess = true))
+    // 게임 시작 후 적용할 GameplayEffect 목록입니다.
+    UPROPERTY(EditAnywhere, Category = "Config|Effects", meta = (AllowPrivateAccess = true))
     TArray<TSubclassOf<UGameplayEffect>> StartupEffects;
+
+    // GiveAbilityAndActivateOnce 메서드를 통해 한 번만 적용되는 GameplayAbility 목록입니다.
+    // DefaultEffects를 대신할 수 있습니다.
+    UPROPERTY(EditAnywhere, Category = "Config|Abilities", meta = (AllowPrivateAccess = true))
+    TArray<TSubclassOf<UGameplayAbility>> DefaultPassiveAbilities;
+
+    // 기본으로 부여할 GameplayAbility 목록입니다.
+    UPROPERTY(EditAnywhere, Category = "Config|Abilities", meta = (AllowPrivateAccess = true))
+    TArray<TSubclassOf<UGameplayAbility>> DefaultAbilities;
 
 protected:
     /* UActorComponent */
+    UGEAbilitySystemBase();
 
-    virtual void OnRegister() override;
+    virtual void InitializeComponent() override;
     virtual void BeginPlay() override;
 
     /* 메서드 */
 
-    // 여러 AttributeSet 을 생성하고 등록합니다.
-    UFUNCTION(BlueprintCallable, Category = "GEAbilitySystemBase")
+    // AttributeSets를 생성하고 등록합니다.
     void CreateAttributes(const TArray<TSubclassOf<UAttributeSet>>& AttributeClasses);
 
-    // 단일 AttributeSet 을 생성하고 등록합니다.
-    UFUNCTION(BlueprintCallable, Category = "GEAbilitySystemBase")
+    // AttributeSet을 생성하고 등록합니다.
     void CreateAttribute(const TSubclassOf<UAttributeSet> AttributeClass);
 
-    // 여러 GameplayEffect 를 적용합니다.
-    UFUNCTION(BlueprintCallable, Category = "GEAbilitySystemBase")
+    // GameplayEffects를 적용합니다.
     void ApplyEffects(const TArray<TSubclassOf<UGameplayEffect>>& EffectClasses);
 
-    // 단일 GameplayEffect 를 적용합니다.
-    UFUNCTION(BlueprintCallable, Category = "GEAbilitySystemBase")
+    // GameplayEffect를 적용합니다.
     void ApplyEffect(const TSubclassOf<UGameplayEffect> EffectClass);
 
 private:
     // AttributeSet 설정 및 초기화
     void InitializeAttributes();
+
+    // 기본 Abilities를 부여합니다.
+    void GiveDefaultAbilities();
 };
