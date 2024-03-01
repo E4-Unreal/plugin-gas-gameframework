@@ -5,13 +5,20 @@
 #include "CoreMinimal.h"
 #include "GEAttributeSetBase.h"
 #include "AbilitySystemComponent.h"
+#include "NativeGameplayTags.h"
 #include "GEHealthAttributeSet.generated.h"
+
+// 게임 플레이 태그 선언
+namespace GEGameplayTags
+{
+    UE_DECLARE_GAMEPLAY_TAG_EXTERN(DeadTag)
+}
 
 /**
  * 체력과 데미지는 모든 게임에서 사용하는 가장 기본적인 Attribute 입니다.
  * 이 클래스는 매번 작성할 필요없이 범용적으로 사용할 수 있도록 체력, 최대 체력, 체력 재생, 데미지 총 4 가지 어트리뷰트가 포함된 기본 클래스입니다.
  */
-UCLASS()
+UCLASS(Blueprintable, BlueprintType)
 class GASEXTENSION_API UGEHealthAttributeSet : public UGEAttributeSetBase
 {
     GENERATED_BODY()
@@ -45,6 +52,7 @@ public:
 
     /* AttributeSet */
 
+    virtual void PostAttributeChange(const FGameplayAttribute& Attribute, float OldValue, float NewValue) override;
     virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
 
 protected:

@@ -1,10 +1,15 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "GEHealthAttributeSet.h"
 
 #include "GameplayEffectExtension.h"
 #include "Net/UnrealNetwork.h"
+
+// 게임 플레이 태그 정의
+namespace GEGameplayTags
+{
+    UE_DEFINE_GAMEPLAY_TAG(DeadTag, "State.Dead")
+}
 
 void UGEHealthAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
@@ -13,6 +18,20 @@ void UGEHealthAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>
     GAMEPLAYATTRIBUTE_DOREPLIFETIME_CONDITION_NOTIFY(Health);
     GAMEPLAYATTRIBUTE_DOREPLIFETIME_CONDITION_NOTIFY(MaxHealth);
     GAMEPLAYATTRIBUTE_DOREPLIFETIME_CONDITION_NOTIFY(HealthRegenRate);
+}
+
+void UGEHealthAttributeSet::PostAttributeChange(const FGameplayAttribute& Attribute, float OldValue, float NewValue)
+{
+    Super::PostAttributeChange(Attribute, OldValue, NewValue);
+
+    if(Attribute == GetHealthAttribute()) // 체력
+    {
+        // 사망 시 DeadTag 적용
+        if(NewValue <= 0.f)
+        {
+            GetOwningAbilitySystemComponent()->AddLooseGameplayTag(GEGameplayTags::DeadTag);
+        }
+    }
 }
 
 void UGEHealthAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
