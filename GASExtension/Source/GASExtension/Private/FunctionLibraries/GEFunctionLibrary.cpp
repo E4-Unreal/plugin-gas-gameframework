@@ -9,61 +9,107 @@
 
 class UAbilitySystemComponent;
 
-void UGEFunctionLibrary::ApplyGameplayEffectToTarget(const TSubclassOf<UGameplayEffect> EffectClass, const AActor* Instigator, const AActor* Target)
+void UGEFunctionLibrary::AddAttributeSet(const TSubclassOf<UAttributeSet> AttributeSetClass,
+    UAbilitySystemComponent* AbilitySystem)
 {
-    // Instigator AbilitySystem 획득 및 유효성 검사
-    UAbilitySystemComponent* InstigatorAbilitySystem = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(Instigator);
-    if(InstigatorAbilitySystem == nullptr)
+    // 유효성 검사
+    if(AttributeSetClass == nullptr || AbilitySystem == nullptr) return;
+
+    // AttributeSet 생성 및 등록
+    UAttributeSet* Attributes = NewObject<UAttributeSet>(AbilitySystem->GetOwner(), AttributeSetClass);
+    AbilitySystem->AddSpawnedAttribute(Attributes);
+}
+
+void UGEFunctionLibrary::AddAttributeSets(const TArray<TSubclassOf<UAttributeSet>>& AttributeSetClasses,
+    UAbilitySystemComponent* AbilitySystem)
+{
+    // 유효성 검사
+    if(AbilitySystem == nullptr) return;
+
+    // AttributeSet 생성 및 등록
+    for (const TSubclassOf<UAttributeSet> AttributeSetClass : AttributeSetClasses)
     {
-        LOG_CHECK(LogGASExtension, InstigatorAbilitySystem == nullptr);
-        ApplyGameplayEffectToSelf(EffectClass, Target);
-        return;
+        AddAttributeSet(AttributeSetClass, AbilitySystem);
     }
+}
 
-    // Target AbilitySystem 획득 및 유효성 검사
-    UAbilitySystemComponent* TargetAbilitySystem = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(Target);
-    if(TargetAbilitySystem == nullptr) return;
+void UGEFunctionLibrary::ApplyGameplayEffectToSelf(const TSubclassOf<UGameplayEffect> EffectClass, const AActor* TargetActor)
+{
+    ApplyGameplayEffectToSystem(EffectClass, UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(TargetActor));
+}
 
-    // Instigator가 Target에게 Effect 적용
-    UGameplayEffect* Effect = EffectClass->GetDefaultObject<UGameplayEffect>();
-    InstigatorAbilitySystem->ApplyGameplayEffectToTarget(Effect, TargetAbilitySystem);
+void UGEFunctionLibrary::ApplyGameplayEffectsToSelf(const TArray<TSubclassOf<UGameplayEffect>>& EffectClasses,
+    const AActor* TargetActor)
+{
+    ApplyGameplayEffectsToSystem(EffectClasses, UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(TargetActor));
+}
+
+void UGEFunctionLibrary::ApplyGameplayEffectToTarget(const TSubclassOf<UGameplayEffect> EffectClass, const AActor* Instigator, const AActor* TargetActor)
+{
+    UAbilitySystemComponent* InstigatorAbilitySystem = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(Instigator);
+    UAbilitySystemComponent* TargetAbilitySystem = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(TargetActor);
+
+    ApplyGameplayEffectToTargetSystem(EffectClass, InstigatorAbilitySystem, TargetAbilitySystem);
 }
 
 void UGEFunctionLibrary::ApplyGameplayEffectsToTarget(const TArray<TSubclassOf<UGameplayEffect>>& EffectClasses,
-    const AActor* Instigator, const AActor* Target)
+    const AActor* Instigator, const AActor* TargetActor)
 {
-    // 서버에서만 호출
-    if(Instigator == nullptr || !Instigator->HasAuthority()) return;
+    UAbilitySystemComponent* InstigatorAbilitySystem = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(Instigator);
+    UAbilitySystemComponent* TargetAbilitySystem = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(TargetActor);
 
-    for (const TSubclassOf<UGameplayEffect> EffectClass : EffectClasses)
-    {
-        // null 검사
-        if(EffectClass == nullptr) continue;
-
-        // Effect 적용
-        ApplyGameplayEffectToTarget(EffectClass, Instigator, Target);
-    }
+    ApplyGameplayEffectsToTargetSystem(EffectClasses, InstigatorAbilitySystem, TargetAbilitySystem);
 }
 
-void UGEFunctionLibrary::ApplyGameplayEffectToSelf(const TSubclassOf<UGameplayEffect> EffectClass, const AActor* Target)
+void UGEFunctionLibrary::ApplyGameplayEffectToSystem(const TSubclassOf<UGameplayEffect> EffectClass,
+    UAbilitySystemComponent* AbilitySystem)
 {
-    // EffectClass null 검사
-    if(EffectClass == nullptr) return;
-
-    // AbilitySystem 획득 및 유효성 검사
-    UAbilitySystemComponent* AbilitySystem = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(Target);
-    if(AbilitySystem == nullptr) return;
+    // 유효성 검사
+    if(EffectClass == nullptr || AbilitySystem == nullptr) return;
 
     // Effect 적용
     const UGameplayEffect* Effect = EffectClass->GetDefaultObject<UGameplayEffect>();
     AbilitySystem->ApplyGameplayEffectToSelf(Effect, UGameplayEffect::INVALID_LEVEL, AbilitySystem->MakeEffectContext());
 }
 
-void UGEFunctionLibrary::ApplyGameplayEffectsToSelf(const TArray<TSubclassOf<UGameplayEffect>>& EffectClasses,
-    const AActor* Target)
+void UGEFunctionLibrary::ApplyGameplayEffectsToSystem(const TArray<TSubclassOf<UGameplayEffect>>& EffectClasses,
+    UAbilitySystemComponent* AbilitySystem)
+{
+    // 유효성 검사
+    if(AbilitySystem == nullptr || !AbilitySystem->IsOwnerActorAuthoritative()) return;
+
+    // Effects 적용
+    for (const TSubclassOf<UGameplayEffect> EffectClass : EffectClasses)
+    {
+        // null 검사
+        if(EffectClass == nullptr) continue;
+
+        // Effect 적용
+        ApplyGameplayEffectToSystem(EffectClass, AbilitySystem);
+    }
+}
+
+void UGEFunctionLibrary::ApplyGameplayEffectToTargetSystem(const TSubclassOf<UGameplayEffect> EffectClass,
+    UAbilitySystemComponent* Instigator, UAbilitySystemComponent* TargetAbilitySystem)
+{
+    // Instigator AbilitySystem 획득 및 유효성 검사
+    if(Instigator == nullptr)
+    {
+        LOG_CHECK(LogGASExtension, Instigator == nullptr);
+        ApplyGameplayEffectToSystem(EffectClass, TargetAbilitySystem);
+        return;
+    }
+
+    // Instigator가 Target에게 Effect 적용
+    UGameplayEffect* Effect = EffectClass->GetDefaultObject<UGameplayEffect>();
+    Instigator->ApplyGameplayEffectToTarget(Effect, TargetAbilitySystem);
+}
+
+void UGEFunctionLibrary::ApplyGameplayEffectsToTargetSystem(const TArray<TSubclassOf<UGameplayEffect>>& EffectClasses,
+    UAbilitySystemComponent* Instigator, UAbilitySystemComponent* TargetAbilitySystem)
 {
     // 서버에서만 호출
-    if(Target == nullptr || !Target->HasAuthority()) return;
+    if(Instigator == nullptr || !Instigator->IsOwnerActorAuthoritative()) return;
 
     for (const TSubclassOf<UGameplayEffect> EffectClass : EffectClasses)
     {
@@ -71,6 +117,6 @@ void UGEFunctionLibrary::ApplyGameplayEffectsToSelf(const TArray<TSubclassOf<UGa
         if(EffectClass == nullptr) continue;
 
         // Effect 적용
-        ApplyGameplayEffectToSelf(EffectClass, Target);
+        ApplyGameplayEffectToTargetSystem(EffectClass, Instigator, TargetAbilitySystem);
     }
 }

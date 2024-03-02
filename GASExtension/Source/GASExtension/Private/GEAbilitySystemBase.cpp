@@ -2,6 +2,8 @@
 
 #include "GEAbilitySystemBase.h"
 
+#include "FunctionLibraries/GEFunctionLibrary.h"
+
 UGEAbilitySystemBase::UGEAbilitySystemBase()
 {
     bWantsInitializeComponent = true;
@@ -24,25 +26,10 @@ void UGEAbilitySystemBase::InitializeComponent()
 void UGEAbilitySystemBase::InitializeAttributes()
 {
     // 기본 AttributeSet 생성 및 등록
-    CreateAttributes(DefaultAttributes);
-}
+    UGEFunctionLibrary::AddAttributeSets(DefaultAttributes, this);
 
-void UGEAbilitySystemBase::CreateAttributes(const TArray<TSubclassOf<UAttributeSet>>& AttributeClasses)
-{
-    for (const TSubclassOf<UAttributeSet> AttributeClass : AttributeClasses)
-    {
-        CreateAttribute(AttributeClass);
-    }
-}
-
-void UGEAbilitySystemBase::CreateAttribute(const TSubclassOf<UAttributeSet> AttributeClass)
-{
-    // 유효성 검사
-    if(AttributeClass == nullptr) return;
-
-    // AttributeSet 생성 및 등록
-    UAttributeSet* Attributes = NewObject<UAttributeSet>(GetOwner(), AttributeClass);
-    AddSpawnedAttribute(Attributes);
+    // 기본 GameplayEffect 적용
+    UGEFunctionLibrary::ApplyGameplayEffectsToSystem(DefaultEffects, this);
 }
 
 void UGEAbilitySystemBase::GiveDefaultAbilities()

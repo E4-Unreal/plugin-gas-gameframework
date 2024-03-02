@@ -16,15 +16,41 @@ class GASEXTENSION_API UGEBlueprintFunctionLibrary : public UBlueprintFunctionLi
     GENERATED_BODY()
 
 public:
-    UFUNCTION(BlueprintCallable, Category = "GASExtension")
-    static void ApplyGameplayEffectToTarget(const TSubclassOf<UGameplayEffect> EffectClass, const AActor* Instigator, const AActor* Target);
+    /* AttributeSet */
 
     UFUNCTION(BlueprintCallable, Category = "GASExtension")
-    static void ApplyGameplayEffectsToTarget(const TArray<TSubclassOf<UGameplayEffect>>& EffectClasses, const AActor* Instigator, const AActor* Target);
+    static void AddAttributeSet(const TSubclassOf<UAttributeSet> AttributeSetClass, UAbilitySystemComponent* AbilitySystem);
 
     UFUNCTION(BlueprintCallable, Category = "GASExtension")
-    static void ApplyGameplayEffectToSelf(const TSubclassOf<UGameplayEffect> EffectClass, const AActor* Target);
+    static void AddAttributeSets(const TArray<TSubclassOf<UAttributeSet>>& AttributeSetClasses, UAbilitySystemComponent* AbilitySystem);
 
-    UFUNCTION(BlueprintCallable, Category = "GASExtension")
-    static void ApplyGameplayEffectsToSelf(const TArray<TSubclassOf<UGameplayEffect>>& EffectClasses, const AActor* Target);
+    /* GameplayEffect */
+
+    /* Actor */
+
+    UFUNCTION(BlueprintCallable, Category = "GASExtension|GameplayEffect|Actor")
+    static void ApplyGameplayEffectToSelf(const TSubclassOf<UGameplayEffect> EffectClass, const AActor* TargetActor);
+
+    UFUNCTION(BlueprintCallable, Category = "GASExtension|GameplayEffect|Actor")
+    static void ApplyGameplayEffectsToSelf(const TArray<TSubclassOf<UGameplayEffect>>& EffectClasses, const AActor* TargetActor);
+
+    UFUNCTION(BlueprintCallable, Category = "GASExtension|GameplayEffect|Actor")
+    static void ApplyGameplayEffectToTarget(const TSubclassOf<UGameplayEffect> EffectClass, const AActor* Instigator, const AActor* TargetActor);
+
+    UFUNCTION(BlueprintCallable, Category = "GASExtension|GameplayEffect|Actor")
+    static void ApplyGameplayEffectsToTarget(const TArray<TSubclassOf<UGameplayEffect>>& EffectClasses, const AActor* Instigator, const AActor* TargetActor);
+
+    /* AbilitySystem */
+
+    UFUNCTION(BlueprintCallable, Category = "GASExtension|GameplayEffect|System")
+    static void ApplyGameplayEffectToSystem(const TSubclassOf<UGameplayEffect> EffectClass, UAbilitySystemComponent* AbilitySystem);
+
+    UFUNCTION(BlueprintCallable, Category = "GASExtension|GameplayEffect|System")
+    static void ApplyGameplayEffectsToSystem(const TArray<TSubclassOf<UGameplayEffect>>& EffectClasses, UAbilitySystemComponent* AbilitySystem);
+
+    UFUNCTION(BlueprintCallable, Category = "GASExtension|GameplayEffect|System")
+    static void ApplyGameplayEffectToTargetSystem(const TSubclassOf<UGameplayEffect> EffectClass, UAbilitySystemComponent* Instigator, UAbilitySystemComponent* TargetAbilitySystem);
+
+    UFUNCTION(BlueprintCallable, Category = "GASExtension|GameplayEffect|System")
+    static void ApplyGameplayEffectsToTargetSystem(const TArray<TSubclassOf<UGameplayEffect>>& EffectClasses, UAbilitySystemComponent* Instigator, UAbilitySystemComponent* TargetAbilitySystem);
 };
