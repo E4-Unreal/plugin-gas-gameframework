@@ -21,21 +21,10 @@ void UGEAbilitySystemBase::InitializeComponent()
     GiveDefaultAbilities();
 }
 
-void UGEAbilitySystemBase::BeginPlay()
-{
-    Super::BeginPlay();
-
-    // 시작 GameplayEffect 적용
-    ApplyEffects(StartupEffects);
-}
-
 void UGEAbilitySystemBase::InitializeAttributes()
 {
     // 기본 AttributeSet 생성 및 등록
     CreateAttributes(DefaultAttributes);
-
-    // 기본 GameplayEffect 적용
-    ApplyEffects(DefaultEffects);
 }
 
 void UGEAbilitySystemBase::CreateAttributes(const TArray<TSubclassOf<UAttributeSet>>& AttributeClasses)
@@ -52,47 +41,14 @@ void UGEAbilitySystemBase::CreateAttribute(const TSubclassOf<UAttributeSet> Attr
     if(AttributeClass == nullptr) return;
 
     // AttributeSet 생성 및 등록
-    GetOrCreateAttributeSubobject(AttributeClass);
-}
-
-void UGEAbilitySystemBase::ApplyEffects(const TArray<TSubclassOf<UGameplayEffect>>& EffectClasses)
-{
-    for (const TSubclassOf<UGameplayEffect> EffectClass : EffectClasses)
-    {
-        ApplyEffect(EffectClass);
-    }
-}
-
-void UGEAbilitySystemBase::ApplyEffect(const TSubclassOf<UGameplayEffect> EffectClass)
-{
-    // 자기 자신에게 Gameplay Effect 적용
-    const FGameplayEffectSpecHandle GameplayEffectSpecHandle = MakeOutgoingSpec(EffectClass, 0, MakeEffectContext());
-    if(GameplayEffectSpecHandle.IsValid())
-    {
-        ApplyGameplayEffectSpecToSelf(*GameplayEffectSpecHandle.Data.Get());
-    }
+    UAttributeSet* Attributes = NewObject<UAttributeSet>(GetOwner(), AttributeClass);
+    AddSpawnedAttribute(Attributes);
 }
 
 void UGEAbilitySystemBase::GiveDefaultAbilities()
 {
-    // 패시브 어빌리티 부여
-    for (const auto& DefaultPassiveAbility : DefaultPassiveAbilities)
-    {
-        // null 검사
-        if(DefaultPassiveAbility == nullptr) continue;
-
-        // GameplayAbilitySpec 생성
-        FGameplayAbilitySpec AbilitySpec = BuildAbilitySpecFromClass(DefaultPassiveAbility);
-
-        // 유효성 검사
-        if (!IsValid(AbilitySpec.Ability)) return;
-
-        // 어빌리티 1회 발동
-        GiveAbilityAndActivateOnce(AbilitySpec);
-    }
-
-    // 일반 어빌리티 부여
-    for (auto DefaultAbility : DefaultAbilities)
+    // 기본 어빌리티 부여
+    for (const TSubclassOf<UGameplayAbility> DefaultAbility : DefaultAbilities)
     {
         // null 검사
         if(DefaultAbility == nullptr) continue;
