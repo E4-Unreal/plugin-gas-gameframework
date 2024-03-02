@@ -26,9 +26,10 @@ void UGEHealthAttributeSet::PostAttributeChange(const FGameplayAttribute& Attrib
 
     if(Attribute == GetHealthAttribute()) // 체력
     {
-        // 사망 시 DeadTag 적용
+        // 사망 시 DeadTag 적용 (서버)
         if(NewValue <= 0.f)
         {
+            // DeadTag는 리플리케이트 되지 않습니다.
             GetOwningAbilitySystemComponent()->AddLooseGameplayTag(GEGameplayTags::DeadTag);
         }
     }
@@ -90,6 +91,13 @@ void UGEHealthAttributeSet::TakeDamageByGameplayEffect(const FGameplayEffectModC
 void UGEHealthAttributeSet::OnRep_Health(const FGameplayAttributeData& OldHealth)
 {
     GAMEPLAYATTRIBUTE_REPNOTIFY_SIMPLE(Health);
+
+    // 사망 시 DeadTag 적용 (클라이언트)
+    if(GetHealth() <= 0.f)
+    {
+        // DeadTag는 리플리케이트 되지 않습니다.
+        GetOwningAbilitySystemComponent()->AddLooseGameplayTag(GEGameplayTags::DeadTag);
+    }
 }
 
 void UGEHealthAttributeSet::OnRep_MaxHealth(const FGameplayAttributeData& OldMaxHealth)
