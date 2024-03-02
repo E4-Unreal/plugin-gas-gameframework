@@ -21,6 +21,7 @@ class GASEXTENSION_API UGEAbilitySystemBase : public UAbilitySystemComponent
     UPROPERTY(EditAnywhere, Category = "Config", meta = (AllowPrivateAccess = true))
     TArray<TSubclassOf<UAttributeSet>> DefaultAttributes;
 
+    // 기본으로 적용시킬 GameplayEffect 목록입니다.
     UPROPERTY(EditAnywhere, Category = "Config", meta = (AllowPrivateAccess = true))
     TArray<TSubclassOf<UGameplayEffect>> DefaultEffects;
 
@@ -36,8 +37,5 @@ protected:
 
 private:
     // AttributeSet 설정 및 초기화
-    void InitializeAttributes();
-
-    // 기본 Abilities를 부여합니다.
-    void GiveDefaultAbilities();
+    void InitializeAbilitySystem();
 };

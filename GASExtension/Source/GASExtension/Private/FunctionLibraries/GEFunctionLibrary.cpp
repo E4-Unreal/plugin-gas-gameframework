@@ -120,3 +120,47 @@ void UGEFunctionLibrary::ApplyGameplayEffectsToTargetSystem(const TArray<TSubcla
         ApplyGameplayEffectToTargetSystem(EffectClass, Instigator, TargetAbilitySystem);
     }
 }
+
+void UGEFunctionLibrary::GiveAbilityToTarget(const TSubclassOf<UGameplayAbility> AbilityClass, const AActor* Target)
+{
+    UAbilitySystemComponent* AbilitySystem = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(Target);
+
+    GiveAbilityToSystem(AbilityClass, AbilitySystem);
+}
+
+void UGEFunctionLibrary::GiveAbilitiesToTarget(const TArray<TSubclassOf<UGameplayAbility>>& AbilityClasses,
+    const AActor* Target)
+{
+    UAbilitySystemComponent* AbilitySystem = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(Target);
+
+    GiveAbilitiesToSystem(AbilityClasses, AbilitySystem);
+}
+
+void UGEFunctionLibrary::GiveAbilityToSystem(const TSubclassOf<UGameplayAbility> AbilityClass,
+                                             UAbilitySystemComponent* AbilitySystem)
+{
+    // null 검사
+    if(AbilityClass == nullptr || AbilitySystem == nullptr) return;
+
+    // GameplayAbilitySpec 생성
+    FGameplayAbilitySpec AbilitySpec = AbilitySystem->BuildAbilitySpecFromClass(AbilityClass);
+
+    // 유효성 검사
+    if (!IsValid(AbilitySpec.Ability)) return;
+
+    // 어빌리티 부여
+    AbilitySystem->GiveAbility(AbilitySpec);
+}
+
+void UGEFunctionLibrary::GiveAbilitiesToSystem(const TArray<TSubclassOf<UGameplayAbility>>& AbilityClasses,
+    UAbilitySystemComponent* AbilitySystem)
+{
+    // 서버에서만 호출
+    if(AbilitySystem == nullptr || !AbilitySystem->IsOwnerActorAuthoritative()) return;
+
+    // Ability 부여
+    for (const TSubclassOf<UGameplayAbility> AbilityClass : AbilityClasses)
+    {
+        GiveAbilityToSystem(AbilityClass, AbilitySystem);
+    }
+}

@@ -17,36 +17,17 @@ void UGEAbilitySystemBase::InitializeComponent()
     if(!IsOwnerActorAuthoritative()) return;
 
     // AttributeSet 설정 및 초기화
-    InitializeAttributes();
-
-    // 기본 Abilities 를 부여합니다.
-    GiveDefaultAbilities();
+    InitializeAbilitySystem();
 }
 
-void UGEAbilitySystemBase::InitializeAttributes()
+void UGEAbilitySystemBase::InitializeAbilitySystem()
 {
     // 기본 AttributeSet 생성 및 등록
     UGEFunctionLibrary::AddAttributeSets(DefaultAttributes, this);
 
     // 기본 GameplayEffect 적용
     UGEFunctionLibrary::ApplyGameplayEffectsToSystem(DefaultEffects, this);
-}
 
-void UGEAbilitySystemBase::GiveDefaultAbilities()
-{
-    // 기본 어빌리티 부여
-    for (const TSubclassOf<UGameplayAbility> DefaultAbility : DefaultAbilities)
-    {
-        // null 검사
-        if(DefaultAbility == nullptr) continue;
-
-        // GameplayAbilitySpec 생성
-        FGameplayAbilitySpec AbilitySpec = BuildAbilitySpecFromClass(DefaultAbility);
-
-        // 유효성 검사
-        if (!IsValid(AbilitySpec.Ability)) return;
-
-        // 어빌리티 부여
-        GiveAbility(AbilitySpec);
-    }
+    // 기본 GameplayAbility 부여
+    UGEFunctionLibrary::GiveAbilitiesToSystem(DefaultAbilities, this);
 }

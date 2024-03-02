@@ -24,9 +24,7 @@ public:
     UFUNCTION(BlueprintCallable, Category = "GASExtension")
     static void AddAttributeSets(const TArray<TSubclassOf<UAttributeSet>>& AttributeSetClasses, UAbilitySystemComponent* AbilitySystem);
 
-    /* GameplayEffect */
-
-    /* Actor */
+    /* Apply GameplayEffect To Actor */
 
     UFUNCTION(BlueprintCallable, Category = "GASExtension|GameplayEffect|Actor")
     static void ApplyGameplayEffectToSelf(const TSubclassOf<UGameplayEffect> EffectClass, const AActor* TargetActor);
@@ -40,7 +38,7 @@ public:
     UFUNCTION(BlueprintCallable, Category = "GASExtension|GameplayEffect|Actor")
     static void ApplyGameplayEffectsToTarget(const TArray<TSubclassOf<UGameplayEffect>>& EffectClasses, const AActor* Instigator, const AActor* TargetActor);
 
-    /* AbilitySystem */
+    /* Apply GameplayEffect To AbilitySystem */
 
     UFUNCTION(BlueprintCallable, Category = "GASExtension|GameplayEffect|System")
     static void ApplyGameplayEffectToSystem(const TSubclassOf<UGameplayEffect> EffectClass, UAbilitySystemComponent* AbilitySystem);
@@ -53,4 +51,20 @@ public:
 
     UFUNCTION(BlueprintCallable, Category = "GASExtension|GameplayEffect|System")
     static void ApplyGameplayEffectsToTargetSystem(const TArray<TSubclassOf<UGameplayEffect>>& EffectClasses, UAbilitySystemComponent* Instigator, UAbilitySystemComponent* TargetAbilitySystem);
+
+    /* Give GameplayAbility To Actor */
+
+    UFUNCTION(BlueprintCallable, Category = "GASExtension|GameplayAbility|Actor")
+    static void GiveAbilityToTarget(const TSubclassOf<UGameplayAbility> AbilityClass, const AActor* Target);
+
+    UFUNCTION(BlueprintCallable, Category = "GASExtension|GameplayAbility|Actor")
+    static void GiveAbilitiesToTarget(const TArray<TSubclassOf<UGameplayAbility>>& AbilityClasses, const AActor* Target);
+
+    /* Give GameplayAbility To AbilitySystem */
+
+    UFUNCTION(BlueprintCallable, Category = "GASExtension|GameplayAbility|System")
+    static void GiveAbilityToSystem(const TSubclassOf<UGameplayAbility> AbilityClass, UAbilitySystemComponent* AbilitySystem);
+
+    UFUNCTION(BlueprintCallable, Category = "GASExtension|GameplayAbility|System")
+    static void GiveAbilitiesToSystem(const TArray<TSubclassOf<UGameplayAbility>>& AbilityClasses, UAbilitySystemComponent* AbilitySystem);
 };

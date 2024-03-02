@@ -7,6 +7,10 @@
 #include "GEFunctionLibrary.generated.h"
 
 class UAbilitySystemComponent;
+class UAttributeSet;
+class UGameplayEffect;
+class UGameplayAbility;
+
 /**
  * GASExtension 플러그인에서 사용하는 함수 라이브러리입니다.
  */
@@ -16,15 +20,13 @@ class GASEXTENSION_API UGEFunctionLibrary : public UObject
     GENERATED_BODY()
 
 public:
-    /* AttributeSet */
+    /* Create And Add AttributeSet */
 
     static void AddAttributeSet(const TSubclassOf<UAttributeSet> AttributeSetClass, UAbilitySystemComponent* AbilitySystem);
 
     static void AddAttributeSets(const TArray<TSubclassOf<UAttributeSet>>& AttributeSetClasses, UAbilitySystemComponent* AbilitySystem);
 
-    /* GameplayEffect */
-
-    /* Actor */
+    /* Apply GameplayEffect To Actor */
 
     // 내부적으로 ApplyGameplayEffectToSystem을 호출하며 Actor를 AbilitySystemComponent로 변환 기능만 추가하였습니다.
     static void ApplyGameplayEffectToSelf(const TSubclassOf<UGameplayEffect> EffectClass, const AActor* TargetActor);
@@ -38,7 +40,7 @@ public:
     // 내부적으로 ApplyGameplayEffectsToTargetSystem을 호출하며 Actor를 AbilitySystemComponent로 변환 기능만 추가하였습니다.
     static void ApplyGameplayEffectsToTarget(const TArray<TSubclassOf<UGameplayEffect>>& EffectClasses, const AActor* Instigator, const AActor* TargetActor);
 
-    /* AbilitySystem */
+    /* Apply GameplayEffect To AbilitySystem */
 
     static void ApplyGameplayEffectToSystem(const TSubclassOf<UGameplayEffect> EffectClass, UAbilitySystemComponent* AbilitySystem);
 
@@ -47,4 +49,16 @@ public:
     static void ApplyGameplayEffectToTargetSystem(const TSubclassOf<UGameplayEffect> EffectClass, UAbilitySystemComponent* Instigator, UAbilitySystemComponent* TargetAbilitySystem);
 
     static void ApplyGameplayEffectsToTargetSystem(const TArray<TSubclassOf<UGameplayEffect>>& EffectClasses, UAbilitySystemComponent* Instigator, UAbilitySystemComponent* TargetAbilitySystem);
+
+    /* Give GameplayAbility To Actor */
+
+    static void GiveAbilityToTarget(const TSubclassOf<UGameplayAbility> AbilityClass, const AActor* Target);
+
+    static void GiveAbilitiesToTarget(const TArray<TSubclassOf<UGameplayAbility>>& AbilityClasses, const AActor* Target);
+
+    /* Give GameplayAbility To AbilitySystem */
+
+    static void GiveAbilityToSystem(const TSubclassOf<UGameplayAbility> AbilityClass, UAbilitySystemComponent* AbilitySystem);
+
+    static void GiveAbilitiesToSystem(const TArray<TSubclassOf<UGameplayAbility>>& AbilityClasses, UAbilitySystemComponent* AbilitySystem);
 };
