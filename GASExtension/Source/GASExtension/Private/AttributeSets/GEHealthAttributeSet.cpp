@@ -15,24 +15,15 @@ void UGEHealthAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>
 {
     Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
-    GAMEPLAYATTRIBUTE_DOREPLIFETIME_CONDITION_NOTIFY(Health);
-    GAMEPLAYATTRIBUTE_DOREPLIFETIME_CONDITION_NOTIFY(MaxHealth);
-    GAMEPLAYATTRIBUTE_DOREPLIFETIME_CONDITION_NOTIFY(HealthRegenRate);
+    GAMEPLAYATTRIBUTE_DOREPLIFETIME_CONDITION_NOTIFY_WITH_MAX_AND_REGENRATE(Health)
 }
 
 void UGEHealthAttributeSet::PostAttributeChange(const FGameplayAttribute& Attribute, float OldValue, float NewValue)
 {
     Super::PostAttributeChange(Attribute, OldValue, NewValue);
 
-    if(Attribute == GetHealthAttribute()) // 체력
-    {
-        // 사망 시 DeadTag 적용 (서버)
-        if(NewValue <= 0.f)
-        {
-            // DeadTag는 리플리케이트 되지 않습니다.
-            GetOwningAbilitySystemComponent()->AddLooseGameplayTag(GEGameplayTags::DeadTag);
-        }
-    }
+    // 사망 시 DeadTag 적용 (서버)
+    ADD_LOOSE_GAMEPLAYTAG_CONDITION_WITH_ATTRIBUTE(Health, NewValue <= 0.f, GEGameplayTags::DeadTag)
 }
 
 void UGEHealthAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
@@ -47,6 +38,9 @@ void UGEHealthAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCa
         const float LocalDamage = GetDamage();
         SetDamage(0.f);
 
+        // 데미지 값이 음수이거나 이미 체력이 0인 경우 무시
+        if(LocalDamage <= 0.f || GetHealth() <= 0.f) return;
+
         // 데미지 처리
         TakeDamageByGameplayEffect(Data, LocalDamage);
     }
@@ -56,34 +50,20 @@ void UGEHealthAttributeSet::ClampAttributes(const FGameplayAttribute& Attribute,
 {
     Super::ClampAttributes(Attribute, NewValue);
 
-    if(Attribute == GetHealthAttribute()) // 체력
-    {
-        // 0 <= 체력 <= 최대 체력
-        NewValue = FMath::Clamp(NewValue, 0.f, GetMaxHealth());
-    }
-    else if(Attribute == GetMaxHealthAttribute()) // 최대 체력
-    {
-        // 0 <= 최대 체력
-        NewValue = FMath::Max(NewValue, 0.f);
-    }
+    // 체력
+    CLAMP_ATTRIBUTE_AND_MAX_ATTRIBUTE(Attribute, NewValue, Health)
 }
 
 void UGEHealthAttributeSet::AdjustAttributes(const FGameplayAttribute& Attribute, float OldValue, float NewValue)
 {
     Super::AdjustAttributes(Attribute, OldValue, NewValue);
 
-    if(Attribute == GetMaxHealthAttribute()) // 최대 체력
-    {
-        // 체력 비율 유지
-        AdjustAttributeForMaxChange(Health, MaxHealth, OldValue, NewValue, GetHealthAttribute());
-    }
+    // 체력
+    ADJUST_ATTRIBUTE_FOR_MAX_ATTRIBUTE_CHANGE(Health)
 }
 
 void UGEHealthAttributeSet::TakeDamageByGameplayEffect(const FGameplayEffectModCallbackData& Data, const float InDamage)
 {
-    // 데미지 값이 올바르지 않거나 이미 체력이 0인 경우 무시
-    if(InDamage <= 0.f || GetHealth() <= 0.f) return;
-
     // 데미지 적용
     SetHealth(GetHealth() - InDamage);
 }
@@ -92,12 +72,8 @@ void UGEHealthAttributeSet::OnRep_Health(const FGameplayAttributeData& OldHealth
 {
     GAMEPLAYATTRIBUTE_REPNOTIFY_SIMPLE(Health);
 
-    // 사망 시 DeadTag 적용 (클라이언트)
-    if(GetHealth() <= 0.f)
-    {
-        // DeadTag는 리플리케이트 되지 않습니다.
-        GetOwningAbilitySystemComponent()->AddLooseGameplayTag(GEGameplayTags::DeadTag);
-    }
+    // 사망 시 DeadTag 적용 (서버)
+    ADD_LOOSE_GAMEPLAYTAG_CONDITION(GetHealth() <= 0.f, GEGameplayTags::DeadTag)
 }
 
 void UGEHealthAttributeSet::OnRep_MaxHealth(const FGameplayAttributeData& OldMaxHealth)
