@@ -39,7 +39,7 @@ public:
     FGameplayAttributeData HealthRegenRate;
     ATTRIBUTE_ACCESSORS(ThisClass, HealthRegenRate)
 
-    // 데미지
+    // 데미지 (받는 피해량입니다)
     // 서버에서만 사용되는 Meta Attribute로 리플리케이트 되지 않습니다.
     UPROPERTY(BlueprintReadOnly, Category = "Damage")
     FGameplayAttributeData Damage;
