@@ -9,8 +9,23 @@
 
 class UAbilitySystemComponent;
 
-void UGEFunctionLibrary::AddAttributeSet(const TSubclassOf<UAttributeSet> AttributeSetClass,
-    UAbilitySystemComponent* AbilitySystem)
+void UGEFunctionLibrary::AddAttributeSetToTarget(const TSubclassOf<UAttributeSet> AttributeSetClass, const AActor* TargetActor)
+{
+    UAbilitySystemComponent* AbilitySystem = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(TargetActor);
+
+    AddAttributeSetToSystem(AttributeSetClass, AbilitySystem);
+}
+
+void UGEFunctionLibrary::AddAttributeSetsToTarget(const TArray<TSubclassOf<UAttributeSet>>& AttributeSetClasses,
+    const AActor* TargetActor)
+{
+    UAbilitySystemComponent* AbilitySystem = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(TargetActor);
+
+    AddAttributeSetsToSystem(AttributeSetClasses, AbilitySystem);
+}
+
+void UGEFunctionLibrary::AddAttributeSetToSystem(const TSubclassOf<UAttributeSet> AttributeSetClass,
+                                         UAbilitySystemComponent* AbilitySystem)
 {
     // 유효성 검사
     if(AttributeSetClass == nullptr || AbilitySystem == nullptr) return;
@@ -20,7 +35,7 @@ void UGEFunctionLibrary::AddAttributeSet(const TSubclassOf<UAttributeSet> Attrib
     AbilitySystem->AddSpawnedAttribute(Attributes);
 }
 
-void UGEFunctionLibrary::AddAttributeSets(const TArray<TSubclassOf<UAttributeSet>>& AttributeSetClasses,
+void UGEFunctionLibrary::AddAttributeSetsToSystem(const TArray<TSubclassOf<UAttributeSet>>& AttributeSetClasses,
     UAbilitySystemComponent* AbilitySystem)
 {
     // 유효성 검사
@@ -29,19 +44,23 @@ void UGEFunctionLibrary::AddAttributeSets(const TArray<TSubclassOf<UAttributeSet
     // AttributeSet 생성 및 등록
     for (const TSubclassOf<UAttributeSet> AttributeSetClass : AttributeSetClasses)
     {
-        AddAttributeSet(AttributeSetClass, AbilitySystem);
+        AddAttributeSetToSystem(AttributeSetClass, AbilitySystem);
     }
 }
 
 void UGEFunctionLibrary::ApplyGameplayEffectToSelf(const TSubclassOf<UGameplayEffect> EffectClass, const AActor* TargetActor)
 {
-    ApplyGameplayEffectToSystem(EffectClass, UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(TargetActor));
+    UAbilitySystemComponent* AbilitySystem = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(TargetActor);
+
+    ApplyGameplayEffectToSystem(EffectClass, AbilitySystem);
 }
 
 void UGEFunctionLibrary::ApplyGameplayEffectsToSelf(const TArray<TSubclassOf<UGameplayEffect>>& EffectClasses,
     const AActor* TargetActor)
 {
-    ApplyGameplayEffectsToSystem(EffectClasses, UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(TargetActor));
+    UAbilitySystemComponent* AbilitySystem = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(TargetActor);
+
+    ApplyGameplayEffectsToSystem(EffectClasses, AbilitySystem);
 }
 
 void UGEFunctionLibrary::ApplyGameplayEffectToTarget(const TSubclassOf<UGameplayEffect> EffectClass, const AActor* Instigator, const AActor* TargetActor)

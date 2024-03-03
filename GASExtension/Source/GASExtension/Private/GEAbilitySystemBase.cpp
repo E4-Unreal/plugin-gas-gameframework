@@ -23,7 +23,7 @@ void UGEAbilitySystemBase::InitializeComponent()
 void UGEAbilitySystemBase::InitializeAbilitySystem()
 {
     // 기본 AttributeSet 생성 및 등록
-    UGEFunctionLibrary::AddAttributeSets(DefaultAttributes, this);
+    UGEFunctionLibrary::AddAttributeSetsToSystem(DefaultAttributes, this);
 
     // 기본 GameplayEffect 적용
     UGEFunctionLibrary::ApplyGameplayEffectsToSystem(DefaultEffects, this);

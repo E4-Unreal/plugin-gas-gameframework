@@ -16,13 +16,21 @@ class GASEXTENSION_API UGEBlueprintFunctionLibrary : public UBlueprintFunctionLi
     GENERATED_BODY()
 
 public:
-    /* AttributeSet */
+    /* Create And Add AttributeSet To Actor */
 
-    UFUNCTION(BlueprintCallable, Category = "GASExtension")
-    static void AddAttributeSet(const TSubclassOf<UAttributeSet> AttributeSetClass, UAbilitySystemComponent* AbilitySystem);
+    UFUNCTION(BlueprintCallable, Category = "GASExtension|AttributeSet|Actor")
+    static void AddAttributeSetToTarget(const TSubclassOf<UAttributeSet> AttributeSetClass, const AActor* TargetActor);
 
-    UFUNCTION(BlueprintCallable, Category = "GASExtension")
-    static void AddAttributeSets(const TArray<TSubclassOf<UAttributeSet>>& AttributeSetClasses, UAbilitySystemComponent* AbilitySystem);
+    UFUNCTION(BlueprintCallable, Category = "GASExtension|AttributeSet|Actor")
+    static void AddAttributeSetsToTarget(const TArray<TSubclassOf<UAttributeSet>>& AttributeSetClasses, const AActor* TargetActor);
+
+    /* Create And Add AttributeSet To AbilitySystem */
+
+    UFUNCTION(BlueprintCallable, Category = "GASExtension|AttributeSet|System")
+    static void AddAttributeSetToSystem(const TSubclassOf<UAttributeSet> AttributeSetClass, UAbilitySystemComponent* AbilitySystem);
+
+    UFUNCTION(BlueprintCallable, Category = "GASExtension|AttributeSet|System")
+    static void AddAttributeSetsToSystem(const TArray<TSubclassOf<UAttributeSet>>& AttributeSetClasses, UAbilitySystemComponent* AbilitySystem);
 
     /* Apply GameplayEffect To Actor */
 

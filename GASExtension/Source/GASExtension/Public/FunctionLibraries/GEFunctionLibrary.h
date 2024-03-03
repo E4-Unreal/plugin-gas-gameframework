@@ -20,11 +20,17 @@ class GASEXTENSION_API UGEFunctionLibrary : public UObject
     GENERATED_BODY()
 
 public:
-    /* Create And Add AttributeSet */
+    /* Create And Add AttributeSet To Actor */
 
-    static void AddAttributeSet(const TSubclassOf<UAttributeSet> AttributeSetClass, UAbilitySystemComponent* AbilitySystem);
+    static void AddAttributeSetToTarget(const TSubclassOf<UAttributeSet> AttributeSetClass, const AActor* TargetActor);
 
-    static void AddAttributeSets(const TArray<TSubclassOf<UAttributeSet>>& AttributeSetClasses, UAbilitySystemComponent* AbilitySystem);
+    static void AddAttributeSetsToTarget(const TArray<TSubclassOf<UAttributeSet>>& AttributeSetClasses, const AActor* TargetActor);
+
+    /* Create And Add AttributeSet To AbilitySystem */
+
+    static void AddAttributeSetToSystem(const TSubclassOf<UAttributeSet> AttributeSetClass, UAbilitySystemComponent* AbilitySystem);
+
+    static void AddAttributeSetsToSystem(const TArray<TSubclassOf<UAttributeSet>>& AttributeSetClasses, UAbilitySystemComponent* AbilitySystem);
 
     /* Apply GameplayEffect To Actor */
 

@@ -5,16 +5,28 @@
 
 #include "FunctionLibraries/GEFunctionLibrary.h"
 
-void UGEBlueprintFunctionLibrary::AddAttributeSet(const TSubclassOf<UAttributeSet> AttributeSetClass,
-    UAbilitySystemComponent* AbilitySystem)
+void UGEBlueprintFunctionLibrary::AddAttributeSetToTarget(const TSubclassOf<UAttributeSet> AttributeSetClass,
+    const AActor* TargetActor)
 {
-    UGEFunctionLibrary::AddAttributeSet(AttributeSetClass, AbilitySystem);
+    UGEFunctionLibrary::AddAttributeSetToTarget(AttributeSetClass, TargetActor);
 }
 
-void UGEBlueprintFunctionLibrary::AddAttributeSets(const TArray<TSubclassOf<UAttributeSet>>& AttributeSetClasses,
+void UGEBlueprintFunctionLibrary::AddAttributeSetsToTarget(
+    const TArray<TSubclassOf<UAttributeSet>>& AttributeSetClasses, const AActor* TargetActor)
+{
+    UGEFunctionLibrary::AddAttributeSetsToTarget(AttributeSetClasses, TargetActor);
+}
+
+void UGEBlueprintFunctionLibrary::AddAttributeSetToSystem(const TSubclassOf<UAttributeSet> AttributeSetClass,
+                                                          UAbilitySystemComponent* AbilitySystem)
+{
+    UGEFunctionLibrary::AddAttributeSetToSystem(AttributeSetClass, AbilitySystem);
+}
+
+void UGEBlueprintFunctionLibrary::AddAttributeSetsToSystem(const TArray<TSubclassOf<UAttributeSet>>& AttributeSetClasses,
     UAbilitySystemComponent* AbilitySystem)
 {
-    UGEFunctionLibrary::AddAttributeSets(AttributeSetClasses, AbilitySystem);
+    UGEFunctionLibrary::AddAttributeSetsToSystem(AttributeSetClasses, AbilitySystem);
 }
 
 void UGEBlueprintFunctionLibrary::ApplyGameplayEffectsToSelf(const TArray<TSubclassOf<UGameplayEffect>>& EffectClasses,
