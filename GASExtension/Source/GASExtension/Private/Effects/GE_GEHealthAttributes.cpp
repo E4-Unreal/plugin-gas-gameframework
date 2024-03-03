@@ -3,7 +3,7 @@
 
 #include "Effects/GE_GEHealthAttributes.h"
 
-#include "AttributeSets/GEHealthAttributeSet.h"
+#include "AttributeSets/GEHealthAttributes.h"
 
 UGE_GEHealthAttributes::UGE_GEHealthAttributes()
 {
@@ -16,7 +16,7 @@ UGE_GEHealthAttributes::UGE_GEHealthAttributes()
     // 최대 체력
     const FGameplayModifierInfo MaxHealthModifier
     {
-        UGEHealthAttributeSet::GetMaxHealthAttribute(),
+        UGEHealthAttributes::GetMaxHealthAttribute(),
         EGameplayModOp::Override,
         FGameplayEffectModifierMagnitude(FScalableFloat(MaxHealth))
     };
@@ -24,7 +24,7 @@ UGE_GEHealthAttributes::UGE_GEHealthAttributes()
     // 체력
     const FGameplayModifierInfo HealthModifier
     {
-        UGEHealthAttributeSet::GetHealthAttribute(),
+        UGEHealthAttributes::GetHealthAttribute(),
         EGameplayModOp::Override,
         FGameplayEffectModifierMagnitude(FScalableFloat(MaxHealth * HealthRatio))
     };

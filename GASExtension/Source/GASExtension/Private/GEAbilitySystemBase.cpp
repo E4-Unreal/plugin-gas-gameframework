@@ -2,11 +2,18 @@
 
 #include "GEAbilitySystemBase.h"
 
+#include "AttributeSets/GEHealthAttributes.h"
+#include "Effects/GE_GEHealthAttributes.h"
 #include "FunctionLibraries/GEFunctionLibrary.h"
 
 UGEAbilitySystemBase::UGEAbilitySystemBase()
 {
+    // 설정
     bWantsInitializeComponent = true;
+
+    // 기본 Attributes 및 GameplayEffect 등록
+    DefaultAttributes.Add(UGEHealthAttributes::StaticClass());
+    DefaultEffects.Add(UGE_GEHealthAttributes::StaticClass());
 }
 
 void UGEAbilitySystemBase::InitializeComponent()
