@@ -3,16 +3,15 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GEGA_AutoActivatable.h"
+#include "GEGameplayAbilityBase.h"
 #include "GEGA_ApplyEffectsToSelf.generated.h"
 
 /**
  * Ability를 발동한 주체에게 GameplayEffects를 적용하는 Ability입니다.
- * AttributeSet 초기화, 아이템 효과 적용 등을 위해 사용할 수 있습니다.
- * 사용 방법은 적용할 대상에게 GiveAbility로 전달하면 됩니다.
+ * 힐이나 버프같은 간단한 스킬 구현에 사용할 수 있습니다.
  */
 UCLASS()
-class GASEXTENSION_API UGEGA_ApplyEffectsToSelf : public UGEGA_AutoActivatable
+class GASEXTENSION_API UGEGA_ApplyEffectsToSelf : public UGEGameplayAbilityBase
 {
     GENERATED_BODY()
 
