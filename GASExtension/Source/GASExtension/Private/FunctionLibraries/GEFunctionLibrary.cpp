@@ -68,7 +68,11 @@ void UGEFunctionLibrary::ApplyGameplayEffectToTarget(const TSubclassOf<UGameplay
     UAbilitySystemComponent* InstigatorAbilitySystem = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(Instigator);
     UAbilitySystemComponent* TargetAbilitySystem = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(TargetActor);
 
-    ApplyGameplayEffectToTargetSystem(EffectClass, InstigatorAbilitySystem, TargetAbilitySystem);
+    // Instigator가 존재하지 않는 경우 Self로 대신 실행합니다.
+    if(InstigatorAbilitySystem == nullptr)
+        ApplyGameplayEffectToSystem(EffectClass, TargetAbilitySystem);
+    else
+        ApplyGameplayEffectToTargetSystem(EffectClass, InstigatorAbilitySystem, TargetAbilitySystem);
 }
 
 void UGEFunctionLibrary::ApplyGameplayEffectsToTarget(const TArray<TSubclassOf<UGameplayEffect>>& EffectClasses,
@@ -77,7 +81,11 @@ void UGEFunctionLibrary::ApplyGameplayEffectsToTarget(const TArray<TSubclassOf<U
     UAbilitySystemComponent* InstigatorAbilitySystem = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(Instigator);
     UAbilitySystemComponent* TargetAbilitySystem = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(TargetActor);
 
-    ApplyGameplayEffectsToTargetSystem(EffectClasses, InstigatorAbilitySystem, TargetAbilitySystem);
+    // Instigator가 존재하지 않는 경우 Self로 대신 실행합니다.
+    if(InstigatorAbilitySystem == nullptr)
+        ApplyGameplayEffectsToSystem(EffectClasses, TargetAbilitySystem);
+    else
+        ApplyGameplayEffectsToTargetSystem(EffectClasses, InstigatorAbilitySystem, TargetAbilitySystem);
 }
 
 void UGEFunctionLibrary::ApplyGameplayEffectToSystem(const TSubclassOf<UGameplayEffect> EffectClass,
