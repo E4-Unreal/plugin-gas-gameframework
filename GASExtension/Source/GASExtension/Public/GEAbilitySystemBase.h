@@ -17,6 +17,7 @@ class GASEXTENSION_API UGEAbilitySystemBase : public UAbilitySystemComponent
 {
     GENERATED_BODY()
 
+protected:
     // 기본으로 사용할 AttributeSet 목록입니다.
     UPROPERTY(EditAnywhere, Category = "Config", meta = (AllowPrivateAccess = true))
     TArray<TSubclassOf<UAttributeSet>> DefaultAttributes;
@@ -29,7 +30,7 @@ class GASEXTENSION_API UGEAbilitySystemBase : public UAbilitySystemComponent
     UPROPERTY(EditAnywhere, Category = "Config", meta = (AllowPrivateAccess = true))
     TArray<TSubclassOf<UGameplayAbility>> DefaultAbilities;
 
-protected:
+public:
     /* UActorComponent */
     UGEAbilitySystemBase();
 
