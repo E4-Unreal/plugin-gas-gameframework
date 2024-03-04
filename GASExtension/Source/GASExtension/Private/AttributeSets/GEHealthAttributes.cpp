@@ -2,10 +2,11 @@
 
 #include "AttributeSets/GEHealthAttributes.h"
 
+#include "AbilitySystemBlueprintLibrary.h"
 #include "GameplayEffectExtension.h"
 #include "Net/UnrealNetwork.h"
 
-// 게임 플레이 태그 정의
+/* 게임플레이 태그 정의 */
 namespace GEGameplayTags
 {
     UE_DEFINE_GAMEPLAY_TAG(DeadTag, "State.Dead")
@@ -22,8 +23,10 @@ void UGEHealthAttributes::PostAttributeChange(const FGameplayAttribute& Attribut
 {
     Super::PostAttributeChange(Attribute, OldValue, NewValue);
 
-    // 사망 시 DeadTag 적용 (서버)
-    ADD_LOOSE_GAMEPLAYTAG_CONDITION_WITH_ATTRIBUTE(Health, NewValue <= 0.f, GEGameplayTags::DeadTag)
+    if(Attribute == GetHealthAttribute())
+    {
+        CheckDead();
+    }
 }
 
 void UGEHealthAttributes::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
@@ -72,8 +75,7 @@ void UGEHealthAttributes::OnRep_Health(const FGameplayAttributeData& OldHealth)
 {
     GAMEPLAYATTRIBUTE_REPNOTIFY_SIMPLE(Health);
 
-    // 사망 시 DeadTag 적용 (서버)
-    ADD_LOOSE_GAMEPLAYTAG_CONDITION(GetHealth() <= 0.f, GEGameplayTags::DeadTag)
+    CheckDead();
 }
 
 void UGEHealthAttributes::OnRep_MaxHealth(const FGameplayAttributeData& OldMaxHealth)
@@ -84,4 +86,22 @@ void UGEHealthAttributes::OnRep_MaxHealth(const FGameplayAttributeData& OldMaxHe
 void UGEHealthAttributes::OnRep_HealthRegenRate(const FGameplayAttributeData& OldHealthRegenRate)
 {
     GAMEPLAYATTRIBUTE_REPNOTIFY_SIMPLE(HealthRegenRate);
+}
+
+void UGEHealthAttributes::OnDead_Event_Implementation()
+{
+    // Dead 게임플레이 태그 부착
+    GetOwningAbilitySystemComponent()->AddLooseGameplayTag(GEGameplayTags::DeadTag);
+
+    // Dead 게임플레이 태그 이벤트 호출
+    UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(GetOwningActor(), GEGameplayTags::DeadTag, FGameplayEventData());
+}
+
+void UGEHealthAttributes::CheckDead()
+{
+    if(GetHealth() <= 0.f)
+    {
+        OnDead_Event();
+        OnDead.Broadcast();
+    }
 }
