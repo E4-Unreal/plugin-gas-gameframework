@@ -3,7 +3,7 @@
 
 #include "Effects/GE_GETickDamage.h"
 
-#include "AttributeSets/GEHealthAttributes.h"
+#include "Attributes/GEHealthAttributes.h"
 
 UGE_GETickDamage::UGE_GETickDamage()
 {

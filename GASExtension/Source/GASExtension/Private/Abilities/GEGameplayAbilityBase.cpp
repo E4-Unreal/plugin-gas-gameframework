@@ -3,7 +3,7 @@
 
 #include "Abilities/GEGameplayAbilityBase.h"
 
-#include "AttributeSets/GEHealthAttributes.h"
+#include "Attributes/GEHealthAttributes.h"
 
 UGEGameplayAbilityBase::UGEGameplayAbilityBase()
 {

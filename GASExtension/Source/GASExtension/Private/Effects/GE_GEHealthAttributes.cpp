@@ -3,7 +3,7 @@
 
 #include "Effects/GE_GEHealthAttributes.h"
 
-#include "AttributeSets/GEHealthAttributes.h"
+#include "Attributes/GEHealthAttributes.h"
 
 UGE_GEHealthAttributes::UGE_GEHealthAttributes()
 {

@@ -2,7 +2,7 @@
 
 #include "GEAbilitySystemBase.h"
 
-#include "AttributeSets/GEHealthAttributes.h"
+#include "Attributes/GEHealthAttributes.h"
 #include "Effects/GE_GEHealthAttributes.h"
 #include "FunctionLibraries/GEFunctionLibrary.h"
 

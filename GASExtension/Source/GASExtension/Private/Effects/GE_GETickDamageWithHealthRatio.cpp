@@ -3,7 +3,7 @@
 
 #include "Effects/GE_GETickDamageWithHealthRatio.h"
 
-#include "AttributeSets/GEHealthAttributes.h"
+#include "Attributes/GEHealthAttributes.h"
 
 UGE_GETickDamageWithHealthRatio::UGE_GETickDamageWithHealthRatio()
 {
