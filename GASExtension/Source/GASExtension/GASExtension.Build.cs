@@ -25,11 +25,16 @@ public class GASExtension : ModuleRules
 		PublicDependencyModuleNames.AddRange(
 			new string[]
 			{
+                // Default
 				"Core",
+
+                // UI
+                "UMG",
+
+                // GAS
                 "GameplayAbilities",
                 "GameplayTags",
                 "GameplayTasks"
-				// ... add other public dependencies that you statically link with here ...
 			}
 			);
 
