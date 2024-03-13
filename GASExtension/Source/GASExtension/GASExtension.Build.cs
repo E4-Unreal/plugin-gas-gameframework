@@ -27,6 +27,7 @@ public class GASExtension : ModuleRules
 			{
                 // Default
 				"Core",
+                "EnhancedInput",
 
                 // UI
                 "UMG",
