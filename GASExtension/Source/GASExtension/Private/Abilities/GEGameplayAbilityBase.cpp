@@ -13,3 +13,8 @@ UGEGameplayAbilityBase::UGEGameplayAbilityBase()
     // 기본 Blocking 태그 설정
     ActivationBlockedTags.AddTag(GEGameplayTags::DeadTag);
 }
+
+const FGameplayTag UGEGameplayAbilityBase::GetInputTag_Implementation() const
+{
+    return InputTag;
+}

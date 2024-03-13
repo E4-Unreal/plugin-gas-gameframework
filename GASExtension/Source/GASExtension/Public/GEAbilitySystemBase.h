@@ -19,15 +19,15 @@ class GASEXTENSION_API UGEAbilitySystemBase : public UAbilitySystemComponent
 
 protected:
     // 기본으로 사용할 AttributeSet 목록입니다.
-    UPROPERTY(EditAnywhere, Category = "Config", meta = (AllowPrivateAccess = true))
+    UPROPERTY(EditAnywhere, Category = "Config")
     TArray<TSubclassOf<UAttributeSet>> DefaultAttributes;
 
     // 기본으로 적용시킬 GameplayEffect 목록입니다.
-    UPROPERTY(EditAnywhere, Category = "Config", meta = (AllowPrivateAccess = true))
+    UPROPERTY(EditAnywhere, Category = "Config")
     TArray<TSubclassOf<UGameplayEffect>> DefaultEffects;
 
     // 기본으로 부여할 GameplayAbility 목록입니다.
-    UPROPERTY(EditAnywhere, Category = "Config", meta = (AllowPrivateAccess = true))
+    UPROPERTY(EditAnywhere, Category = "Config")
     TArray<TSubclassOf<UGameplayAbility>> DefaultAbilities;
 
 public:
@@ -35,6 +35,26 @@ public:
     UGEAbilitySystemBase();
 
     virtual void InitializeComponent() override;
+
+    /* API */
+
+    // 입력 태그로 Ability를 Press합니다.
+    UFUNCTION(BlueprintCallable, Category = "GEAbilitySystemBase")
+    void PressInputTag(const FGameplayTag& InputTag);
+
+    // 입력 태그로 Ability를 Release합니다.
+    UFUNCTION(BlueprintCallable, Category = "GEAbilitySystemBase")
+    void ReleaseInputTag(const FGameplayTag& InputTag);
+
+    // 마지막으로 추가된 Ability만 Press합니다.
+    virtual void AbilityLocalInputPressed(int32 InputID) override;
+
+    // 마지막으로 추가된 Ability만 Release합니다.
+    virtual void AbilityLocalInputReleased(int32 InputID) override;
+
+protected:
+    // Ability InputTag가 설정된 Ability의 경우 InputID를 설정합니다.
+    virtual void OnGiveAbility(FGameplayAbilitySpec& AbilitySpec) override;
 
 private:
     // AttributeSet 설정 및 초기화
