@@ -30,11 +30,17 @@ void UGEAbilitySystemBase::InitializeComponent()
 
 void UGEAbilitySystemBase::PressInputTag(const FGameplayTag& InputTag)
 {
+    // 디버깅을 위한 입력 태그를 추가합니다.
+    if(!HasMatchingGameplayTag(InputTag)) AddLooseGameplayTag(InputTag);
+
     PressInputID(GetTypeHash(InputTag));
 }
 
 void UGEAbilitySystemBase::ReleaseInputTag(const FGameplayTag& InputTag)
 {
+    // 디버깅을 위한 입력 태그를 제거합니다.
+    if(HasMatchingGameplayTag(InputTag)) RemoveLooseGameplayTag(InputTag);
+
     ReleaseInputID(GetTypeHash(InputTag));
 }
 
