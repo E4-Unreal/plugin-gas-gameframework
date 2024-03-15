@@ -163,31 +163,36 @@ void UGEFunctionLibrary::GiveAbilitiesToTarget(const TArray<TSubclassOf<UGamepla
     GiveAbilitiesToSystem(AbilityClasses, AbilitySystem);
 }
 
-void UGEFunctionLibrary::GiveAbilityToSystem(const TSubclassOf<UGameplayAbility> AbilityClass,
+FGameplayAbilitySpecHandle UGEFunctionLibrary::GiveAbilityToSystem(const TSubclassOf<UGameplayAbility> AbilityClass,
                                              UAbilitySystemComponent* AbilitySystem)
 {
     // null 검사
-    if(AbilityClass == nullptr || AbilitySystem == nullptr) return;
+    if(AbilityClass == nullptr || AbilitySystem == nullptr) return FGameplayAbilitySpecHandle();
 
     // GameplayAbilitySpec 생성
     FGameplayAbilitySpec AbilitySpec = AbilitySystem->BuildAbilitySpecFromClass(AbilityClass);
 
     // 유효성 검사
-    if (!IsValid(AbilitySpec.Ability)) return;
+    if (!IsValid(AbilitySpec.Ability)) return FGameplayAbilitySpecHandle();
 
     // 어빌리티 부여
-    AbilitySystem->GiveAbility(AbilitySpec);
+    return AbilitySystem->GiveAbility(AbilitySpec);
 }
 
-void UGEFunctionLibrary::GiveAbilitiesToSystem(const TArray<TSubclassOf<UGameplayAbility>>& AbilityClasses,
+TArray<FGameplayAbilitySpecHandle> UGEFunctionLibrary::GiveAbilitiesToSystem(const TArray<TSubclassOf<UGameplayAbility>>& AbilityClasses,
     UAbilitySystemComponent* AbilitySystem)
 {
+    TArray<FGameplayAbilitySpecHandle> AbilitySpecHandles;
+
     // 서버에서만 호출
-    if(AbilitySystem == nullptr || !AbilitySystem->IsOwnerActorAuthoritative()) return;
+    if(AbilitySystem == nullptr || !AbilitySystem->IsOwnerActorAuthoritative()) return AbilitySpecHandles;
 
     // Ability 부여
+    AbilitySpecHandles.Reserve(AbilityClasses.Num());
     for (const TSubclassOf<UGameplayAbility> AbilityClass : AbilityClasses)
     {
-        GiveAbilityToSystem(AbilityClass, AbilitySystem);
+        AbilitySpecHandles.Add(GiveAbilityToSystem(AbilityClass, AbilitySystem));
     }
+
+    return AbilitySpecHandles;
 }
