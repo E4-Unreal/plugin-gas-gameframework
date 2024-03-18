@@ -5,11 +5,14 @@
 
 #include "GEAbilitySystemBase.h"
 #include "Character/GEStateMachine.h"
+#include "Character/Components/GECharacterMovement.h"
 
 FName AGECharacterBase::AbilitySystemComponentName(TEXT("AbilitySystem"));
 FName AGECharacterBase::StateMachineName(TEXT("StateMachine"));
 
 AGECharacterBase::AGECharacterBase(const FObjectInitializer& ObjectInitializer)
+: Super(ObjectInitializer
+    .SetDefaultSubobjectClass<UGECharacterMovement>(CharacterMovementComponentName))
 {
     /* 서브 오브젝트 생성 */
     AbilitySystem = CreateDefaultSubobject<UGEAbilitySystemBase>(AbilitySystemComponentName);
