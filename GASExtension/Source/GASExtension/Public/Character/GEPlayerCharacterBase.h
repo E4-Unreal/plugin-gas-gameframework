@@ -4,11 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "GECharacterBase.h"
-#include "GameplayTags.h"
 #include "GEPlayerCharacterBase.generated.h"
 
-class UInputAction;
-class UGEInputConfig;
+class UGEAbilityInputBinder;
 class UInputMappingContext;
 
 /*
@@ -19,33 +17,26 @@ class GASEXTENSION_API AGEPlayerCharacterBase : public AGECharacterBase
 {
     GENERATED_BODY()
 
-    // Ability 입력 설정을 위한 데이터 에셋입니다.
-    UPROPERTY(EditAnywhere, Category = "Config|Input|Ability")
-    TObjectPtr<UGEInputConfig> AbilityInputConfig;
+    /* 컴포넌트 */
+    // 어빌리티 전용 입력 바인딩을 위한 컴포넌트
+    UPROPERTY(VisibleAnywhere, Category = "Component")
+    TObjectPtr<UGEAbilityInputBinder> AbilityInputBinder;
 
-    // AbilityInputConfig에 등록된 입력 액션 에셋이 설정된 입력 매핑 컨텍스트입니다.
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Config|Input|Ability", meta = (AllowPrivateAccess = "true"))
-    TObjectPtr<UInputMappingContext> AbilityInputMappingContext;
-
-    // AbilityInputConfig로부터 캐싱된 맵입니다.
-    TMap<TObjectPtr<UInputAction>, FGameplayTag> AbilityInputMap;
+    /* 설정 */
+    // 기본 입력 매핑 컨텍스트 목록
+    UPROPERTY(EditDefaultsOnly, Category = "Config")
+    TArray<TObjectPtr<UInputMappingContext>> DefaultMappingContexts;
 
 public:
+    AGEPlayerCharacterBase(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
+
+    /* Actor */
     virtual void BeginPlay() override;
 
+    /* Pawn */
     virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 
 protected:
-    UFUNCTION(BlueprintCallable)
-    virtual void AddMappingContext(UInputMappingContext* InputMappingContext, int32 Priority = 0);
-
     // 향상된 입력 컴포넌트 설정
     virtual void SetupEnhancedInputComponent(UEnhancedInputComponent* EnhancedInputComponent);
-
-private:
-    void SetupAbilityInputConfig(UEnhancedInputComponent* EnhancedInputComponent);
-
-    void OnInputActionPressed(UInputAction* InputAction);
-
-    void OnInputActionReleased(UInputAction* InputAction);
 };
