@@ -7,8 +7,10 @@
 #include "GameFramework/Character.h"
 #include "GECharacterBase.generated.h"
 
-class UGEAbilitySystemBase;
+class UAbilitySystemComponent;
 class UGEStateMachine;
+class UGEAbilityInputBinder;
+class UInputMappingContext;
 
 /*
  * GEAbilitySystemBase, GEStateMachine을 서브 오브젝트로 가집니다.
@@ -26,23 +28,49 @@ public:
     static FName StateMachineName;
 
 private:
-    // GAS를 사용하기 위한 ASC입니다.
+    /* 컴포넌트 */
+    // GAS를 사용하기 위한 ASC
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Component", meta = (AllowPrivateAccess = "true"))
-    TObjectPtr<UGEAbilitySystemBase> AbilitySystem;
+    TObjectPtr<UAbilitySystemComponent> AbilitySystem;
 
-    // 캐릭터 상태를 관리하기 위한 컴포넌트입니다.
+    // 캐릭터 상태를 관리하기 위한 컴포넌트
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Component", meta = (AllowPrivateAccess = "true"))
     TObjectPtr<UGEStateMachine> StateMachine;
+
+    // 어빌리티 전용 입력 바인딩을 위한 컴포넌트
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Component", meta = (AllowPrivateAccess = "true"))
+    TObjectPtr<UGEAbilityInputBinder> AbilityInputBinder;
+
+    /* 설정 */
+    // 기본 입력 매핑 컨텍스트 목록
+    UPROPERTY(EditDefaultsOnly, Category = "Config")
+    TArray<TObjectPtr<UInputMappingContext>> DefaultMappingContexts;
 
 public:
     AGECharacterBase(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
+    /* Actor */
+    virtual void BeginPlay() override;
+
+    /* Pawn */
+    virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
+
+    /* Character */
+    // 앉은 상태에서 점프가 가능하도록 설정
+    virtual bool CanJumpInternal_Implementation() const override;
+
+    // 점프 상태에서 앉기가 불가능하도록 설정
+    virtual bool CanCrouch() const override;
+
+protected:
+    // 향상된 입력 컴포넌트 설정
+    virtual void SetupEnhancedInputComponent(UEnhancedInputComponent* EnhancedInputComponent);
+
+public:
     /* Getter */
-    virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
-
-    UFUNCTION(BlueprintPure, Category = "GECharacterBase")
-    FORCEINLINE UGEAbilitySystemBase* GetAbilitySystem() const { return AbilitySystem; }
-
     UFUNCTION(BlueprintPure, Category = "GECharacterBase")
     FORCEINLINE UGEStateMachine* GetStateMachine() const { return StateMachine; }
+
+    /* AbilitySystemInterface */
+    virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override { return AbilitySystem; }
 };
