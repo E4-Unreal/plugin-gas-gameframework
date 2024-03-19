@@ -4,12 +4,13 @@
 #include "Character/GECharacterBase.h"
 
 #include "EnhancedInputComponent.h"
-#include "EnhancedInputSubsystems.h"
 #include "GEAbilitySystemBase.h"
 #include "Character/Components/GEAbilityInputBinder.h"
 #include "Character/Components/GECharacterMovement.h"
+#include "Equipment/Components/GEEquipmentManager.h"
 
 FName AGECharacterBase::AbilitySystemComponentName(TEXT("AbilitySystem"));
+FName AGECharacterBase::EquipmentManagerName(TEXT("EquipmentManager"));
 
 AGECharacterBase::AGECharacterBase(const FObjectInitializer& ObjectInitializer)
 : Super(ObjectInitializer
@@ -18,6 +19,7 @@ AGECharacterBase::AGECharacterBase(const FObjectInitializer& ObjectInitializer)
     /* 서브 오브젝트 생성 */
     AbilitySystem = CreateDefaultSubobject<UGEAbilitySystemBase>(AbilitySystemComponentName);
     AbilityInputBinder = CreateDefaultSubobject<UGEAbilityInputBinder>(TEXT("AbilityInputBinder"));
+    EquipmentManager = CreateDefaultSubobject<UGEEquipmentManager>(EquipmentManagerName);
 }
 
 void AGECharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)

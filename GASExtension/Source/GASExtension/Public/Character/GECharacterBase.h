@@ -10,6 +10,7 @@
 class UAbilitySystemComponent;
 class UGEAbilityInputBinder;
 class UInputMappingContext;
+class UGEEquipmentManager;
 
 /*
  * GEAbilitySystemBase, GEStateMachine을 서브 오브젝트로 가집니다.
@@ -23,6 +24,9 @@ public:
     /* AbilitySystem Component의 이름으로 다른 클래스로 교체할 때 사용합니다. */
     static FName AbilitySystemComponentName;
 
+    /* EquipmentManager의 이름으로 다른 클래스로 교체할 때 사용합니다. */
+    static FName EquipmentManagerName;
+
 private:
     /* 컴포넌트 */
     // GAS를 사용하기 위한 ASC
@@ -32,6 +36,10 @@ private:
     // 어빌리티 전용 입력 바인딩을 위한 컴포넌트
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Component", meta = (AllowPrivateAccess = "true"))
     TObjectPtr<UGEAbilityInputBinder> AbilityInputBinder;
+
+    // 장비를 관리하기 위한 컴포넌트입니다.
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Component", meta = (AllowPrivateAccess = "true"))
+    TObjectPtr<UGEEquipmentManager> EquipmentManager;
 
 public:
     AGECharacterBase(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
