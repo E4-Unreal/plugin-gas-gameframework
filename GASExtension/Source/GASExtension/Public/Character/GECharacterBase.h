@@ -8,7 +8,6 @@
 #include "GECharacterBase.generated.h"
 
 class UAbilitySystemComponent;
-class UGEStateMachine;
 class UGEAbilityInputBinder;
 class UInputMappingContext;
 
@@ -24,18 +23,11 @@ public:
     /* AbilitySystem Component의 이름으로 다른 클래스로 교체할 때 사용합니다. */
     static FName AbilitySystemComponentName;
 
-    /* StateMachine의 이름으로 다른 클래스로 교체할 때 사용합니다. */
-    static FName StateMachineName;
-
 private:
     /* 컴포넌트 */
     // GAS를 사용하기 위한 ASC
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Component", meta = (AllowPrivateAccess = "true"))
     TObjectPtr<UAbilitySystemComponent> AbilitySystem;
-
-    // 캐릭터 상태를 관리하기 위한 컴포넌트
-    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Component", meta = (AllowPrivateAccess = "true"))
-    TObjectPtr<UGEStateMachine> StateMachine;
 
     // 어빌리티 전용 입력 바인딩을 위한 컴포넌트
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Component", meta = (AllowPrivateAccess = "true"))
@@ -67,10 +59,6 @@ protected:
     virtual void SetupEnhancedInputComponent(UEnhancedInputComponent* EnhancedInputComponent);
 
 public:
-    /* Getter */
-    UFUNCTION(BlueprintPure, Category = "GECharacterBase")
-    FORCEINLINE UGEStateMachine* GetStateMachine() const { return StateMachine; }
-
     /* AbilitySystemInterface */
     virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override { return AbilitySystem; }
 };
