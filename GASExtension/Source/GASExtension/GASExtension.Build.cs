@@ -32,6 +32,10 @@ public class GASExtension : ModuleRules
                 // UI
                 "UMG",
 
+                // 이펙트
+                "Niagara",
+                "PhysicsCore",
+
                 // GAS
                 "GameplayAbilities",
                 "GameplayTags",
