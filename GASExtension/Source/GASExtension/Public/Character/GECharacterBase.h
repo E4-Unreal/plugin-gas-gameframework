@@ -33,16 +33,8 @@ private:
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Component", meta = (AllowPrivateAccess = "true"))
     TObjectPtr<UGEAbilityInputBinder> AbilityInputBinder;
 
-    /* 설정 */
-    // 기본 입력 매핑 컨텍스트 목록
-    UPROPERTY(EditDefaultsOnly, Category = "Config")
-    TArray<TObjectPtr<UInputMappingContext>> DefaultMappingContexts;
-
 public:
     AGECharacterBase(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
-
-    /* Actor */
-    virtual void BeginPlay() override;
 
     /* Pawn */
     virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;

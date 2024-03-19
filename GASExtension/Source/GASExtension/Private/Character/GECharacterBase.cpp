@@ -20,28 +20,14 @@ AGECharacterBase::AGECharacterBase(const FObjectInitializer& ObjectInitializer)
     AbilityInputBinder = CreateDefaultSubobject<UGEAbilityInputBinder>(TEXT("AbilityInputBinder"));
 }
 
-void AGECharacterBase::BeginPlay()
-{
-    Super::BeginPlay();
-
-    // 기본 입력 매핑 컨텍스트 추가
-    if (const APlayerController* PlayerController = Cast<APlayerController>(Controller))
-    {
-        if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
-        {
-            for (const auto& MappingContext : DefaultMappingContexts)
-            {
-                Subsystem->AddMappingContext(MappingContext, 0);
-            }
-        }
-    }
-}
-
 void AGECharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
     Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-    SetupEnhancedInputComponent(Cast<UEnhancedInputComponent>(PlayerInputComponent));
+    if(UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent))
+    {
+        SetupEnhancedInputComponent(EnhancedInputComponent);
+    }
 }
 
 void AGECharacterBase::SetupEnhancedInputComponent(UEnhancedInputComponent* EnhancedInputComponent)
