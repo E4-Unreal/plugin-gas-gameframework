@@ -2,11 +2,30 @@
 
 #include "GASExtension.h"
 
+#include "PropertyEditorModule.h"
+
 #define LOCTEXT_NAMESPACE "FGASExtensionModule"
 
 void FGASExtensionModule::StartupModule()
 {
-	// This code will execute after your module is loaded into memory; the exact timing is specified in the .uplugin file per-module
+    /* 디테일 패널에 커스텀 섹션 추가 */
+#if WITH_EDITOR
+#define LOCTEXT_NAMESPACE "Custom Detail"
+    static const FName PropertyEditor("PropertyEditor");
+    FPropertyEditorModule& PropertyModule = FModuleManager::GetModuleChecked<FPropertyEditorModule>(PropertyEditor);
+
+    // Actor 클래스에 커스텀 섹션 생성 및 카테고리 추가
+    const TSharedRef<FPropertySection> ActorConfigSection = PropertyModule.FindOrCreateSection("Actor", "Config", LOCTEXT("Config", "설정"));
+    ActorConfigSection->AddCategory("Config");
+    ActorConfigSection->AddCategory("State");
+
+    // ActorComponent 클래스에 커스텀 섹션 생성 및 카테고리 추가
+    const TSharedRef<FPropertySection> ActorComponentConfigSection = PropertyModule.FindOrCreateSection("ActorComponent", "Config", LOCTEXT("Config", "설정"));
+    ActorComponentConfigSection->AddCategory("Config");
+    ActorComponentConfigSection->AddCategory("State");
+
+#undef LOCTEXT_NAMESPACE
+#endif
 }
 
 void FGASExtensionModule::ShutdownModule()
@@ -16,5 +35,5 @@ void FGASExtensionModule::ShutdownModule()
 }
 
 #undef LOCTEXT_NAMESPACE
-	
+
 IMPLEMENT_MODULE(FGASExtensionModule, GASExtension)
