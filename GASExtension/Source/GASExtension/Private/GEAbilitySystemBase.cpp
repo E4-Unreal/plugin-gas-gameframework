@@ -2,6 +2,7 @@
 
 #include "GEAbilitySystemBase.h"
 
+#include "GEGameplayTags.h"
 #include "Abilities/GEGameplayAbilityBase.h"
 #include "Attributes/GEHealthAttributes.h"
 #include "Effects/GE_GEHealthAttributes.h"
@@ -22,10 +23,14 @@ void UGEAbilitySystemBase::InitializeComponent()
     Super::InitializeComponent();
 
     // 서버에서만 초기화 진행
-    if(!IsOwnerActorAuthoritative()) return;
+    if(IsOwnerActorAuthoritative())
+    {
+        // AttributeSet 설정 및 초기화
+        InitializeAbilitySystem();
+    }
 
-    // AttributeSet 설정 및 초기화
-    InitializeAbilitySystem();
+    // OnDead 이벤트를 체력 어트리뷰트 델리게이트에 바인딩
+    BindHealthAttributeDelegate();
 }
 
 void UGEAbilitySystemBase::PressInputTag(const FGameplayTag& InputTag)
@@ -141,6 +146,11 @@ void UGEAbilitySystemBase::OnGiveAbility(FGameplayAbilitySpec& AbilitySpec)
     }
 }
 
+void UGEAbilitySystemBase::OnDead_Implementation()
+{
+    AddLooseGameplayTag(GEGameplayTags::State::DeadTag);
+}
+
 void UGEAbilitySystemBase::InitializeAbilitySystem()
 {
     // 기본 AttributeSet 생성 및 등록
@@ -151,4 +161,14 @@ void UGEAbilitySystemBase::InitializeAbilitySystem()
 
     // 기본 GameplayAbility 부여
     UGEFunctionLibrary::GiveAbilitiesToSystem(DefaultAbilities, this);
+}
+
+void UGEAbilitySystemBase::BindHealthAttributeDelegate()
+{
+    FOnGameplayAttributeValueChange& Delegate = GetGameplayAttributeValueChangeDelegate(UGEHealthAttributes::GetHealthAttribute());
+    Delegate.AddLambda([this](const FOnAttributeChangeData& OnAttributeChangeData)
+    {
+        if(FMath::IsNearlyZero(OnAttributeChangeData.NewValue))
+            OnDead();
+    });
 }

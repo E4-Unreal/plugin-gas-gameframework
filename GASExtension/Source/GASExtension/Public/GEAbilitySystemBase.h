@@ -12,7 +12,7 @@
  * AttributeSet 설정 및 초기화를 진행합니다.
  * 게임 시작 후 적용할 GameplayEffect 를 설정할 수 있습니다.
  */
-UCLASS(meta = (BlueprintSpawnableComponent))
+UCLASS(Blueprintable, meta = (BlueprintSpawnableComponent))
 class GASEXTENSION_API UGEAbilitySystemBase : public UAbilitySystemComponent
 {
     GENERATED_BODY()
@@ -56,7 +56,14 @@ protected:
     // Ability InputTag가 설정된 Ability의 경우 InputID를 설정합니다.
     virtual void OnGiveAbility(FGameplayAbilitySpec& AbilitySpec) override;
 
+    // 체력 어트리뷰트가 0이 되었을 때 호출되는 이벤트입니다.
+    UFUNCTION(BlueprintNativeEvent)
+    void OnDead();
+
 private:
     // AttributeSet 설정 및 초기화
     void InitializeAbilitySystem();
+
+    // 체력 어트리뷰트 값 변경 이벤트 바인딩
+    void BindHealthAttributeDelegate();
 };

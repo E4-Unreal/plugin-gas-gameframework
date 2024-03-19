@@ -5,17 +5,7 @@
 #include "CoreMinimal.h"
 #include "GEAttributeSetBase.h"
 #include "AbilitySystemComponent.h"
-#include "NativeGameplayTags.h"
 #include "GEHealthAttributes.generated.h"
-
-/* 게임플레이 태그 선언 */
-namespace GEGameplayTags
-{
-    UE_DECLARE_GAMEPLAY_TAG_EXTERN(DeadTag)
-}
-
-/* 델리게이트 선언 */
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDeadSignature);
 
 /**
  * 체력과 데미지는 모든 게임에서 사용하는 가장 기본적인 Attribute 입니다.
@@ -48,13 +38,6 @@ public:
     FGameplayAttributeData Damage;
     ATTRIBUTE_ACCESSORS(ThisClass, Damage)
 
-    /* 이벤트 */
-
-    // TODO 애니메이션 몽타주 재생처럼 멀티캐스트 처리는 어떻게 할지 아직 고민중입니다.
-    // Health가 0이 되면 호출되는 이벤트입니다.
-    UPROPERTY(BlueprintAssignable)
-    FOnDeadSignature OnDead;
-
 public:
     /* UObject */
 
@@ -62,7 +45,6 @@ public:
 
     /* AttributeSet */
 
-    virtual void PostAttributeChange(const FGameplayAttribute& Attribute, float OldValue, float NewValue) override;
     virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
 
 protected:
@@ -87,13 +69,4 @@ protected:
 
     UFUNCTION()
     virtual void OnRep_HealthRegenRate(const FGameplayAttributeData& OldHealthRegenRate);
-
-    /* 이벤트 핸들링 메서드 */
-
-    // Health가 0이 되면 호출되는 이벤트 핸들링 메서드입니다.
-    UFUNCTION(BlueprintNativeEvent)
-    void OnDead_Event();
-
-private:
-    virtual void CheckDead();
 };

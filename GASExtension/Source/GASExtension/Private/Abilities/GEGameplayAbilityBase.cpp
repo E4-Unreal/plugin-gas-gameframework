@@ -3,6 +3,7 @@
 
 #include "Abilities/GEGameplayAbilityBase.h"
 
+#include "GEGameplayTags.h"
 #include "Attributes/GEHealthAttributes.h"
 
 UGEGameplayAbilityBase::UGEGameplayAbilityBase()
@@ -11,7 +12,9 @@ UGEGameplayAbilityBase::UGEGameplayAbilityBase()
     InstancingPolicy = EGameplayAbilityInstancingPolicy::InstancedPerActor;
 
     // 기본 Blocking 태그 설정
-    ActivationBlockedTags.AddTag(GEGameplayTags::DeadTag);
+    ActivationBlockedTags.AddTag(GEGameplayTags::State::DeadTag);
+    ActivationBlockedTags.AddTag(GEGameplayTags::State::KnockdownTag);
+    ActivationBlockedTags.AddTag(GEGameplayTags::State::StunTag);
 }
 
 const FGameplayTag UGEGameplayAbilityBase::GetInputTag_Implementation() const
