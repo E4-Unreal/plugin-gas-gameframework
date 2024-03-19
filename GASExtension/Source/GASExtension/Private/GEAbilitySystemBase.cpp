@@ -4,8 +4,8 @@
 
 #include "GEGameplayTags.h"
 #include "Abilities/GEGameplayAbilityBase.h"
-#include "Attributes/GEHealthAttributes.h"
-#include "Effects/GE_GEHealthAttributes.h"
+#include "Attributes/GEStaminaAttributes.h"
+#include "Effects/GE_GEDefaultAttributes.h"
 #include "FunctionLibraries/GEFunctionLibrary.h"
 
 UGEAbilitySystemBase::UGEAbilitySystemBase()
@@ -14,8 +14,8 @@ UGEAbilitySystemBase::UGEAbilitySystemBase()
     bWantsInitializeComponent = true;
 
     // 기본 Attributes 및 GameplayEffect 등록
-    DefaultAttributes.Add(UGEHealthAttributes::StaticClass());
-    DefaultEffects.Add(UGE_GEHealthAttributes::StaticClass());
+    DefaultAttributes.Add(UGEStaminaAttributes::StaticClass());
+    DefaultEffects.Add(UGE_GEDefaultAttributes::StaticClass());
 }
 
 void UGEAbilitySystemBase::InitializeComponent()

@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "AttributeSet.h"
+#include "Net/UnrealNetwork.h"
 #include "GEAttributeSetBase.generated.h"
 
 /* 헤더 파일에서 사용 */
