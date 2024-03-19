@@ -2,12 +2,16 @@
 
 #include "GASExtension.h"
 
+#include "AbilitySystemGlobals.h"
 #include "PropertyEditorModule.h"
 
 #define LOCTEXT_NAMESPACE "FGASExtensionModule"
 
 void FGASExtensionModule::StartupModule()
 {
+    // TargetData를 사용하기 위한 초기화
+    UAbilitySystemGlobals::Get().InitGlobalData();
+
     /* 디테일 패널에 커스텀 섹션 추가 */
 #if WITH_EDITOR
 #define LOCTEXT_NAMESPACE "Custom Detail"
