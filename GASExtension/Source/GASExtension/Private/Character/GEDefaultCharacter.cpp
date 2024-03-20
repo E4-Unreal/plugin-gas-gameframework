@@ -16,13 +16,18 @@ AGEDefaultCharacter::AGEDefaultCharacter(const FObjectInitializer& ObjectInitial
     SpringArm->SocketOffset = FVector::ZeroVector;
     SpringArm->TargetArmLength = 0;
 
-    // 스켈레탈 메시
+    // 팔 스켈레탈 메시
     FirstPersonArms = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("FirstPersonArms"));
     FirstPersonArms->SetupAttachment(SpringArm);
     FirstPersonArms->SetRelativeLocation(FVector(0, 0, -165.5f));
     FirstPersonArms->SetRelativeRotation(FRotator(0, -90, 0));
     FirstPersonArms->CastShadow = false;
     FirstPersonArms->SetOnlyOwnerSee(true);
+
+    // 다리 스켈레탈 메시
+    FirstPersonLegs = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("FirstPersonLegs"));
+    FirstPersonLegs->SetupAttachment(GetMesh());
+    FirstPersonLegs->SetOnlyOwnerSee(true);
 
     // 카메라
     GameViewCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("GameViewCamera"));
@@ -34,6 +39,7 @@ AGEDefaultCharacter::AGEDefaultCharacter(const FObjectInitializer& ObjectInitial
     USkeletalMeshComponent* ThirdPersonSkeletalMesh = GetMesh();
     ThirdPersonSkeletalMesh->SetOwnerNoSee(true);
     ThirdPersonSkeletalMesh->bCastHiddenShadow = true;
+    ThirdPersonSkeletalMesh->VisibilityBasedAnimTickOption = EVisibilityBasedAnimTickOption::AlwaysTickPoseAndRefreshBones;
 }
 
 void AGEDefaultCharacter::GetTarget_Implementation(FVector& Target)

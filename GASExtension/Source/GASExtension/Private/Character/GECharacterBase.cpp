@@ -7,10 +7,12 @@
 #include "GEAbilitySystemBase.h"
 #include "Character/Components/GEAbilityInputBinder.h"
 #include "Character/Components/GECharacterMovement.h"
+#include "Character/States/GECharacterStateMachine.h"
 #include "Equipment/Components/GEEquipmentManager.h"
 
 FName AGECharacterBase::AbilitySystemComponentName(TEXT("AbilitySystem"));
 FName AGECharacterBase::EquipmentManagerName(TEXT("EquipmentManager"));
+FName AGECharacterBase::StateMachineName(TEXT("StateMachine"));
 
 AGECharacterBase::AGECharacterBase(const FObjectInitializer& ObjectInitializer)
 : Super(ObjectInitializer
@@ -20,6 +22,7 @@ AGECharacterBase::AGECharacterBase(const FObjectInitializer& ObjectInitializer)
     AbilitySystem = CreateDefaultSubobject<UGEAbilitySystemBase>(AbilitySystemComponentName);
     AbilityInputBinder = CreateDefaultSubobject<UGEAbilityInputBinder>(TEXT("AbilityInputBinder"));
     EquipmentManager = CreateDefaultSubobject<UGEEquipmentManager>(EquipmentManagerName);
+    StateMachine = CreateDefaultSubobject<UGECharacterStateMachine>(StateMachineName);
 }
 
 void AGECharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)

@@ -7,13 +7,14 @@
 #include "GameFramework/Character.h"
 #include "GECharacterBase.generated.h"
 
+class UGECharacterStateMachine;
 class UAbilitySystemComponent;
 class UGEAbilityInputBinder;
 class UInputMappingContext;
 class UGEEquipmentManager;
 
 /*
- * GEAbilitySystemBase, GEStateMachine을 서브 오브젝트로 가집니다.
+ * 액터 컴포넌트 등록 전용
  */
 UCLASS()
 class GASEXTENSION_API AGECharacterBase : public ACharacter, public IAbilitySystemInterface
@@ -26,6 +27,9 @@ public:
 
     /* EquipmentManager의 이름으로 다른 클래스로 교체할 때 사용합니다. */
     static FName EquipmentManagerName;
+
+    /* EquipmentManager의 이름으로 다른 클래스로 교체할 때 사용합니다. */
+    static FName StateMachineName;
 
 private:
     /* 컴포넌트 */
@@ -40,6 +44,10 @@ private:
     // 장비를 관리하기 위한 컴포넌트입니다.
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Component", meta = (AllowPrivateAccess = "true"))
     TObjectPtr<UGEEquipmentManager> EquipmentManager;
+
+    // 장비를 관리하기 위한 컴포넌트입니다.
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Component", meta = (AllowPrivateAccess = "true"))
+    TObjectPtr<UGECharacterStateMachine> StateMachine;
 
 public:
     AGECharacterBase(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());

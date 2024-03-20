@@ -19,16 +19,16 @@ class GASEXTENSION_API AGEDefaultCharacter : public AGECharacter, public IAiming
 {
     GENERATED_BODY()
 
-    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Component", meta = (AllowPrivateAccess = "true"))
+    UPROPERTY(VisibleAnywhere, BlueprintGetter = GetSpringArm, Category = "Component")
     TObjectPtr<USpringArmComponent> SpringArm;
 
-    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Component", meta = (AllowPrivateAccess = "true"))
+    UPROPERTY(VisibleAnywhere, BlueprintGetter = GetGameViewCamera, Category = "Component")
     TObjectPtr<UCameraComponent> GameViewCamera;
 
-    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Component", meta = (AllowPrivateAccess = "true"))
+    UPROPERTY(VisibleAnywhere, BlueprintGetter = GetFirstPersonArms, Category = "Component")
     TObjectPtr<USkeletalMeshComponent> FirstPersonArms;
 
-    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Component", meta = (AllowPrivateAccess = "true"))
+    UPROPERTY(VisibleAnywhere, BlueprintGetter = GetFirstPersonLegs, Category = "Component")
     TObjectPtr<USkeletalMeshComponent> FirstPersonLegs;
 
 public:
@@ -36,4 +36,16 @@ public:
 
     /* AimingInterface */
     virtual void GetTarget_Implementation(FVector& Target) override;
+
+    UFUNCTION(BlueprintGetter)
+    FORCEINLINE USpringArmComponent* GetSpringArm() const { return SpringArm; }
+
+    UFUNCTION(BlueprintGetter)
+    FORCEINLINE UCameraComponent* GetGameViewCamera() const { return GameViewCamera; }
+
+    UFUNCTION(BlueprintGetter)
+    FORCEINLINE USkeletalMeshComponent* GetFirstPersonArms() const { return FirstPersonArms; }
+
+    UFUNCTION(BlueprintGetter)
+    FORCEINLINE USkeletalMeshComponent* GetFirstPersonLegs() const { return FirstPersonLegs; }
 };
