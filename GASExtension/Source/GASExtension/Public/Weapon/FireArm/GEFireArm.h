@@ -36,15 +36,15 @@ class GASEXTENSION_API AGEFireArm : public AGEWeapon
     FName MuzzleSocketName = "SOCKET_Muzzle";
 
     // 총기 최대 보유 탄약
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|FireArm", meta = (AllowPrivateAccess = true), ReplicatedUsing = OnRep_MaxAmmo)
+    UPROPERTY(EditAnywhere, BlueprintGetter = GetMaxAmmo, Category = "Config|FireArm", ReplicatedUsing = OnRep_MaxAmmo)
     int32 MaxAmmo = 30;
 
     // 총기 현재 보유 탄약
-    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State|FireArm", meta = (AllowPrivateAccess = true), Transient, ReplicatedUsing = OnRep_CurrentAmmo)
+    UPROPERTY(VisibleAnywhere, BlueprintGetter = GetCurrentAmmo, Category = "State|FireArm", Transient, ReplicatedUsing = OnRep_CurrentAmmo)
     int32 CurrentAmmo;
 
     // 한 번 발사할 때마다 소비할 탄약 개수로 샷건처럼 여러 발을 동시에 발사하는 경우를 위한 설정입니다.
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|FireArm", meta = (AllowPrivateAccess = true), ReplicatedUsing = OnRep_MaxAmmo)
+    UPROPERTY(EditAnywhere, BlueprintGetter = GetAmmoToSpend, Category = "Config|FireArm", ReplicatedUsing = OnRep_MaxAmmo)
     int32 AmmoToSpend = 1;
 
     // 분당 발사 횟수
@@ -52,7 +52,7 @@ class GASEXTENSION_API AGEFireArm : public AGEWeapon
     int32 RPM = 600;
 
     // 발사 간격 (초)
-    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State|FireArm", meta = (AllowPrivateAccess = true), Transient)
+    UPROPERTY(VisibleAnywhere, BlueprintGetter = GetFireInterval, Category = "State|FireArm", Transient)
     float FireInterval;
 
     // 마지막으로 발사한 시간 (초)
@@ -161,4 +161,18 @@ protected:
 
     UFUNCTION()
     virtual void OnRep_CurrentAmmo(int32 OldCurrentAmmo);
+
+public:
+    /* Getter */
+    UFUNCTION(BlueprintGetter)
+    FORCEINLINE float GetFireInterval() const { return FireInterval; }
+
+    UFUNCTION(BlueprintGetter)
+    FORCEINLINE int32 GetMaxAmmo() const { return MaxAmmo; }
+
+    UFUNCTION(BlueprintGetter)
+    FORCEINLINE int32 GetCurrentAmmo() const { return CurrentAmmo; }
+
+    UFUNCTION(BlueprintGetter)
+    FORCEINLINE int32 GetAmmoToSpend() const { return AmmoToSpend; }
 };

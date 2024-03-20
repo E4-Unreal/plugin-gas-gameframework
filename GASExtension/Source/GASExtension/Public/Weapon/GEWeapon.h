@@ -19,14 +19,16 @@ class GASEXTENSION_API AGEWeapon : public AGEEquipment
 
     TWeakObjectPtr<UAbilitySystemComponent> OwnerAbilitySystem;
 
+protected:
+
     // 무기를 사용하기 위한 어빌리티로 장착 시에만 부여됩니다.
     UPROPERTY(EditAnywhere, Category = "Config|Weapon")
     TArray<TSubclassOf<UGameplayAbility>> WeaponAbilities;
 
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|Weapon", meta = (AllowPrivateAccess = true, Categories = "Equipment.Weapon"))
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|Weapon", meta = (Categories = "Equipment.Weapon"))
     FGameplayTag WeaponType = GEGameplayTags::Equipment::WeaponTag;
 
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|Weapon", meta = (AllowPrivateAccess = true, Categories = "Equipment.Slot"))
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|Weapon", meta = (Categories = "Equipment.Slot"))
     FGameplayTag WeaponSlot = GEGameplayTags::Equipment::SlotTag;
 
     UPROPERTY(VisibleAnywhere, Category = "State|Weapon", Transient)
