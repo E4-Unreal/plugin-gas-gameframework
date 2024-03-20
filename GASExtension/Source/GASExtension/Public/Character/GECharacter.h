@@ -10,6 +10,9 @@ class UInputMappingContext;
 class UInputAction;
 struct FInputActionValue;
 
+/*
+ * 기본 움직임 및 입력 액션 바인딩만 담당
+ */
 UCLASS()
 class GASEXTENSION_API AGECharacter : public AGECharacterBase
 {

@@ -43,6 +43,23 @@ void AGEHitScanFireArm::OnFire_Implementation()
             CollisionQueryParams
             );
 
+#if WITH_EDITOR
+        // 디버그 시각화
+        if(bEnableDebugLine)
+        {
+            if(HitResult.bBlockingHit)
+            {
+                DrawDebugLine(World, TraceStart, HitResult.ImpactPoint, FColor::Red, false, 2);
+                DrawDebugLine(World, HitResult.ImpactPoint, TraceEnd, FColor::Green, false, 2);
+            }
+            else
+            {
+                DrawDebugLine(World, TraceStart, Target, FColor::Red, false, 2);
+            }
+        }
+#endif
+
+
         // 히트 이벤트 처리
         OnHit(HitResult);
     }

@@ -26,6 +26,12 @@ class GASEXTENSION_API AGEHitScanFireArm : public AGEFireArm
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|HitScan", meta = (AllowPrivateAccess = true))
     UGEHitEffectDefinition* HitEffect;
 
+#if WITH_EDITORONLY_DATA
+  // 디버그를 위한 라인 트레이스 시각화 기능 활성화
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|HitScan", meta = (AllowPrivateAccess = true))
+    bool bEnableDebugLine;
+#endif
+
 protected:
     virtual void OnFire_Implementation() override;
 
