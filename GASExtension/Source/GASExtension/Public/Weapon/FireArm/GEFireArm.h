@@ -6,6 +6,7 @@
 #include "Weapon/GEWeapon.h"
 #include "GEFireArm.generated.h"
 
+class USoundCue;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAmmoValueChangedSiganature, int32, Ammo);
 
 /**
@@ -32,7 +33,7 @@ class GASEXTENSION_API AGEFireArm : public AGEWeapon
 
     // 분당 발사 횟수
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|FireArm", meta = (AllowPrivateAccess = true))
-    FName MuzzleSocketName = "muzzle";
+    FName MuzzleSocketName = "SOCKET_Muzzle";
 
     // 총기 최대 보유 탄약
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|FireArm", meta = (AllowPrivateAccess = true), ReplicatedUsing = OnRep_MaxAmmo)
@@ -64,10 +65,24 @@ class GASEXTENSION_API AGEFireArm : public AGEWeapon
 
     /* 애니메이션 */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|FireArm|Animation", meta = (AllowPrivateAccess = true))
-    TObjectPtr<UAnimSequence> FireAnimation;
+    TObjectPtr<UAnimMontage> FireAnimation;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|FireArm|Animation", meta = (AllowPrivateAccess = true))
-    TObjectPtr<UAnimSequence> ReloadAnimation;
+    TObjectPtr<UAnimMontage> ReloadAnimation;
+
+    // TODO HitEffectDefinition처럼 데이터 에셋에서 처리
+    /* SFX */
+    // TODO 소음기
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|FireArm|Effect", meta = (AllowPrivateAccess = true))
+    TObjectPtr<USoundCue> FireSound;
+
+    /* VFX */
+    // TODO 소염기
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|FireArm|Effect", meta = (AllowPrivateAccess = true))
+    TObjectPtr<UParticleSystem> MuzzleFlash;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|FireArm|Effect", meta = (AllowPrivateAccess = true))
+    FTransform MuzzleFlashTransform;
 
 public:
     AGEFireArm();
@@ -112,7 +127,7 @@ protected:
 
     // 무기 애니메이션을 재생합니다.
     UFUNCTION(BlueprintCallable, Category = "FireArm")
-    void PlayAnimation(UAnimSequence* Animation) const;
+    void PlayAnimation(UAnimMontage* Animation) const;
 
     UFUNCTION(BlueprintNativeEvent, Category = "FireArm")
     bool CanFire();

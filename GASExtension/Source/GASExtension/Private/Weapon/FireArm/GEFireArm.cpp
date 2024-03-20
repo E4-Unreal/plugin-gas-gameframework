@@ -3,7 +3,9 @@
 
 #include "Weapon\FireArm\GEFireArm.h"
 
+#include "Kismet/GameplayStatics.h"
 #include "Net/UnrealNetwork.h"
+#include "Sound/SoundCue.h"
 
 AGEFireArm::AGEFireArm()
 {
@@ -57,6 +59,24 @@ void AGEFireArm::ServerFire_Implementation()
 void AGEFireArm::MulticastFire_Implementation()
 {
     PlayAnimation(FireAnimation);
+
+    // 파티클 시스템 스폰
+    UGameplayStatics::SpawnEmitterAttached(
+            MuzzleFlash,
+            SkeletalMesh,
+            MuzzleSocketName,
+            MuzzleFlashTransform.GetLocation(),
+            MuzzleFlashTransform.GetRotation().Rotator(),
+            MuzzleFlashTransform.GetScale3D()
+            );
+
+    // 소리 재생
+    UGameplayStatics::PlaySoundAtLocation(
+        this,
+        FireSound,
+        GetMuzzleLocation(),
+        FRotator::ZeroRotator
+        );
 }
 
 void AGEFireArm::OnFire_Implementation()
@@ -121,7 +141,7 @@ void AGEFireArm::SetCurrentAmmo(int32 Value)
     OnRep_CurrentAmmo(OldCurrentAmmo);
 }
 
-void AGEFireArm::PlayAnimation(UAnimSequence* Animation) const
+void AGEFireArm::PlayAnimation(UAnimMontage* Animation) const
 {
     if(SkeletalMesh && Animation)
         SkeletalMesh->PlayAnimation(Animation, false);
