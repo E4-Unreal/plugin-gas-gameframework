@@ -13,7 +13,7 @@ class UGameplayEffect;
  * 히트 스캔 방식의 총기 클래스입니다.
  * 발사체 스폰 방식과 달리 데미지(EffectsToApply)나 피격 효과(HitEffect)를 이곳에서 직접 설정하셔야 합니다.
  */
-UCLASS()
+UCLASS(Abstract, Blueprintable, BlueprintType)
 class GASEXTENSION_API AGEHitScanFireArm : public AGEFireArm
 {
     GENERATED_BODY()

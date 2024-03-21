@@ -14,7 +14,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAmmoValueChangedSiganature, int32
  * 장전은 Reload > SetCurrentAmmo > FinishReloading 순으로 호출해야 합니다.
  * 총기 클래스를 작성할 떄 이 클래스를 상속받은 뒤 OnFire 메서드만 오버라이드하면 됩니다.
  */
-UCLASS(Blueprintable)
+UCLASS(Abstract, Blueprintable, BlueprintType)
 class GASEXTENSION_API AGEFireArm : public AGEWeapon
 {
     GENERATED_BODY()

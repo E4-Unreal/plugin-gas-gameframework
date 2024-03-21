@@ -12,7 +12,7 @@ class AGEProjectile;
  * 발사체 스폰 방식의 총기 클래스입니다.
  * 데미지(EffectsToApply)나 피격 효과(HitEffect)는 Projectile 클래스에서 설정합니다.
  */
-UCLASS()
+UCLASS(Abstract, Blueprintable, BlueprintType)
 class GASEXTENSION_API AGEProjectileFireArm : public AGEFireArm
 {
     GENERATED_BODY()

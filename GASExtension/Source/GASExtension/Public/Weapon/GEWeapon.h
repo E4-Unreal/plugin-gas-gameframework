@@ -10,7 +10,7 @@ struct FGameplayAbilitySpecHandle;
 class UGameplayAbility;
 class UAbilitySystemComponent;
 
-UCLASS()
+UCLASS(Abstract, Blueprintable, BlueprintType)
 class GASEXTENSION_API AGEWeapon : public AGEEquipment
 {
     GENERATED_BODY()

@@ -11,7 +11,7 @@
 /**
  * GSFEquipmentComponent에서 사용하기 위한 장비 클래스입니다.
  */
-UCLASS(Abstract)
+UCLASS(Abstract, Blueprintable, BlueprintType)
 class GASEXTENSION_API AGEEquipment : public AActor
 {
     GENERATED_BODY()

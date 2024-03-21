@@ -14,7 +14,7 @@ class UGEHitEffectDefinition;
 /*
  * 총알, 로켓, 수류탄 등 발사체 및 투척물에 사용되는 기본 클래스입니다.
  */
-UCLASS(Abstract)
+UCLASS(Abstract, Blueprintable, BlueprintType)
 class GASEXTENSION_API AGEProjectile : public AActor
 {
     GENERATED_BODY()
