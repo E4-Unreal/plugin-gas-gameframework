@@ -62,6 +62,9 @@ void AGEHitScanFireArm::OnFire_Implementation()
 
         // 히트 이벤트 처리
         OnHit(HitResult);
+
+        // 멀티캐스트 히트
+        OnMulticastHit(HitResult);
     }
 }
 
@@ -72,12 +75,10 @@ void AGEHitScanFireArm::OnHit_Implementation(const FHitResult& HitResult)
 
     // GE 적용
     UGEFunctionLibrary::ApplyGameplayEffectsToTarget(EffectsToApply, GetInstigator(), HitResult.GetActor());
-
-    // 멀티캐스트
-    OnMulticastHit(HitResult);
 }
 
 void AGEHitScanFireArm::OnMulticastHit_Implementation(const FHitResult& HitResult)
 {
-    HitEffect->SpawnHitEffect(HitResult);
+    if(HitEffect)
+        HitEffect->SpawnHitEffect(HitResult);
 }
