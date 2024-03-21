@@ -12,6 +12,7 @@ AGEProjectile::AGEProjectile()
 
     // 콜라이더 설정
     SphereCollider = CreateDefaultSubobject<USphereComponent>(TEXT("SphereCollider"));
+    RootComponent = SphereCollider;
     SphereCollider->IgnoreActorWhenMoving(GetOwner(), true); // 무기 무시
     SphereCollider->IgnoreActorWhenMoving(GetInstigator(), true); // 캐릭터 무시
     SphereCollider->InitSphereRadius(1);

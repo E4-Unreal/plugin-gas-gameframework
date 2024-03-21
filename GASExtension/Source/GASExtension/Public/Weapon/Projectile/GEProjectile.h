@@ -31,6 +31,10 @@ class GASEXTENSION_API AGEProjectile : public AActor
     TObjectPtr<UProjectileMovementComponent> ProjectileMovement;
 
 protected:
+#if WITH_EDITORONLY_DATA
+  UPROPERTY(EditAnywhere, Category = "Config|Projectile")
+    bool bShowDebug;
+#endif
 
     // TODO EffectsToApply, HitEffect를 묶어 액터 컴포넌트로 추출 고려
     // 피격 대상에게 적용할 GameplayEffect 목록입니다. 데미지 관련 GameplayEffect 역시 이곳에 포함됩니다.
