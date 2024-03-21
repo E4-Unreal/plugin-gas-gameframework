@@ -5,11 +5,11 @@
 
 #include "FunctionLibraries/GEFunctionLibrary.h"
 #include "Weapon/HitEffect/GEHitEffectDefinition.h"
-#include "Weapon/Interface/AimingInterface.h"
+#include "Weapon/Interface/GEAimingInterface.h"
 
 void AGEHitScanFireArm::OnFire_Implementation()
 {
-    if(GetOwner() && GetOwner()->GetClass()->ImplementsInterface(UAimingInterface::StaticClass()))
+    if(GetOwner() && GetOwner()->GetClass()->ImplementsInterface(UGEAimingInterface::StaticClass()))
     {
         const UWorld* World = GetWorld();
         if(World == nullptr) return;
@@ -21,7 +21,7 @@ void AGEHitScanFireArm::OnFire_Implementation()
 
         // 발사 방향
         FVector Target;
-        IAimingInterface::Execute_GetTarget(GetOwner(), Target);
+        IGEAimingInterface::Execute_GetTarget(GetOwner(), Target);
         const FVector& Direction = (Target - TraceStart).GetSafeNormal();
 
         // 라인 트레이스 종료 위치
