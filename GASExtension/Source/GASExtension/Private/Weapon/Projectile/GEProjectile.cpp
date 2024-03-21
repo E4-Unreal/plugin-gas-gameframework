@@ -3,9 +3,7 @@
 #include "Weapon/Projectile/GEProjectile.h"
 
 #include "Components/SphereComponent.h"
-#include "FunctionLibraries/GEFunctionLibrary.h"
 #include "GameFramework/ProjectileMovementComponent.h"
-#include "Weapon/HitEffect/GEHitEffectDefinition.h"
 
 AGEProjectile::AGEProjectile()
 {
@@ -36,27 +34,24 @@ void AGEProjectile::PostInitializeComponents()
     }
 }
 
-void AGEProjectile::OnComponentHit_Event(UPrimitiveComponent* HitComponent, AActor* OtherActor,
-                                         UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
+void AGEProjectile::OnComponentHit_Event_Implementation(UPrimitiveComponent* HitComponent, AActor* OtherActor,
+    UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
     // TODO 피지컬 머티리얼에 따라 관통 처리
 
-    // 데미지 처리
+    // 히트 이벤트 호출
     OnHit(Hit);
 
-    // 피격 이펙트 처리
+    // 멀티캐스트 이벤트 호출
     OnMulticastHit(Hit);
 }
 
 void AGEProjectile::OnHit_Implementation(const FHitResult& HitResult)
 {
-    // 데미지 적용
-    UGEFunctionLibrary::ApplyGameplayEffectsToTarget(EffectsToApply, GetInstigator(), HitResult.GetActor());
+    // TODO 데미지 적용 등 서버에서 처리할 기능 구현
 }
 
 void AGEProjectile::OnMulticastHit_Implementation(const FHitResult& HitResult)
 {
-    // 피격 효과 스폰
-    if(HitEffect)
-        HitEffect->SpawnHitEffect(HitResult);
+    // TODO 피격 효과 스폰처럼 멀티캐스트로 처리할 기능 구현
 }
