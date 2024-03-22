@@ -8,7 +8,7 @@
 UGEEquipmentManagerBase::UGEEquipmentManagerBase()
 {
     bWantsInitializeComponent = true;
-    SetIsReplicated(true);
+    SetIsReplicatedByDefault(true);
 }
 
 void UGEEquipmentManagerBase::InjectDependencies(USkeletalMeshComponent* InSkeletalMesh)
