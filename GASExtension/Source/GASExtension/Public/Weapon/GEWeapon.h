@@ -26,10 +26,10 @@ protected:
     TArray<TSubclassOf<UGameplayAbility>> WeaponAbilities;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|Weapon", meta = (Categories = "Equipment.Weapon"))
-    FGameplayTag WeaponType = GEGameplayTags::Equipment::WeaponTag;
+    FGameplayTag WeaponType = GEGameplayTags::Equipment::Weapon;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|Weapon", meta = (Categories = "Equipment.Slot"))
-    FGameplayTag WeaponSlot = GEGameplayTags::Equipment::SlotTag;
+    FGameplayTag WeaponSlot = GEGameplayTags::Equipment::Slot;
 
     UPROPERTY(VisibleAnywhere, Category = "State|Weapon", Transient)
     TArray<FGameplayAbilitySpecHandle> AbilitySpecHandles;

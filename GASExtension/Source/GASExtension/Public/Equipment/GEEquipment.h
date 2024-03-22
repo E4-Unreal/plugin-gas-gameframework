@@ -37,8 +37,8 @@ public:
     /* Getter */
 
     UFUNCTION(BlueprintPure, Category = "Equipment")
-    virtual FORCEINLINE FGameplayTag GetEquipmentType() const { return GEGameplayTags::Equipment::EquipmentTag; }
+    virtual FORCEINLINE FGameplayTag GetEquipmentType() const { return GEGameplayTags::Equipment::Equipment; }
 
     UFUNCTION(BlueprintPure, Category = "Equipment")
-    virtual FORCEINLINE FGameplayTag GetEquipmentSlot() const { return GEGameplayTags::Equipment::SlotTag; }
+    virtual FORCEINLINE FGameplayTag GetEquipmentSlot() const { return GEGameplayTags::Equipment::Slot; }
 };

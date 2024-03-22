@@ -12,9 +12,9 @@ UGEGameplayAbilityBase::UGEGameplayAbilityBase()
     InstancingPolicy = EGameplayAbilityInstancingPolicy::InstancedPerActor;
 
     // 기본 Blocking 태그 설정
-    ActivationBlockedTags.AddTag(GEGameplayTags::State::DeadTag);
-    ActivationBlockedTags.AddTag(GEGameplayTags::State::KnockdownTag);
-    ActivationBlockedTags.AddTag(GEGameplayTags::State::StunTag);
+    ActivationBlockedTags.AddTag(GEGameplayTags::State::Dead);
+    ActivationBlockedTags.AddTag(GEGameplayTags::State::Knockdown);
+    ActivationBlockedTags.AddTag(GEGameplayTags::State::Stun);
 }
 
 const FGameplayTag UGEGameplayAbilityBase::GetInputTag_Implementation() const

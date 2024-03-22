@@ -13,11 +13,11 @@
 UGECharacterState_Dead::UGECharacterState_Dead()
 {
     // Dead 태그가 부착된 이후 이 어빌리티가 발동되기 때문에 Blocking 태그 목록에서 제외해주어야 합니다.
-    BlockAbilitiesWithTag.RemoveTag(GEGameplayTags::State::DeadTag);
+    BlockAbilitiesWithTag.RemoveTag(GEGameplayTags::State::Dead);
 
     // 트리거 설정
     FAbilityTriggerData AbilityTriggerData;
-    AbilityTriggerData.TriggerTag = GEGameplayTags::State::DeadTag;
+    AbilityTriggerData.TriggerTag = GEGameplayTags::State::Dead;
     AbilityTriggerData.TriggerSource = EGameplayAbilityTriggerSource::OwnedTagAdded;
 
     AbilityTriggers.Add(AbilityTriggerData);

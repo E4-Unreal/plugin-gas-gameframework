@@ -148,7 +148,7 @@ void UGEAbilitySystemBase::OnGiveAbility(FGameplayAbilitySpec& AbilitySpec)
 
 void UGEAbilitySystemBase::OnDead_Implementation()
 {
-    AddLooseGameplayTag(GEGameplayTags::State::DeadTag);
+    AddLooseGameplayTag(GEGameplayTags::State::Dead);
 }
 
 void UGEAbilitySystemBase::InitializeAbilitySystem()

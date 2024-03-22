@@ -17,8 +17,8 @@ UGECharacterMovement::UGECharacterMovement()
     bCanWalkOffLedgesWhenCrouching = true;
 
     // 태그 기본값 설정
-    FallingTag = GEGameplayTags::State::FallingTag;
-    CrouchingTag = GEGameplayTags::State::CrouchingTag;
+    FallingTag = GEGameplayTags::State::Falling;
+    CrouchingTag = GEGameplayTags::State::Crouching;
 
     // 일반 설정
     GravityScale = 1.5f;
