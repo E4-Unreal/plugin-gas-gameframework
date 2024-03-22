@@ -26,6 +26,9 @@ protected:
     UPROPERTY(EditAnywhere, Category = "Config")
     FGameplayTag CrouchingTag;
 
+    UPROPERTY(EditAnywhere, Category = "Config")
+    FGameplayTag MovingTag;
+
 public:
     UGECharacterMovement();
 
@@ -37,6 +40,9 @@ public:
 
     // 점프 혹은 낙하 상태 태그 부착 혹은 제거
     virtual void SetMovementMode(EMovementMode NewMovementMode, uint8 NewCustomMode) override;
+
+    // 움직임 태그 부착 혹은 제거
+    virtual void OnMovementUpdated(float DeltaSeconds, const FVector& OldLocation, const FVector& OldVelocity) override;
 
     // 앉기 상태 태그 부착
     virtual void Crouch(bool bClientSimulation) override;
