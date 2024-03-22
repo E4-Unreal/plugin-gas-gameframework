@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GECharacter.h"
+#include "Interface/GECharacterMeshInterface.h"
 #include "Weapon/Interface/GEAimingInterface.h"
 #include "GEDefaultCharacter.generated.h"
 
@@ -15,7 +16,9 @@ class UCameraComponent;
  * 1인칭, 3인칭 모두 사용 가능한 캐릭터 클래스입니다.
  */
 UCLASS()
-class GASEXTENSION_API AGEDefaultCharacter : public AGECharacter, public IGEAimingInterface
+class GASEXTENSION_API AGEDefaultCharacter : public AGECharacter,
+    public IGEAimingInterface,
+    public IGECharacterMeshInterface
 {
     GENERATED_BODY()
 
@@ -34,9 +37,8 @@ class GASEXTENSION_API AGEDefaultCharacter : public AGECharacter, public IGEAimi
 public:
     AGEDefaultCharacter(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
-    /* AimingInterface */
-    virtual void GetTarget_Implementation(FVector& Target) override;
-
+public:
+    /* Getter */
     UFUNCTION(BlueprintGetter)
     FORCEINLINE USpringArmComponent* GetSpringArm() const { return SpringArm; }
 
@@ -48,4 +50,13 @@ public:
 
     UFUNCTION(BlueprintGetter)
     FORCEINLINE USkeletalMeshComponent* GetFirstPersonLegs() const { return FirstPersonLegs; }
+
+public:
+    /* GEAimingInterface */
+    virtual void GetTarget_Implementation(FVector& Target) override;
+
+    /* GECharacterMeshInterface */
+    FORCEINLINE virtual USkeletalMeshComponent* GetFirstPersonArmsMesh_Implementation() const override { return FirstPersonArms; }
+    FORCEINLINE virtual USkeletalMeshComponent* GetFirstPersonLegsMesh_Implementation() const override { return FirstPersonLegs; }
+    FORCEINLINE virtual USkeletalMeshComponent* GetThirdPersonFullBodyMesh_Implementation() const override { return GetMesh(); }
 };
