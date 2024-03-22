@@ -15,6 +15,9 @@ UGEGameplayAbilityBase::UGEGameplayAbilityBase()
     ActivationBlockedTags.AddTag(GEGameplayTags::State::Dead);
     ActivationBlockedTags.AddTag(GEGameplayTags::State::Knockdown);
     ActivationBlockedTags.AddTag(GEGameplayTags::State::Stun);
+
+    // Canceling 태그 설정
+    CancelAbilitiesWithTag = ActivationBlockedTags;
 }
 
 const FGameplayTag UGEGameplayAbilityBase::GetInputTag_Implementation() const
