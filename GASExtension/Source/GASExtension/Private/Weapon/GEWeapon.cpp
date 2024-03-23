@@ -5,6 +5,7 @@
 
 #include "AbilitySystemComponent.h"
 #include "AbilitySystemGlobals.h"
+#include "Character/Interface/GECharacterMeshInterface.h"
 #include "FunctionLibraries/GEFunctionLibrary.h"
 
 void AGEWeapon::OnSelected_Implementation()
@@ -43,7 +44,14 @@ void AGEWeapon::OnEquip_Implementation()
     Super::OnEquip_Implementation();
 
     // AbilitySystem 캐싱
-    OwnerAbilitySystem = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(GetOwner());
+    OwnerAbilitySystem = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(Owner);
+
+    // 캐릭터 메시 캐싱
+    if(Owner->GetClass()->ImplementsInterface(UGECharacterMeshInterface::StaticClass()))
+    {
+        ThirdPersonMesh = IGECharacterMeshInterface::Execute_GetThirdPersonFullBodyMesh(Owner);
+        FirstPersonMesh = IGECharacterMeshInterface::Execute_GetFirstPersonArmsMesh(Owner);
+    }
 }
 
 void AGEWeapon::OnUnEquip_Implementation()
@@ -52,4 +60,8 @@ void AGEWeapon::OnUnEquip_Implementation()
 
     // AbilitySystem 캐시 제거
     OwnerAbilitySystem = nullptr;
+
+    // 캐릭터 메시 캐싱 제거
+    ThirdPersonMesh = nullptr;
+    FirstPersonMesh = nullptr;
 }

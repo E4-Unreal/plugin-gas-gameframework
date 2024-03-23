@@ -58,7 +58,19 @@ void AGEFireArm::ServerFire_Implementation()
 
 void AGEFireArm::MulticastFire_Implementation()
 {
+    // 무기 애니메이션 재생
     PlayAnimation(FireAnimation);
+
+    // 캐릭터 애니메이션 재생
+    if(UAnimInstance* ThirdPersonAnimInstance = GetThirdPersonAnimInstance())
+    {
+        ThirdPersonAnimInstance->Montage_Play(CharacterFireAnimation);
+    }
+
+    if(UAnimInstance* FirstPersonAnimInstance = GetFirstPersonAnimInstance())
+    {
+        FirstPersonAnimInstance->Montage_Play(CharacterFireAnimation);
+    }
 
     // 파티클 시스템 스폰
     UGameplayStatics::SpawnEmitterAttached(

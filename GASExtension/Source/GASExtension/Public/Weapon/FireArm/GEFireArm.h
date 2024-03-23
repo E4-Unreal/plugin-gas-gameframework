@@ -70,6 +70,12 @@ class GASEXTENSION_API AGEFireArm : public AGEWeapon
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|FireArm|Animation", meta = (AllowPrivateAccess = true))
     TObjectPtr<UAnimMontage> ReloadAnimation;
 
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|FireArm|Animation", meta = (AllowPrivateAccess = true))
+    TObjectPtr<UAnimMontage> CharacterFireAnimation;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|FireArm|Animation", meta = (AllowPrivateAccess = true))
+    TObjectPtr<UAnimMontage> CharacterReloadAnimation;
+
     // TODO HitEffectDefinition처럼 데이터 에셋에서 처리
     /* SFX */
     // TODO 소음기

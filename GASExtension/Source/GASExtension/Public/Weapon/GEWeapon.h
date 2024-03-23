@@ -9,6 +9,7 @@
 struct FGameplayAbilitySpecHandle;
 class UGameplayAbility;
 class UAbilitySystemComponent;
+class UAnimInstance;
 
 UCLASS(Abstract, Blueprintable, BlueprintType)
 class GASEXTENSION_API AGEWeapon : public AGEEquipment
@@ -17,7 +18,12 @@ class GASEXTENSION_API AGEWeapon : public AGEEquipment
 
     /* 레퍼런스 */
 
+    // 장비 장착 혹은 해제 시 무기 어빌리티를 부여 혹은 제거하기 위한 레퍼런스
     TWeakObjectPtr<UAbilitySystemComponent> OwnerAbilitySystem;
+
+    // 무기 관련 캐릭터 애니메이션 재생을 위한 스켈레탈 메시
+    TWeakObjectPtr<USkeletalMeshComponent> ThirdPersonMesh;
+    TWeakObjectPtr<USkeletalMeshComponent> FirstPersonMesh;
 
 protected:
 
@@ -61,4 +67,21 @@ protected:
 
     virtual void OnEquip_Implementation() override;
     virtual void OnUnEquip_Implementation() override;
+
+protected:
+    /* Getter */
+    UFUNCTION(BlueprintGetter)
+    FORCEINLINE UAbilitySystemComponent* GetOwnerAbilitySystem() const { return OwnerAbilitySystem.Get(); }
+
+    UFUNCTION(BlueprintGetter)
+    FORCEINLINE USkeletalMeshComponent* GetThirdPersonMesh() const { return ThirdPersonMesh.Get(); }
+
+    UFUNCTION(BlueprintGetter)
+    FORCEINLINE UAnimInstance* GetThirdPersonAnimInstance() const { return ThirdPersonMesh.IsValid() ? ThirdPersonMesh.Get()->GetAnimInstance() : nullptr; }
+
+    UFUNCTION(BlueprintGetter)
+    FORCEINLINE USkeletalMeshComponent* GetFirstPersonMesh() const { return FirstPersonMesh.Get(); }
+
+    UFUNCTION(BlueprintGetter)
+    FORCEINLINE UAnimInstance* GetFirstPersonAnimInstance() const { return FirstPersonMesh.IsValid() ? FirstPersonMesh.Get()->GetAnimInstance() : nullptr; }
 };
