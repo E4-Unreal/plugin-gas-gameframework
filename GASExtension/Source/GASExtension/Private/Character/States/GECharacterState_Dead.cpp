@@ -3,6 +3,7 @@
 
 #include "Character/States/GECharacterState_Dead.h"
 
+#include "AbilitySystemComponent.h"
 #include "GEGameplayTags.h"
 #include "Camera/CameraComponent.h"
 #include "Character/GEDefaultCharacter.h"
@@ -12,23 +13,39 @@
 
 UGECharacterState_Dead::UGECharacterState_Dead()
 {
-    // Dead 태그가 부착된 이후 이 어빌리티가 발동되기 때문에 Blocking 태그 목록에서 제외해주어야 합니다.
-    BlockAbilitiesWithTag.RemoveTag(GEGameplayTags::State::Dead);
+    /* 태그 설정 */
+    using namespace GEGameplayTags;
 
-    // 트리거 설정
+    // 죽은 상태는 절대적이기 때문에 어떠한 태그도 Blocking 할 수 없습니다.
+    // 무적 상태를 도입하고 싶은 경우에는 체력을 1로 유지하는 등의 방법을 고려해주세요.
+    ActivationBlockedTags.Reset();
+
+    // Cancel 태그 설정
+    BlockAbilitiesWithTag.AddTagFast(Action::Action); // 죽은 상태에서 모든 행동은 중지됩니다.
+    CancelAbilitiesWithTag.AddTagFast(Action::Action);
+
+    /* 트리거 설정 */
     FAbilityTriggerData AbilityTriggerData;
-    AbilityTriggerData.TriggerTag = GEGameplayTags::State::Dead;
+    AbilityTriggerData.TriggerTag = State::Dead;
     AbilityTriggerData.TriggerSource = EGameplayAbilityTriggerSource::OwnedTagAdded;
 
     AbilityTriggers.Add(AbilityTriggerData);
 
-    // 정책 설정
+    /* 정책 설정 */
     NetExecutionPolicy = EGameplayAbilityNetExecutionPolicy::ServerInitiated;
     NetSecurityPolicy = EGameplayAbilityNetSecurityPolicy::ServerOnlyExecution;
 }
 
 void UGECharacterState_Dead::OnEnter_Implementation(ACharacter* AvatarCharacter)
 {
+    // TODO Stun, KnockDown 등의 상태에서도 사용되기 때문에 공통 클래스가 필요
+    /* 모든 어빌리티 입력 Release 처리 */
+    TArray<FGameplayAbilitySpec>& ActivatableAbilities = CurrentActorInfo->AbilitySystemComponent->GetActivatableAbilities();
+    for (FGameplayAbilitySpec& ActivatableAbility : ActivatableAbilities)
+    {
+        ActivatableAbility.InputPressed = false;
+    }
+
     /* 일반 캐릭터 죽음 설정 */
     // 플레이어 입력 비활성화
     if(APlayerController* PlayerController = Cast<APlayerController>(AvatarCharacter->Controller))

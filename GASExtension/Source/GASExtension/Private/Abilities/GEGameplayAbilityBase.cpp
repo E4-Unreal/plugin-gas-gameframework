@@ -11,13 +11,17 @@ UGEGameplayAbilityBase::UGEGameplayAbilityBase()
     // 기본 인스턴싱 정책 설정
     InstancingPolicy = EGameplayAbilityInstancingPolicy::InstancedPerActor;
 
-    // 기본 Blocking 태그 설정
-    ActivationBlockedTags.AddTag(GEGameplayTags::State::Dead);
-    ActivationBlockedTags.AddTag(GEGameplayTags::State::Knockdown);
-    ActivationBlockedTags.AddTag(GEGameplayTags::State::Stun);
+    /* 태그 설정 */
+    using namespace GEGameplayTags;
 
-    // Canceling 태그 설정
-    CancelAbilitiesWithTag = ActivationBlockedTags;
+    // 기본 어빌리티 태그 설정
+    AbilityTags.AddTagFast(Action::Action);
+    ActivationOwnedTags.AddTagFast(Action::Action);
+
+    // ActivationBlockedTags 설정
+    ActivationBlockedTags.AddTagFast(State::Dead);
+    ActivationBlockedTags.AddTagFast(State::Knockdown);
+    ActivationBlockedTags.AddTagFast(State::Stun);
 }
 
 const FGameplayTag UGEGameplayAbilityBase::GetInputTag_Implementation() const

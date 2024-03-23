@@ -10,7 +10,7 @@
 /**
  * 기본 인스턴스 정책 및 태그가 설정된 기저 Ability입니다.
  */
-UCLASS(Blueprintable, BlueprintType)
+UCLASS(Abstract, Blueprintable, BlueprintType)
 class GASEXTENSION_API UGEGameplayAbilityBase : public UGameplayAbility, public IGEAbilityInputTagInterface
 {
     GENERATED_BODY()

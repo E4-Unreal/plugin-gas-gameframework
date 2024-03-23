@@ -11,10 +11,9 @@ UGECharacterState::UGECharacterState()
     // 기본 인스턴싱 정책 설정
     InstancingPolicy = EGameplayAbilityInstancingPolicy::InstancedPerActor;
 
-    // 블록 태그 기본 설정
-    BlockAbilitiesWithTag.AddTagFast(GEGameplayTags::State::Dead); // Dead 상태를 작성할 때는 제외해야 합니다.
-    BlockAbilitiesWithTag.AddTagFast(GEGameplayTags::State::Knockdown);
-    BlockAbilitiesWithTag.AddTagFast(GEGameplayTags::State::Stun);
+    /* 태그 설정 */
+    // ActivationBlockedTags 설정
+    ActivationBlockedTags.AddTagFast(GEGameplayTags::State::Dead);
 }
 
 void UGECharacterState::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
