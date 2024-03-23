@@ -13,8 +13,6 @@ AGEProjectile::AGEProjectile()
     // 콜라이더 설정
     SphereCollider = CreateDefaultSubobject<USphereComponent>(TEXT("SphereCollider"));
     RootComponent = SphereCollider;
-    SphereCollider->IgnoreActorWhenMoving(GetOwner(), true); // 무기 무시
-    SphereCollider->IgnoreActorWhenMoving(GetInstigator(), true); // 캐릭터 무시
     SphereCollider->InitSphereRadius(1);
     SphereCollider->SetCollisionProfileName("IgnoreOnlyPawn"); // 프로젝트에서 스켈레탈 메시의 오브젝트 타입은 Pawn이 아니라고 가정
 
@@ -35,8 +33,17 @@ void AGEProjectile::PostInitializeComponents()
     }
 }
 
+void AGEProjectile::BeginPlay()
+{
+    Super::BeginPlay();
+
+    /* 충돌 무시 설정 */
+    SphereCollider->IgnoreActorWhenMoving(GetOwner(), true); // 무기
+    SphereCollider->IgnoreActorWhenMoving(GetInstigator(), true); // 캐릭터
+}
+
 void AGEProjectile::OnComponentHit_Event_Implementation(UPrimitiveComponent* HitComponent, AActor* OtherActor,
-    UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
+                                                        UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
     // TODO 피지컬 머티리얼에 따라 관통 처리
 

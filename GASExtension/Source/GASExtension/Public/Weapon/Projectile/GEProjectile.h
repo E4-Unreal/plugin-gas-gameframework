@@ -50,6 +50,7 @@ public:
 
     /* Actor */
     virtual void PostInitializeComponents() override;
+    virtual void BeginPlay() override;
 
 protected:
     /* 이벤트 핸들러 */
