@@ -3,6 +3,7 @@
 
 #include "FunctionLibraries/GEBlueprintFunctionLibrary.h"
 
+#include "GameplayAbilitySpecHandle.h"
 #include "FunctionLibraries/GEFunctionLibrary.h"
 
 void UGEBlueprintFunctionLibrary::AddAttributeSetToTarget(const TSubclassOf<UAttributeSet> AttributeSetClass,
@@ -78,26 +79,26 @@ void UGEBlueprintFunctionLibrary::ApplyGameplayEffectsToTargetSystem(
     UGEFunctionLibrary::ApplyGameplayEffectsToTargetSystem(EffectClasses, Instigator, TargetAbilitySystem);
 }
 
-void UGEBlueprintFunctionLibrary::GiveAbilityToTarget(const TSubclassOf<UGameplayAbility> AbilityClass,
+FGameplayAbilitySpecHandle UGEBlueprintFunctionLibrary::GiveAbilityToTarget(const TSubclassOf<UGameplayAbility> AbilityClass,
     const AActor* Target)
 {
-    UGEFunctionLibrary::GiveAbilityToTarget(AbilityClass, Target);
+    return UGEFunctionLibrary::GiveAbilityToTarget(AbilityClass, Target);
 }
 
-void UGEBlueprintFunctionLibrary::GiveAbilitiesToTarget(const TArray<TSubclassOf<UGameplayAbility>>& AbilityClasses,
+TArray<FGameplayAbilitySpecHandle> UGEBlueprintFunctionLibrary::GiveAbilitiesToTarget(const TArray<TSubclassOf<UGameplayAbility>>& AbilityClasses,
     const AActor* Target)
 {
-    UGEFunctionLibrary::GiveAbilitiesToTarget(AbilityClasses, Target);
+    return UGEFunctionLibrary::GiveAbilitiesToTarget(AbilityClasses, Target);
 }
 
-void UGEBlueprintFunctionLibrary::GiveAbilityToSystem(const TSubclassOf<UGameplayAbility> AbilityClass,
+FGameplayAbilitySpecHandle UGEBlueprintFunctionLibrary::GiveAbilityToSystem(const TSubclassOf<UGameplayAbility> AbilityClass,
     UAbilitySystemComponent* AbilitySystem)
 {
-    UGEFunctionLibrary::GiveAbilityToSystem(AbilityClass, AbilitySystem);
+    return UGEFunctionLibrary::GiveAbilityToSystem(AbilityClass, AbilitySystem);
 }
 
-void UGEBlueprintFunctionLibrary::GiveAbilitiesToSystem(const TArray<TSubclassOf<UGameplayAbility>>& AbilityClasses,
+TArray<FGameplayAbilitySpecHandle> UGEBlueprintFunctionLibrary::GiveAbilitiesToSystem(const TArray<TSubclassOf<UGameplayAbility>>& AbilityClasses,
     UAbilitySystemComponent* AbilitySystem)
 {
-    UGEFunctionLibrary::GiveAbilitiesToSystem(AbilityClasses, AbilitySystem);
+    return UGEFunctionLibrary::GiveAbilitiesToSystem(AbilityClasses, AbilitySystem);
 }

@@ -10,6 +10,7 @@ class UAbilitySystemComponent;
 class UAttributeSet;
 class UGameplayEffect;
 class UGameplayAbility;
+struct FGameplayAbilitySpecHandle;
 
 /**
  * GASExtension 플러그인에서 사용하는 함수 라이브러리입니다.
@@ -58,9 +59,9 @@ public:
 
     /* Give GameplayAbility To Actor */
 
-    static void GiveAbilityToTarget(const TSubclassOf<UGameplayAbility> AbilityClass, const AActor* Target);
+    static FGameplayAbilitySpecHandle GiveAbilityToTarget(const TSubclassOf<UGameplayAbility> AbilityClass, const AActor* Target);
 
-    static void GiveAbilitiesToTarget(const TArray<TSubclassOf<UGameplayAbility>>& AbilityClasses, const AActor* Target);
+    static TArray<FGameplayAbilitySpecHandle> GiveAbilitiesToTarget(const TArray<TSubclassOf<UGameplayAbility>>& AbilityClasses, const AActor* Target);
 
     /* Give GameplayAbility To AbilitySystem */
 

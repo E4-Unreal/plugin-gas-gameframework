@@ -19,6 +19,13 @@ UGEGA_Fire::UGEGA_Fire()
     ActivationOwnedTags.AddLeafTag(Action::Attack);
 }
 
+bool UGEGA_Fire::CanActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
+    const FGameplayTagContainer* SourceTags, const FGameplayTagContainer* TargetTags,
+    FGameplayTagContainer* OptionalRelevantTags) const
+{
+    return GetFireArm() && GetFireArm()->CanFire() && Super::CanActivateAbility(Handle, ActorInfo, SourceTags, TargetTags, OptionalRelevantTags);
+}
+
 void UGEGA_Fire::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
                                  const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
 {
@@ -28,18 +35,7 @@ void UGEGA_Fire::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const 
     if(!CommitAbility(Handle, ActorInfo, ActivationInfo)) return;
 
     // 총기 레퍼런스 가져오기
-    if(!CachedFireArm.IsValid())
-    {
-        if(UGEEquipmentManager* EquipmentManager = ActorInfo->AvatarActor->GetComponentByClass<UGEEquipmentManager>())
-        {
-            CachedFireArm = Cast<AGEFireArm>(EquipmentManager->GetSelectedEquipment());
-            if(!CachedFireArm.IsValid()) CancelAbility(Handle, ActorInfo, ActivationInfo, true);
-        }
-        else
-        {
-            CancelAbility(Handle, ActorInfo, ActivationInfo, true);
-        }
-    }
+    AGEFireArm* CachedFireArm = GetFireArm();
 
     // 즉시 발사
     CachedFireArm->Fire();
@@ -50,13 +46,9 @@ void UGEGA_Fire::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const 
     {
         World->GetTimerManager().SetTimer(
             FireTimer,
-            FTimerDelegate::CreateUObject(CachedFireArm.Get(), &AGEFireArm::Fire),
+            FTimerDelegate::CreateUObject(CachedFireArm, &AGEFireArm::Fire),
             CachedFireArm->GetFireInterval(),
             true);
-
-        UAbilityTask_WaitInputRelease* Task = UAbilityTask::NewAbilityTask<UAbilityTask_WaitInputRelease>(this);
-        Task->OnRelease.AddDynamic(this, &ThisClass::OnRelease_Event);
-        Task->ReadyForActivation();
     }
 }
 
@@ -65,7 +57,17 @@ void UGEGA_Fire::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGame
 {
     Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
 
+    // 발사 중지
     StopFire();
+
+    // Input Release 상태로 변경
+    GetCurrentAbilitySpec()->InputPressed = false;
+}
+
+void UGEGA_Fire::InputReleased(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
+    const FGameplayAbilityActivationInfo ActivationInfo)
+{
+    if(bIsActive) EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true, false);
 }
 
 void UGEGA_Fire::StopFire()
@@ -77,9 +79,4 @@ void UGEGA_Fire::StopFire()
         World->GetTimerManager().ClearTimer(FireTimer);
         FireTimer.Invalidate();
     }
-}
-
-void UGEGA_Fire::OnRelease_Event(float TimeHeld)
-{
-    EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true, false);
 }

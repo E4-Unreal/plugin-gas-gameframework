@@ -139,7 +139,7 @@ void UGEAbilitySystemBase::OnGiveAbility(FGameplayAbilitySpec& AbilitySpec)
     Super::OnGiveAbility(AbilitySpec);
 
     // InputTag의 해시 값을 사용하여 InputID 설정
-    if(AbilitySpec.Ability->GetClass()->ImplementsInterface(UGEAbilityInputTagInterface::StaticClass()))
+    if(AbilitySpec.Ability && AbilitySpec.Ability->GetClass()->ImplementsInterface(UGEAbilityInputTagInterface::StaticClass()))
     {
         const FGameplayTag& InputTag = IGEAbilityInputTagInterface::Execute_GetInputTag(AbilitySpec.Ability);
         AbilitySpec.InputID = GetTypeHash(InputTag);

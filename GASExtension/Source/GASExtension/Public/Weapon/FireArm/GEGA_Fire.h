@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Abilities/GEGameplayAbilityBase.h"
+#include "GEFireArmAbility.h"
 #include "GEGA_Fire.generated.h"
 
 class AGEFireArm;
@@ -13,12 +13,11 @@ class UAnimMontage;
  * 총기 발사 전용 어빌리티
  */
 UCLASS()
-class GASEXTENSION_API UGEGA_Fire : public UGEGameplayAbilityBase
+class GASEXTENSION_API UGEGA_Fire : public UGEFireArmAbility
 {
     GENERATED_BODY()
 
 protected:
-    TWeakObjectPtr<AGEFireArm> CachedFireArm;
     FTimerHandle FireTimer;
 
 public:
@@ -26,13 +25,12 @@ public:
 
 protected:
     /* GameplayAbility */
+    virtual bool CanActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayTagContainer* SourceTags, const FGameplayTagContainer* TargetTags, FGameplayTagContainer* OptionalRelevantTags) const override;
     virtual void ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData) override;
     virtual void EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled) override;
 
+    virtual void InputReleased(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo) override;
+
     /* 메서드 */
     virtual void StopFire();
-
-private:
-    UFUNCTION()
-    void OnRelease_Event(float TimeHeld);
 };

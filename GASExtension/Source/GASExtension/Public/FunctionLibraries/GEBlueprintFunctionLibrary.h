@@ -7,6 +7,8 @@
 #include "GEBlueprintFunctionLibrary.generated.h"
 
 class UGameplayEffect;
+struct FGameplayAbilitySpecHandle;
+
 /**
  * GASExtension 플러그인에서 사용하는 블루프린트 함수 라이브러리입니다.
  */
@@ -63,16 +65,16 @@ public:
     /* Give GameplayAbility To Actor */
 
     UFUNCTION(BlueprintCallable, Category = "GASExtension|GameplayAbility|Actor")
-    static void GiveAbilityToTarget(const TSubclassOf<UGameplayAbility> AbilityClass, const AActor* Target);
+    FGameplayAbilitySpecHandle GiveAbilityToTarget(const TSubclassOf<UGameplayAbility> AbilityClass, const AActor* Target);
 
     UFUNCTION(BlueprintCallable, Category = "GASExtension|GameplayAbility|Actor")
-    static void GiveAbilitiesToTarget(const TArray<TSubclassOf<UGameplayAbility>>& AbilityClasses, const AActor* Target);
+    static TArray<FGameplayAbilitySpecHandle> GiveAbilitiesToTarget(const TArray<TSubclassOf<UGameplayAbility>>& AbilityClasses, const AActor* Target);
 
     /* Give GameplayAbility To AbilitySystem */
 
     UFUNCTION(BlueprintCallable, Category = "GASExtension|GameplayAbility|System")
-    static void GiveAbilityToSystem(const TSubclassOf<UGameplayAbility> AbilityClass, UAbilitySystemComponent* AbilitySystem);
+    FGameplayAbilitySpecHandle GiveAbilityToSystem(const TSubclassOf<UGameplayAbility> AbilityClass, UAbilitySystemComponent* AbilitySystem);
 
     UFUNCTION(BlueprintCallable, Category = "GASExtension|GameplayAbility|System")
-    static void GiveAbilitiesToSystem(const TArray<TSubclassOf<UGameplayAbility>>& AbilityClasses, UAbilitySystemComponent* AbilitySystem);
+    static TArray<FGameplayAbilitySpecHandle> GiveAbilitiesToSystem(const TArray<TSubclassOf<UGameplayAbility>>& AbilityClasses, UAbilitySystemComponent* AbilitySystem);
 };

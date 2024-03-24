@@ -96,6 +96,12 @@ public:
     virtual void PostInitializeComponents() override;
     virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
+    UFUNCTION(BlueprintNativeEvent, Category = "FireArm")
+    bool CanFire();
+
+    UFUNCTION(BlueprintNativeEvent, Category = "FireArm")
+    bool CanReload();
+
     UFUNCTION(BlueprintCallable, Category = "FireArm")
     void Fire();
 
@@ -134,12 +140,6 @@ protected:
     // 무기 애니메이션을 재생합니다.
     UFUNCTION(BlueprintCallable, Category = "FireArm")
     void PlayAnimation(UAnimMontage* Animation) const;
-
-    UFUNCTION(BlueprintNativeEvent, Category = "FireArm")
-    bool CanFire();
-
-    UFUNCTION(BlueprintNativeEvent, Category = "FireArm")
-    bool CanReload();
 
     /* 메서드 */
 

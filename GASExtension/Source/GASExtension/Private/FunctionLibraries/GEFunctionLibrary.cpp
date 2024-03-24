@@ -148,19 +148,19 @@ void UGEFunctionLibrary::ApplyGameplayEffectsToTargetSystem(const TArray<TSubcla
     }
 }
 
-void UGEFunctionLibrary::GiveAbilityToTarget(const TSubclassOf<UGameplayAbility> AbilityClass, const AActor* Target)
+FGameplayAbilitySpecHandle UGEFunctionLibrary::GiveAbilityToTarget(const TSubclassOf<UGameplayAbility> AbilityClass, const AActor* Target)
 {
     UAbilitySystemComponent* AbilitySystem = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(Target);
 
-    GiveAbilityToSystem(AbilityClass, AbilitySystem);
+    return GiveAbilityToSystem(AbilityClass, AbilitySystem);
 }
 
-void UGEFunctionLibrary::GiveAbilitiesToTarget(const TArray<TSubclassOf<UGameplayAbility>>& AbilityClasses,
+TArray<FGameplayAbilitySpecHandle> UGEFunctionLibrary::GiveAbilitiesToTarget(const TArray<TSubclassOf<UGameplayAbility>>& AbilityClasses,
     const AActor* Target)
 {
     UAbilitySystemComponent* AbilitySystem = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(Target);
 
-    GiveAbilitiesToSystem(AbilityClasses, AbilitySystem);
+    return GiveAbilitiesToSystem(AbilityClasses, AbilitySystem);
 }
 
 FGameplayAbilitySpecHandle UGEFunctionLibrary::GiveAbilityToSystem(const TSubclassOf<UGameplayAbility> AbilityClass,
@@ -173,7 +173,7 @@ FGameplayAbilitySpecHandle UGEFunctionLibrary::GiveAbilityToSystem(const TSubcla
     FGameplayAbilitySpec AbilitySpec = AbilitySystem->BuildAbilitySpecFromClass(AbilityClass);
 
     // 유효성 검사
-    if (!IsValid(AbilitySpec.Ability)) return FGameplayAbilitySpecHandle();
+    if (!IsValid(AbilitySpec.Ability)) return AbilitySpec.Handle;
 
     // 어빌리티 부여
     return AbilitySystem->GiveAbility(AbilitySpec);
@@ -182,16 +182,21 @@ FGameplayAbilitySpecHandle UGEFunctionLibrary::GiveAbilityToSystem(const TSubcla
 TArray<FGameplayAbilitySpecHandle> UGEFunctionLibrary::GiveAbilitiesToSystem(const TArray<TSubclassOf<UGameplayAbility>>& AbilityClasses,
     UAbilitySystemComponent* AbilitySystem)
 {
+    // 변수 선언
     TArray<FGameplayAbilitySpecHandle> AbilitySpecHandles;
 
-    // 서버에서만 호출
-    if(AbilitySystem == nullptr || !AbilitySystem->IsOwnerActorAuthoritative()) return AbilitySpecHandles;
+    // 유효성 검사
+    if(AbilityClasses.IsEmpty() || AbilitySystem == nullptr) return AbilitySpecHandles;
 
-    // Ability 부여
+    // 서버에서만 호출 가능
+    if(!AbilitySystem->IsOwnerActorAuthoritative()) return AbilitySpecHandles;
+
+    // 어빌리티 부여
     AbilitySpecHandles.Reserve(AbilityClasses.Num());
     for (const TSubclassOf<UGameplayAbility> AbilityClass : AbilityClasses)
     {
-        AbilitySpecHandles.Add(GiveAbilityToSystem(AbilityClass, AbilitySystem));
+        const FGameplayAbilitySpecHandle& Handle = GiveAbilityToSystem(AbilityClass, AbilitySystem);
+        if(Handle.IsValid()) AbilitySpecHandles.Add(Handle);
     }
 
     return AbilitySpecHandles;
