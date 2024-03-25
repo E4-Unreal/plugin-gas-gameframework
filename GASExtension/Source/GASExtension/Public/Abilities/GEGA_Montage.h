@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GEGameplayAbilityBase.h"
+#include "GEGameplayAbility.h"
 #include "GEGA_Montage.generated.h"
 
 USTRUCT(BlueprintType)
@@ -26,7 +26,7 @@ struct FGEMontageConfig
  * GameplayAbility_Montage와 차이점은 GECharacterMeshInterface를 사용하여 1인칭, 3인칭 애니메이션을 각각 재생할 수 있습니다.
  */
 UCLASS(Abstract)
-class GASEXTENSION_API UGEGA_Montage : public UGEGameplayAbilityBase
+class GASEXTENSION_API UGEGA_Montage : public UGEGameplayAbility
 {
     GENERATED_BODY()
 

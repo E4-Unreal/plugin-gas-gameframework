@@ -7,7 +7,7 @@
 #include "GameFramework/Character.h"
 #include "GECharacterBase.generated.h"
 
-class UGECharacterStateMachine;
+class UGEStateMachine;
 class UAbilitySystemComponent;
 class UGEAbilityInputBinder;
 class UInputMappingContext;
@@ -47,7 +47,7 @@ private:
 
     // 장비를 관리하기 위한 컴포넌트입니다.
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Component", meta = (AllowPrivateAccess = "true"))
-    TObjectPtr<UGECharacterStateMachine> StateMachine;
+    TObjectPtr<UGEStateMachine> StateMachine;
 
 public:
     AGECharacterBase(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());

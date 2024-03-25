@@ -4,18 +4,18 @@
 
 #include "CoreMinimal.h"
 #include "Abilities/GameplayAbility.h"
-#include "GECharacterState.generated.h"
+#include "GEStateAbility.generated.h"
 
 /**
- * 캐릭터 상태 태그의 추가 혹은 제거 이벤트를 트리거로 발동되는 게임플레이 어빌리티입니다.
+ * 상태 태그의 추가 혹은 제거 이벤트를 트리거로 발동되는 게임플레이 어빌리티입니다.
  */
 UCLASS(Abstract)
-class GASEXTENSION_API UGECharacterState : public UGameplayAbility
+class GASEXTENSION_API UGEStateAbility : public UGameplayAbility
 {
     GENERATED_BODY()
 
 public:
-    UGECharacterState();
+    UGEStateAbility();
 
     /* GameplayAbility */
     virtual void ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData) override;
@@ -23,8 +23,8 @@ public:
 
 protected:
     UFUNCTION(BlueprintNativeEvent)
-    void OnEnter(ACharacter* AvatarCharacter);
+    void OnEnter();
 
     UFUNCTION(BlueprintNativeEvent)
-    void OnExit(ACharacter* AvatarCharacter);
+    void OnExit();
 };

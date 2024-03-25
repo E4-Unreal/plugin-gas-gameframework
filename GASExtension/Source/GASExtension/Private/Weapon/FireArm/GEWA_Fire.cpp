@@ -1,13 +1,13 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Weapon/FireArm/GEGA_Fire.h"
+#include "Weapon/FireArm/GEWA_Fire.h"
 
 #include "Abilities/Tasks/AbilityTask_WaitInputRelease.h"
 #include "Equipment/Components/GEEquipmentManager.h"
 #include "Weapon/FireArm/GEFireArm.h"
 
-UGEGA_Fire::UGEGA_Fire()
+UGEWA_Fire::UGEWA_Fire()
 {
     // AFireArm::Fire는 RPC로 구현되어 있기 때문에 LocalOnly 정책을 사용합니다.
     NetExecutionPolicy = EGameplayAbilityNetExecutionPolicy::LocalOnly;
@@ -19,14 +19,14 @@ UGEGA_Fire::UGEGA_Fire()
     ActivationOwnedTags.AddLeafTag(Action::Attack);
 }
 
-bool UGEGA_Fire::CanActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
+bool UGEWA_Fire::CanActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
     const FGameplayTagContainer* SourceTags, const FGameplayTagContainer* TargetTags,
     FGameplayTagContainer* OptionalRelevantTags) const
 {
     return GetFireArm() && GetFireArm()->CanFire() && Super::CanActivateAbility(Handle, ActorInfo, SourceTags, TargetTags, OptionalRelevantTags);
 }
 
-void UGEGA_Fire::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
+void UGEWA_Fire::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
                                  const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
 {
     Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
@@ -52,7 +52,7 @@ void UGEGA_Fire::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const 
     }
 }
 
-void UGEGA_Fire::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
+void UGEWA_Fire::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
     const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled)
 {
     Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
@@ -61,7 +61,7 @@ void UGEGA_Fire::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGame
     StopFire();
 }
 
-void UGEGA_Fire::StopFire()
+void UGEWA_Fire::StopFire()
 {
     if(!FireTimer.IsValid()) return;
 

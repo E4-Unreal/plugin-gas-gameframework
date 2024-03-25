@@ -1,12 +1,12 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Character/States/GECharacterState.h"
+#include "Abilities/GEStateAbility.h"
 
 #include "GEGameplayTags.h"
 #include "GameFramework/Character.h"
 
-UGECharacterState::UGECharacterState()
+UGEStateAbility::UGEStateAbility()
 {
     // 기본 인스턴싱 정책 설정
     InstancingPolicy = EGameplayAbilityInstancingPolicy::InstancedPerActor;
@@ -16,31 +16,29 @@ UGECharacterState::UGECharacterState()
     ActivationBlockedTags.AddTagFast(GEGameplayTags::State::Dead);
 }
 
-void UGECharacterState::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
+void UGEStateAbility::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
                                         const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo,
                                         const FGameplayEventData* TriggerEventData)
 {
     Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 
     // State Enter
-    if(ACharacter* AvatarCharacter = Cast<ACharacter>(ActorInfo->AvatarActor))
-        OnEnter(AvatarCharacter);
+    OnEnter();
 }
 
-void UGECharacterState::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
+void UGEStateAbility::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
                                    const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled)
 {
     Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
 
     // State Exit
-    if(ACharacter* AvatarCharacter = Cast<ACharacter>(ActorInfo->AvatarActor))
-        OnExit(AvatarCharacter);
+    OnExit();
 }
 
-void UGECharacterState::OnEnter_Implementation(ACharacter* AvatarCharacter)
+void UGEStateAbility::OnEnter_Implementation()
 {
 }
 
-void UGECharacterState::OnExit_Implementation(ACharacter* AvatarCharacter)
+void UGEStateAbility::OnExit_Implementation()
 {
 }

@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "GEAbilityInputTagInterface.h"
 #include "Abilities/GameplayAbility.h"
-#include "GEGameplayAbilityBase.generated.h"
+#include "GEGameplayAbility.generated.h"
 
 /**
  * 기본 인스턴스 정책 및 태그와 어빌리티 입력 설정이 적용된 게임플레이 어빌리티입니다.
@@ -13,7 +13,7 @@
  * 해당 어빌리티 클래스에 IGEAbilityInputTagInterface를 구현하셔야 어빌리티 입력 시스템이 정상적으로 동작합니다.
  */
 UCLASS(Abstract, Blueprintable, BlueprintType)
-class GASEXTENSION_API UGEGameplayAbilityBase : public UGameplayAbility, public IGEAbilityInputTagInterface
+class GASEXTENSION_API UGEGameplayAbility : public UGameplayAbility, public IGEAbilityInputTagInterface
 {
     GENERATED_BODY()
 
@@ -22,7 +22,7 @@ class GASEXTENSION_API UGEGameplayAbilityBase : public UGameplayAbility, public 
     FGameplayTag InputTag;
 
 public:
-    UGEGameplayAbilityBase();
+    UGEGameplayAbility();
 
     /* GameplayAbility */
     // 기본적으로 입력이 Release되면 어빌리티는 종료됩니다.

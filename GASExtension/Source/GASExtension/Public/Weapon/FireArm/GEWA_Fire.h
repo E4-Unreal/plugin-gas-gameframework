@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GEFireArmAbility.h"
-#include "GEGA_Fire.generated.h"
+#include "GEWA_Fire.generated.h"
 
 class AGEFireArm;
 class UAnimMontage;
@@ -13,7 +13,7 @@ class UAnimMontage;
  * 총기 발사 전용 어빌리티
  */
 UCLASS()
-class GASEXTENSION_API UGEGA_Fire : public UGEFireArmAbility
+class GASEXTENSION_API UGEWA_Fire : public UGEFireArmAbility
 {
     GENERATED_BODY()
 
@@ -21,7 +21,7 @@ protected:
     FTimerHandle FireTimer;
 
 public:
-    UGEGA_Fire();
+    UGEWA_Fire();
 
 protected:
     /* GameplayAbility */

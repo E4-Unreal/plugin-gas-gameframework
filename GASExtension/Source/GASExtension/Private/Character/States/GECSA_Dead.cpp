@@ -1,7 +1,7 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Character/States/GECharacterState_Dead.h"
+#include "Character/States/GECSA_Dead.h"
 
 #include "AbilitySystemComponent.h"
 #include "GEGameplayTags.h"
@@ -11,7 +11,7 @@
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
-UGECharacterState_Dead::UGECharacterState_Dead()
+UGECSA_Dead::UGECSA_Dead()
 {
     /* 태그 설정 */
     using namespace GEGameplayTags;
@@ -36,7 +36,7 @@ UGECharacterState_Dead::UGECharacterState_Dead()
     NetSecurityPolicy = EGameplayAbilityNetSecurityPolicy::ServerOnlyExecution;
 }
 
-void UGECharacterState_Dead::OnEnter_Implementation(ACharacter* AvatarCharacter)
+void UGECSA_Dead::OnEnter_Implementation()
 {
     // TODO Stun, KnockDown 등의 상태에서도 사용되기 때문에 공통 클래스가 필요
     /* 모든 어빌리티 입력 Release 처리 */
@@ -77,7 +77,7 @@ void UGECharacterState_Dead::OnEnter_Implementation(ACharacter* AvatarCharacter)
     }
 }
 
-void UGECharacterState_Dead::OnExit_Implementation(ACharacter* AvatarCharacter)
+void UGECSA_Dead::OnExit_Implementation()
 {
     /* 일반 캐릭터 부활 설정 */
     // 플레이어 입력 활성화

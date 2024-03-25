@@ -1,12 +1,12 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Abilities/GEGameplayAbilityBase.h"
+#include "Abilities/GEGameplayAbility.h"
 
 #include "GEGameplayTags.h"
 #include "Attributes/GEHealthAttributes.h"
 
-UGEGameplayAbilityBase::UGEGameplayAbilityBase()
+UGEGameplayAbility::UGEGameplayAbility()
 {
     // 기본 인스턴싱 정책 설정
     InstancingPolicy = EGameplayAbilityInstancingPolicy::InstancedPerActor;
@@ -24,7 +24,7 @@ UGEGameplayAbilityBase::UGEGameplayAbilityBase()
     ActivationBlockedTags.AddTagFast(State::Stun);
 }
 
-void UGEGameplayAbilityBase::InputReleased(const FGameplayAbilitySpecHandle Handle,
+void UGEGameplayAbility::InputReleased(const FGameplayAbilitySpecHandle Handle,
     const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo)
 {
     Super::InputReleased(Handle, ActorInfo, ActivationInfo);
@@ -33,7 +33,7 @@ void UGEGameplayAbilityBase::InputReleased(const FGameplayAbilitySpecHandle Hand
     if(bIsActive) EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true, false);
 }
 
-void UGEGameplayAbilityBase::EndAbility(const FGameplayAbilitySpecHandle Handle,
+void UGEGameplayAbility::EndAbility(const FGameplayAbilitySpecHandle Handle,
                                         const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo,
                                         bool bReplicateEndAbility, bool bWasCancelled)
 {
@@ -43,7 +43,7 @@ void UGEGameplayAbilityBase::EndAbility(const FGameplayAbilitySpecHandle Handle,
     GetCurrentAbilitySpec()->InputPressed = false;
 }
 
-const FGameplayTag UGEGameplayAbilityBase::GetInputTag_Implementation() const
+const FGameplayTag UGEGameplayAbility::GetInputTag_Implementation() const
 {
     return InputTag;
 }

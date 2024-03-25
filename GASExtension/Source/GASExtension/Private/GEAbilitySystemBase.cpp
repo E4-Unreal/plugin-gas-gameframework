@@ -3,7 +3,7 @@
 #include "GEAbilitySystemBase.h"
 
 #include "GEGameplayTags.h"
-#include "Abilities/GEGameplayAbilityBase.h"
+#include "Abilities/GEGameplayAbility.h"
 #include "Attributes/GEStaminaAttributes.h"
 #include "Effects/GE_GEDefaultAttributes.h"
 #include "FunctionLibraries/GEFunctionLibrary.h"
