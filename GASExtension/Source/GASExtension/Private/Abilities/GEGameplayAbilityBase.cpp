@@ -24,6 +24,25 @@ UGEGameplayAbilityBase::UGEGameplayAbilityBase()
     ActivationBlockedTags.AddTagFast(State::Stun);
 }
 
+void UGEGameplayAbilityBase::InputReleased(const FGameplayAbilitySpecHandle Handle,
+    const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo)
+{
+    Super::InputReleased(Handle, ActorInfo, ActivationInfo);
+
+    // 어빌리티 입력이 비활성화되면 어빌리티를 종료합니다.
+    if(bIsActive) EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true, false);
+}
+
+void UGEGameplayAbilityBase::EndAbility(const FGameplayAbilitySpecHandle Handle,
+                                        const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo,
+                                        bool bReplicateEndAbility, bool bWasCancelled)
+{
+    Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
+
+    // Input Release 외의 조건으로 인해 어빌리티가 종료되는 경우
+    GetCurrentAbilitySpec()->InputPressed = false;
+}
+
 const FGameplayTag UGEGameplayAbilityBase::GetInputTag_Implementation() const
 {
     return InputTag;

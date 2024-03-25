@@ -59,15 +59,6 @@ void UGEGA_Fire::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGame
 
     // 발사 중지
     StopFire();
-
-    // Input Release 상태로 변경
-    GetCurrentAbilitySpec()->InputPressed = false;
-}
-
-void UGEGA_Fire::InputReleased(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
-    const FGameplayAbilityActivationInfo ActivationInfo)
-{
-    if(bIsActive) EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true, false);
 }
 
 void UGEGA_Fire::StopFire()
