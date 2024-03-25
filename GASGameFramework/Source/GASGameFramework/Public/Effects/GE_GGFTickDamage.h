@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameplayEffect.h"
-#include "GGF_GGFTickDamage.generated.h"
+#include "GE_GGFTickDamage.generated.h"
 
 /**
  * GGFHealthAttributes에 틱 데미지를 가하기 위한 GameplayEffect 기저 클래스입니다.
@@ -12,10 +12,10 @@
  * 기본 설정 데미지는 20입니다. (4 데미지 x 5번)
  */
 UCLASS()
-class GASGAMEFRAMEWORK_API UGGF_GGFTickDamage : public UGameplayEffect
+class GASGAMEFRAMEWORK_API UGE_GGFTickDamage : public UGameplayEffect
 {
     GENERATED_BODY()
 
 public:
-    UGGF_GGFTickDamage();
+    UGE_GGFTickDamage();
 };

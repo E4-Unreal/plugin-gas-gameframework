@@ -1,11 +1,11 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Effects/GGF_GGFDamage.h"
+#include "Effects/GE_GGFDamage.h"
 
 #include "Attributes/GGFHealthAttributes.h"
 
-UGGF_GGFDamage::UGGF_GGFDamage()
+UGE_GGFDamage::UGE_GGFDamage()
 {
     /* 기본값 설정 */
     const float Damage = 20.f;

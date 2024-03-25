@@ -1,11 +1,11 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Effects/GGF_GGFTickDamage.h"
+#include "Effects/GE_GGFTickDamage.h"
 
 #include "Attributes/GGFHealthAttributes.h"
 
-UGGF_GGFTickDamage::UGGF_GGFTickDamage()
+UGE_GGFTickDamage::UGE_GGFTickDamage()
 {
     /* 기본값 설정 */
     const float Damage = 4.f;

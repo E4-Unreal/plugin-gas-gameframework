@@ -12,14 +12,14 @@
 #define DECLARE_ATTRIBUTE_SETTER(AttributeName) virtual void Set##AttributeName(float Value){ };
 
 // Attribute Value Change 이벤트 핸들링 델리게이트 및 메서드 선언
-#define DECLARE_ATTRIBUTE_VALUE_CHANGGF_HANDLE(AttributeName) \
+#define DECLARE_ATTRIBUTE_VALUE_CHANGE_HANDLE(AttributeName) \
     FDelegateHandle On##AttributeName##AttributeValueChangeHandle;  \
     void On##AttributeName##AttributeValueChange_Event(const FOnAttributeChangeData& Data);
 
 /* CPP 매크로 */
 
 // Attribute Value Change 이벤트 핸들링 메서드 정의
-#define DEFINE_ATTRIBUTE_VALUE_CHANGGF_HANDLE(ClassName, AttributeName) \
+#define DEFINE_ATTRIBUTE_VALUE_CHANGE_HANDLE(ClassName, AttributeName) \
     void ClassName##::On##AttributeName##AttributeValueChange_Event(const FOnAttributeChangeData& Data)   \
     {   \
         Set##AttributeName(Data.NewValue);  \
@@ -31,12 +31,12 @@
     if(bFound) Set##AttributeName(AttributeValue);
 
 // Attribute Value Change 이벤트 바인딩
-#define BIND_ATTRIBUTE_VALUE_CHANGGF_DELEGATE(ClassName, AttributeName)  \
+#define BIND_ATTRIBUTE_VALUE_CHANGE_DELEGATE(ClassName, AttributeName)  \
     GetAbilitySystem()->GetGameplayAttributeValueChangeDelegate(ClassName::Get##AttributeName##Attribute())   \
     .AddUObject(this, &ThisClass::On##AttributeName##AttributeValueChange_Event);
 
 // Attribute Value Change 이벤트 언바인딩
-#define UNBIND_ATTRIBUTE_VALUE_CHANGGF_DELEGATE(ClassName, AttributeName)  \
+#define UNBIND_ATTRIBUTE_VALUE_CHANGE_DELEGATE(ClassName, AttributeName)  \
     GetAbilitySystem()->GetGameplayAttributeValueChangeDelegate(ClassName::Get##AttributeName##Attribute())   \
     .Remove(On##AttributeName##AttributeValueChangeHandle);
 

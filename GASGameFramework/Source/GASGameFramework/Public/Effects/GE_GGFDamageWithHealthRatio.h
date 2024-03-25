@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameplayEffect.h"
-#include "GGF_GGFDamageWithHealthRatio.generated.h"
+#include "GE_GGFDamageWithHealthRatio.generated.h"
 
 /**
  * GGFHealthAttributes에 데미지를 가하기 위한 GameplayEffect 기저 클래스입니다.
@@ -12,10 +12,10 @@
  * 기본 설정 데미지는 대상 최대 체력의 10%입니다.
  */
 UCLASS()
-class GASGAMEFRAMEWORK_API UGGF_GGFDamageWithHealthRatio : public UGameplayEffect
+class GASGAMEFRAMEWORK_API UGE_GGFDamageWithHealthRatio : public UGameplayEffect
 {
     GENERATED_BODY()
 
 public:
-    UGGF_GGFDamageWithHealthRatio();
+    UGE_GGFDamageWithHealthRatio();
 };

@@ -1,11 +1,11 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Effects/GGF_GGFDefaultAttributes.h"
+#include "Effects/GE_GGFDefaultAttributes.h"
 
 #include "Attributes/GGFStaminaAttributes.h"
 
-UGGF_GGFDefaultAttributes::UGGF_GGFDefaultAttributes()
+UGE_GGFDefaultAttributes::UGE_GGFDefaultAttributes()
 {
     // UGGFAttributeSetBase::AdjustAttributeForMaxChange 덕분에 Attribute 값이 Max 값으로 초기화됩니다.
 

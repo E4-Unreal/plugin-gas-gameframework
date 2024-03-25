@@ -5,7 +5,7 @@
 #include "GGFGameplayTags.h"
 #include "Abilities/GGFGameplayAbility.h"
 #include "Attributes/GGFStaminaAttributes.h"
-#include "Effects/GGF_GGFDefaultAttributes.h"
+#include "Effects/GE_GGFDefaultAttributes.h"
 #include "FunctionLibraries/GGFFunctionLibrary.h"
 
 UGGFAbilitySystemBase::UGGFAbilitySystemBase()
@@ -15,7 +15,7 @@ UGGFAbilitySystemBase::UGGFAbilitySystemBase()
 
     // 기본 Attributes 및 GameplayEffect 등록
     DefaultAttributes.Add(UGGFStaminaAttributes::StaticClass());
-    DefaultEffects.Add(UGGF_GGFDefaultAttributes::StaticClass());
+    DefaultEffects.Add(UGE_GGFDefaultAttributes::StaticClass());
 }
 
 void UGGFAbilitySystemBase::InitializeComponent()

@@ -1,11 +1,11 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Effects/GGF_GGFTickDamageWithHealthRatio.h"
+#include "Effects/GE_GGFTickDamageWithHealthRatio.h"
 
 #include "Attributes/GGFHealthAttributes.h"
 
-UGGF_GGFTickDamageWithHealthRatio::UGGF_GGFTickDamageWithHealthRatio()
+UGE_GGFTickDamageWithHealthRatio::UGE_GGFTickDamageWithHealthRatio()
 {
     /* 기본값 설정 */
     const float Ratio = 0.1f;
