@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
-#include "GEEquipmentManagerBase.generated.h"
+#include "GGFEquipmentManagerBase.generated.h"
 
 struct FGameplayTag;
-class AGEEquipment;
+class AGGFEquipment;
 
 UCLASS(Abstract, NotBlueprintable)
-class GASGAMEFRAMEWORK_API UGEEquipmentManagerBase : public UActorComponent
+class GASGAMEFRAMEWORK_API UGGFEquipmentManagerBase : public UActorComponent
 {
     GENERATED_BODY()
 
@@ -24,20 +24,20 @@ protected:
     /* 메서드 */
     // Owner 위치에 액터를 스폰한 뒤 반환합니다.
     UFUNCTION(BlueprintCallable)
-    AGEEquipment* SpawnEquipment(TSubclassOf<AGEEquipment> EquipmentClass);
+    AGGFEquipment* SpawnEquipment(TSubclassOf<AGGFEquipment> EquipmentClass);
 
     // 스켈레탈 메시 소켓에 액터를 부착합니다.
     UFUNCTION(BlueprintCallable)
-    virtual bool AttachEquipment(AGEEquipment* Equipment, FName SocketName);
+    virtual bool AttachEquipment(AGGFEquipment* Equipment, FName SocketName);
 
     UFUNCTION(BlueprintCallable)
-    static FGameplayTag GetEquipmentSlot(TSubclassOf<AGEEquipment> EquipmentClass);
+    static FGameplayTag GetEquipmentSlot(TSubclassOf<AGGFEquipment> EquipmentClass);
 
     /* Getter */
     FORCEINLINE USkeletalMeshComponent* GetMesh() const { return SkeletalMesh; }
 
 public:
-    UGEEquipmentManagerBase();
+    UGGFEquipmentManagerBase();
 
     UFUNCTION(BlueprintCallable)
     void InjectDependencies(USkeletalMeshComponent* InSkeletalMesh);

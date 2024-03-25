@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GEHitEffect.h"
-#include "GEHitEffect_Particle.generated.h"
+#include "GGFHitEffect.h"
+#include "GGFHitEffect_Particle.generated.h"
 
 /**
  *
  */
 UCLASS()
-class GASGAMEFRAMEWORK_API UGEHitEffect_Particle : public UGEHitEffect
+class GASGAMEFRAMEWORK_API UGGFHitEffect_Particle : public UGGFHitEffect
 {
     GENERATED_BODY()
 

@@ -1,31 +1,31 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Character/GECharacterBase.h"
+#include "Character/GGFCharacterBase.h"
 
 #include "EnhancedInputComponent.h"
-#include "GEAbilitySystemBase.h"
-#include "Character/Components/GEAbilityInputBinder.h"
-#include "Character/Components/GECharacterMovement.h"
-#include "Abilities/GEStateMachine.h"
-#include "Equipment/Components/GEEquipmentManager.h"
+#include "GGFAbilitySystemBase.h"
+#include "Character/Components/GGFAbilityInputBinder.h"
+#include "Character/Components/GGFCharacterMovement.h"
+#include "Abilities/GGFStateMachine.h"
+#include "Equipment/Components/GGFEquipmentManager.h"
 
-FName AGECharacterBase::AbilitySystemComponentName(TEXT("AbilitySystem"));
-FName AGECharacterBase::EquipmentManagerName(TEXT("EquipmentManager"));
-FName AGECharacterBase::StateMachineName(TEXT("StateMachine"));
+FName AGGFCharacterBase::AbilitySystemComponentName(TEXT("AbilitySystem"));
+FName AGGFCharacterBase::EquipmentManagerName(TEXT("EquipmentManager"));
+FName AGGFCharacterBase::StateMachineName(TEXT("StateMachine"));
 
-AGECharacterBase::AGECharacterBase(const FObjectInitializer& ObjectInitializer)
+AGGFCharacterBase::AGGFCharacterBase(const FObjectInitializer& ObjectInitializer)
 : Super(ObjectInitializer
-    .SetDefaultSubobjectClass<UGECharacterMovement>(CharacterMovementComponentName))
+    .SetDefaultSubobjectClass<UGGFCharacterMovement>(CharacterMovementComponentName))
 {
     /* 서브 오브젝트 생성 */
-    AbilitySystem = CreateDefaultSubobject<UGEAbilitySystemBase>(AbilitySystemComponentName);
-    AbilityInputBinder = CreateDefaultSubobject<UGEAbilityInputBinder>(TEXT("AbilityInputBinder"));
-    EquipmentManager = CreateDefaultSubobject<UGEEquipmentManager>(EquipmentManagerName);
-    StateMachine = CreateDefaultSubobject<UGEStateMachine>(StateMachineName);
+    AbilitySystem = CreateDefaultSubobject<UGGFAbilitySystemBase>(AbilitySystemComponentName);
+    AbilityInputBinder = CreateDefaultSubobject<UGGFAbilityInputBinder>(TEXT("AbilityInputBinder"));
+    EquipmentManager = CreateDefaultSubobject<UGGFEquipmentManager>(EquipmentManagerName);
+    StateMachine = CreateDefaultSubobject<UGGFStateMachine>(StateMachineName);
 }
 
-void AGECharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+void AGGFCharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
     Super::SetupPlayerInputComponent(PlayerInputComponent);
 
@@ -35,7 +35,7 @@ void AGECharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
     }
 }
 
-void AGECharacterBase::SetupEnhancedInputComponent(UEnhancedInputComponent* EnhancedInputComponent)
+void AGGFCharacterBase::SetupEnhancedInputComponent(UEnhancedInputComponent* EnhancedInputComponent)
 {
     // null 검사
     if(EnhancedInputComponent == nullptr) return;
@@ -44,13 +44,13 @@ void AGECharacterBase::SetupEnhancedInputComponent(UEnhancedInputComponent* Enha
     AbilityInputBinder->BindAbilityInput(EnhancedInputComponent);
 }
 
-bool AGECharacterBase::CanJumpInternal_Implementation() const
+bool AGGFCharacterBase::CanJumpInternal_Implementation() const
 {
     // 앉은 상태에서도 점프가 가능합니다.
     return JumpIsAllowedInternal();
 }
 
-bool AGECharacterBase::CanCrouch() const
+bool AGGFCharacterBase::CanCrouch() const
 {
     // 점프 상태에서는 앉기가 불가능합니다.
     return !GetCharacterMovement()->IsFalling() && Super::CanCrouch();

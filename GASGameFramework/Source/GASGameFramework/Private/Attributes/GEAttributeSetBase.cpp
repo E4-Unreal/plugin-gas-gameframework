@@ -1,10 +1,10 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
-#include "Attributes/GEAttributeSetBase.h"
+#include "Attributes/GGFAttributeSetBase.h"
 
 #include "AbilitySystemComponent.h"
 
-void UGEAttributeSetBase::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)
+void UGGFAttributeSetBase::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)
 {
     Super::PreAttributeChange(Attribute, NewValue);
 
@@ -12,7 +12,7 @@ void UGEAttributeSetBase::PreAttributeChange(const FGameplayAttribute& Attribute
     ClampAttributes(Attribute, NewValue);
 }
 
-void UGEAttributeSetBase::PreAttributeBaseChange(const FGameplayAttribute& Attribute, float& NewValue) const
+void UGGFAttributeSetBase::PreAttributeBaseChange(const FGameplayAttribute& Attribute, float& NewValue) const
 {
     Super::PreAttributeBaseChange(Attribute, NewValue);
 
@@ -20,7 +20,7 @@ void UGEAttributeSetBase::PreAttributeBaseChange(const FGameplayAttribute& Attri
     ClampAttributes(Attribute, NewValue);
 }
 
-void UGEAttributeSetBase::PostAttributeChange(const FGameplayAttribute& Attribute, float OldValue, float NewValue)
+void UGGFAttributeSetBase::PostAttributeChange(const FGameplayAttribute& Attribute, float OldValue, float NewValue)
 {
     Super::PostAttributeChange(Attribute, OldValue, NewValue);
 
@@ -28,7 +28,7 @@ void UGEAttributeSetBase::PostAttributeChange(const FGameplayAttribute& Attribut
     AdjustAttributes(Attribute, OldValue, NewValue);
 }
 
-void UGEAttributeSetBase::AdjustAttributeForMaxChange(const FGameplayAttributeData& AffectedAttribute,
+void UGGFAttributeSetBase::AdjustAttributeForMaxChange(const FGameplayAttributeData& AffectedAttribute,
                                                       const FGameplayAttributeData& MaxAttribute, const float OldMaxValue, const float NewMaxValue,
                                                       const FGameplayAttribute& AffectedAttributeProperty) const
 {
@@ -43,10 +43,10 @@ void UGEAttributeSetBase::AdjustAttributeForMaxChange(const FGameplayAttributeDa
     }
 }
 
-void UGEAttributeSetBase::ClampAttributes(const FGameplayAttribute& Attribute, float& NewValue) const
+void UGGFAttributeSetBase::ClampAttributes(const FGameplayAttribute& Attribute, float& NewValue) const
 {
 }
 
-void UGEAttributeSetBase::AdjustAttributes(const FGameplayAttribute& Attribute, float OldValue, float NewValue)
+void UGGFAttributeSetBase::AdjustAttributes(const FGameplayAttribute& Attribute, float OldValue, float NewValue)
 {
 }

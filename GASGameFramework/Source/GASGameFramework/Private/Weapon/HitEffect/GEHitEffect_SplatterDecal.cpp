@@ -1,9 +1,9 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Weapon/HitEffect/GEHitEffect_SplatterDecal.h"
+#include "Weapon/HitEffect/GGFHitEffect_SplatterDecal.h"
 
-void UGEHitEffect_SplatterDecal::SpawnHitEffect(const FHitResult& HitResult) const
+void UGGFHitEffect_SplatterDecal::SpawnHitEffect(const FHitResult& HitResult) const
 {
     // null 검사
     if(DecalMaterial == nullptr) return;

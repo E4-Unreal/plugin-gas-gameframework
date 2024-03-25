@@ -1,23 +1,23 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Weapon/Projectile/GEExplosiveProjectile.h"
+#include "Weapon/Projectile/GGFExplosiveProjectile.h"
 
 #include "AbilitySystemComponent.h"
 #include "AbilitySystemGlobals.h"
 #include "NiagaraFunctionLibrary.h"
 #include "Components/SphereComponent.h"
-#include "FunctionLibraries/GEFunctionLibrary.h"
+#include "FunctionLibraries/GGFFunctionLibrary.h"
 #include "Kismet/GameplayStatics.h"
 #include "Sound/SoundCue.h"
 
-AGEExplosiveProjectile::AGEExplosiveProjectile()
+AGGFExplosiveProjectile::AGGFExplosiveProjectile()
 {
     ExplosionSphere = CreateDefaultSubobject<USphereComponent>(TEXT("ExplosionSphere"));
     ExplosionSphere->SetupAttachment(RootComponent);
 }
 
-void AGEExplosiveProjectile::BeginPlay()
+void AGGFExplosiveProjectile::BeginPlay()
 {
     Super::BeginPlay();
 
@@ -35,7 +35,7 @@ void AGEExplosiveProjectile::BeginPlay()
     }
 }
 
-void AGEExplosiveProjectile::OnComponentHit_Event_Implementation(UPrimitiveComponent* HitComponent, AActor* OtherActor,
+void AGGFExplosiveProjectile::OnComponentHit_Event_Implementation(UPrimitiveComponent* HitComponent, AActor* OtherActor,
                                                                  UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
     if(bEnableHit)
@@ -56,7 +56,7 @@ void AGEExplosiveProjectile::OnComponentHit_Event_Implementation(UPrimitiveCompo
     }
 }
 
-void AGEExplosiveProjectile::OnExplode_Implementation()
+void AGGFExplosiveProjectile::OnExplode_Implementation()
 {
     const UWorld* World = GetWorld();
     if(World == nullptr) return;
@@ -80,7 +80,7 @@ void AGEExplosiveProjectile::OnExplode_Implementation()
     OnMulticastExplode();
 }
 
-void AGEExplosiveProjectile::DetectExplosionHit_Implementation()
+void AGGFExplosiveProjectile::DetectExplosionHit_Implementation()
 {
     TArray<AActor*> OverlappingActors;
     ExplosionSphere->GetOverlappingActors(OverlappingActors, AActor::StaticClass());
@@ -135,7 +135,7 @@ void AGEExplosiveProjectile::DetectExplosionHit_Implementation()
 #endif
 
                         // 데미지 적용
-                        UGEFunctionLibrary::ApplyGameplayEffectsToSystem(EffectsToApply, AbilitySystem);
+                        UGGFFunctionLibrary::ApplyGameplayEffectsToSystem(EffectsToApply, AbilitySystem);
                     }
                     else
                     {
@@ -159,7 +159,7 @@ void AGEExplosiveProjectile::DetectExplosionHit_Implementation()
     }
 }
 
-void AGEExplosiveProjectile::GetTargetLocations(const AActor* Target, TArray<FVector>& TargetLocations)
+void AGGFExplosiveProjectile::GetTargetLocations(const AActor* Target, TArray<FVector>& TargetLocations)
 {
     // null 검사
     if(Target == nullptr) return;
@@ -196,7 +196,7 @@ void AGEExplosiveProjectile::GetTargetLocations(const AActor* Target, TArray<FVe
 }
 
 
-void AGEExplosiveProjectile::OnMulticastExplode_Implementation()
+void AGGFExplosiveProjectile::OnMulticastExplode_Implementation()
 {
     const FVector& ExplosionLocation = GetActorLocation();
 

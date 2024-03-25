@@ -1,13 +1,13 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Weapon/HitEffect/GEHitEffect_Niagara.h"
+#include "Weapon/HitEffect/GGFHitEffect_Niagara.h"
 
 #include "NiagaraFunctionLibrary.h"
 
 class UNiagaraComponent;
 
-void UGEHitEffect_Niagara::SpawnHitEffect(const FHitResult& HitResult) const
+void UGGFHitEffect_Niagara::SpawnHitEffect(const FHitResult& HitResult) const
 {
     // null 검사
     if(Niagara == nullptr) return;

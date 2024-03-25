@@ -3,8 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Weapon/GEWeapon.h"
-#include "GEFireArm.generated.h"
+#include "Weapon/GGFWeapon.h"
+#include "GGFFireArm.generated.h"
 
 class USoundCue;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAmmoValueChangedSiganature, int32, Ammo);
@@ -15,7 +15,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAmmoValueChangedSiganature, int32
  * 총기 클래스를 작성할 떄 이 클래스를 상속받은 뒤 OnFire 메서드만 오버라이드하면 됩니다.
  */
 UCLASS(Abstract, Blueprintable, BlueprintType)
-class GASGAMEFRAMEWORK_API AGEFireArm : public AGEWeapon
+class GASGAMEFRAMEWORK_API AGGFFireArm : public AGGFWeapon
 {
     GENERATED_BODY()
 
@@ -91,7 +91,7 @@ class GASGAMEFRAMEWORK_API AGEFireArm : public AGEWeapon
     FTransform MuzzleFlashTransform;
 
 public:
-    AGEFireArm();
+    AGGFFireArm();
 
     virtual void PostInitializeComponents() override;
     virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;

@@ -1,12 +1,12 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Character/Animation/GEAnimInstance.h"
+#include "Character/Animation/GGFAnimInstance.h"
 
 #include "AbilitySystemComponent.h"
 #include "AbilitySystemGlobals.h"
 
-void UGEAnimInstance::NativeInitializeAnimation()
+void UGGFAnimInstance::NativeInitializeAnimation()
 {
     Super::NativeInitializeAnimation();
 
@@ -25,7 +25,7 @@ void UGEAnimInstance::NativeInitializeAnimation()
     }
 }
 
-void UGEAnimInstance::OnGameplayEffectTagCountChanged_Event(const FGameplayTag Tag, int32 NewCount)
+void UGGFAnimInstance::OnGameplayEffectTagCountChanged_Event(const FGameplayTag Tag, int32 NewCount)
 {
     // TODO 자손 클래스에서 게임플레이 태그 이벤트를 변수와 바인딩
 }

@@ -1,31 +1,31 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Weapon/GEWeapon.h"
+#include "Weapon/GGFWeapon.h"
 
 #include "AbilitySystemComponent.h"
 #include "AbilitySystemGlobals.h"
-#include "Character/Interface/GECharacterMeshInterface.h"
-#include "FunctionLibraries/GEFunctionLibrary.h"
-#include "Weapon/Interface/GEWeaponAbilityInterface.h"
+#include "Character/Interface/GGFCharacterMeshInterface.h"
+#include "FunctionLibraries/GGFFunctionLibrary.h"
+#include "Weapon/Interface/GGFWeaponAbilityInterface.h"
 
-void AGEWeapon::OnSelected_Implementation()
+void AGGFWeapon::OnSelected_Implementation()
 {
     GiveAbilities();
 }
 
-void AGEWeapon::OnDeselected_Implementation()
+void AGGFWeapon::OnDeselected_Implementation()
 {
     ClearAbilities();
 }
 
-void AGEWeapon::GiveAbilities()
+void AGGFWeapon::GiveAbilities()
 {
     // 유효성 검사
     if(!OwnerAbilitySystem.IsValid()) return;
 
     // 무기 어빌리티 부여
-    AbilitySpecHandles = UGEFunctionLibrary::GiveAbilitiesToSystem(WeaponAbilities, OwnerAbilitySystem.Get());
+    AbilitySpecHandles = UGGFFunctionLibrary::GiveAbilitiesToSystem(WeaponAbilities, OwnerAbilitySystem.Get());
 
     // 부여된 무기 어빌리티에 무기 레퍼런스 추가
     for (const auto& AbilitySpecHandle : AbilitySpecHandles)
@@ -42,15 +42,15 @@ void AGEWeapon::GiveAbilities()
         UGameplayAbility* AbilityInstance = AbilityInstances[0];
 
         // 무기 레퍼런스 주입
-        if(!AbilityInstance->GetClass()->ImplementsInterface(UGEWeaponAbilityInterface::StaticClass())) continue;
-        IGEWeaponAbilityInterface::Execute_SetWeapon(AbilityInstance, this);
+        if(!AbilityInstance->GetClass()->ImplementsInterface(UGGFWeaponAbilityInterface::StaticClass())) continue;
+        IGGFWeaponAbilityInterface::Execute_SetWeapon(AbilityInstance, this);
 
         // ShowDebug AbilitySystem에서 확인하기 위해 CDO를 어빌리티 인스턴스로 교체
         AbilitySpec->Ability = AbilityInstance;
     }
 }
 
-void AGEWeapon::ClearAbilities()
+void AGGFWeapon::ClearAbilities()
 {
     // 유효성 검사
     if(!OwnerAbilitySystem.IsValid()) return;
@@ -62,7 +62,7 @@ void AGEWeapon::ClearAbilities()
     }
 }
 
-void AGEWeapon::OnEquip_Implementation()
+void AGGFWeapon::OnEquip_Implementation()
 {
     Super::OnEquip_Implementation();
 
@@ -70,14 +70,14 @@ void AGEWeapon::OnEquip_Implementation()
     OwnerAbilitySystem = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(Owner);
 
     // 캐릭터 메시 캐싱
-    if(Owner->GetClass()->ImplementsInterface(UGECharacterMeshInterface::StaticClass()))
+    if(Owner->GetClass()->ImplementsInterface(UGGFCharacterMeshInterface::StaticClass()))
     {
-        ThirdPersonMesh = IGECharacterMeshInterface::Execute_GetThirdPersonFullBodyMesh(Owner);
-        FirstPersonMesh = IGECharacterMeshInterface::Execute_GetFirstPersonArmsMesh(Owner);
+        ThirdPersonMesh = IGGFCharacterMeshInterface::Execute_GetThirdPersonFullBodyMesh(Owner);
+        FirstPersonMesh = IGGFCharacterMeshInterface::Execute_GetFirstPersonArmsMesh(Owner);
     }
 }
 
-void AGEWeapon::OnUnEquip_Implementation()
+void AGGFWeapon::OnUnEquip_Implementation()
 {
     Super::OnUnEquip_Implementation();
 

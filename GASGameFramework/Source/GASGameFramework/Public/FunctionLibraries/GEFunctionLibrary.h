@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "UObject/Object.h"
-#include "GEFunctionLibrary.generated.h"
+#include "GGFFunctionLibrary.generated.h"
 
 class UAbilitySystemComponent;
 class UAttributeSet;
@@ -16,7 +16,7 @@ struct FGameplayAbilitySpecHandle;
  * GASExtension 플러그인에서 사용하는 함수 라이브러리입니다.
  */
 UCLASS()
-class GASGAMEFRAMEWORK_API UGEFunctionLibrary : public UObject
+class GASGAMEFRAMEWORK_API UGGFFunctionLibrary : public UObject
 {
     GENERATED_BODY()
 

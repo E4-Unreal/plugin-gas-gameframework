@@ -4,9 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "Engine/DataAsset.h"
-#include "GEHitEffectDefinition.generated.h"
+#include "GGFHitEffectDefinition.generated.h"
 
-class UGEHitEffect;
+class UGGFHitEffect;
 
 USTRUCT(Atomic, BlueprintType)
 struct FGSFHitEffectConfig
@@ -14,7 +14,7 @@ struct FGSFHitEffectConfig
     GENERATED_BODY()
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    TArray<UGEHitEffect*> HitEffects;
+    TArray<UGGFHitEffect*> HitEffects;
 };
 
 /*
@@ -24,7 +24,7 @@ struct FGSFHitEffectConfig
  * 이처럼 서로 다른 클래스에서 동일한 방식으로 피격 효과를 스폰하기 위한 데이터 에셋입니다.
  */
 UCLASS(BlueprintType)
-class GASGAMEFRAMEWORK_API UGEHitEffectDefinition : public UDataAsset
+class GASGAMEFRAMEWORK_API UGGFHitEffectDefinition : public UDataAsset
 {
 	GENERATED_BODY()
 

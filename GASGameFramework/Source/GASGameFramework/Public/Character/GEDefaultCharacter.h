@@ -3,10 +3,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GECharacter.h"
-#include "Interface/GECharacterMeshInterface.h"
-#include "Weapon/Interface/GEAimingInterface.h"
-#include "GEDefaultCharacter.generated.h"
+#include "GGFCharacter.h"
+#include "Interface/GGFCharacterMeshInterface.h"
+#include "Weapon/Interface/GGFAimingInterface.h"
+#include "GGFDefaultCharacter.generated.h"
 
 class USpringArmComponent;
 class UCameraComponent;
@@ -16,9 +16,9 @@ class UCameraComponent;
  * 1인칭, 3인칭 모두 사용 가능한 캐릭터 클래스입니다.
  */
 UCLASS()
-class GASGAMEFRAMEWORK_API AGEDefaultCharacter : public AGECharacter,
-    public IGEAimingInterface,
-    public IGECharacterMeshInterface
+class GASGAMEFRAMEWORK_API AGGFDefaultCharacter : public AGGFCharacter,
+    public IGGFAimingInterface,
+    public IGGFCharacterMeshInterface
 {
     GENERATED_BODY()
 
@@ -35,7 +35,7 @@ class GASGAMEFRAMEWORK_API AGEDefaultCharacter : public AGECharacter,
     TObjectPtr<USkeletalMeshComponent> FirstPersonLegs;
 
 public:
-    AGEDefaultCharacter(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
+    AGGFDefaultCharacter(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
 public:
     /* Getter */
@@ -52,10 +52,10 @@ public:
     FORCEINLINE USkeletalMeshComponent* GetFirstPersonLegs() const { return FirstPersonLegs; }
 
 public:
-    /* GEAimingInterface */
+    /* GGFAimingInterface */
     virtual void GetTarget_Implementation(FVector& Target) override;
 
-    /* GECharacterMeshInterface */
+    /* GGFCharacterMeshInterface */
     FORCEINLINE virtual USkeletalMeshComponent* GetFirstPersonArmsMesh_Implementation() const override { return FirstPersonArms; }
     FORCEINLINE virtual USkeletalMeshComponent* GetFirstPersonLegsMesh_Implementation() const override { return FirstPersonLegs; }
     FORCEINLINE virtual USkeletalMeshComponent* GetThirdPersonFullBodyMesh_Implementation() const override { return GetMesh(); }

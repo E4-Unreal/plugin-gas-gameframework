@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GEHitEffect_Decal.h"
-#include "GEHitEffect_SplatterDecal.generated.h"
+#include "GGFHitEffect_Decal.h"
+#include "GGFHitEffect_SplatterDecal.generated.h"
 
 /**
  * 피격 대상이 관통되면서 뒤에 있는 오브젝트에 부착되는 데칼입니다.
  */
 UCLASS()
-class GASGAMEFRAMEWORK_API UGEHitEffect_SplatterDecal : public UGEHitEffect_Decal
+class GASGAMEFRAMEWORK_API UGGFHitEffect_SplatterDecal : public UGGFHitEffect_Decal
 {
     GENERATED_BODY()
 

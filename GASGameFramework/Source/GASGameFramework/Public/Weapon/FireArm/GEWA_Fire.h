@@ -3,17 +3,17 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GEFireArmAbility.h"
-#include "GEWA_Fire.generated.h"
+#include "GGFFireArmAbility.h"
+#include "GGFWA_Fire.generated.h"
 
-class AGEFireArm;
+class AGGFFireArm;
 class UAnimMontage;
 
 /**
  * 총기 발사 전용 어빌리티
  */
 UCLASS()
-class GASGAMEFRAMEWORK_API UGEWA_Fire : public UGEFireArmAbility
+class GASGAMEFRAMEWORK_API UGGFWA_Fire : public UGGFFireArmAbility
 {
     GENERATED_BODY()
 
@@ -21,7 +21,7 @@ protected:
     FTimerHandle FireTimer;
 
 public:
-    UGEWA_Fire();
+    UGGFWA_Fire();
 
 protected:
     /* GameplayAbility */

@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GEManaAttributes.h"
-#include "GEStaminaAttributes.generated.h"
+#include "GGFManaAttributes.h"
+#include "GGFStaminaAttributes.generated.h"
 
 /**
- * GEManaAttributes에서 스태미나 어트리뷰트가 추가된 AttributeSet 클래스입니다.
+ * GGFManaAttributes에서 스태미나 어트리뷰트가 추가된 AttributeSet 클래스입니다.
  */
 UCLASS()
-class GASGAMEFRAMEWORK_API UGEStaminaAttributes : public UGEManaAttributes
+class GASGAMEFRAMEWORK_API UGGFStaminaAttributes : public UGGFManaAttributes
 {
     GENERATED_BODY()
 
@@ -35,7 +35,7 @@ public:
     virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 protected:
-    /* GEAttributeSetBase */
+    /* GGFAttributeSetBase */
     virtual void ClampAttributes(const FGameplayAttribute& Attribute, float& NewValue) const override;
 
     virtual void AdjustAttributes(const FGameplayAttribute& Attribute, float OldValue, float NewValue) override;

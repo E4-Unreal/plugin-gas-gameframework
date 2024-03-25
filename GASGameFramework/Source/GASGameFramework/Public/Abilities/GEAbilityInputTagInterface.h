@@ -5,18 +5,18 @@
 #include "CoreMinimal.h"
 #include "UObject/Interface.h"
 #include "GameplayTags.h"
-#include "GEAbilityInputTagInterface.generated.h"
+#include "GGFAbilityInputTagInterface.generated.h"
 
 UINTERFACE(Blueprintable, BlueprintType)
-class UGEAbilityInputTagInterface : public UInterface
+class UGGFAbilityInputTagInterface : public UInterface
 {
     GENERATED_BODY()
 };
 
 /**
- * GEAbilitySystemBase에서 Ability InputID를 설정하기 위한 입력 태그를 반환합니다.
+ * GGFAbilitySystemBase에서 Ability InputID를 설정하기 위한 입력 태그를 반환합니다.
  */
-class GASGAMEFRAMEWORK_API IGEAbilityInputTagInterface
+class GASGAMEFRAMEWORK_API IGGFAbilityInputTagInterface
 {
     GENERATED_BODY()
 

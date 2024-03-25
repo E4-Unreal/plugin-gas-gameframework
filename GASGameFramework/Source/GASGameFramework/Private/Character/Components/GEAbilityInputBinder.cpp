@@ -1,29 +1,29 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Character/Components/GEAbilityInputBinder.h"
+#include "Character/Components/GGFAbilityInputBinder.h"
 
 #include "AbilitySystemGlobals.h"
-#include "GEAbilitySystemBase.h"
-#include "GEInputConfig.h"
+#include "GGFAbilitySystemBase.h"
+#include "GGFInputConfig.h"
 
-UGEAbilityInputBinder::UGEAbilityInputBinder()
+UGGFAbilityInputBinder::UGGFAbilityInputBinder()
 {
     bWantsInitializeComponent = true;
 }
 
-void UGEAbilityInputBinder::InitializeComponent()
+void UGGFAbilityInputBinder::InitializeComponent()
 {
     Super::InitializeComponent();
 
     // 레퍼런스 할당
-    AbilitySystem = Cast<UGEAbilitySystemBase>(UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(GetOwner()));
+    AbilitySystem = Cast<UGGFAbilitySystemBase>(UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(GetOwner()));
 
     // 어빌리티 전용 입력 에셋 등록
     RegisterAbilityInputConfig();
 }
 
-void UGEAbilityInputBinder::BindAbilityInput(UEnhancedInputComponent* EnhancedInputComponent)
+void UGGFAbilityInputBinder::BindAbilityInput(UEnhancedInputComponent* EnhancedInputComponent)
 {
     // 유효성 검사
     if(EnhancedInputComponent == nullptr || !AbilitySystem.IsValid()) return;
@@ -49,7 +49,7 @@ void UGEAbilityInputBinder::BindAbilityInput(UEnhancedInputComponent* EnhancedIn
     }
 }
 
-void UGEAbilityInputBinder::RegisterAbilityInputConfig()
+void UGGFAbilityInputBinder::RegisterAbilityInputConfig()
 {
     // null 검사
     if(AbilityInputConfig == nullptr) return;
@@ -71,7 +71,7 @@ void UGEAbilityInputBinder::RegisterAbilityInputConfig()
     }
 }
 
-void UGEAbilityInputBinder::PressInputAction(UInputAction* InputAction)
+void UGGFAbilityInputBinder::PressInputAction(UInputAction* InputAction)
 {
     // 유효한 게임플레이 태그인지 검사
     const FGameplayTag& InputTag = RegisteredAbilityInput[InputAction];
@@ -80,7 +80,7 @@ void UGEAbilityInputBinder::PressInputAction(UInputAction* InputAction)
     AbilitySystem->PressInputTag(InputTag);
 }
 
-void UGEAbilityInputBinder::ReleaseInputAction(UInputAction* InputAction)
+void UGGFAbilityInputBinder::ReleaseInputAction(UInputAction* InputAction)
 {
     // 유효한 게임플레이 태그인지 검사
     const FGameplayTag& InputTag = RegisteredAbilityInput[InputAction];

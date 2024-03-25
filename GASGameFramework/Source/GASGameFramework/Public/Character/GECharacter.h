@@ -3,8 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GECharacterBase.h"
-#include "GECharacter.generated.h"
+#include "GGFCharacterBase.h"
+#include "GGFCharacter.generated.h"
 
 class UInputMappingContext;
 class UInputAction;
@@ -14,7 +14,7 @@ struct FInputActionValue;
  * 기본 움직임 및 입력 액션 바인딩만 담당
  */
 UCLASS()
-class GASGAMEFRAMEWORK_API AGECharacter : public AGECharacterBase
+class GASGAMEFRAMEWORK_API AGGFCharacter : public AGGFCharacterBase
 {
     GENERATED_BODY()
 
@@ -42,7 +42,7 @@ public:
     virtual void BeginPlay() override;
 
 protected:
-    /* AGECharacterBase */
+    /* AGGFCharacterBase */
     virtual void SetupEnhancedInputComponent(UEnhancedInputComponent* EnhancedInputComponent) override;
 
     // 캐릭터 이동

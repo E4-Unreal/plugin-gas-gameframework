@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Attributes/GEShieldAttributes.h"
-#include "GEManaAttributes.generated.h"
+#include "Attributes/GGFShieldAttributes.h"
+#include "GGFManaAttributes.generated.h"
 
 /**
- * GEShieldAttributes에서 마나 어트리뷰트가 추가된 AttributeSet 클래스입니다.
+ * GGFShieldAttributes에서 마나 어트리뷰트가 추가된 AttributeSet 클래스입니다.
  */
 UCLASS()
-class GASGAMEFRAMEWORK_API UGEManaAttributes : public UGEShieldAttributes
+class GASGAMEFRAMEWORK_API UGGFManaAttributes : public UGGFShieldAttributes
 {
     GENERATED_BODY()
 
@@ -35,7 +35,7 @@ public:
     virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 protected:
-    /* GEAttributeSetBase */
+    /* GGFAttributeSetBase */
     virtual void ClampAttributes(const FGameplayAttribute& Attribute, float& NewValue) const override;
 
     virtual void AdjustAttributes(const FGameplayAttribute& Attribute, float OldValue, float NewValue) override;

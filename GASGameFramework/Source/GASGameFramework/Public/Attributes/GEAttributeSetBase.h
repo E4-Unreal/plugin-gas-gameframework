@@ -5,14 +5,14 @@
 #include "CoreMinimal.h"
 #include "AttributeSet.h"
 #include "Net/UnrealNetwork.h"
-#include "GEAttributeSetBase.generated.h"
+#include "GGFAttributeSetBase.generated.h"
 
 /* 헤더 파일에서 사용 */
 
 // Attribute 정의 시 사용하는 매크로
 #define ATTRIBUTE_ACCESSORS(ClassName, PropertyName) \
-    GAMEPLAYATTRIBUTE_PROPERTY_GETTER(ClassName, PropertyName) \
-    GAMEPLAYATTRIBUTE_VALUE_GETTER(PropertyName) \
+    GAMEPLAYATTRIBUTE_PROPERTY_GGFTTER(ClassName, PropertyName) \
+    GAMEPLAYATTRIBUTE_VALUE_GGFTTER(PropertyName) \
     GAMEPLAYATTRIBUTE_VALUE_SETTER(PropertyName) \
     GAMEPLAYATTRIBUTE_VALUE_INITTER(PropertyName)
 
@@ -27,7 +27,7 @@
     GAMEPLAYATTRIBUTE_DOREPLIFETIME_CONDITION_NOTIFY(Max##Attribute);
 
 // Attribute, MaxAttribute, AttributeRegenRate 이름 규칙을 지닌 Attribute 그룹의 리플리케이트 등록을 위한 매크로입니다.
-#define GAMEPLAYATTRIBUTE_DOREPLIFETIME_CONDITION_NOTIFY_WITH_MAX_AND_REGENRATE(Attribute) \
+#define GAMEPLAYATTRIBUTE_DOREPLIFETIME_CONDITION_NOTIFY_WITH_MAX_AND_REGGFNRATE(Attribute) \
     GAMEPLAYATTRIBUTE_DOREPLIFETIME_CONDITION_NOTIFY_WITH_MAX(Attribute) \
     GAMEPLAYATTRIBUTE_DOREPLIFETIME_CONDITION_NOTIFY(Attribute##RegenRate);
 
@@ -90,7 +90,7 @@
 /* AdjustAttributes에서 사용 */
 
 // MaxAttribute 값 변경 시 Attribute / MaxAttribute 비율을 유지하기 위해 Attribute 값 변경
-#define ADJUST_ATTRIBUTE_FOR_MAX_ATTRIBUTE_CHANGE(AttributeName)    \
+#define ADJUST_ATTRIBUTE_FOR_MAX_ATTRIBUTE_CHANGGF(AttributeName)    \
     if(Attribute == GetMax##AttributeName##Attribute())   \
     {   \
         AdjustAttributeForMaxChange(AttributeName, Max##AttributeName, OldValue, NewValue, Get##AttributeName##Attribute());   \
@@ -101,7 +101,7 @@
  * AttributeSet 클래스에서 공용으로 사용할 헬퍼 매크로 및 함수를 포함하고 있습니다.
  */
 UCLASS()
-class GASGAMEFRAMEWORK_API UGEAttributeSetBase : public UAttributeSet
+class GASGAMEFRAMEWORK_API UGGFAttributeSetBase : public UAttributeSet
 {
     GENERATED_BODY()
 

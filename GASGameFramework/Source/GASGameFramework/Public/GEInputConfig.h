@@ -6,10 +6,10 @@
 #include "Engine/DataAsset.h"
 #include "EnhancedInputComponent.h"
 #include "GameplayTagContainer.h"
-#include "GEInputConfig.generated.h"
+#include "GGFInputConfig.generated.h"
 
 USTRUCT(Atomic, BlueprintType)
-struct FGEInputWithGameplayTag
+struct FGGFInputWithGameplayTag
 {
     GENERATED_BODY()
 
@@ -21,17 +21,17 @@ struct FGEInputWithGameplayTag
 };
 
 /**
- * GEAbilitySystemBase에서 InputTag 바인딩을 위해 사용하는 데이터 에셋입니다.
+ * GGFAbilitySystemBase에서 InputTag 바인딩을 위해 사용하는 데이터 에셋입니다.
  */
 UCLASS()
-class GASGAMEFRAMEWORK_API UGEInputConfig : public UDataAsset
+class GASGAMEFRAMEWORK_API UGGFInputConfig : public UDataAsset
 {
     GENERATED_BODY()
 
     UPROPERTY(EditAnywhere, Category = "Config")
-    TArray<FGEInputWithGameplayTag> InputWithGameplayTagList;
+    TArray<FGGFInputWithGameplayTag> InputWithGameplayTagList;
 
 public:
     UFUNCTION(BlueprintPure)
-    const TArray<FGEInputWithGameplayTag>& GetInputWithGameplayTagList() const { return InputWithGameplayTagList; }
+    const TArray<FGGFInputWithGameplayTag>& GetInputWithGameplayTagList() const { return InputWithGameplayTagList; }
 };

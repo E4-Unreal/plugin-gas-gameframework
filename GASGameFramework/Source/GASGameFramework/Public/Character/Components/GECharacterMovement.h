@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameplayTagContainer.h"
 #include "GameFramework/CharacterMovementComponent.h"
-#include "GECharacterMovement.generated.h"
+#include "GGFCharacterMovement.generated.h"
 
 class UAbilitySystemComponent;
 
@@ -13,7 +13,7 @@ class UAbilitySystemComponent;
  * 캐릭터 무브먼트에 따라 상태 태그가 자동으로 부착됩니다.
  */
 UCLASS()
-class GASGAMEFRAMEWORK_API UGECharacterMovement : public UCharacterMovementComponent
+class GASGAMEFRAMEWORK_API UGGFCharacterMovement : public UCharacterMovementComponent
 {
     GENERATED_BODY()
 
@@ -30,7 +30,7 @@ protected:
     FGameplayTag MovingTag;
 
 public:
-    UGECharacterMovement();
+    UGGFCharacterMovement();
 
     /* ActorComponent */
 

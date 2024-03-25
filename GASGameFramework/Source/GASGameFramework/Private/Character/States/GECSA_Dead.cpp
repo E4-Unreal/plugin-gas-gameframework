@@ -1,20 +1,20 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Character/States/GECSA_Dead.h"
+#include "Character/States/GGFCSA_Dead.h"
 
 #include "AbilitySystemComponent.h"
-#include "GEGameplayTags.h"
+#include "GGFGameplayTags.h"
 #include "Camera/CameraComponent.h"
-#include "Character/GEDefaultCharacter.h"
+#include "Character/GGFDefaultCharacter.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
-UGECSA_Dead::UGECSA_Dead()
+UGGFCSA_Dead::UGGFCSA_Dead()
 {
     /* 태그 설정 */
-    using namespace GEGameplayTags;
+    using namespace GGFGameplayTags;
 
     // 죽은 상태는 절대적이기 때문에 어떠한 태그도 Blocking 할 수 없습니다.
     // 무적 상태를 도입하고 싶은 경우에는 체력을 1로 유지하는 등의 방법을 고려해주세요.
@@ -36,7 +36,7 @@ UGECSA_Dead::UGECSA_Dead()
     NetSecurityPolicy = EGameplayAbilityNetSecurityPolicy::ServerOnlyExecution;
 }
 
-void UGECSA_Dead::OnEnter_Implementation()
+void UGGFCSA_Dead::OnEnter_Implementation()
 {
     // TODO Stun, KnockDown 등의 상태에서도 사용되기 때문에 공통 클래스가 필요
     /* 모든 어빌리티 입력 Release 처리 */
@@ -64,20 +64,20 @@ void UGECSA_Dead::OnEnter_Implementation()
     // 캡슐 컴포넌트 콜리전 비활성화
     AvatarCharacter->GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
-    /* GEDefaultCharacter 캐릭터 전용 죽음 설정 */
-    if(const AGEDefaultCharacter* GEDefaultCharacter = Cast<AGEDefaultCharacter>(AvatarCharacter))
+    /* GGFDefaultCharacter 캐릭터 전용 죽음 설정 */
+    if(const AGGFDefaultCharacter* GGFDefaultCharacter = Cast<AGGFDefaultCharacter>(AvatarCharacter))
     {
         // TODO 카메라 액션 설정 및 무기 메시를 3인칭 캐릭터에 부착
-        UCameraComponent* Camera = GEDefaultCharacter->GetGameViewCamera();
+        UCameraComponent* Camera = GGFDefaultCharacter->GetGameViewCamera();
         Camera->SetRelativeLocation(Camera->GetRelativeLocation() - Camera->GetForwardVector() * 300);
 
-        GEDefaultCharacter->GetMesh()->SetOwnerNoSee(false);
-        GEDefaultCharacter->GetFirstPersonArms()->SetOwnerNoSee(true);
-        GEDefaultCharacter->GetFirstPersonLegs()->SetOwnerNoSee(true);
+        GGFDefaultCharacter->GetMesh()->SetOwnerNoSee(false);
+        GGFDefaultCharacter->GetFirstPersonArms()->SetOwnerNoSee(true);
+        GGFDefaultCharacter->GetFirstPersonLegs()->SetOwnerNoSee(true);
     }
 }
 
-void UGECSA_Dead::OnExit_Implementation()
+void UGGFCSA_Dead::OnExit_Implementation()
 {
     /* 일반 캐릭터 부활 설정 */
     // 플레이어 입력 활성화
@@ -95,14 +95,14 @@ void UGECSA_Dead::OnExit_Implementation()
     // 캡슐 컴포넌트 콜리전 활성화
     AvatarCharacter->GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 
-    /* GEDefaultCharacter 캐릭터 전용 부활 설정 */
-    if(const AGEDefaultCharacter* GEDefaultCharacter = Cast<AGEDefaultCharacter>(AvatarCharacter))
+    /* GGFDefaultCharacter 캐릭터 전용 부활 설정 */
+    if(const AGGFDefaultCharacter* GGFDefaultCharacter = Cast<AGGFDefaultCharacter>(AvatarCharacter))
     {
-        UCameraComponent* Camera = GEDefaultCharacter->GetGameViewCamera();
+        UCameraComponent* Camera = GGFDefaultCharacter->GetGameViewCamera();
         Camera->SetRelativeLocation(Camera->GetRelativeLocation() + Camera->GetForwardVector() * 300);
 
-        GEDefaultCharacter->GetMesh()->SetOwnerNoSee(true);
-        GEDefaultCharacter->GetFirstPersonArms()->SetOwnerNoSee(false);
-        GEDefaultCharacter->GetFirstPersonLegs()->SetOwnerNoSee(false);
+        GGFDefaultCharacter->GetMesh()->SetOwnerNoSee(true);
+        GGFDefaultCharacter->GetFirstPersonArms()->SetOwnerNoSee(false);
+        GGFDefaultCharacter->GetFirstPersonLegs()->SetOwnerNoSee(false);
     }
 }

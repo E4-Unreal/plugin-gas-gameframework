@@ -1,16 +1,16 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Character/GEDefaultCharacter.h"
+#include "Character/GGFDefaultCharacter.h"
 
 #include "Camera/CameraComponent.h"
-#include "Character/Components/GESpringArmComponent.h"
+#include "Character/Components/GGFSpringArmComponent.h"
 
-AGEDefaultCharacter::AGEDefaultCharacter(const FObjectInitializer& ObjectInitializer)
+AGGFDefaultCharacter::AGGFDefaultCharacter(const FObjectInitializer& ObjectInitializer)
 {
     /* 1인칭 */
     // 스프링 암
-    SpringArm = CreateDefaultSubobject<UGESpringArmComponent>(TEXT("SpringArm"));
+    SpringArm = CreateDefaultSubobject<UGGFSpringArmComponent>(TEXT("SpringArm"));
     SpringArm->SetupAttachment(RootComponent);
     SpringArm->SetRelativeLocation(FVector(0, 0, 70));
     SpringArm->SocketOffset = FVector::ZeroVector;
@@ -42,7 +42,7 @@ AGEDefaultCharacter::AGEDefaultCharacter(const FObjectInitializer& ObjectInitial
     ThirdPersonSkeletalMesh->VisibilityBasedAnimTickOption = EVisibilityBasedAnimTickOption::AlwaysTickPoseAndRefreshBones;
 }
 
-void AGEDefaultCharacter::GetTarget_Implementation(FVector& Target)
+void AGGFDefaultCharacter::GetTarget_Implementation(FVector& Target)
 {
     const UWorld* World = GetWorld();
     if(World == nullptr) return;

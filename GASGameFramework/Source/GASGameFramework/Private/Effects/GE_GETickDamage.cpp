@@ -1,11 +1,11 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Effects/GE_GETickDamage.h"
+#include "Effects/GGF_GGFTickDamage.h"
 
-#include "Attributes/GEHealthAttributes.h"
+#include "Attributes/GGFHealthAttributes.h"
 
-UGE_GETickDamage::UGE_GETickDamage()
+UGGF_GGFTickDamage::UGGF_GGFTickDamage()
 {
     /* 기본값 설정 */
     const float Damage = 4.f;
@@ -15,7 +15,7 @@ UGE_GETickDamage::UGE_GETickDamage()
     /* Modifiers 설정 */
     const FGameplayModifierInfo DamageModifier
     {
-        UGEHealthAttributes::GetDamageAttribute(),
+        UGGFHealthAttributes::GetDamageAttribute(),
         EGameplayModOp::Additive,
         FGameplayEffectModifierMagnitude(FScalableFloat(Damage))
     };

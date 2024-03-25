@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
-#include "GEBlueprintFunctionLibrary.generated.h"
+#include "GGFBlueprintFunctionLibrary.generated.h"
 
 class UGameplayEffect;
 struct FGameplayAbilitySpecHandle;
@@ -13,7 +13,7 @@ struct FGameplayAbilitySpecHandle;
  * GASExtension 플러그인에서 사용하는 블루프린트 함수 라이브러리입니다.
  */
 UCLASS()
-class GASGAMEFRAMEWORK_API UGEBlueprintFunctionLibrary : public UBlueprintFunctionLibrary
+class GASGAMEFRAMEWORK_API UGGFBlueprintFunctionLibrary : public UBlueprintFunctionLibrary
 {
     GENERATED_BODY()
 

@@ -6,7 +6,7 @@
 #include "GameplayEffectTypes.h"
 #include "GameplayTagContainer.h"
 #include "Animation/AnimInstance.h"
-#include "GEAnimInstance.generated.h"
+#include "GGFAnimInstance.generated.h"
 
 class UAbilitySystemComponent;
 
@@ -15,7 +15,7 @@ class UAbilitySystemComponent;
  * TagsToRegister에서 감지할 게임플레이 태그 이벤트를 설정하고 OnGameplayEffectTagCountChanged_Event에서 프로퍼티 바인딩을 해줍니다.
  */
 UCLASS()
-class GASGAMEFRAMEWORK_API UGEAnimInstance : public UAnimInstance
+class GASGAMEFRAMEWORK_API UGGFAnimInstance : public UAnimInstance
 {
     GENERATED_BODY()
 

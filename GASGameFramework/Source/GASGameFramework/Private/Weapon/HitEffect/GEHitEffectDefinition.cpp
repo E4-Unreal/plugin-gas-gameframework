@@ -1,12 +1,12 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Weapon/HitEffect/GEHitEffectDefinition.h"
+#include "Weapon/HitEffect/GGFHitEffectDefinition.h"
 
-#include "Weapon/HitEffect/GEHitEffect.h"
+#include "Weapon/HitEffect/GGFHitEffect.h"
 
 
-void UGEHitEffectDefinition::SpawnHitEffect(const FHitResult& HitResult)
+void UGGFHitEffectDefinition::SpawnHitEffect(const FHitResult& HitResult)
 {
 	// HitResult 유효성 검사
 	if(!HitResult.bBlockingHit) return;

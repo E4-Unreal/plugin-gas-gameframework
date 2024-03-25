@@ -1,104 +1,104 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "FunctionLibraries/GEBlueprintFunctionLibrary.h"
+#include "FunctionLibraries/GGFBlueprintFunctionLibrary.h"
 
 #include "GameplayAbilitySpecHandle.h"
-#include "FunctionLibraries/GEFunctionLibrary.h"
+#include "FunctionLibraries/GGFFunctionLibrary.h"
 
-void UGEBlueprintFunctionLibrary::AddAttributeSetToTarget(const TSubclassOf<UAttributeSet> AttributeSetClass,
+void UGGFBlueprintFunctionLibrary::AddAttributeSetToTarget(const TSubclassOf<UAttributeSet> AttributeSetClass,
     const AActor* TargetActor)
 {
-    UGEFunctionLibrary::AddAttributeSetToTarget(AttributeSetClass, TargetActor);
+    UGGFFunctionLibrary::AddAttributeSetToTarget(AttributeSetClass, TargetActor);
 }
 
-void UGEBlueprintFunctionLibrary::AddAttributeSetsToTarget(
+void UGGFBlueprintFunctionLibrary::AddAttributeSetsToTarget(
     const TArray<TSubclassOf<UAttributeSet>>& AttributeSetClasses, const AActor* TargetActor)
 {
-    UGEFunctionLibrary::AddAttributeSetsToTarget(AttributeSetClasses, TargetActor);
+    UGGFFunctionLibrary::AddAttributeSetsToTarget(AttributeSetClasses, TargetActor);
 }
 
-void UGEBlueprintFunctionLibrary::AddAttributeSetToSystem(const TSubclassOf<UAttributeSet> AttributeSetClass,
+void UGGFBlueprintFunctionLibrary::AddAttributeSetToSystem(const TSubclassOf<UAttributeSet> AttributeSetClass,
                                                           UAbilitySystemComponent* AbilitySystem)
 {
-    UGEFunctionLibrary::AddAttributeSetToSystem(AttributeSetClass, AbilitySystem);
+    UGGFFunctionLibrary::AddAttributeSetToSystem(AttributeSetClass, AbilitySystem);
 }
 
-void UGEBlueprintFunctionLibrary::AddAttributeSetsToSystem(const TArray<TSubclassOf<UAttributeSet>>& AttributeSetClasses,
+void UGGFBlueprintFunctionLibrary::AddAttributeSetsToSystem(const TArray<TSubclassOf<UAttributeSet>>& AttributeSetClasses,
     UAbilitySystemComponent* AbilitySystem)
 {
-    UGEFunctionLibrary::AddAttributeSetsToSystem(AttributeSetClasses, AbilitySystem);
+    UGGFFunctionLibrary::AddAttributeSetsToSystem(AttributeSetClasses, AbilitySystem);
 }
 
-void UGEBlueprintFunctionLibrary::ApplyGameplayEffectsToSelf(const TArray<TSubclassOf<UGameplayEffect>>& EffectClasses,
+void UGGFBlueprintFunctionLibrary::ApplyGameplayEffectsToSelf(const TArray<TSubclassOf<UGameplayEffect>>& EffectClasses,
     const AActor* TargetActor)
 {
-    UGEFunctionLibrary::ApplyGameplayEffectsToSelf(EffectClasses, TargetActor);
+    UGGFFunctionLibrary::ApplyGameplayEffectsToSelf(EffectClasses, TargetActor);
 }
 
-void UGEBlueprintFunctionLibrary::ApplyGameplayEffectToSelf(const TSubclassOf<UGameplayEffect> EffectClass,
+void UGGFBlueprintFunctionLibrary::ApplyGameplayEffectToSelf(const TSubclassOf<UGameplayEffect> EffectClass,
                                                             const AActor* TargetActor)
 {
-    UGEFunctionLibrary::ApplyGameplayEffectToSelf(EffectClass, TargetActor);
+    UGGFFunctionLibrary::ApplyGameplayEffectToSelf(EffectClass, TargetActor);
 }
 
-void UGEBlueprintFunctionLibrary::ApplyGameplayEffectToTarget(const TSubclassOf<UGameplayEffect> EffectClass,
+void UGGFBlueprintFunctionLibrary::ApplyGameplayEffectToTarget(const TSubclassOf<UGameplayEffect> EffectClass,
                                                               const AActor* Instigator, const AActor* TargetActor)
 {
-    UGEFunctionLibrary::ApplyGameplayEffectToTarget(EffectClass, Instigator, TargetActor);
+    UGGFFunctionLibrary::ApplyGameplayEffectToTarget(EffectClass, Instigator, TargetActor);
 }
 
-void UGEBlueprintFunctionLibrary::ApplyGameplayEffectsToTarget(
+void UGGFBlueprintFunctionLibrary::ApplyGameplayEffectsToTarget(
     const TArray<TSubclassOf<UGameplayEffect>>& EffectClasses, const AActor* Instigator, const AActor* TargetActor)
 {
-    UGEFunctionLibrary::ApplyGameplayEffectsToTarget(EffectClasses, Instigator, TargetActor);
+    UGGFFunctionLibrary::ApplyGameplayEffectsToTarget(EffectClasses, Instigator, TargetActor);
 }
 
-void UGEBlueprintFunctionLibrary::ApplyGameplayEffectToSystem(const TSubclassOf<UGameplayEffect> EffectClass,
+void UGGFBlueprintFunctionLibrary::ApplyGameplayEffectToSystem(const TSubclassOf<UGameplayEffect> EffectClass,
     UAbilitySystemComponent* AbilitySystem)
 {
-    UGEFunctionLibrary::ApplyGameplayEffectToSystem(EffectClass, AbilitySystem);
+    UGGFFunctionLibrary::ApplyGameplayEffectToSystem(EffectClass, AbilitySystem);
 }
 
-void UGEBlueprintFunctionLibrary::ApplyGameplayEffectsToSystem(
+void UGGFBlueprintFunctionLibrary::ApplyGameplayEffectsToSystem(
     const TArray<TSubclassOf<UGameplayEffect>>& EffectClasses, UAbilitySystemComponent* AbilitySystem)
 {
-    UGEFunctionLibrary::ApplyGameplayEffectsToSystem(EffectClasses, AbilitySystem);
+    UGGFFunctionLibrary::ApplyGameplayEffectsToSystem(EffectClasses, AbilitySystem);
 }
 
-void UGEBlueprintFunctionLibrary::ApplyGameplayEffectToTargetSystem(const TSubclassOf<UGameplayEffect> EffectClass,
+void UGGFBlueprintFunctionLibrary::ApplyGameplayEffectToTargetSystem(const TSubclassOf<UGameplayEffect> EffectClass,
     UAbilitySystemComponent* Instigator, UAbilitySystemComponent* TargetAbilitySystem)
 {
-    UGEFunctionLibrary::ApplyGameplayEffectToTargetSystem(EffectClass, Instigator, TargetAbilitySystem);
+    UGGFFunctionLibrary::ApplyGameplayEffectToTargetSystem(EffectClass, Instigator, TargetAbilitySystem);
 }
 
-void UGEBlueprintFunctionLibrary::ApplyGameplayEffectsToTargetSystem(
+void UGGFBlueprintFunctionLibrary::ApplyGameplayEffectsToTargetSystem(
     const TArray<TSubclassOf<UGameplayEffect>>& EffectClasses, UAbilitySystemComponent* Instigator,
     UAbilitySystemComponent* TargetAbilitySystem)
 {
-    UGEFunctionLibrary::ApplyGameplayEffectsToTargetSystem(EffectClasses, Instigator, TargetAbilitySystem);
+    UGGFFunctionLibrary::ApplyGameplayEffectsToTargetSystem(EffectClasses, Instigator, TargetAbilitySystem);
 }
 
-FGameplayAbilitySpecHandle UGEBlueprintFunctionLibrary::GiveAbilityToTarget(const TSubclassOf<UGameplayAbility> AbilityClass,
+FGameplayAbilitySpecHandle UGGFBlueprintFunctionLibrary::GiveAbilityToTarget(const TSubclassOf<UGameplayAbility> AbilityClass,
     const AActor* Target)
 {
-    return UGEFunctionLibrary::GiveAbilityToTarget(AbilityClass, Target);
+    return UGGFFunctionLibrary::GiveAbilityToTarget(AbilityClass, Target);
 }
 
-TArray<FGameplayAbilitySpecHandle> UGEBlueprintFunctionLibrary::GiveAbilitiesToTarget(const TArray<TSubclassOf<UGameplayAbility>>& AbilityClasses,
+TArray<FGameplayAbilitySpecHandle> UGGFBlueprintFunctionLibrary::GiveAbilitiesToTarget(const TArray<TSubclassOf<UGameplayAbility>>& AbilityClasses,
     const AActor* Target)
 {
-    return UGEFunctionLibrary::GiveAbilitiesToTarget(AbilityClasses, Target);
+    return UGGFFunctionLibrary::GiveAbilitiesToTarget(AbilityClasses, Target);
 }
 
-FGameplayAbilitySpecHandle UGEBlueprintFunctionLibrary::GiveAbilityToSystem(const TSubclassOf<UGameplayAbility> AbilityClass,
+FGameplayAbilitySpecHandle UGGFBlueprintFunctionLibrary::GiveAbilityToSystem(const TSubclassOf<UGameplayAbility> AbilityClass,
     UAbilitySystemComponent* AbilitySystem)
 {
-    return UGEFunctionLibrary::GiveAbilityToSystem(AbilityClass, AbilitySystem);
+    return UGGFFunctionLibrary::GiveAbilityToSystem(AbilityClass, AbilitySystem);
 }
 
-TArray<FGameplayAbilitySpecHandle> UGEBlueprintFunctionLibrary::GiveAbilitiesToSystem(const TArray<TSubclassOf<UGameplayAbility>>& AbilityClasses,
+TArray<FGameplayAbilitySpecHandle> UGGFBlueprintFunctionLibrary::GiveAbilitiesToSystem(const TArray<TSubclassOf<UGameplayAbility>>& AbilityClasses,
     UAbilitySystemComponent* AbilitySystem)
 {
-    return UGEFunctionLibrary::GiveAbilitiesToSystem(AbilityClasses, AbilitySystem);
+    return UGGFFunctionLibrary::GiveAbilitiesToSystem(AbilityClasses, AbilitySystem);
 }

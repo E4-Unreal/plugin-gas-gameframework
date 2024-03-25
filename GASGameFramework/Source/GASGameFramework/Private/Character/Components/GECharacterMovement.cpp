@@ -1,13 +1,13 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
-#include "Character/Components/GECharacterMovement.h"
+#include "Character/Components/GGFCharacterMovement.h"
 
 #include "AbilitySystemComponent.h"
 #include "AbilitySystemGlobals.h"
-#include "GEGameplayTags.h"
+#include "GGFGameplayTags.h"
 #include "GameFramework/Character.h"
 
-UGECharacterMovement::UGECharacterMovement()
+UGGFCharacterMovement::UGGFCharacterMovement()
 {
     // 초기화
     bWantsInitializeComponent = true;
@@ -17,7 +17,7 @@ UGECharacterMovement::UGECharacterMovement()
     bCanWalkOffLedgesWhenCrouching = true;
 
     // 태그 기본값 설정
-    using namespace GEGameplayTags::State;
+    using namespace GGFGameplayTags::State;
 
     FallingTag = Falling;
     CrouchingTag = Crouching;
@@ -42,14 +42,14 @@ UGECharacterMovement::UGECharacterMovement()
     AirControl = 0.35f;
 }
 
-void UGECharacterMovement::InitializeComponent()
+void UGGFCharacterMovement::InitializeComponent()
 {
     Super::InitializeComponent();
 
     OwnerAbilitySystem = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(PawnOwner);
 }
 
-void UGECharacterMovement::SetMovementMode(EMovementMode NewMovementMode, uint8 NewCustomMode)
+void UGGFCharacterMovement::SetMovementMode(EMovementMode NewMovementMode, uint8 NewCustomMode)
 {
     if(MovementMode != NewMovementMode && OwnerAbilitySystem.IsValid())
     {
@@ -63,11 +63,11 @@ void UGECharacterMovement::SetMovementMode(EMovementMode NewMovementMode, uint8 
     Super::SetMovementMode(NewMovementMode, NewCustomMode);
 }
 
-void UGECharacterMovement::OnMovementUpdated(float DeltaSeconds, const FVector& OldLocation, const FVector& OldVelocity)
+void UGGFCharacterMovement::OnMovementUpdated(float DeltaSeconds, const FVector& OldLocation, const FVector& OldVelocity)
 {
     if(OwnerAbilitySystem.IsValid())
     {
-        using namespace GEGameplayTags::State;
+        using namespace GGFGameplayTags::State;
 
         const float GroundSpeed = FVector(Velocity.X, Velocity.Y, 0.f).Length();
 
@@ -87,7 +87,7 @@ void UGECharacterMovement::OnMovementUpdated(float DeltaSeconds, const FVector& 
     Super::OnMovementUpdated(DeltaSeconds, OldLocation, OldVelocity);
 }
 
-void UGECharacterMovement::Crouch(bool bClientSimulation)
+void UGGFCharacterMovement::Crouch(bool bClientSimulation)
 {
     // Crouch 게임플레이 태그 부착
     if(OwnerAbilitySystem.IsValid())
@@ -98,7 +98,7 @@ void UGECharacterMovement::Crouch(bool bClientSimulation)
     Super::Crouch(bClientSimulation);
 }
 
-void UGECharacterMovement::UnCrouch(bool bClientSimulation)
+void UGGFCharacterMovement::UnCrouch(bool bClientSimulation)
 {
     // Crouch 게임플레이 태그 제거
     if(OwnerAbilitySystem.IsValid())
@@ -109,13 +109,13 @@ void UGECharacterMovement::UnCrouch(bool bClientSimulation)
     Super::UnCrouch(bClientSimulation);
 }
 
-bool UGECharacterMovement::CanAttemptJump() const
+bool UGGFCharacterMovement::CanAttemptJump() const
 {
     // 앉기 상태에서도 점프 가능
     return IsJumpAllowed() && (IsMovingOnGround() || IsFalling());
 }
 
-bool UGECharacterMovement::DoJump(bool bReplayingMoves)
+bool UGGFCharacterMovement::DoJump(bool bReplayingMoves)
 {
     if ( CharacterOwner && CharacterOwner->CanJump() )
     {

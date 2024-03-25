@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "AbilitySystemComponent.h"
-#include "GEAbilitySystemBase.generated.h"
+#include "GGFAbilitySystemBase.generated.h"
 
 /**
  * 모든 Ability System 클래스의 기저 클래스입니다.
@@ -13,7 +13,7 @@
  * 게임 시작 후 적용할 GameplayEffect 를 설정할 수 있습니다.
  */
 UCLASS(Blueprintable, meta = (BlueprintSpawnableComponent))
-class GASGAMEFRAMEWORK_API UGEAbilitySystemBase : public UAbilitySystemComponent
+class GASGAMEFRAMEWORK_API UGGFAbilitySystemBase : public UAbilitySystemComponent
 {
     GENERATED_BODY()
 
@@ -32,18 +32,18 @@ protected:
 
 public:
     /* UActorComponent */
-    UGEAbilitySystemBase();
+    UGGFAbilitySystemBase();
 
     virtual void InitializeComponent() override;
 
     /* API */
 
     // 입력 태그로 Ability를 Press합니다.
-    UFUNCTION(BlueprintCallable, Category = "GEAbilitySystemBase")
+    UFUNCTION(BlueprintCallable, Category = "GGFAbilitySystemBase")
     void PressInputTag(const FGameplayTag& InputTag);
 
     // 입력 태그로 Ability를 Release합니다.
-    UFUNCTION(BlueprintCallable, Category = "GEAbilitySystemBase")
+    UFUNCTION(BlueprintCallable, Category = "GGFAbilitySystemBase")
     void ReleaseInputTag(const FGameplayTag& InputTag);
 
     // 마지막으로 추가된 Ability만 Press합니다.

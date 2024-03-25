@@ -1,6 +1,6 @@
-﻿#include "GEGameplayTags.h"
+﻿#include "GGFGameplayTags.h"
 
-namespace GEGameplayTags
+namespace GGFGameplayTags
 {
     namespace State
     {

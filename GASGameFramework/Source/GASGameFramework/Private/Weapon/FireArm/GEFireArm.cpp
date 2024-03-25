@@ -1,18 +1,18 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Weapon\FireArm\GEFireArm.h"
+#include "Weapon\FireArm\GGFFireArm.h"
 
 #include "Kismet/GameplayStatics.h"
 #include "Net/UnrealNetwork.h"
 #include "Sound/SoundCue.h"
 
-AGEFireArm::AGEFireArm()
+AGGFFireArm::AGGFFireArm()
 {
     SkeletalMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletalMesh"));
 }
 
-void AGEFireArm::PostInitializeComponents()
+void AGGFFireArm::PostInitializeComponents()
 {
     Super::PostInitializeComponents();
 
@@ -20,7 +20,7 @@ void AGEFireArm::PostInitializeComponents()
     CalculateFireInterval();
 }
 
-void AGEFireArm::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+void AGGFFireArm::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
     Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
@@ -29,7 +29,7 @@ void AGEFireArm::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifeti
 }
 
 
-void AGEFireArm::Fire()
+void AGGFFireArm::Fire()
 {
     // 발사 가능 여부 확인
     if(!CanFire()) return;
@@ -38,7 +38,7 @@ void AGEFireArm::Fire()
     ServerFire();
 }
 
-void AGEFireArm::ServerFire_Implementation()
+void AGGFFireArm::ServerFire_Implementation()
 {
     // 발사 가능 여부 확인
     if(!CanFire()) return;
@@ -56,7 +56,7 @@ void AGEFireArm::ServerFire_Implementation()
     MulticastFire();
 }
 
-void AGEFireArm::MulticastFire_Implementation()
+void AGGFFireArm::MulticastFire_Implementation()
 {
     // 무기 애니메이션 재생
     PlayAnimation(FireAnimation);
@@ -91,12 +91,12 @@ void AGEFireArm::MulticastFire_Implementation()
         );
 }
 
-void AGEFireArm::OnFire_Implementation()
+void AGGFFireArm::OnFire_Implementation()
 {
     // TODO 자손 클래스에서 발사 로직 작성 (히트 스캔, 발사체)
 }
 
-void AGEFireArm::Reload()
+void AGGFFireArm::Reload()
 {
     // 장전 가능 여부 확인
     if(!CanReload()) return;
@@ -105,7 +105,7 @@ void AGEFireArm::Reload()
     ServerReload();
 }
 
-void AGEFireArm::ServerReload_Implementation()
+void AGGFFireArm::ServerReload_Implementation()
 {
     // 장전 가능 여부 확인
     if(!CanReload()) return;
@@ -115,12 +115,12 @@ void AGEFireArm::ServerReload_Implementation()
     MulticastReload();
 }
 
-void AGEFireArm::MulticastReload_Implementation()
+void AGGFFireArm::MulticastReload_Implementation()
 {
     PlayAnimation(ReloadAnimation);
 }
 
-void AGEFireArm::FinishReloading()
+void AGGFFireArm::FinishReloading()
 {
     // 서버에서만 호출 가능합니다.
     if(!HasAuthority()) return;
@@ -128,7 +128,7 @@ void AGEFireArm::FinishReloading()
     bReloading = false;
 }
 
-void AGEFireArm::SetMaxAmmo(int32 Value)
+void AGGFFireArm::SetMaxAmmo(int32 Value)
 {
     // 서버에서만 호출 가능합니다.
     if(!HasAuthority()) return;
@@ -139,7 +139,7 @@ void AGEFireArm::SetMaxAmmo(int32 Value)
     OnRep_MaxAmmo(OldMaxAmmo);
 }
 
-void AGEFireArm::SetCurrentAmmo(int32 Value)
+void AGGFFireArm::SetCurrentAmmo(int32 Value)
 {
     // 서버에서만 호출 가능합니다.
     if(!HasAuthority()) return;
@@ -153,13 +153,13 @@ void AGEFireArm::SetCurrentAmmo(int32 Value)
     OnRep_CurrentAmmo(OldCurrentAmmo);
 }
 
-void AGEFireArm::PlayAnimation(UAnimMontage* Animation) const
+void AGGFFireArm::PlayAnimation(UAnimMontage* Animation) const
 {
     if(SkeletalMesh && Animation)
         SkeletalMesh->PlayAnimation(Animation, false);
 }
 
-bool AGEFireArm::CanFire_Implementation()
+bool AGGFFireArm::CanFire_Implementation()
 {
     // 탄약 확인
     if(CurrentAmmo < AmmoToSpend) return false;
@@ -171,7 +171,7 @@ bool AGEFireArm::CanFire_Implementation()
     return GetCurrentTime() - LastFiredTime >= FireInterval;
 }
 
-bool AGEFireArm::CanReload_Implementation()
+bool AGGFFireArm::CanReload_Implementation()
 {
     // 이미 재장전중인 상태입니다.
     if(bReloading) return false;
@@ -180,12 +180,12 @@ bool AGEFireArm::CanReload_Implementation()
     return CurrentAmmo < MaxAmmo;
 }
 
-void AGEFireArm::SpendAmmo()
+void AGGFFireArm::SpendAmmo()
 {
     SetCurrentAmmo(CurrentAmmo - FMath::Max(AmmoToSpend, 0));
 }
 
-float AGEFireArm::GetCurrentTime() const
+float AGGFFireArm::GetCurrentTime() const
 {
     if(const UWorld* World = GetWorld())
     {
@@ -195,17 +195,17 @@ float AGEFireArm::GetCurrentTime() const
     return -1.f;
 }
 
-FVector AGEFireArm::GetMuzzleLocation() const
+FVector AGGFFireArm::GetMuzzleLocation() const
 {
     return SkeletalMesh == nullptr ? GetActorLocation() : SkeletalMesh->GetSocketLocation(MuzzleSocketName);
 }
 
-void AGEFireArm::OnRep_MaxAmmo(int32 OldCurrentAmmo)
+void AGGFFireArm::OnRep_MaxAmmo(int32 OldCurrentAmmo)
 {
     OnMaxAmmoValueChanged.Broadcast(MaxAmmo);
 }
 
-void AGEFireArm::OnRep_CurrentAmmo(int32 OldCurrentAmmo)
+void AGGFFireArm::OnRep_CurrentAmmo(int32 OldCurrentAmmo)
 {
     OnCurrentAmmoValueChanged.Broadcast(CurrentAmmo);
 }

@@ -1,17 +1,17 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Equipment/Components/GEEquipmentManagerBase.h"
+#include "Equipment/Components/GGFEquipmentManagerBase.h"
 
-#include "Equipment/GEEquipment.h"
+#include "Equipment/GGFEquipment.h"
 
-UGEEquipmentManagerBase::UGEEquipmentManagerBase()
+UGGFEquipmentManagerBase::UGGFEquipmentManagerBase()
 {
     bWantsInitializeComponent = true;
     SetIsReplicatedByDefault(true);
 }
 
-void UGEEquipmentManagerBase::InjectDependencies(USkeletalMeshComponent* InSkeletalMesh)
+void UGGFEquipmentManagerBase::InjectDependencies(USkeletalMeshComponent* InSkeletalMesh)
 {
     // null 검사
     if(InSkeletalMesh == nullptr) return;
@@ -24,7 +24,7 @@ void UGEEquipmentManagerBase::InjectDependencies(USkeletalMeshComponent* InSkele
     SkeletalMesh = InSkeletalMesh;
 }
 
-AGEEquipment* UGEEquipmentManagerBase::SpawnEquipment(TSubclassOf<AGEEquipment> EquipmentClass)
+AGGFEquipment* UGGFEquipmentManagerBase::SpawnEquipment(TSubclassOf<AGGFEquipment> EquipmentClass)
 {
     // 월드 가져오기
     UWorld* World = GetOwner()->GetWorld();
@@ -39,12 +39,12 @@ AGEEquipment* UGEEquipmentManagerBase::SpawnEquipment(TSubclassOf<AGEEquipment> 
 
     // Owner 위치에 액터 스폰
     const FVector SpawnLocation = GetOwner()->GetActorLocation();
-    AGEEquipment* SpawnedActor = World->SpawnActor<AGEEquipment>(EquipmentClass, SpawnLocation, FRotator::ZeroRotator, ActorSpawnParameters);
+    AGGFEquipment* SpawnedActor = World->SpawnActor<AGGFEquipment>(EquipmentClass, SpawnLocation, FRotator::ZeroRotator, ActorSpawnParameters);
 
     return SpawnedActor;
 }
 
-bool UGEEquipmentManagerBase::AttachEquipment(AGEEquipment* Equipment, FName SocketName)
+bool UGGFEquipmentManagerBase::AttachEquipment(AGGFEquipment* Equipment, FName SocketName)
 {
     // 유효성 검사
     if(Equipment == nullptr || SkeletalMesh == nullptr || SocketName == NAME_None) return false;
@@ -58,9 +58,9 @@ bool UGEEquipmentManagerBase::AttachEquipment(AGEEquipment* Equipment, FName Soc
     return true;
 }
 
-FGameplayTag UGEEquipmentManagerBase::GetEquipmentSlot(TSubclassOf<AGEEquipment> EquipmentClass)
+FGameplayTag UGGFEquipmentManagerBase::GetEquipmentSlot(TSubclassOf<AGGFEquipment> EquipmentClass)
 {
     return EquipmentClass == nullptr
     ? FGameplayTag::EmptyTag
-    : Cast<AGEEquipment>(EquipmentClass->ClassDefaultObject)->GetEquipmentSlot();
+    : Cast<AGGFEquipment>(EquipmentClass->ClassDefaultObject)->GetEquipmentSlot();
 }

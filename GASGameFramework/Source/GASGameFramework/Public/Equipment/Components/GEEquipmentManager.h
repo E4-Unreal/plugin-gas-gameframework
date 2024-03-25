@@ -4,10 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "GameplayTagContainer.h"
-#include "GEEquipmentManagerBase.h"
-#include "GEEquipmentManager.generated.h"
+#include "GGFEquipmentManagerBase.h"
+#include "GGFEquipmentManager.generated.h"
 
-class AGEEquipment;
+class AGGFEquipment;
 
 USTRUCT(Atomic, BlueprintType)
 struct FEquipmentSlotConfig
@@ -86,13 +86,13 @@ struct FEquipmentSlot
 };
 
 UCLASS(ClassGroup=(GASSurvivalFramework), meta=(BlueprintSpawnableComponent))
-class GASGAMEFRAMEWORK_API UGEEquipmentManager : public UGEEquipmentManagerBase
+class GASGAMEFRAMEWORK_API UGGFEquipmentManager : public UGGFEquipmentManagerBase
 {
     GENERATED_BODY()
 
     // 기본적으로 추가될 장비 목록입니다.
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config", meta = (AllowPrivateAccess = true))
-    TArray<TSubclassOf<AGEEquipment>> DefaultEquipments;
+    TArray<TSubclassOf<AGGFEquipment>> DefaultEquipments;
 
     // 선택 장비를 부착할 소켓 이름입니다. 선택 장비는 손에 쥐고 있을 잘비를 의미합니다.
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config", meta = (AllowPrivateAccess = true))
@@ -104,14 +104,14 @@ class GASGAMEFRAMEWORK_API UGEEquipmentManager : public UGEEquipmentManagerBase
 
     // 실제 인게임 내에서 사용하는 무기 슬롯 목록입니다.
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State", meta = (AllowPrivateAccess = true), Transient)
-    TMap<FEquipmentSlot, TObjectPtr<AGEEquipment>> EquipmentSlots;
+    TMap<FEquipmentSlot, TObjectPtr<AGGFEquipment>> EquipmentSlots;
 
     // 손에 쥐고 있는 무기 슬롯입니다.
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State", meta = (AllowPrivateAccess = true), Transient)
     FEquipmentSlot SelectedSlot;
 
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State", meta = (AllowPrivateAccess = true), Transient, ReplicatedUsing = OnRep_SelectedEquipment)
-    TObjectPtr<AGEEquipment> SelectedEquipment;
+    TObjectPtr<AGGFEquipment> SelectedEquipment;
 
 public:
 
@@ -120,7 +120,7 @@ public:
     virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
     UFUNCTION(BlueprintCallable)
-    bool AddEquipment(TSubclassOf<AGEEquipment> EquipmentClass);
+    bool AddEquipment(TSubclassOf<AGGFEquipment> EquipmentClass);
 
     UFUNCTION(BlueprintCallable)
     void RemoveEquipment(FGameplayTag Slot, int32 Index);
@@ -135,14 +135,14 @@ public:
     bool IsEquipmentSlotExist(FGameplayTag Slot, int32 Index) const;
 
     UFUNCTION(BlueprintCallable)
-    AGEEquipment* GetEquipment(FGameplayTag Slot, int32 Index) const;
+    AGGFEquipment* GetEquipment(FGameplayTag Slot, int32 Index) const;
 
     UFUNCTION(BlueprintCallable)
     void ClearEquipmentSlot(FGameplayTag Slot, int32 Index);
 
     // 손에 쥐고 있는 장비 (SelectedEquipment) 가져오기
     UFUNCTION(BlueprintPure)
-    FORCEINLINE AGEEquipment* GetSelectedEquipment() const { return SelectedEquipment; }
+    FORCEINLINE AGGFEquipment* GetSelectedEquipment() const { return SelectedEquipment; }
 
     // 손에 쥐고 있는 장비를 집어넣습니다. 장비를 제거하는 것이 아닙니다.
     UFUNCTION(BlueprintCallable)
@@ -151,12 +151,12 @@ public:
     UFUNCTION(BlueprintPure)
     FORCEINLINE bool IsSelectedEquipmentExist() const { return SelectedSlot.IsValid() && SelectedEquipment != nullptr; }
 
-    virtual bool AttachEquipment(AGEEquipment* Equipment, FName SocketName) override;
+    virtual bool AttachEquipment(AGGFEquipment* Equipment, FName SocketName) override;
 
     /* Query */
 
     UFUNCTION(BlueprintCallable)
-    bool CanAddEquipment(TSubclassOf<AGEEquipment> EquipmentClass) const;
+    bool CanAddEquipment(TSubclassOf<AGGFEquipment> EquipmentClass) const;
 
     UFUNCTION(BlueprintCallable)
     bool IsSlotAvailable(const FGameplayTag& InEquipmentSlot) const;
@@ -174,5 +174,5 @@ private:
     /* 리플리케이트 */
 
     UFUNCTION()
-    void OnRep_SelectedEquipment(AGEEquipment* OldEquipment);
+    void OnRep_SelectedEquipment(AGGFEquipment* OldEquipment);
 };

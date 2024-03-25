@@ -3,8 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Weapon/HitEffect/GEHitEffect.h"
-#include "GEHitEffect_Sound.generated.h"
+#include "Weapon/HitEffect/GGFHitEffect.h"
+#include "GGFHitEffect_Sound.generated.h"
 
 class USoundCue;
 
@@ -12,7 +12,7 @@ class USoundCue;
  *
  */
 UCLASS()
-class GASGAMEFRAMEWORK_API UGEHitEffect_Sound : public UGEHitEffect
+class GASGAMEFRAMEWORK_API UGGFHitEffect_Sound : public UGGFHitEffect
 {
     GENERATED_BODY()
 

@@ -2,7 +2,7 @@
 
 #include "NativeGameplayTags.h"
 
-namespace GEGameplayTags
+namespace GGFGameplayTags
 {
     namespace State
     {

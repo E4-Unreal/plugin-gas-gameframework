@@ -1,12 +1,12 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Abilities/GEGA_Montage.h"
+#include "Abilities/GGFGA_Montage.h"
 
 #include "Animation/AnimInstance.h"
-#include "Character/Interface/GECharacterMeshInterface.h"
+#include "Character/Interface/GGFCharacterMeshInterface.h"
 
-void UGEGA_Montage::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
+void UGGFGA_Montage::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
                                     const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
 {
     // 커밋
@@ -16,17 +16,17 @@ void UGEGA_Montage::ActivateAbility(const FGameplayAbilitySpecHandle Handle, con
     }
 
     // 인터페이스 구현 여부 검사
-    if(!ActorInfo->AvatarActor->GetClass()->ImplementsInterface(UGECharacterMeshInterface::StaticClass())) return;
+    if(!ActorInfo->AvatarActor->GetClass()->ImplementsInterface(UGGFCharacterMeshInterface::StaticClass())) return;
 
     // 지역 변수 선언
     USkeletalMeshComponent* Mesh;
 
     // 1인칭 애니메이션 재생
-    Mesh = IGECharacterMeshInterface::Execute_GetFirstPersonArmsMesh(ActorInfo->AvatarActor.Get());
+    Mesh = IGGFCharacterMeshInterface::Execute_GetFirstPersonArmsMesh(ActorInfo->AvatarActor.Get());
     PlayMontage(Mesh, FirstPersonMontage);
 
     // 3인칭 애니메이션 재생
-    Mesh = IGECharacterMeshInterface::Execute_GetThirdPersonFullBodyMesh(ActorInfo->AvatarActor.Get());
+    Mesh = IGGFCharacterMeshInterface::Execute_GetThirdPersonFullBodyMesh(ActorInfo->AvatarActor.Get());
     PlayMontage(Mesh, ThirdPersonMontage);
 
     /*
@@ -35,7 +35,7 @@ void UGEGA_Montage::ActivateAbility(const FGameplayAbilitySpecHandle Handle, con
      */
 }
 
-void UGEGA_Montage::PlayMontage(USkeletalMeshComponent* Mesh, const FGEMontageConfig& MontageConfig)
+void UGGFGA_Montage::PlayMontage(USkeletalMeshComponent* Mesh, const FGGFMontageConfig& MontageConfig)
 {
     // null 검사
     if(Mesh == nullptr) return;

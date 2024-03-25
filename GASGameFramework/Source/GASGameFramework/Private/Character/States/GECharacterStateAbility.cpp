@@ -1,11 +1,11 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Character/States/GECharacterStateAbility.h"
+#include "Character/States/GGFCharacterStateAbility.h"
 
 #include "GameFramework/Character.h"
 
-void UGECharacterStateAbility::PreActivate(const FGameplayAbilitySpecHandle Handle,
+void UGGFCharacterStateAbility::PreActivate(const FGameplayAbilitySpecHandle Handle,
                                            const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo,
                                            FOnGameplayAbilityEnded::FDelegate* OnGameplayAbilityEndedDelegate, const FGameplayEventData* TriggerEventData)
 {

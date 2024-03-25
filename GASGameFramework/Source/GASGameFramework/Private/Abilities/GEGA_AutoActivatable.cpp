@@ -1,10 +1,10 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
-#include "Abilities/GEGA_AutoActivatable.h"
+#include "Abilities/GGFGA_AutoActivatable.h"
 
 #include "AbilitySystemComponent.h"
 
-void UGEGA_AutoActivatable::OnAvatarSet(const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilitySpec& Spec)
+void UGGFGA_AutoActivatable::OnAvatarSet(const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilitySpec& Spec)
 {
     Super::OnAvatarSet(ActorInfo, Spec);
 

@@ -1,11 +1,11 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
-#include "Weapon/Projectile/GEProjectile.h"
+#include "Weapon/Projectile/GGFProjectile.h"
 
 #include "Components/SphereComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 
-AGEProjectile::AGEProjectile()
+AGGFProjectile::AGGFProjectile()
 {
     // 서버 스폰을 위한 리플리케이트
     bReplicates = true;
@@ -22,7 +22,7 @@ AGEProjectile::AGEProjectile()
     ProjectileMovement->MaxSpeed = 71500;
 }
 
-void AGEProjectile::PostInitializeComponents()
+void AGGFProjectile::PostInitializeComponents()
 {
     Super::PostInitializeComponents();
 
@@ -33,7 +33,7 @@ void AGEProjectile::PostInitializeComponents()
     }
 }
 
-void AGEProjectile::BeginPlay()
+void AGGFProjectile::BeginPlay()
 {
     Super::BeginPlay();
 
@@ -42,7 +42,7 @@ void AGEProjectile::BeginPlay()
     SphereCollider->IgnoreActorWhenMoving(GetInstigator(), true); // 캐릭터
 }
 
-void AGEProjectile::OnComponentHit_Event_Implementation(UPrimitiveComponent* HitComponent, AActor* OtherActor,
+void AGGFProjectile::OnComponentHit_Event_Implementation(UPrimitiveComponent* HitComponent, AActor* OtherActor,
                                                         UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
     // TODO 피지컬 머티리얼에 따라 관통 처리
@@ -54,12 +54,12 @@ void AGEProjectile::OnComponentHit_Event_Implementation(UPrimitiveComponent* Hit
     OnMulticastHit(Hit);
 }
 
-void AGEProjectile::OnHit_Implementation(const FHitResult& HitResult)
+void AGGFProjectile::OnHit_Implementation(const FHitResult& HitResult)
 {
     // TODO 데미지 적용 등 서버에서 처리할 기능 구현
 }
 
-void AGEProjectile::OnMulticastHit_Implementation(const FHitResult& HitResult)
+void AGGFProjectile::OnMulticastHit_Implementation(const FHitResult& HitResult)
 {
     // TODO 피격 효과 스폰처럼 멀티캐스트로 처리할 기능 구현
 }

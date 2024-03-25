@@ -1,23 +1,23 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Weapon/Projectile/GEBullet.h"
+#include "Weapon/Projectile/GGFBullet.h"
 
-#include "FunctionLibraries/GEFunctionLibrary.h"
-#include "Weapon/HitEffect/GEHitEffectDefinition.h"
+#include "FunctionLibraries/GGFFunctionLibrary.h"
+#include "Weapon/HitEffect/GGFHitEffectDefinition.h"
 
-AGEBullet::AGEBullet()
+AGGFBullet::AGGFBullet()
 {
 
 }
 
-void AGEBullet::OnHit_Implementation(const FHitResult& HitResult)
+void AGGFBullet::OnHit_Implementation(const FHitResult& HitResult)
 {
     // 데미지 적용
-    UGEFunctionLibrary::ApplyGameplayEffectsToTarget(EffectsToApply, GetInstigator(), HitResult.GetActor());
+    UGGFFunctionLibrary::ApplyGameplayEffectsToTarget(EffectsToApply, GetInstigator(), HitResult.GetActor());
 }
 
-void AGEBullet::OnMulticastHit_Implementation(const FHitResult& HitResult)
+void AGGFBullet::OnMulticastHit_Implementation(const FHitResult& HitResult)
 {
     // 피격 효과 스폰
     if(HitEffect)

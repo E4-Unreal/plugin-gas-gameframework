@@ -1,23 +1,23 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
-#include "Character/Animation/GEFirstPersonAnimInstance.h"
+#include "Character/Animation/GGFFirstPersonAnimInstance.h"
 
-#include "GEGameplayTags.h"
+#include "GGFGameplayTags.h"
 #include "Logging.h"
 
-UGEFirstPersonAnimInstance::UGEFirstPersonAnimInstance()
+UGGFFirstPersonAnimInstance::UGGFFirstPersonAnimInstance()
 {
-    TagsToRegister.AddTagFast(GEGameplayTags::State::Moving);
-    TagsToRegister.AddTagFast(GEGameplayTags::State::ADS);
+    TagsToRegister.AddTagFast(GGFGameplayTags::State::Moving);
+    TagsToRegister.AddTagFast(GGFGameplayTags::State::ADS);
 }
 
-void UGEFirstPersonAnimInstance::OnGameplayEffectTagCountChanged_Event(const FGameplayTag Tag, int32 NewCount)
+void UGGFFirstPersonAnimInstance::OnGameplayEffectTagCountChanged_Event(const FGameplayTag Tag, int32 NewCount)
 {
     Super::OnGameplayEffectTagCountChanged_Event(Tag, NewCount);
 
     const bool Value = NewCount > 0;
 
-    using namespace GEGameplayTags::State;
+    using namespace GGFGameplayTags::State;
 
     if(Tag.MatchesTag(Moving))
         bMoving = Value;

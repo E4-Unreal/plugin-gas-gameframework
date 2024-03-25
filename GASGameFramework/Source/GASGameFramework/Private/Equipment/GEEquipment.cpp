@@ -1,14 +1,14 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "..\..\Public\Equipment\GEEquipment.h"
+#include "..\..\Public\Equipment\GGFEquipment.h"
 
-AGEEquipment::AGEEquipment()
+AGGFEquipment::AGGFEquipment()
 {
     SetReplicates(true);
 }
 
-void AGEEquipment::SetOwner(AActor* NewOwner)
+void AGGFEquipment::SetOwner(AActor* NewOwner)
 {
     Super::SetOwner(NewOwner);
 
@@ -18,7 +18,7 @@ void AGEEquipment::SetOwner(AActor* NewOwner)
         OnEquip();
 }
 
-void AGEEquipment::OnRep_Owner()
+void AGGFEquipment::OnRep_Owner()
 {
     Super::OnRep_Owner();
 
@@ -28,10 +28,10 @@ void AGEEquipment::OnRep_Owner()
         OnEquip();
 }
 
-void AGEEquipment::OnEquip_Implementation()
+void AGGFEquipment::OnEquip_Implementation()
 {
 }
 
-void AGEEquipment::OnUnEquip_Implementation()
+void AGGFEquipment::OnUnEquip_Implementation()
 {
 }

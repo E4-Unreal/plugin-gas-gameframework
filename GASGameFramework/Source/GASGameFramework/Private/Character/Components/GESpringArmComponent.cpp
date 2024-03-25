@@ -1,12 +1,12 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "..\..\..\Public\Character\Components\GESpringArmComponent.h"
+#include "..\..\..\Public\Character\Components\GGFSpringArmComponent.h"
 
 #include "PhysicsEngine/PhysicsSettings.h"
 
 
-UGESpringArmComponent::UGESpringArmComponent()
+UGGFSpringArmComponent::UGGFSpringArmComponent()
 {
     // 카메라 랙 기능 활성화
     bEnableCameraLag = true;
@@ -17,7 +17,7 @@ UGESpringArmComponent::UGESpringArmComponent()
     bUsePawnControlRotation = true;
 }
 
-void UGESpringArmComponent::UpdateDesiredArmLocation(bool bDoTrace, bool bDoLocationLag, bool bDoRotationLag,
+void UGGFSpringArmComponent::UpdateDesiredArmLocation(bool bDoTrace, bool bDoLocationLag, bool bDoRotationLag,
     float DeltaTime)
 {
     FRotator DesiredRot = GetTargetRotation();

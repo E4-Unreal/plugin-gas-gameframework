@@ -1,22 +1,22 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Abilities/GEStateAbility.h"
+#include "Abilities/GGFStateAbility.h"
 
-#include "GEGameplayTags.h"
+#include "GGFGameplayTags.h"
 #include "GameFramework/Character.h"
 
-UGEStateAbility::UGEStateAbility()
+UGGFStateAbility::UGGFStateAbility()
 {
     // 기본 인스턴싱 정책 설정
     InstancingPolicy = EGameplayAbilityInstancingPolicy::InstancedPerActor;
 
     /* 태그 설정 */
     // ActivationBlockedTags 설정
-    ActivationBlockedTags.AddTagFast(GEGameplayTags::State::Dead);
+    ActivationBlockedTags.AddTagFast(GGFGameplayTags::State::Dead);
 }
 
-void UGEStateAbility::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
+void UGGFStateAbility::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
                                         const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo,
                                         const FGameplayEventData* TriggerEventData)
 {
@@ -26,7 +26,7 @@ void UGEStateAbility::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
     OnEnter();
 }
 
-void UGEStateAbility::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
+void UGGFStateAbility::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
                                    const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled)
 {
     Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
@@ -35,10 +35,10 @@ void UGEStateAbility::EndAbility(const FGameplayAbilitySpecHandle Handle, const 
     OnExit();
 }
 
-void UGEStateAbility::OnEnter_Implementation()
+void UGGFStateAbility::OnEnter_Implementation()
 {
 }
 
-void UGEStateAbility::OnExit_Implementation()
+void UGGFStateAbility::OnExit_Implementation()
 {
 }

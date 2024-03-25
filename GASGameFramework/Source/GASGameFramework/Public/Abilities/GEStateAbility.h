@@ -4,18 +4,18 @@
 
 #include "CoreMinimal.h"
 #include "Abilities/GameplayAbility.h"
-#include "GEStateAbility.generated.h"
+#include "GGFStateAbility.generated.h"
 
 /**
  * 상태 태그의 추가 혹은 제거 이벤트를 트리거로 발동되는 게임플레이 어빌리티입니다.
  */
 UCLASS(Abstract)
-class GASGAMEFRAMEWORK_API UGEStateAbility : public UGameplayAbility
+class GASGAMEFRAMEWORK_API UGGFStateAbility : public UGameplayAbility
 {
     GENERATED_BODY()
 
 public:
-    UGEStateAbility();
+    UGGFStateAbility();
 
     /* GameplayAbility */
     virtual void ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData) override;

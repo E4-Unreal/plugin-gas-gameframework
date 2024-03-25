@@ -3,15 +3,15 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GEGameplayAbility.h"
-#include "GEGA_AutoActivatable.generated.h"
+#include "GGFGameplayAbility.h"
+#include "GGFGA_AutoActivatable.generated.h"
 
 // TODO 필요없다고 판단되면 삭제될 수 있습니다.
 /**
  * Ability가 부여되는 즉시 자동으로 발동시키거나 소멸시킬 수 있는 GameplayAbility 클래스입니다.
  */
 UCLASS()
-class GASGAMEFRAMEWORK_API UGEGA_AutoActivatable : public UGEGameplayAbility
+class GASGAMEFRAMEWORK_API UGGFGA_AutoActivatable : public UGGFGameplayAbility
 {
     GENERATED_BODY()
 

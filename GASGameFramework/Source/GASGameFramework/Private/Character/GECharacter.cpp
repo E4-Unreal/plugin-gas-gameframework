@@ -1,12 +1,12 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
-#include "Character/GECharacter.h"
+#include "Character/GGFCharacter.h"
 
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 
 // Called when the game starts or when spawned
-void AGECharacter::BeginPlay()
+void AGGFCharacter::BeginPlay()
 {
     Super::BeginPlay();
 
@@ -23,7 +23,7 @@ void AGECharacter::BeginPlay()
     }
 }
 
-void AGECharacter::SetupEnhancedInputComponent(UEnhancedInputComponent* EnhancedInputComponent)
+void AGGFCharacter::SetupEnhancedInputComponent(UEnhancedInputComponent* EnhancedInputComponent)
 {
     Super::SetupEnhancedInputComponent(EnhancedInputComponent);
 
@@ -41,7 +41,7 @@ void AGECharacter::SetupEnhancedInputComponent(UEnhancedInputComponent* Enhanced
     EnhancedInputComponent->BindAction(CrouchAction, ETriggerEvent::Started, this, &ThisClass::ToggleCrouch);
 }
 
-void AGECharacter::Move(const FInputActionValue& Value)
+void AGGFCharacter::Move(const FInputActionValue& Value)
 {
     // 컨트롤러만 사용할 수 있는 메서드입니다.
     if(Controller == nullptr) return;
@@ -68,7 +68,7 @@ void AGECharacter::Move(const FInputActionValue& Value)
     }
 }
 
-void AGECharacter::Look(const FInputActionValue& Value)
+void AGGFCharacter::Look(const FInputActionValue& Value)
 {
     // input is a Vector2D
     FVector2D LookAxisVector = Value.Get<FVector2D>();
@@ -81,7 +81,7 @@ void AGECharacter::Look(const FInputActionValue& Value)
     }
 }
 
-void AGECharacter::ToggleCrouch()
+void AGGFCharacter::ToggleCrouch()
 {
     if(bIsCrouched)
         UnCrouch();

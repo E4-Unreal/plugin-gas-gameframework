@@ -3,22 +3,22 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GECharacterStateAbility.h"
-#include "GECSA_Dead.generated.h"
+#include "GGFCharacterStateAbility.h"
+#include "GGFCSA_Dead.generated.h"
 
 /**
  * 캐릭터 죽음 상태
  */
 UCLASS()
-class GASGAMEFRAMEWORK_API UGECSA_Dead : public UGECharacterStateAbility
+class GASGAMEFRAMEWORK_API UGGFCSA_Dead : public UGGFCharacterStateAbility
 {
     GENERATED_BODY()
 
 public:
-    UGECSA_Dead();
+    UGGFCSA_Dead();
 
 protected:
-    /* GECharacterState */
+    /* GGFCharacterState */
     virtual void OnEnter_Implementation() override;
     virtual void OnExit_Implementation() override;
 };

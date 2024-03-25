@@ -1,25 +1,25 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Weapon/GEWeaponAbility.h"
+#include "Weapon/GGFWeaponAbility.h"
 
 #include "Net/UnrealNetwork.h"
 
-UGEWeaponAbility::UGEWeaponAbility()
+UGGFWeaponAbility::UGGFWeaponAbility()
 {
     // 무기 어빌리티는 무기에 대한 레퍼런스가 필요하기 때문에 리플리케이트된 어빌리티 인스턴스를 사용합니다.
     InstancingPolicy = EGameplayAbilityInstancingPolicy::InstancedPerActor;
     ReplicationPolicy = EGameplayAbilityReplicationPolicy::ReplicateYes;
 }
 
-void UGEWeaponAbility::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+void UGGFWeaponAbility::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
     Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
     DOREPLIFETIME(ThisClass, Weapon)
 }
 
-void UGEWeaponAbility::SetWeapon_Implementation(AActor* InWeapon)
+void UGGFWeaponAbility::SetWeapon_Implementation(AActor* InWeapon)
 {
     // 서버 전용
     const FGameplayAbilityActivationInfo& ActivationInfo = GetCurrentActivationInfo();

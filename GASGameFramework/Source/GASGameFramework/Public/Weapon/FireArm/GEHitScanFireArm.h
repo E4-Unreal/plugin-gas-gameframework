@@ -3,10 +3,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GEFireArm.h"
-#include "GEHitScanFireArm.generated.h"
+#include "GGFFireArm.h"
+#include "GGFHitScanFireArm.generated.h"
 
-class UGEHitEffectDefinition;
+class UGGFHitEffectDefinition;
 class UGameplayEffect;
 
 /*
@@ -14,12 +14,12 @@ class UGameplayEffect;
  * 발사체 스폰 방식과 달리 데미지(EffectsToApply)나 피격 효과(HitEffect)를 이곳에서 직접 설정하셔야 합니다.
  */
 UCLASS(Abstract, Blueprintable, BlueprintType)
-class GASGAMEFRAMEWORK_API AGEHitScanFireArm : public AGEFireArm
+class GASGAMEFRAMEWORK_API AGGFHitScanFireArm : public AGGFFireArm
 {
     GENERATED_BODY()
 
 protected:
-    // 피격 대상에게 적용할 GE 목록입니다.
+    // 피격 대상에게 적용할 GGF 목록입니다.
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|HitScan")
     TArray<TSubclassOf<UGameplayEffect>> EffectsToApply;
 
@@ -36,7 +36,7 @@ protected:
 private:
     // 피격 효과
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Config|HitScan", meta = (AllowPrivateAccess = true))
-    UGEHitEffectDefinition* HitEffect;
+    UGGFHitEffectDefinition* HitEffect;
 
 protected:
     virtual void OnFire_Implementation() override;

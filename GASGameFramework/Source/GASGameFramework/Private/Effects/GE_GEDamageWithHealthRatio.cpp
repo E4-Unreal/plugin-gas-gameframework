@@ -1,18 +1,18 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Effects/GE_GEDamageWithHealthRatio.h"
+#include "Effects/GGF_GGFDamageWithHealthRatio.h"
 
-#include "Attributes/GEHealthAttributes.h"
+#include "Attributes/GGFHealthAttributes.h"
 
-UGE_GEDamageWithHealthRatio::UGE_GEDamageWithHealthRatio()
+UGGF_GGFDamageWithHealthRatio::UGGF_GGFDamageWithHealthRatio()
 {
     /* 기본값 설정 */
     const float Ratio = 0.1f;
 
     /* Modifiers 설정 */
     FGameplayEffectAttributeCaptureDefinition MaxHealthAttribute;
-    MaxHealthAttribute.AttributeToCapture = UGEHealthAttributes::GetMaxHealthAttribute();
+    MaxHealthAttribute.AttributeToCapture = UGGFHealthAttributes::GetMaxHealthAttribute();
     MaxHealthAttribute.AttributeSource = EGameplayEffectAttributeCaptureSource::Target;
 
     FAttributeBasedFloat DamageWithHealthRatio;
@@ -21,7 +21,7 @@ UGE_GEDamageWithHealthRatio::UGE_GEDamageWithHealthRatio()
 
     const FGameplayModifierInfo DamageModifier
     {
-        UGEHealthAttributes::GetDamageAttribute(),
+        UGGFHealthAttributes::GetDamageAttribute(),
         EGameplayModOp::Additive,
         FGameplayEffectModifierMagnitude(DamageWithHealthRatio)
     };

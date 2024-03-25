@@ -1,32 +1,32 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Weapon/FireArm/GEWA_Fire.h"
+#include "Weapon/FireArm/GGFWA_Fire.h"
 
 #include "Abilities/Tasks/AbilityTask_WaitInputRelease.h"
-#include "Equipment/Components/GEEquipmentManager.h"
-#include "Weapon/FireArm/GEFireArm.h"
+#include "Equipment/Components/GGFEquipmentManager.h"
+#include "Weapon/FireArm/GGFFireArm.h"
 
-UGEWA_Fire::UGEWA_Fire()
+UGGFWA_Fire::UGGFWA_Fire()
 {
     // AFireArm::Fire는 RPC로 구현되어 있기 때문에 LocalOnly 정책을 사용합니다.
     NetExecutionPolicy = EGameplayAbilityNetExecutionPolicy::LocalOnly;
 
     /* 태그 설정 */
-    using namespace GEGameplayTags;
+    using namespace GGFGameplayTags;
 
     AbilityTags.AddLeafTag(Action::Attack);
     ActivationOwnedTags.AddLeafTag(Action::Attack);
 }
 
-bool UGEWA_Fire::CanActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
+bool UGGFWA_Fire::CanActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
     const FGameplayTagContainer* SourceTags, const FGameplayTagContainer* TargetTags,
     FGameplayTagContainer* OptionalRelevantTags) const
 {
     return GetFireArm() && GetFireArm()->CanFire() && Super::CanActivateAbility(Handle, ActorInfo, SourceTags, TargetTags, OptionalRelevantTags);
 }
 
-void UGEWA_Fire::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
+void UGGFWA_Fire::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
                                  const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
 {
     Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
@@ -35,7 +35,7 @@ void UGEWA_Fire::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const 
     if(!CommitAbility(Handle, ActorInfo, ActivationInfo)) return;
 
     // 총기 레퍼런스 가져오기
-    AGEFireArm* CachedFireArm = GetFireArm();
+    AGGFFireArm* CachedFireArm = GetFireArm();
 
     // 즉시 발사
     CachedFireArm->Fire();
@@ -46,13 +46,13 @@ void UGEWA_Fire::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const 
     {
         World->GetTimerManager().SetTimer(
             FireTimer,
-            FTimerDelegate::CreateUObject(CachedFireArm, &AGEFireArm::Fire),
+            FTimerDelegate::CreateUObject(CachedFireArm, &AGGFFireArm::Fire),
             CachedFireArm->GetFireInterval(),
             true);
     }
 }
 
-void UGEWA_Fire::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
+void UGGFWA_Fire::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
     const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled)
 {
     Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
@@ -61,7 +61,7 @@ void UGEWA_Fire::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGame
     StopFire();
 }
 
-void UGEWA_Fire::StopFire()
+void UGGFWA_Fire::StopFire()
 {
     if(!FireTimer.IsValid()) return;
 

@@ -3,8 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Equipment/GEEquipment.h"
-#include "GEWeapon.generated.h"
+#include "Equipment/GGFEquipment.h"
+#include "GGFWeapon.generated.h"
 
 struct FGameplayAbilitySpecHandle;
 class UGameplayAbility;
@@ -12,7 +12,7 @@ class UAbilitySystemComponent;
 class UAnimInstance;
 
 UCLASS(Abstract, Blueprintable, BlueprintType)
-class GASGAMEFRAMEWORK_API AGEWeapon : public AGEEquipment
+class GASGAMEFRAMEWORK_API AGGFWeapon : public AGGFEquipment
 {
     GENERATED_BODY()
 
@@ -32,10 +32,10 @@ protected:
     TArray<TSubclassOf<UGameplayAbility>> WeaponAbilities;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|Weapon", meta = (Categories = "Equipment.Weapon"))
-    FGameplayTag WeaponType = GEGameplayTags::Equipment::Weapon;
+    FGameplayTag WeaponType = GGFGameplayTags::Equipment::Weapon;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|Weapon", meta = (Categories = "Equipment.Slot"))
-    FGameplayTag WeaponSlot = GEGameplayTags::Equipment::Slot;
+    FGameplayTag WeaponSlot = GGFGameplayTags::Equipment::Slot;
 
     UPROPERTY(VisibleAnywhere, Category = "State|Weapon", Transient)
     TArray<FGameplayAbilitySpecHandle> AbilitySpecHandles;

@@ -4,20 +4,20 @@
 
 #include "CoreMinimal.h"
 #include "GameplayTagContainer.h"
-#include "GEGameplayTags.h"
+#include "GGFGameplayTags.h"
 #include "GameFramework/Actor.h"
-#include "GEEquipment.generated.h"
+#include "GGFEquipment.generated.h"
 
 /**
  * GSFEquipmentComponent에서 사용하기 위한 장비 클래스입니다.
  */
 UCLASS(Abstract, Blueprintable, BlueprintType)
-class GASGAMEFRAMEWORK_API AGEEquipment : public AActor
+class GASGAMEFRAMEWORK_API AGGFEquipment : public AActor
 {
     GENERATED_BODY()
 
 public:
-    AGEEquipment();
+    AGGFEquipment();
 
     /* Actor */
 
@@ -37,8 +37,8 @@ public:
     /* Getter */
 
     UFUNCTION(BlueprintPure, Category = "Equipment")
-    virtual FORCEINLINE FGameplayTag GetEquipmentType() const { return GEGameplayTags::Equipment::Equipment; }
+    virtual FORCEINLINE FGameplayTag GetEquipmentType() const { return GGFGameplayTags::Equipment::Equipment; }
 
     UFUNCTION(BlueprintPure, Category = "Equipment")
-    virtual FORCEINLINE FGameplayTag GetEquipmentSlot() const { return GEGameplayTags::Equipment::Slot; }
+    virtual FORCEINLINE FGameplayTag GetEquipmentSlot() const { return GGFGameplayTags::Equipment::Slot; }
 };

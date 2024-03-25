@@ -1,9 +1,9 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "UI/GEAttributesPresenterBase.h"
+#include "UI/GGFAttributesPresenterBase.h"
 
-void UGEAttributesPresenterBase::SetAbilitySystem(UAbilitySystemComponent* InAbilitySystem)
+void UGGFAttributesPresenterBase::SetAbilitySystem(UAbilitySystemComponent* InAbilitySystem)
 {
     // 기존 AbilitySystem 등록 해제
     if(AbilitySystem)
@@ -26,14 +26,14 @@ void UGEAttributesPresenterBase::SetAbilitySystem(UAbilitySystemComponent* InAbi
     }
 }
 
-void UGEAttributesPresenterBase::GetAttributeValues()
+void UGGFAttributesPresenterBase::GetAttributeValues()
 {
 }
 
-void UGEAttributesPresenterBase::BindAttributeValueChangeEvents()
+void UGGFAttributesPresenterBase::BindAttributeValueChangeEvents()
 {
 }
 
-void UGEAttributesPresenterBase::UnBindAttributeValueChangeEvents()
+void UGGFAttributesPresenterBase::UnBindAttributeValueChangeEvents()
 {
 }

@@ -1,18 +1,18 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Abilities/GEGameplayAbility.h"
+#include "Abilities/GGFGameplayAbility.h"
 
-#include "GEGameplayTags.h"
-#include "Attributes/GEHealthAttributes.h"
+#include "GGFGameplayTags.h"
+#include "Attributes/GGFHealthAttributes.h"
 
-UGEGameplayAbility::UGEGameplayAbility()
+UGGFGameplayAbility::UGGFGameplayAbility()
 {
     // 기본 인스턴싱 정책 설정
     InstancingPolicy = EGameplayAbilityInstancingPolicy::InstancedPerActor;
 
     /* 태그 설정 */
-    using namespace GEGameplayTags;
+    using namespace GGFGameplayTags;
 
     // 기본 어빌리티 태그 설정
     AbilityTags.AddTagFast(Action::Action);
@@ -24,7 +24,7 @@ UGEGameplayAbility::UGEGameplayAbility()
     ActivationBlockedTags.AddTagFast(State::Stun);
 }
 
-void UGEGameplayAbility::InputReleased(const FGameplayAbilitySpecHandle Handle,
+void UGGFGameplayAbility::InputReleased(const FGameplayAbilitySpecHandle Handle,
     const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo)
 {
     Super::InputReleased(Handle, ActorInfo, ActivationInfo);
@@ -33,7 +33,7 @@ void UGEGameplayAbility::InputReleased(const FGameplayAbilitySpecHandle Handle,
     if(bIsActive) EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true, false);
 }
 
-void UGEGameplayAbility::EndAbility(const FGameplayAbilitySpecHandle Handle,
+void UGGFGameplayAbility::EndAbility(const FGameplayAbilitySpecHandle Handle,
                                         const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo,
                                         bool bReplicateEndAbility, bool bWasCancelled)
 {
@@ -43,7 +43,7 @@ void UGEGameplayAbility::EndAbility(const FGameplayAbilitySpecHandle Handle,
     GetCurrentAbilitySpec()->InputPressed = false;
 }
 
-const FGameplayTag UGEGameplayAbility::GetInputTag_Implementation() const
+const FGameplayTag UGGFGameplayAbility::GetInputTag_Implementation() const
 {
     return InputTag;
 }

@@ -1,15 +1,15 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Weapon/FireArm/GEHitScanFireArm.h"
+#include "Weapon/FireArm/GGFHitScanFireArm.h"
 
-#include "FunctionLibraries/GEFunctionLibrary.h"
-#include "Weapon/HitEffect/GEHitEffectDefinition.h"
-#include "Weapon/Interface/GEAimingInterface.h"
+#include "FunctionLibraries/GGFFunctionLibrary.h"
+#include "Weapon/HitEffect/GGFHitEffectDefinition.h"
+#include "Weapon/Interface/GGFAimingInterface.h"
 
-void AGEHitScanFireArm::OnFire_Implementation()
+void AGGFHitScanFireArm::OnFire_Implementation()
 {
-    if(GetOwner() && GetOwner()->GetClass()->ImplementsInterface(UGEAimingInterface::StaticClass()))
+    if(GetOwner() && GetOwner()->GetClass()->ImplementsInterface(UGGFAimingInterface::StaticClass()))
     {
         const UWorld* World = GetWorld();
         if(World == nullptr) return;
@@ -21,7 +21,7 @@ void AGEHitScanFireArm::OnFire_Implementation()
 
         // 발사 방향
         FVector Target;
-        IGEAimingInterface::Execute_GetTarget(GetOwner(), Target);
+        IGGFAimingInterface::Execute_GetTarget(GetOwner(), Target);
         const FVector& Direction = (Target - TraceStart).GetSafeNormal();
 
         // 라인 트레이스 종료 위치
@@ -68,16 +68,16 @@ void AGEHitScanFireArm::OnFire_Implementation()
     }
 }
 
-void AGEHitScanFireArm::OnHit_Implementation(const FHitResult& HitResult)
+void AGGFHitScanFireArm::OnHit_Implementation(const FHitResult& HitResult)
 {
     // 서버에서만 실행 가능합니다.
     if(!HasAuthority()) return;
 
-    // GE 적용
-    UGEFunctionLibrary::ApplyGameplayEffectsToTarget(EffectsToApply, GetInstigator(), HitResult.GetActor());
+    // GGF 적용
+    UGGFFunctionLibrary::ApplyGameplayEffectsToTarget(EffectsToApply, GetInstigator(), HitResult.GetActor());
 }
 
-void AGEHitScanFireArm::OnMulticastHit_Implementation(const FHitResult& HitResult)
+void AGGFHitScanFireArm::OnMulticastHit_Implementation(const FHitResult& HitResult)
 {
     if(HitEffect)
         HitEffect->SpawnHitEffect(HitResult);

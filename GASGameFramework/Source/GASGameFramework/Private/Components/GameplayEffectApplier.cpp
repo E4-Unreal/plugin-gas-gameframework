@@ -3,9 +3,9 @@
 
 #include "Components/GameplayEffectApplier.h"
 
-#include "FunctionLibraries/GEFunctionLibrary.h"
+#include "FunctionLibraries/GGFFunctionLibrary.h"
 
 void UGameplayEffectApplier::ApplyEffectsToTarget(AActor* Target)
 {
-    UGEFunctionLibrary::ApplyGameplayEffectsToTarget(EffectsToApply, GetOwner()->GetInstigator(), Target);
+    UGGFFunctionLibrary::ApplyGameplayEffectsToTarget(EffectsToApply, GetOwner()->GetInstigator(), Target);
 }

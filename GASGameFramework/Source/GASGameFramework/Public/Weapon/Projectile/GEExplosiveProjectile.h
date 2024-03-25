@@ -3,8 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GEProjectile.h"
-#include "GEExplosiveProjectile.generated.h"
+#include "GGFProjectile.h"
+#include "GGFExplosiveProjectile.generated.h"
 
 class UParticleSystem;
 class UNiagaraSystem;
@@ -16,7 +16,7 @@ class USoundCue;
  * 클래스 계층 구조가 변경될 수 있으니 유의바랍니다.
  */
 UCLASS(Abstract, Blueprintable, BlueprintType)
-class GASGAMEFRAMEWORK_API AGEExplosiveProjectile : public AGEProjectile
+class GASGAMEFRAMEWORK_API AGGFExplosiveProjectile : public AGGFProjectile
 {
     GENERATED_BODY()
 
@@ -55,7 +55,7 @@ class GASGAMEFRAMEWORK_API AGEExplosiveProjectile : public AGEProjectile
     TEnumAsByte<ECollisionChannel> CollisionChannel = ECC_WorldDynamic;
 
 public:
-    AGEExplosiveProjectile();
+    AGGFExplosiveProjectile();
 
     virtual void BeginPlay() override;
 

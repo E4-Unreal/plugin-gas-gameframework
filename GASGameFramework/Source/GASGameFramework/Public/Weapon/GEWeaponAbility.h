@@ -3,15 +3,15 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Abilities/GEGameplayAbility.h"
-#include "Interface/GEWeaponAbilityInterface.h"
-#include "GEWeaponAbility.generated.h"
+#include "Abilities/GGFGameplayAbility.h"
+#include "Interface/GGFWeaponAbilityInterface.h"
+#include "GGFWeaponAbility.generated.h"
 
 /**
  * 무기 전용 어빌리티
  */
 UCLASS()
-class GASGAMEFRAMEWORK_API UGEWeaponAbility : public UGEGameplayAbility, public IGEWeaponAbilityInterface
+class GASGAMEFRAMEWORK_API UGGFWeaponAbility : public UGGFGameplayAbility, public IGGFWeaponAbilityInterface
 {
     GENERATED_BODY()
 
@@ -19,7 +19,7 @@ class GASGAMEFRAMEWORK_API UGEWeaponAbility : public UGEGameplayAbility, public 
     TWeakObjectPtr<AActor> Weapon;
 
 public:
-    UGEWeaponAbility();
+    UGGFWeaponAbility();
 
     virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
@@ -35,6 +35,6 @@ public:
     FORCEINLINE AActor* GetWeapon() const { return Weapon.Get(); }
 
 public:
-    /* GEWeaponAbilityInterface 인터페이스 */
+    /* GGFWeaponAbilityInterface 인터페이스 */
     void SetWeapon_Implementation(AActor* InWeapon);
 };

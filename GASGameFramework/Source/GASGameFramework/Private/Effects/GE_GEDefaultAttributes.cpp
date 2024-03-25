@@ -1,13 +1,13 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Effects/GE_GEDefaultAttributes.h"
+#include "Effects/GGF_GGFDefaultAttributes.h"
 
-#include "Attributes/GEStaminaAttributes.h"
+#include "Attributes/GGFStaminaAttributes.h"
 
-UGE_GEDefaultAttributes::UGE_GEDefaultAttributes()
+UGGF_GGFDefaultAttributes::UGGF_GGFDefaultAttributes()
 {
-    // UGEAttributeSetBase::AdjustAttributeForMaxChange 덕분에 Attribute 값이 Max 값으로 초기화됩니다.
+    // UGGFAttributeSetBase::AdjustAttributeForMaxChange 덕분에 Attribute 값이 Max 값으로 초기화됩니다.
 
     /* 기본값 설정 */
     const float DefaultValue = 100.f;
@@ -16,7 +16,7 @@ UGE_GEDefaultAttributes::UGE_GEDefaultAttributes()
     // 체력
     const FGameplayModifierInfo MaxHealthModifier
     {
-        UGEHealthAttributes::GetMaxHealthAttribute(),
+        UGGFHealthAttributes::GetMaxHealthAttribute(),
         EGameplayModOp::Override,
         FGameplayEffectModifierMagnitude(FScalableFloat(DefaultValue))
     };
@@ -24,7 +24,7 @@ UGE_GEDefaultAttributes::UGE_GEDefaultAttributes()
     // 실드
     const FGameplayModifierInfo MaxShieldModifier
     {
-        UGEShieldAttributes::GetMaxShieldAttribute(),
+        UGGFShieldAttributes::GetMaxShieldAttribute(),
         EGameplayModOp::Override,
         FGameplayEffectModifierMagnitude(FScalableFloat(DefaultValue))
     };
@@ -32,7 +32,7 @@ UGE_GEDefaultAttributes::UGE_GEDefaultAttributes()
     // 마나
     const FGameplayModifierInfo MaxManaModifier
     {
-        UGEManaAttributes::GetMaxManaAttribute(),
+        UGGFManaAttributes::GetMaxManaAttribute(),
         EGameplayModOp::Override,
         FGameplayEffectModifierMagnitude(FScalableFloat(DefaultValue))
     };
@@ -40,7 +40,7 @@ UGE_GEDefaultAttributes::UGE_GEDefaultAttributes()
     // 스태미나
     const FGameplayModifierInfo MaxStaminaModifier
     {
-        UGEStaminaAttributes::GetMaxStaminaAttribute(),
+        UGGFStaminaAttributes::GetMaxStaminaAttribute(),
         EGameplayModOp::Override,
         FGameplayEffectModifierMagnitude(FScalableFloat(DefaultValue))
     };

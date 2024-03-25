@@ -1,38 +1,38 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "UI/GEHealthAttributesPresenterBase.h"
+#include "UI/GGFHealthAttributesPresenterBase.h"
 
 #include "AbilitySystemComponent.h"
-#include "Attributes/GEHealthAttributes.h"
+#include "Attributes/GGFHealthAttributes.h"
 
-DEFINE_ATTRIBUTE_VALUE_CHANGE_HANDLE(UGEHealthAttributesPresenterBase, Health)
-DEFINE_ATTRIBUTE_VALUE_CHANGE_HANDLE(UGEHealthAttributesPresenterBase, MaxHealth)
-DEFINE_ATTRIBUTE_VALUE_CHANGE_HANDLE(UGEHealthAttributesPresenterBase, HealthRegenRate)
+DEFINE_ATTRIBUTE_VALUE_CHANGGF_HANDLE(UGGFHealthAttributesPresenterBase, Health)
+DEFINE_ATTRIBUTE_VALUE_CHANGGF_HANDLE(UGGFHealthAttributesPresenterBase, MaxHealth)
+DEFINE_ATTRIBUTE_VALUE_CHANGGF_HANDLE(UGGFHealthAttributesPresenterBase, HealthRegenRate)
 
-void UGEHealthAttributesPresenterBase::GetAttributeValues()
+void UGGFHealthAttributesPresenterBase::GetAttributeValues()
 {
     Super::GetAttributeValues();
 
-    UPDATE_ATTRIBUTE_VALUE(UGEHealthAttributes, Health)
-    UPDATE_ATTRIBUTE_VALUE(UGEHealthAttributes, MaxHealth)
-    UPDATE_ATTRIBUTE_VALUE(UGEHealthAttributes, HealthRegenRate)
+    UPDATE_ATTRIBUTE_VALUE(UGGFHealthAttributes, Health)
+    UPDATE_ATTRIBUTE_VALUE(UGGFHealthAttributes, MaxHealth)
+    UPDATE_ATTRIBUTE_VALUE(UGGFHealthAttributes, HealthRegenRate)
 }
 
-void UGEHealthAttributesPresenterBase::BindAttributeValueChangeEvents()
+void UGGFHealthAttributesPresenterBase::BindAttributeValueChangeEvents()
 {
     Super::BindAttributeValueChangeEvents();
 
-    BIND_ATTRIBUTE_VALUE_CHANGE_DELEGATE(UGEHealthAttributes, Health)
-    BIND_ATTRIBUTE_VALUE_CHANGE_DELEGATE(UGEHealthAttributes, MaxHealth)
-    BIND_ATTRIBUTE_VALUE_CHANGE_DELEGATE(UGEHealthAttributes, HealthRegenRate)
+    BIND_ATTRIBUTE_VALUE_CHANGGF_DELEGATE(UGGFHealthAttributes, Health)
+    BIND_ATTRIBUTE_VALUE_CHANGGF_DELEGATE(UGGFHealthAttributes, MaxHealth)
+    BIND_ATTRIBUTE_VALUE_CHANGGF_DELEGATE(UGGFHealthAttributes, HealthRegenRate)
 }
 
-void UGEHealthAttributesPresenterBase::UnBindAttributeValueChangeEvents()
+void UGGFHealthAttributesPresenterBase::UnBindAttributeValueChangeEvents()
 {
     Super::UnBindAttributeValueChangeEvents();
 
-    UNBIND_ATTRIBUTE_VALUE_CHANGE_DELEGATE(UGEHealthAttributes, Health)
-    UNBIND_ATTRIBUTE_VALUE_CHANGE_DELEGATE(UGEHealthAttributes, MaxHealth)
-    UNBIND_ATTRIBUTE_VALUE_CHANGE_DELEGATE(UGEHealthAttributes, HealthRegenRate)
+    UNBIND_ATTRIBUTE_VALUE_CHANGGF_DELEGATE(UGGFHealthAttributes, Health)
+    UNBIND_ATTRIBUTE_VALUE_CHANGGF_DELEGATE(UGGFHealthAttributes, MaxHealth)
+    UNBIND_ATTRIBUTE_VALUE_CHANGGF_DELEGATE(UGGFHealthAttributes, HealthRegenRate)
 }

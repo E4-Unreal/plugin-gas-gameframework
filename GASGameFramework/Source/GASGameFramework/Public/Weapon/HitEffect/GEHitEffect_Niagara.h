@@ -3,8 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GEHitEffect.h"
-#include "GEHitEffect_Niagara.generated.h"
+#include "GGFHitEffect.h"
+#include "GGFHitEffect_Niagara.generated.h"
 
 class UNiagaraSystem;
 
@@ -12,7 +12,7 @@ class UNiagaraSystem;
  *
  */
 UCLASS()
-class GASGAMEFRAMEWORK_API UGEHitEffect_Niagara : public UGEHitEffect
+class GASGAMEFRAMEWORK_API UGGFHitEffect_Niagara : public UGGFHitEffect
 {
     GENERATED_BODY()
 

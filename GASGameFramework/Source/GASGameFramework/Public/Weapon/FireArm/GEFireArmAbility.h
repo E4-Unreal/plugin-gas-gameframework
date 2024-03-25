@@ -3,25 +3,25 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Weapon/GEWeaponAbility.h"
-#include "GEFireArmAbility.generated.h"
+#include "Weapon/GGFWeaponAbility.h"
+#include "GGFFireArmAbility.generated.h"
 
-class AGEFireArm;
+class AGGFFireArm;
 /**
  * 총기 전용 어빌리티 클래스
  */
 UCLASS()
-class GASGAMEFRAMEWORK_API UGEFireArmAbility : public UGEWeaponAbility
+class GASGAMEFRAMEWORK_API UGGFFireArmAbility : public UGGFWeaponAbility
 {
     GENERATED_BODY()
 
-    TWeakObjectPtr<AGEFireArm> FireArm;
+    TWeakObjectPtr<AGGFFireArm> FireArm;
 
 protected:
-    /* GEWeaponAbility */
+    /* GGFWeaponAbility */
     virtual void OnRep_Weapon() override;
 
     /* Getter */
     UFUNCTION(BlueprintCallable)
-    FORCEINLINE AGEFireArm* GetFireArm() const { return FireArm.Get(); }
+    FORCEINLINE AGGFFireArm* GetFireArm() const { return FireArm.Get(); }
 };

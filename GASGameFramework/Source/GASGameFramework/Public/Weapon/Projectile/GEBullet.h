@@ -3,19 +3,19 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GEProjectile.h"
-#include "GEBullet.generated.h"
+#include "GGFProjectile.h"
+#include "GGFBullet.generated.h"
 
 /*
  * 충돌 즉시 피격 이벤트 핸들링되는 총알 클래스
  */
 UCLASS(Abstract, Blueprintable, BlueprintType)
-class GASGAMEFRAMEWORK_API AGEBullet : public AGEProjectile
+class GASGAMEFRAMEWORK_API AGGFBullet : public AGGFProjectile
 {
     GENERATED_BODY()
 
 public:
-    AGEBullet();
+    AGGFBullet();
 
 protected:
     virtual void OnHit_Implementation(const FHitResult& HitResult) override;

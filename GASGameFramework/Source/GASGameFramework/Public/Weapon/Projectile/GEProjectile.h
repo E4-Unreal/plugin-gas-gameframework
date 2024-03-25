@@ -4,19 +4,19 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "GEProjectile.generated.h"
+#include "GGFProjectile.generated.h"
 
 class USphereComponent;
 class UProjectileMovementComponent;
 class UGameplayEffect;
-class UGEHitEffectDefinition;
+class UGGFHitEffectDefinition;
 
 // TODO 아직 테스트 단계로 클래스 구조 및 API가 변경될 수 있습니다.
 /*
  * 총알, 로켓, 수류탄 등 발사체 및 투척물에 사용되는 기본 클래스로 OnHit과 OnMulticastHit을 오버라이드하시면 됩니다.
  */
 UCLASS(Abstract, Blueprintable, BlueprintType)
-class GASGAMEFRAMEWORK_API AGEProjectile : public AActor
+class GASGAMEFRAMEWORK_API AGGFProjectile : public AActor
 {
     GENERATED_BODY()
 
@@ -43,10 +43,10 @@ protected:
 
     // 피격 효과
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|Projectile")
-    TObjectPtr<UGEHitEffectDefinition> HitEffect;
+    TObjectPtr<UGGFHitEffectDefinition> HitEffect;
 
 public:
-    AGEProjectile();
+    AGGFProjectile();
 
     /* Actor */
     virtual void PostInitializeComponents() override;
