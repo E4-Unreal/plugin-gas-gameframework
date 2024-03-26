@@ -5,7 +5,7 @@
 
 #include "EnhancedInputComponent.h"
 #include "GGFAbilitySystemBase.h"
-#include "Character/Components/GGFAbilityInputBinder.h"
+#include "Input/GGFAbilityInputBinder.h"
 #include "Character/Components/GGFCharacterMovement.h"
 #include "Abilities/GGFStateMachine.h"
 #include "Equipment/Components/GGFEquipmentManager.h"

@@ -8,20 +8,23 @@
 #include "GameplayTagContainer.h"
 #include "GGFInputConfig.generated.h"
 
+/*
+ * 입력 액션과 게임플레이 입력 태그 매핑을 위한 구조체
+ */
 USTRUCT(Atomic, BlueprintType)
-struct FGGFInputWithGameplayTag
+struct FGGFInputAction
 {
     GENERATED_BODY()
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     UInputAction* InputAction;
 
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (Categories = "Input"))
     FGameplayTag InputTag;
 };
 
 /**
- * GGFAbilitySystemBase에서 InputTag 바인딩을 위해 사용하는 데이터 에셋입니다.
+ * 어빌리티 전용 입력 액션과 게임플레이 입력 태그 매핑 정보를 저장하는 데이터 에셋
  */
 UCLASS()
 class GASGAMEFRAMEWORK_API UGGFInputConfig : public UDataAsset
@@ -29,9 +32,9 @@ class GASGAMEFRAMEWORK_API UGGFInputConfig : public UDataAsset
     GENERATED_BODY()
 
     UPROPERTY(EditAnywhere, Category = "Config")
-    TArray<FGGFInputWithGameplayTag> InputWithGameplayTagList;
+    TArray<FGGFInputAction> AbilityInputActions;
 
 public:
     UFUNCTION(BlueprintPure)
-    const TArray<FGGFInputWithGameplayTag>& GetInputWithGameplayTagList() const { return InputWithGameplayTagList; }
+    const TArray<FGGFInputAction>& GetAbilityInputActions() const { return AbilityInputActions; }
 };

@@ -1,11 +1,11 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Character/Components/GGFAbilityInputBinder.h"
+#include "Input/GGFAbilityInputBinder.h"
 
 #include "AbilitySystemGlobals.h"
 #include "GGFAbilitySystemBase.h"
-#include "GGFInputConfig.h"
+#include "Input/GGFInputConfig.h"
 
 UGGFAbilityInputBinder::UGGFAbilityInputBinder()
 {
@@ -55,13 +55,13 @@ void UGGFAbilityInputBinder::RegisterAbilityInputConfig()
     if(AbilityInputConfig == nullptr) return;
 
     // InputConfig 캐싱
-    const auto& InputWithGameplayTagList = AbilityInputConfig->GetInputWithGameplayTagList();
-    RegisteredAbilityInput.Reserve(InputWithGameplayTagList.Num());
-    for (const auto& InputWithGameplayTag : InputWithGameplayTagList)
+    const auto& AbilityInputActions = AbilityInputConfig->GetAbilityInputActions();
+    RegisteredAbilityInput.Reserve(AbilityInputActions.Num());
+    for (const auto& AbilityInputAction : AbilityInputActions)
     {
         // 지역 변수 선언
-        UInputAction* InputAction = InputWithGameplayTag.InputAction;
-        const FGameplayTag& InputTag = InputWithGameplayTag.InputTag;
+        UInputAction* InputAction = AbilityInputAction.InputAction;
+        const FGameplayTag& InputTag = AbilityInputAction.InputTag;
 
         // 유효성 검사
         if(InputAction == nullptr || InputTag == FGameplayTag::EmptyTag) continue;
