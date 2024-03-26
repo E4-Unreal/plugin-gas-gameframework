@@ -8,7 +8,7 @@
 #include "GameplayTagContainer.h"
 #include "GGFInputConfig.generated.h"
 
-/*
+/**
  * 입력 액션과 게임플레이 입력 태그 매핑을 위한 구조체
  */
 USTRUCT(Atomic, BlueprintType)
@@ -31,6 +31,7 @@ class GASGAMEFRAMEWORK_API UGGFInputConfig : public UDataAsset
 {
     GENERATED_BODY()
 
+protected:
     UPROPERTY(EditAnywhere, Category = "Config")
     TArray<FGGFInputAction> AbilityInputActions;
 
