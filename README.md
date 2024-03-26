@@ -1,4 +1,4 @@
-# Plugin GAS Framework
+# Plugin GAS GameFramework
 
 ## 개요
 
