@@ -9,14 +9,9 @@
 #include "FunctionLibraries/GGFFunctionLibrary.h"
 #include "Weapon/Interface/GGFWeaponAbilityInterface.h"
 
-void AGGFWeapon::OnSelected_Implementation()
+AGGFWeapon::AGGFWeapon()
 {
-    GiveAbilities();
-}
-
-void AGGFWeapon::OnDeselected_Implementation()
-{
-    ClearAbilities();
+    EquipmentType = GGFGameplayTags::Equipment::Weapon;
 }
 
 void AGGFWeapon::GiveAbilities()
@@ -87,4 +82,14 @@ void AGGFWeapon::OnUnEquip_Implementation()
     // 캐릭터 메시 캐싱 제거
     ThirdPersonMesh = nullptr;
     FirstPersonMesh = nullptr;
+}
+
+void AGGFWeapon::Activate_Implementation()
+{
+    GiveAbilities();
+}
+
+void AGGFWeapon::Deactivate_Implementation()
+{
+    ClearAbilities();
 }

@@ -31,31 +31,14 @@ protected:
     UPROPERTY(EditAnywhere, Category = "Config|Weapon")
     TArray<TSubclassOf<UGameplayAbility>> WeaponAbilities;
 
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|Weapon", meta = (Categories = "Equipment.Weapon"))
-    FGameplayTag WeaponType = GGFGameplayTags::Equipment::Weapon;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|Weapon", meta = (Categories = "Equipment.Slot"))
-    FGameplayTag WeaponSlot = GGFGameplayTags::Equipment::Slot;
-
     UPROPERTY(VisibleAnywhere, Category = "State|Weapon", Transient)
     TArray<FGameplayAbilitySpecHandle> AbilitySpecHandles;
 
 public:
-    /* GSFEquipmentBase */
-
-    virtual FGameplayTag GetEquipmentType() const override { return WeaponType; }
-    virtual FGameplayTag GetEquipmentSlot() const override { return WeaponSlot; }
+    AGGFWeapon();
 
 protected:
     /* 가상 메서드 */
-
-    // 무기를 장착한 경우 (주 무기로 선택, 즉 손에 쥔 경우)
-    UFUNCTION(BlueprintNativeEvent, Category = "Weapon")
-    void OnSelected();
-
-    // 무기를 장착 해제한 경우 (주 무기에서 선택 해제, 즉 손이 아닌 다른 곳에 장비하는 경우)
-    UFUNCTION(BlueprintNativeEvent, Category = "Weapon")
-    void OnDeselected();
 
     // 무기 어빌리티를 소유자에게 부여합니다.
     virtual void GiveAbilities();
@@ -84,4 +67,12 @@ protected:
 
     UFUNCTION(BlueprintGetter)
     FORCEINLINE UAnimInstance* GetFirstPersonAnimInstance() const { return FirstPersonMesh.IsValid() ? FirstPersonMesh.Get()->GetAnimInstance() : nullptr; }
+
+public:
+    /* GGFEquipmentInterface */
+    // 무기가 선택된 경우
+    virtual void Activate_Implementation() override;
+
+    // 무기가 선택 해제된 경우
+    virtual void Deactivate_Implementation() override;
 };

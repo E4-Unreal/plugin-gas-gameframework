@@ -6,15 +6,23 @@
 #include "GameplayTagContainer.h"
 #include "GGFGameplayTags.h"
 #include "GameFramework/Actor.h"
+#include "Interface/GGFEquipmentInterface.h"
 #include "GGFEquipment.generated.h"
 
 /**
  * GSFEquipmentComponent에서 사용하기 위한 장비 클래스입니다.
  */
 UCLASS(Abstract, Blueprintable, BlueprintType)
-class GASGAMEFRAMEWORK_API AGGFEquipment : public AActor
+class GASGAMEFRAMEWORK_API AGGFEquipment : public AActor, public IGGFEquipmentInterface
 {
     GENERATED_BODY()
+
+protected:
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Config|Equipment", meta = (Categories = "Equipment"))
+    FGameplayTag EquipmentType = GGFGameplayTags::Equipment::Equipment;
+
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Config|Equipment", meta = (Categories = "Equipment.Slot"))
+    FGameplayTag EquipmentSlot = GGFGameplayTags::Equipment::Slot;
 
 public:
     AGGFEquipment();
@@ -34,11 +42,7 @@ protected:
     void OnUnEquip();
 
 public:
-    /* Getter */
-
-    UFUNCTION(BlueprintPure, Category = "Equipment")
-    virtual FORCEINLINE FGameplayTag GetEquipmentType() const { return GGFGameplayTags::Equipment::Equipment; }
-
-    UFUNCTION(BlueprintPure, Category = "Equipment")
-    virtual FORCEINLINE FGameplayTag GetEquipmentSlot() const { return GGFGameplayTags::Equipment::Slot; }
+    /* GGFEquipmentInterface */
+    FORCEINLINE virtual const FGameplayTag GetEquipmentSlot_Implementation() const override { return EquipmentSlot; }
+    FORCEINLINE virtual const FGameplayTag GetEquipmentType_Implementation() const override { return EquipmentType; }
 };

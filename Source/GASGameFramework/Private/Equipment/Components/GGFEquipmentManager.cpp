@@ -27,17 +27,17 @@ void UGGFEquipmentManager::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>&
     DOREPLIFETIME(ThisClass, SelectedEquipment);
 }
 
-bool UGGFEquipmentManager::AddEquipment(TSubclassOf<AGGFEquipment> EquipmentClass)
+bool UGGFEquipmentManager::AddEquipment(TSubclassOf<AActor> EquipmentClass)
 {
     // 무기를 추가할 수 있는지 확인
     if(!CanAddEquipment(EquipmentClass)) return false;
 
     // 무기 스폰
-    AGGFEquipment* SpawnedEquipment = SpawnEquipment(EquipmentClass);
+    AActor* SpawnedEquipment = SpawnEquipment(EquipmentClass);
     if(SpawnedEquipment == nullptr) return false;
 
     // 슬롯에 무기 추가
-    const FGameplayTag& SlotTag = SpawnedEquipment->GetEquipmentSlot();
+    const FGameplayTag& SlotTag = IGGFEquipmentInterface::Execute_GetEquipmentSlot(SpawnedEquipment);
     const FEquipmentSlot& EquipmentSlot = GetAvailableSlot(SlotTag);
     EquipmentSlots.Emplace(EquipmentSlot, SpawnedEquipment);
 
@@ -86,10 +86,7 @@ void UGGFEquipmentManager::SelectEquipment(FGameplayTag Slot, int32 Index)
     AttachEquipment(SelectedEquipment, HandSocketName);
 
     // 선택 장비를 활성화합니다.
-    if(AGGFWeapon* Weapon = Cast<AGGFWeapon>(SelectedEquipment))
-    {
-        Weapon->OnSelected_Implementation();
-    }
+    IGGFEquipmentInterface::Execute_Activate(SelectedEquipment);
 }
 
 bool UGGFEquipmentManager::IsEquipmentExist(FGameplayTag Slot, int32 Index) const
@@ -102,7 +99,7 @@ bool UGGFEquipmentManager::IsEquipmentSlotExist(FGameplayTag Slot, int32 Index) 
     return EquipmentSlots.Contains(FEquipmentSlot(Slot, Index));
 }
 
-AGGFEquipment* UGGFEquipmentManager::GetEquipment(FGameplayTag Slot, int32 Index) const
+AActor* UGGFEquipmentManager::GetEquipment(FGameplayTag Slot, int32 Index) const
 {
     return IsEquipmentSlotExist(Slot, Index) ? *EquipmentSlots.Find(FEquipmentSlot(Slot, Index)) : nullptr;
 }
@@ -118,24 +115,22 @@ void UGGFEquipmentManager::ClearEquipmentSlot(FGameplayTag Slot, int32 Index)
 
 void UGGFEquipmentManager::Deselect()
 {
-    // TODO 자연스러운 연출을 위해 나중에 애님 노티파이에서 호출하도록 해야합니다. bool 값으로 즉시 자동으로 호출될지 정할 것 같습니다.
-
-    // 기존 선택 무기를 비활성화합니다
-    // 선택 장비를 활성화합니다.
-    if(AGGFWeapon* Weapon = Cast<AGGFWeapon>(SelectedEquipment))
+    if(SelectedEquipment)
     {
-        Weapon->OnDeselected_Implementation();
-    }
+        // 기존 선택 무기를 비활성화합니다
+        IGGFEquipmentInterface::Execute_Deactivate(SelectedEquipment);
 
-    // 손 대신 장비 슬롯에 부착합니다.
-    AttachEquipment(SelectedEquipment, SelectedSlot.SocketName);
+        // TODO 애님 노티파이로 타이밍 결정할 수도
+        // 손 대신 장비 슬롯에 부착합니다.
+        AttachEquipment(SelectedEquipment, SelectedSlot.SocketName);
+    }
 
     // 선택 슬롯을 비웁니다.
     SelectedSlot = FEquipmentSlot::EmptySlot;
     SelectedEquipment = nullptr;
 }
 
-bool UGGFEquipmentManager::AttachEquipment(AGGFEquipment* Equipment, FName SocketName)
+bool UGGFEquipmentManager::AttachEquipment(AActor* Equipment, FName SocketName)
 {
     if(Super::AttachEquipment(Equipment, SocketName))
     {
@@ -153,11 +148,11 @@ bool UGGFEquipmentManager::AttachEquipment(AGGFEquipment* Equipment, FName Socke
     }
 }
 
-bool UGGFEquipmentManager::CanAddEquipment(TSubclassOf<AGGFEquipment> EquipmentClass) const
+bool UGGFEquipmentManager::CanAddEquipment(TSubclassOf<AActor> EquipmentClass) const
 {
     // 무기 슬롯이 비어있는지 확인
     const FGameplayTag& EquipmentSlot = GetEquipmentSlot(EquipmentClass);
-    return EquipmentClass != nullptr && IsSlotAvailable(EquipmentSlot) && GetOwner()->HasAuthority();
+    return GetOwner()->HasAuthority() && IsSlotAvailable(EquipmentSlot);
 }
 
 bool UGGFEquipmentManager::IsSlotAvailable(const FGameplayTag& InEquipmentSlot) const
@@ -226,7 +221,7 @@ void UGGFEquipmentManager::AddDefaultEquipments()
     }
 }
 
-void UGGFEquipmentManager::OnRep_SelectedEquipment(AGGFEquipment* OldEquipment)
+void UGGFEquipmentManager::OnRep_SelectedEquipment(AActor* OldEquipment)
 {
     // TODO Deactivate OldEquipment
 

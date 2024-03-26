@@ -7,7 +7,6 @@
 #include "GGFEquipmentManagerBase.generated.h"
 
 struct FGameplayTag;
-class AGGFEquipment;
 
 UCLASS(Abstract, NotBlueprintable)
 class GASGAMEFRAMEWORK_API UGGFEquipmentManagerBase : public UActorComponent
@@ -24,14 +23,14 @@ protected:
     /* 메서드 */
     // Owner 위치에 액터를 스폰한 뒤 반환합니다.
     UFUNCTION(BlueprintCallable)
-    AGGFEquipment* SpawnEquipment(TSubclassOf<AGGFEquipment> EquipmentClass);
+    AActor* SpawnEquipment(TSubclassOf<AActor> EquipmentClass);
 
     // 스켈레탈 메시 소켓에 액터를 부착합니다.
     UFUNCTION(BlueprintCallable)
-    virtual bool AttachEquipment(AGGFEquipment* Equipment, FName SocketName);
+    virtual bool AttachEquipment(AActor* Equipment, FName SocketName);
 
     UFUNCTION(BlueprintCallable)
-    static FGameplayTag GetEquipmentSlot(TSubclassOf<AGGFEquipment> EquipmentClass);
+    static const FGameplayTag GetEquipmentSlot(TSubclassOf<AActor> EquipmentClass);
 
     /* Getter */
     FORCEINLINE USkeletalMeshComponent* GetMesh() const { return SkeletalMesh; }

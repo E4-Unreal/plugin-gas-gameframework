@@ -7,8 +7,6 @@
 #include "GGFEquipmentManagerBase.h"
 #include "GGFEquipmentManager.generated.h"
 
-class AGGFEquipment;
-
 USTRUCT(Atomic, BlueprintType)
 struct FEquipmentSlotConfig
 {
@@ -90,28 +88,29 @@ class GASGAMEFRAMEWORK_API UGGFEquipmentManager : public UGGFEquipmentManagerBas
 {
     GENERATED_BODY()
 
+protected:
     // 기본적으로 추가될 장비 목록입니다.
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config", meta = (AllowPrivateAccess = true))
-    TArray<TSubclassOf<AGGFEquipment>> DefaultEquipments;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config", meta = (AllowPrivateAccess = true, MustImplement = "GGFEquipmentInterface"))
+    TArray<TSubclassOf<AActor>> DefaultEquipments;
 
     // 선택 장비를 부착할 소켓 이름입니다. 선택 장비는 손에 쥐고 있을 잘비를 의미합니다.
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config", meta = (AllowPrivateAccess = true))
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config")
     FName HandSocketName = "weapon_r";
 
     // 사용 가능한 무기 슬롯 목록입니다.
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config", meta = (AllowPrivateAccess = true))
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config")
     TArray<FEquipmentSlotConfig> EquipmentSlotConfigs;
 
     // 실제 인게임 내에서 사용하는 무기 슬롯 목록입니다.
-    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State", meta = (AllowPrivateAccess = true), Transient)
-    TMap<FEquipmentSlot, TObjectPtr<AGGFEquipment>> EquipmentSlots;
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State", Transient)
+    TMap<FEquipmentSlot, TObjectPtr<AActor>> EquipmentSlots;
 
     // 손에 쥐고 있는 무기 슬롯입니다.
-    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State", meta = (AllowPrivateAccess = true), Transient)
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State", Transient)
     FEquipmentSlot SelectedSlot;
 
-    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State", meta = (AllowPrivateAccess = true), Transient, ReplicatedUsing = OnRep_SelectedEquipment)
-    TObjectPtr<AGGFEquipment> SelectedEquipment;
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State", Transient, ReplicatedUsing = OnRep_SelectedEquipment)
+    TObjectPtr<AActor> SelectedEquipment;
 
 public:
 
@@ -120,7 +119,7 @@ public:
     virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
     UFUNCTION(BlueprintCallable)
-    bool AddEquipment(TSubclassOf<AGGFEquipment> EquipmentClass);
+    bool AddEquipment(TSubclassOf<AActor> EquipmentClass);
 
     UFUNCTION(BlueprintCallable)
     void RemoveEquipment(FGameplayTag Slot, int32 Index);
@@ -135,14 +134,14 @@ public:
     bool IsEquipmentSlotExist(FGameplayTag Slot, int32 Index) const;
 
     UFUNCTION(BlueprintCallable)
-    AGGFEquipment* GetEquipment(FGameplayTag Slot, int32 Index) const;
+    AActor* GetEquipment(FGameplayTag Slot, int32 Index) const;
 
     UFUNCTION(BlueprintCallable)
     void ClearEquipmentSlot(FGameplayTag Slot, int32 Index);
 
     // 손에 쥐고 있는 장비 (SelectedEquipment) 가져오기
     UFUNCTION(BlueprintPure)
-    FORCEINLINE AGGFEquipment* GetSelectedEquipment() const { return SelectedEquipment; }
+    FORCEINLINE AActor* GetSelectedEquipment() const { return SelectedEquipment; }
 
     // 손에 쥐고 있는 장비를 집어넣습니다. 장비를 제거하는 것이 아닙니다.
     UFUNCTION(BlueprintCallable)
@@ -151,12 +150,12 @@ public:
     UFUNCTION(BlueprintPure)
     FORCEINLINE bool IsSelectedEquipmentExist() const { return SelectedSlot.IsValid() && SelectedEquipment != nullptr; }
 
-    virtual bool AttachEquipment(AGGFEquipment* Equipment, FName SocketName) override;
+    virtual bool AttachEquipment(AActor* Equipment, FName SocketName) override;
 
     /* Query */
 
     UFUNCTION(BlueprintCallable)
-    bool CanAddEquipment(TSubclassOf<AGGFEquipment> EquipmentClass) const;
+    bool CanAddEquipment(TSubclassOf<AActor> EquipmentClass) const;
 
     UFUNCTION(BlueprintCallable)
     bool IsSlotAvailable(const FGameplayTag& InEquipmentSlot) const;
@@ -174,5 +173,5 @@ private:
     /* 리플리케이트 */
 
     UFUNCTION()
-    void OnRep_SelectedEquipment(AGGFEquipment* OldEquipment);
+    void OnRep_SelectedEquipment(AActor* OldEquipment);
 };

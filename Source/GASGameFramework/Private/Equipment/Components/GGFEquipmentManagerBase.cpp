@@ -24,7 +24,7 @@ void UGGFEquipmentManagerBase::InjectDependencies(USkeletalMeshComponent* InSkel
     SkeletalMesh = InSkeletalMesh;
 }
 
-AGGFEquipment* UGGFEquipmentManagerBase::SpawnEquipment(TSubclassOf<AGGFEquipment> EquipmentClass)
+AActor* UGGFEquipmentManagerBase::SpawnEquipment(TSubclassOf<AActor> EquipmentClass)
 {
     // 월드 가져오기
     UWorld* World = GetOwner()->GetWorld();
@@ -39,12 +39,12 @@ AGGFEquipment* UGGFEquipmentManagerBase::SpawnEquipment(TSubclassOf<AGGFEquipmen
 
     // Owner 위치에 액터 스폰
     const FVector SpawnLocation = GetOwner()->GetActorLocation();
-    AGGFEquipment* SpawnedActor = World->SpawnActor<AGGFEquipment>(EquipmentClass, SpawnLocation, FRotator::ZeroRotator, ActorSpawnParameters);
+    AActor* SpawnedActor = World->SpawnActor<AActor>(EquipmentClass, SpawnLocation, FRotator::ZeroRotator, ActorSpawnParameters);
 
     return SpawnedActor;
 }
 
-bool UGGFEquipmentManagerBase::AttachEquipment(AGGFEquipment* Equipment, FName SocketName)
+bool UGGFEquipmentManagerBase::AttachEquipment(AActor* Equipment, FName SocketName)
 {
     // 유효성 검사
     if(Equipment == nullptr || SkeletalMesh == nullptr || SocketName == NAME_None) return false;
@@ -58,9 +58,11 @@ bool UGGFEquipmentManagerBase::AttachEquipment(AGGFEquipment* Equipment, FName S
     return true;
 }
 
-FGameplayTag UGGFEquipmentManagerBase::GetEquipmentSlot(TSubclassOf<AGGFEquipment> EquipmentClass)
+const FGameplayTag UGGFEquipmentManagerBase::GetEquipmentSlot(TSubclassOf<AActor> EquipmentClass)
 {
-    return EquipmentClass == nullptr
-    ? FGameplayTag::EmptyTag
-    : Cast<AGGFEquipment>(EquipmentClass->ClassDefaultObject)->GetEquipmentSlot();
+    // 유효성 검사
+    if(EquipmentClass == nullptr || !EquipmentClass->ClassDefaultObject->Implements<UGGFEquipmentInterface>()) return FGameplayTag::EmptyTag;
+
+    // 장비 슬롯 태그 반환
+    return IGGFEquipmentInterface::Execute_GetEquipmentSlot(EquipmentClass->ClassDefaultObject);
 }
