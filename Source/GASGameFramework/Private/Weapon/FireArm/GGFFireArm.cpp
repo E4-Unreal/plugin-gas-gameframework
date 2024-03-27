@@ -111,6 +111,32 @@ void AGGFFireArm::ServerReload_Implementation()
     if(!CanReload()) return;
     bReloading = true;
 
+    // TODO 리팩토링
+    // 재장전 애니메이션이 설정되지 않았거나 노티파이가 설정되지 않은 경우에는 즉시 재장전을 실행합니다.
+    if(CharacterReloadAnimation == nullptr)
+    {
+        FinishReloading();
+    }
+    else
+    {
+        bool bReloadNotifyExist = false;
+        const TArray<FAnimNotifyEvent>& Notifies = CharacterReloadAnimation->Notifies;
+        for (const FAnimNotifyEvent& Notify : Notifies)
+        {
+            // null 검사
+            if(Notify.Notify == nullptr) continue;
+
+            // 노티파이 이름 검사
+            if(FName(*Notify.Notify->GetNotifyName()).IsEqual(ReloadNotifyName))
+            {
+                bReloadNotifyExist = true;
+                break;
+            }
+        }
+
+        if(!bReloadNotifyExist) FinishReloading();
+    }
+
     // 멀티캐스트
     MulticastReload();
 }
@@ -118,13 +144,31 @@ void AGGFFireArm::ServerReload_Implementation()
 void AGGFFireArm::MulticastReload_Implementation()
 {
     PlayAnimation(ReloadAnimation);
+
+    // 캐릭터 애니메이션 재생
+    if(UAnimInstance* ThirdPersonAnimInstance = GetThirdPersonAnimInstance())
+    {
+        ThirdPersonAnimInstance->Montage_Play(CharacterReloadAnimation);
+    }
+
+    if(UAnimInstance* FirstPersonAnimInstance = GetFirstPersonAnimInstance())
+    {
+        FirstPersonAnimInstance->Montage_Play(CharacterReloadAnimation);
+    }
 }
 
 void AGGFFireArm::FinishReloading()
 {
+    // ServerReload가 먼저 호출되어야 합니다.
+    if(!bReloading) return;
+
     // 서버에서만 호출 가능합니다.
     if(!HasAuthority()) return;
 
+    // 총알을 채웁니다
+    SetCurrentAmmo(MaxAmmo);
+
+    // 재장전 상태 해제
     bReloading = false;
 }
 
@@ -144,13 +188,32 @@ void AGGFFireArm::SetCurrentAmmo(int32 Value)
     // 서버에서만 호출 가능합니다.
     if(!HasAuthority()) return;
 
-    // 재장전을 통해서만 설정이 가능합니다.
-    if(!bReloading) return;
-
     // CurrentAmmo 설정
     const int32 OldCurrentAmmo = CurrentAmmo;
     CurrentAmmo = FMath::Clamp(Value, 0, MaxAmmo);
     OnRep_CurrentAmmo(OldCurrentAmmo);
+}
+
+void AGGFFireArm::Activate_Implementation()
+{
+    Super::Activate_Implementation();
+
+    // 서버에서만 재장전 가능
+    if(HasAuthority())
+    {
+        GetFirstPersonAnimInstance()->OnPlayMontageNotifyBegin.AddDynamic(this, &ThisClass::OnPlayMontageNotifyBegin_Event);
+    }
+}
+
+void AGGFFireArm::Deactivate_Implementation()
+{
+    Super::Deactivate_Implementation();
+
+    // 서버에서만 재장전 가능
+    if(HasAuthority())
+    {
+        GetFirstPersonAnimInstance()->OnPlayMontageNotifyBegin.RemoveDynamic(this, &ThisClass::OnPlayMontageNotifyBegin_Event);
+    }
 }
 
 void AGGFFireArm::PlayAnimation(UAnimMontage* Animation) const
@@ -167,8 +230,11 @@ bool AGGFFireArm::CanFire_Implementation()
     // 아직 한 번도 발사하지 않은 경우
     if(LastFiredTime == 0) return true;
 
+    // 마지막 발사 시점으로부터 경과한 시간
+    const float DeltaTime = GetCurrentTime() - LastFiredTime;
+
     // 발사 간격 확인
-    return GetCurrentTime() - LastFiredTime >= FireInterval;
+    return DeltaTime > FireInterval || FMath::IsNearlyEqual(DeltaTime, FireInterval, 1E-04);
 }
 
 bool AGGFFireArm::CanReload_Implementation()
@@ -198,6 +264,16 @@ float AGGFFireArm::GetCurrentTime() const
 FVector AGGFFireArm::GetMuzzleLocation() const
 {
     return SkeletalMesh == nullptr ? GetActorLocation() : SkeletalMesh->GetSocketLocation(MuzzleSocketName);
+}
+
+void AGGFFireArm::OnPlayMontageNotifyBegin_Event(FName NotifyName,
+    const FBranchingPointNotifyPayload& BranchingPointPayload)
+{
+    // 노티파이 이름 검사
+    if(!NotifyName.IsEqual(ReloadNotifyName)) return;
+
+    // 재장전
+    FinishReloading();
 }
 
 void AGGFFireArm::OnRep_MaxAmmo(int32 OldCurrentAmmo)

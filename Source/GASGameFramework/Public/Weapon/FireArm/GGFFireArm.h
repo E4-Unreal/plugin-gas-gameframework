@@ -9,6 +9,7 @@
 class USoundCue;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAmmoValueChangedSiganature, int32, Ammo);
 
+// TODO 리팩토링
 /**
  * 캐릭터 애니메이션은 GameplayAbility에서 재생합니다.
  * 장전은 Reload > SetCurrentAmmo > FinishReloading 순으로 호출해야 합니다.
@@ -31,7 +32,11 @@ class GASGAMEFRAMEWORK_API AGGFFireArm : public AGGFWeapon
     UPROPERTY(BlueprintAssignable)
     FOnAmmoValueChangedSiganature OnMaxAmmoValueChanged;
 
-    // 분당 발사 횟수
+protected:
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|FireArm")
+    FName ReloadNotifyName = "Reload";
+
+    // 총구 소켓 이름
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|FireArm", meta = (AllowPrivateAccess = true))
     FName MuzzleSocketName = "SOCKET_Muzzle";
 
@@ -70,6 +75,7 @@ class GASGAMEFRAMEWORK_API AGGFFireArm : public AGGFWeapon
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|FireArm|Animation", meta = (AllowPrivateAccess = true))
     TObjectPtr<UAnimMontage> ReloadAnimation;
 
+    // TODO 1인칭, 3인칭 구조체
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|FireArm|Animation", meta = (AllowPrivateAccess = true))
     TObjectPtr<UAnimMontage> CharacterFireAnimation;
 
@@ -118,6 +124,10 @@ public:
     void SetCurrentAmmo(int32 Value);
 
 protected:
+    /* Equipment */
+    virtual void Activate_Implementation() override;
+    virtual void Deactivate_Implementation() override;
+
     /* 가상 메서드 */
 
     UFUNCTION(Server, Reliable)
@@ -159,6 +169,10 @@ protected:
     // 총구 소켓을 찾지 못한 경우에는 액터 위치를 대신 반환합니다.
     UFUNCTION(BlueprintPure, Category = "FireArm")
     FVector GetMuzzleLocation() const;
+
+    /* 이벤트 핸들링 */
+    UFUNCTION()
+    void OnPlayMontageNotifyBegin_Event(FName NotifyName, const FBranchingPointNotifyPayload& BranchingPointPayload);
 
     /* 리플리케이트 */
 
