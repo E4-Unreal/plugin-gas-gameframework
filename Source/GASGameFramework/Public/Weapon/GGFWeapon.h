@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Equipment/GGFEquipment.h"
+#include "Interface/GGFCameraInterface.h"
 #include "GGFWeapon.generated.h"
 
 struct FGameplayAbilitySpecHandle;
@@ -12,7 +13,7 @@ class UAbilitySystemComponent;
 class UAnimInstance;
 
 UCLASS(Abstract, Blueprintable, BlueprintType)
-class GASGAMEFRAMEWORK_API AGGFWeapon : public AGGFEquipment
+class GASGAMEFRAMEWORK_API AGGFWeapon : public AGGFEquipment, public IGGFCameraInterface
 {
     GENERATED_BODY()
 
@@ -33,6 +34,13 @@ protected:
 
     UPROPERTY(VisibleAnywhere, Category = "State|Weapon", Transient)
     TArray<FGameplayAbilitySpecHandle> AbilitySpecHandles;
+
+    /* GGFCameraInterface */
+    UPROPERTY(EditAnywhere, Category = "Config|Weapon")
+    float FOV = 60.f;
+
+    UPROPERTY(EditAnywhere, Category = "Config|Weapon")
+    float InterpSpeed = 15.f;
 
 public:
     AGGFWeapon();
@@ -75,4 +83,8 @@ public:
 
     // 무기가 선택 해제된 경우
     virtual void Deactivate_Implementation() override;
+
+    /* GGFCameraInterface */
+    FORCEINLINE virtual float GetFieldOfView_Implementation() const override { return FOV; }
+    FORCEINLINE virtual float GetInterpSpeed_Implementation() const override { return InterpSpeed; }
 };

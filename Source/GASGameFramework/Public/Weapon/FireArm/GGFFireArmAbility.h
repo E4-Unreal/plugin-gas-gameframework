@@ -17,6 +17,9 @@ class GASGAMEFRAMEWORK_API UGGFFireArmAbility : public UGGFWeaponAbility
 
     TWeakObjectPtr<AGGFFireArm> FireArm;
 
+public:
+    virtual bool CanActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayTagContainer* SourceTags, const FGameplayTagContainer* TargetTags, FGameplayTagContainer* OptionalRelevantTags) const override;
+
 protected:
     /* GGFWeaponAbility */
     virtual void OnRep_Weapon() override;

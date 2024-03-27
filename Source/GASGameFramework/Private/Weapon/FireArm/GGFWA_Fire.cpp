@@ -23,7 +23,7 @@ bool UGGFWA_Fire::CanActivateAbility(const FGameplayAbilitySpecHandle Handle, co
     const FGameplayTagContainer* SourceTags, const FGameplayTagContainer* TargetTags,
     FGameplayTagContainer* OptionalRelevantTags) const
 {
-    return GetFireArm() && GetFireArm()->CanFire() && Super::CanActivateAbility(Handle, ActorInfo, SourceTags, TargetTags, OptionalRelevantTags);
+    return Super::CanActivateAbility(Handle, ActorInfo, SourceTags, TargetTags, OptionalRelevantTags) && GetFireArm()->CanFire();
 }
 
 void UGGFWA_Fire::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,

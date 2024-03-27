@@ -6,6 +6,7 @@
 #include "GGFCharacter.h"
 #include "Interface\GGFCharacterInterface.h"
 #include "Weapon/Interface/GGFAimingInterface.h"
+#include "Weapon/Interface/GGFCameraInterface.h"
 #include "GGFDefaultCharacter.generated.h"
 
 class USpringArmComponent;
@@ -18,7 +19,8 @@ class UCameraComponent;
 UCLASS()
 class GASGAMEFRAMEWORK_API AGGFDefaultCharacter : public AGGFCharacter,
     public IGGFAimingInterface,
-    public IGGFCharacterInterface
+    public IGGFCharacterInterface,
+    public IGGFCameraInterface
 {
     GENERATED_BODY()
 
@@ -33,6 +35,14 @@ class GASGAMEFRAMEWORK_API AGGFDefaultCharacter : public AGGFCharacter,
 
     UPROPERTY(VisibleAnywhere, BlueprintGetter = GetFirstPersonLegs, Category = "Component")
     TObjectPtr<USkeletalMeshComponent> FirstPersonLegs;
+
+protected:
+    /* GGFCameraInterface */
+    UPROPERTY(EditAnywhere, Category = "Config|Weapon")
+    float FOV = 120.f;
+
+    UPROPERTY(EditAnywhere, Category = "Config|Weapon")
+    float InterpSpeed = 15.f;
 
 public:
     AGGFDefaultCharacter(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
@@ -58,4 +68,8 @@ public:
     /* GGFCharacterInterface */
     FORCEINLINE virtual USkeletalMeshComponent* GetFirstPersonMesh_Implementation() const override { return FirstPersonArms; }
     FORCEINLINE virtual USkeletalMeshComponent* GetThirdPersonMesh_Implementation() const override { return GetMesh(); }
+
+    /* GGFCameraInterface */
+    FORCEINLINE virtual float GetFieldOfView_Implementation() const override { return FOV; }
+    FORCEINLINE virtual float GetInterpSpeed_Implementation() const override { return InterpSpeed; }
 };

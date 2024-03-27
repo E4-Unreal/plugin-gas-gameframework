@@ -5,6 +5,13 @@
 
 #include "Weapon/FireArm/GGFFireArm.h"
 
+bool UGGFFireArmAbility::CanActivateAbility(const FGameplayAbilitySpecHandle Handle,
+    const FGameplayAbilityActorInfo* ActorInfo, const FGameplayTagContainer* SourceTags,
+    const FGameplayTagContainer* TargetTags, FGameplayTagContainer* OptionalRelevantTags) const
+{
+    return Super::CanActivateAbility(Handle, ActorInfo, SourceTags, TargetTags, OptionalRelevantTags) && FireArm.IsValid();
+}
+
 void UGGFFireArmAbility::OnRep_Weapon()
 {
     Super::OnRep_Weapon();
