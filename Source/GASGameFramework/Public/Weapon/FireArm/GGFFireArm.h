@@ -33,6 +33,10 @@ class GASGAMEFRAMEWORK_API AGGFFireArm : public AGGFWeapon
     FOnAmmoValueChangedSiganature OnMaxAmmoValueChanged;
 
 protected:
+    // 총기 반동
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|FireArm")
+    float RecoilWeight;
+
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|FireArm")
     FName ReloadNotifyName = "Reload";
 
