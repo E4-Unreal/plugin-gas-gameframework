@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayCueInterface.h"
 #include "GameFramework/Actor.h"
 #include "GGFProjectile.generated.h"
 
@@ -36,14 +37,14 @@ protected:
     bool bShowDebug;
 #endif
 
-    // TODO EffectsToApply, HitEffect를 묶어 액터 컴포넌트로 추출 고려
+    // TODO Weapon으로 옮기고 이곳에는 GameplayEffectSpecHandle 저장 예정
     // 피격 대상에게 적용할 GameplayEffect 목록입니다. 데미지 관련 GameplayEffect 역시 이곳에 포함됩니다.
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|Projectile")
     TArray<TSubclassOf<UGameplayEffect>> EffectsToApply;
 
-    // 피격 효과
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|Projectile")
-    TObjectPtr<UGGFHitEffectDefinition> HitEffect;
+    // 충돌 위치에 스폰할 GameplayCueNotify 태그
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config")
+    FGameplayCueTag HitEffectTag;
 
 public:
     AGGFProjectile();
@@ -53,6 +54,12 @@ public:
     virtual void BeginPlay() override;
 
 protected:
+    /* 메서드 */
+
+    // HitEffectTag에 대응하는 GameplayCueNotify를 실행하며 주로 멀티캐스트 메서드에서 호출합니다.
+    UFUNCTION(BlueprintCallable)
+    void HandleGameplayCueNotify(const FHitResult& HitResult) const;
+
     /* 이벤트 핸들러 */
     UFUNCTION(BlueprintNativeEvent)
     void OnComponentHit_Event(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);

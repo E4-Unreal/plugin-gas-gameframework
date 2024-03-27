@@ -4,7 +4,6 @@
 #include "Weapon/Projectile/GGFBullet.h"
 
 #include "FunctionLibraries/GGFFunctionLibrary.h"
-#include "Weapon/HitEffect/GGFHitEffectDefinition.h"
 
 AGGFBullet::AGGFBullet()
 {
@@ -20,8 +19,7 @@ void AGGFBullet::OnHit_Implementation(const FHitResult& HitResult)
 void AGGFBullet::OnMulticastHit_Implementation(const FHitResult& HitResult)
 {
     // 피격 효과 스폰
-    if(HitEffect)
-        HitEffect->SpawnHitEffect(HitResult);
+    HandleGameplayCueNotify(HitResult);
 
     // 총알 파괴
     Destroy();

@@ -2,6 +2,9 @@
 
 #include "Weapon/Projectile/GGFProjectile.h"
 
+#include "AbilitySystemComponent.h"
+#include "AbilitySystemGlobals.h"
+#include "GameplayCueManager.h"
 #include "Components/SphereComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 
@@ -42,8 +45,18 @@ void AGGFProjectile::BeginPlay()
     SphereCollider->IgnoreActorWhenMoving(GetInstigator(), true); // 캐릭터
 }
 
+void AGGFProjectile::HandleGameplayCueNotify(const FHitResult& HitResult) const
+{
+    // 피격 효과 스폰
+    FGameplayCueParameters GameplayCueParameters;
+    GameplayCueParameters.EffectContext = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(GetInstigator())->MakeEffectContext();
+    GameplayCueParameters.EffectContext.AddHitResult(HitResult);
+
+    UAbilitySystemGlobals::Get().GetGameplayCueManager()->HandleGameplayCue(HitResult.GetActor(), HitEffectTag.GameplayCueTag, EGameplayCueEvent::Executed, GameplayCueParameters);
+}
+
 void AGGFProjectile::OnComponentHit_Event_Implementation(UPrimitiveComponent* HitComponent, AActor* OtherActor,
-                                                        UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
+                                                         UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
     // TODO 피지컬 머티리얼에 따라 관통 처리
 
