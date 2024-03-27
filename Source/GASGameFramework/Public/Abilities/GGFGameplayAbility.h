@@ -17,8 +17,10 @@ class GASGAMEFRAMEWORK_API UGGFGameplayAbility : public UGameplayAbility, public
 {
     GENERATED_BODY()
 
+protected:
+
     // GGFAbilitySystemBase에서 Ability InputID로 사용할 게임플레이 태그입니다.
-    UPROPERTY(EditAnywhere, Category = "Config")
+    UPROPERTY(EditAnywhere, Category = "Config", meta = (Categories = "Input"))
     FGameplayTag InputTag;
 
 public:
