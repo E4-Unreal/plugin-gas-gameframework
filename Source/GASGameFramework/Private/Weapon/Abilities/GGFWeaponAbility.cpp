@@ -1,7 +1,7 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Weapon/GGFWeaponAbility.h"
+#include "Weapon/Abilities/GGFWeaponAbility.h"
 
 #include "Net/UnrealNetwork.h"
 

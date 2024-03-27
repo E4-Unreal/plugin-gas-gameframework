@@ -5,9 +5,9 @@
 
 #include "AbilitySystemComponent.h"
 #include "AbilitySystemGlobals.h"
-#include "..\..\Public\Character\Interface\GGFCharacterInterface.h"
+#include "Character/Interface/GGFCharacterInterface.h"
 #include "FunctionLibraries/GGFFunctionLibrary.h"
-#include "Weapon/Interface/GGFWeaponAbilityInterface.h"
+#include "Weapon/Abilities/GGFWeaponAbilityInterface.h"
 
 AGGFWeapon::AGGFWeapon()
 {

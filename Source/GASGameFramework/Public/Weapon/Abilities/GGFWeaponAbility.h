@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Abilities/GGFGameplayAbility.h"
-#include "Interface/GGFWeaponAbilityInterface.h"
+#include "GGFWeaponAbilityInterface.h"
 #include "GGFWeaponAbility.generated.h"
 
 /**
