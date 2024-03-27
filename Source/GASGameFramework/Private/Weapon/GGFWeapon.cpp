@@ -5,7 +5,7 @@
 
 #include "AbilitySystemComponent.h"
 #include "AbilitySystemGlobals.h"
-#include "Character/Interface/GGFCharacterMeshInterface.h"
+#include "..\..\Public\Character\Interface\GGFCharacterInterface.h"
 #include "FunctionLibraries/GGFFunctionLibrary.h"
 #include "Weapon/Interface/GGFWeaponAbilityInterface.h"
 
@@ -65,10 +65,10 @@ void AGGFWeapon::OnEquip_Implementation()
     OwnerAbilitySystem = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(Owner);
 
     // 캐릭터 메시 캐싱
-    if(Owner->GetClass()->ImplementsInterface(UGGFCharacterMeshInterface::StaticClass()))
+    if(Owner->GetClass()->ImplementsInterface(UGGFCharacterInterface::StaticClass()))
     {
-        ThirdPersonMesh = IGGFCharacterMeshInterface::Execute_GetThirdPersonFullBodyMesh(Owner);
-        FirstPersonMesh = IGGFCharacterMeshInterface::Execute_GetFirstPersonArmsMesh(Owner);
+        ThirdPersonMesh = IGGFCharacterInterface::Execute_GetThirdPersonMesh(Owner);
+        FirstPersonMesh = IGGFCharacterInterface::Execute_GetFirstPersonMesh(Owner);
     }
 }
 

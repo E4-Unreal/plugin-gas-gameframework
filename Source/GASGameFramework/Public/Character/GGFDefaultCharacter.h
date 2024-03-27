@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GGFCharacter.h"
-#include "Interface/GGFCharacterMeshInterface.h"
+#include "Interface\GGFCharacterInterface.h"
 #include "Weapon/Interface/GGFAimingInterface.h"
 #include "GGFDefaultCharacter.generated.h"
 
@@ -18,7 +18,7 @@ class UCameraComponent;
 UCLASS()
 class GASGAMEFRAMEWORK_API AGGFDefaultCharacter : public AGGFCharacter,
     public IGGFAimingInterface,
-    public IGGFCharacterMeshInterface
+    public IGGFCharacterInterface
 {
     GENERATED_BODY()
 
@@ -55,8 +55,7 @@ public:
     /* GGFAimingInterface */
     virtual void GetTarget_Implementation(FVector& Target) override;
 
-    /* GGFCharacterMeshInterface */
-    FORCEINLINE virtual USkeletalMeshComponent* GetFirstPersonArmsMesh_Implementation() const override { return FirstPersonArms; }
-    FORCEINLINE virtual USkeletalMeshComponent* GetFirstPersonLegsMesh_Implementation() const override { return FirstPersonLegs; }
-    FORCEINLINE virtual USkeletalMeshComponent* GetThirdPersonFullBodyMesh_Implementation() const override { return GetMesh(); }
+    /* GGFCharacterInterface */
+    FORCEINLINE virtual USkeletalMeshComponent* GetFirstPersonMesh_Implementation() const override { return FirstPersonArms; }
+    FORCEINLINE virtual USkeletalMeshComponent* GetThirdPersonMesh_Implementation() const override { return GetMesh(); }
 };

@@ -4,10 +4,10 @@
 #include "Abilities/GGFGA_Montage.h"
 
 #include "Animation/AnimInstance.h"
-#include "Character/Interface/GGFCharacterMeshInterface.h"
+#include "..\..\Public\Character\Interface\GGFCharacterInterface.h"
 
 void UGGFGA_Montage::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
-                                    const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
+                                     const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
 {
     // 커밋
     if (!CommitAbility(Handle, ActorInfo, ActivationInfo))
@@ -16,17 +16,17 @@ void UGGFGA_Montage::ActivateAbility(const FGameplayAbilitySpecHandle Handle, co
     }
 
     // 인터페이스 구현 여부 검사
-    if(!ActorInfo->AvatarActor->GetClass()->ImplementsInterface(UGGFCharacterMeshInterface::StaticClass())) return;
+    if(!ActorInfo->AvatarActor->GetClass()->ImplementsInterface(UGGFCharacterInterface::StaticClass())) return;
 
     // 지역 변수 선언
     USkeletalMeshComponent* Mesh;
 
     // 1인칭 애니메이션 재생
-    Mesh = IGGFCharacterMeshInterface::Execute_GetFirstPersonArmsMesh(ActorInfo->AvatarActor.Get());
+    Mesh = IGGFCharacterInterface::Execute_GetFirstPersonMesh(ActorInfo->AvatarActor.Get());
     PlayMontage(Mesh, FirstPersonMontage);
 
     // 3인칭 애니메이션 재생
-    Mesh = IGGFCharacterMeshInterface::Execute_GetThirdPersonFullBodyMesh(ActorInfo->AvatarActor.Get());
+    Mesh = IGGFCharacterInterface::Execute_GetThirdPersonMesh(ActorInfo->AvatarActor.Get());
     PlayMontage(Mesh, ThirdPersonMontage);
 
     /*
