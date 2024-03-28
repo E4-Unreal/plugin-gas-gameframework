@@ -46,7 +46,9 @@ namespace GGFGameplayTags
         GASGAMEFRAMEWORK_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Weapon)
         GASGAMEFRAMEWORK_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Armor)
 
-        // 슬롯
-        GASGAMEFRAMEWORK_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Slot)
+        namespace Slot
+        {
+            GASGAMEFRAMEWORK_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Slot)
+        }
     }
 }

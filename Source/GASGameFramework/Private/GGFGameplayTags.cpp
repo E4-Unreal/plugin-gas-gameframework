@@ -45,6 +45,9 @@ namespace GGFGameplayTags
         UE_DEFINE_GAMEPLAY_TAG(Armor, "Equipment.Armor")
 
         // 슬롯
-        UE_DEFINE_GAMEPLAY_TAG(Slot, "Equipment.Slot")
+        namespace Slot
+        {
+            UE_DEFINE_GAMEPLAY_TAG(Slot, "Equipment.Slot")
+        }
     }
 }
