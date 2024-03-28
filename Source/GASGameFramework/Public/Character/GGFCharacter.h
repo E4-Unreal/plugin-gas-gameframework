@@ -6,8 +6,6 @@
 #include "GGFCharacterBase.h"
 #include "GGFCharacter.generated.h"
 
-class UInputMappingContext;
-class UInputAction;
 struct FInputActionValue;
 
 /*
@@ -18,33 +16,7 @@ class GASGAMEFRAMEWORK_API AGGFCharacter : public AGGFCharacterBase
 {
     GENERATED_BODY()
 
-    // 기본 입력 매핑 컨텍스트
-    UPROPERTY(EditDefaultsOnly, Category = "Config|Input")
-    TArray<TObjectPtr<UInputMappingContext>> DefaultMappingContexts;
-
-    // 움직임 입력 액션
-    UPROPERTY(EditDefaultsOnly, Category = "Config|Input")
-    TObjectPtr<UInputAction> MoveAction;
-
-    // 회전 입력 액션
-    UPROPERTY(EditDefaultsOnly, Category = "Config|Input")
-    TObjectPtr<UInputAction> LookAction;
-
-    // 점프 입력 액션
-    UPROPERTY(EditDefaultsOnly, Category = "Config|Input")
-    TObjectPtr<UInputAction> JumpAction;
-
-    // 앉기 입력 액션
-    UPROPERTY(EditDefaultsOnly, Category = "Config|Input")
-    TObjectPtr<UInputAction> CrouchAction;
-
 public:
-    virtual void BeginPlay() override;
-
-protected:
-    /* AGGFCharacterBase */
-    virtual void SetupEnhancedInputComponent(UEnhancedInputComponent* EnhancedInputComponent) override;
-
     // 캐릭터 이동
     virtual void Move(const FInputActionValue& Value);
 

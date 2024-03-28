@@ -23,7 +23,7 @@ struct FGGFAbilityInputAction
 };
 
 /**
- * 어빌리티 전용 입력 에셋 설정을 위한 데이터 에셋
+ * 어빌리티 전용 입력 에셋 설정을 위한 데이터 에셋으로 GGFAbilitySystemBase에 의존성을 가지고 있습니다.
  */
 UCLASS()
 class GASGAMEFRAMEWORK_API UGGFInputConfig_Ability : public UGGFInputConfig
@@ -31,7 +31,7 @@ class GASGAMEFRAMEWORK_API UGGFInputConfig_Ability : public UGGFInputConfig
     GENERATED_BODY()
 
 protected:
-    UPROPERTY(EditAnywhere, Category = "Config")
+    UPROPERTY(EditDefaultsOnly)
     TArray<FGGFAbilityInputAction> AbilityInputActions;
 
 public:
