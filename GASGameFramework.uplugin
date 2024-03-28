@@ -23,11 +23,15 @@
 	],
     "Plugins": [
         {
+            "Name": "EnhancedInput",
+            "Enabled": true
+        },
+        {
             "Name": "GameplayAbilities",
             "Enabled": true
         },
         {
-            "Name": "EnhancedInput",
+            "Name": "ModularGameplay",
             "Enabled": true
         }
     ]
