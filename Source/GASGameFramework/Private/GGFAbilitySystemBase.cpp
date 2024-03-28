@@ -33,7 +33,7 @@ void UGGFAbilitySystemBase::InitializeComponent()
     BindHealthAttributeDelegate();
 }
 
-void UGGFAbilitySystemBase::PressInputTag(const FGameplayTag& InputTag)
+void UGGFAbilitySystemBase::PressInputTag(FGameplayTag InputTag)
 {
     // 디버깅을 위한 입력 태그를 추가합니다.
     if(!HasMatchingGameplayTag(InputTag)) AddLooseGameplayTag(InputTag);
@@ -41,7 +41,7 @@ void UGGFAbilitySystemBase::PressInputTag(const FGameplayTag& InputTag)
     PressInputID(GetTypeHash(InputTag));
 }
 
-void UGGFAbilitySystemBase::ReleaseInputTag(const FGameplayTag& InputTag)
+void UGGFAbilitySystemBase::ReleaseInputTag(FGameplayTag InputTag)
 {
     // 디버깅을 위한 입력 태그를 제거합니다.
     if(HasMatchingGameplayTag(InputTag)) RemoveLooseGameplayTag(InputTag);

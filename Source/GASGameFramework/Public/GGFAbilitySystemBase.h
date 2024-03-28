@@ -40,11 +40,11 @@ public:
 
     // 입력 태그로 Ability를 Press합니다.
     UFUNCTION(BlueprintCallable, Category = "GGFAbilitySystemBase")
-    void PressInputTag(const FGameplayTag& InputTag);
+    void PressInputTag(FGameplayTag InputTag);
 
     // 입력 태그로 Ability를 Release합니다.
     UFUNCTION(BlueprintCallable, Category = "GGFAbilitySystemBase")
-    void ReleaseInputTag(const FGameplayTag& InputTag);
+    void ReleaseInputTag(FGameplayTag InputTag);
 
     // 마지막으로 추가된 Ability만 Press합니다.
     virtual void AbilityLocalInputPressed(int32 InputID) override;

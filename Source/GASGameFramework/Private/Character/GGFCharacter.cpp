@@ -2,44 +2,7 @@
 
 #include "Character/GGFCharacter.h"
 
-#include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
-
-// Called when the game starts or when spawned
-void AGGFCharacter::BeginPlay()
-{
-    Super::BeginPlay();
-
-    // 기본 입력 매핑 컨텍스트 추가
-    if (const APlayerController* PlayerController = Cast<APlayerController>(Controller))
-    {
-        if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
-        {
-            for (const auto& MappingContext : DefaultMappingContexts)
-            {
-                Subsystem->AddMappingContext(MappingContext, 0);
-            }
-        }
-    }
-}
-
-void AGGFCharacter::SetupEnhancedInputComponent(UEnhancedInputComponent* EnhancedInputComponent)
-{
-    Super::SetupEnhancedInputComponent(EnhancedInputComponent);
-
-    // 캐릭터 이동
-    EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ThisClass::Move);
-
-    // 카메라 회전
-    EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ThisClass::Look);
-
-    // 캐릭터 점프
-    EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &ThisClass::Jump);
-    EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ThisClass::StopJumping);
-
-    // 캐릭터 앉기
-    EnhancedInputComponent->BindAction(CrouchAction, ETriggerEvent::Started, this, &ThisClass::ToggleCrouch);
-}
 
 void AGGFCharacter::Move(const FInputActionValue& Value)
 {

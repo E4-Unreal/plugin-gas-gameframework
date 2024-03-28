@@ -22,7 +22,7 @@ protected:
     FGameplayTag EquipmentType = GGFGameplayTags::Equipment::Equipment;
 
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Config|Equipment", meta = (Categories = "Equipment.Slot"))
-    FGameplayTag EquipmentSlot = GGFGameplayTags::Equipment::Slot;
+    FGameplayTag EquipmentSlot = GGFGameplayTags::Equipment::Slot::Slot;
 
 public:
     AGGFEquipment();

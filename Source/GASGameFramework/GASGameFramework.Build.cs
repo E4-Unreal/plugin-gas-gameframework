@@ -39,8 +39,11 @@ public class GASGameFramework : ModuleRules
                 // GAS
                 "GameplayAbilities",
                 "GameplayTags",
-                "GameplayTasks"
-			}
+                "GameplayTasks",
+
+                // 모듈형 게임 피처
+                "ModularGameplay"
+            }
 			);
 
 

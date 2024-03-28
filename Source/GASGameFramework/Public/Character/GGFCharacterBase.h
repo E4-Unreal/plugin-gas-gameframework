@@ -7,9 +7,9 @@
 #include "GameFramework/Character.h"
 #include "GGFCharacterBase.generated.h"
 
+class UGGFInputManager;
 class UGGFStateMachine;
 class UAbilitySystemComponent;
-class UGGFAbilityInputBinder;
 class UInputMappingContext;
 class UGGFEquipmentManager;
 
@@ -25,6 +25,9 @@ public:
     /* AbilitySystem Component의 이름으로 다른 클래스로 교체할 때 사용합니다. */
     static FName AbilitySystemComponentName;
 
+    /* InputManager의 이름으로 다른 클래스로 교체할 때 사용합니다. */
+    static FName InputManagerName;
+
     /* EquipmentManager의 이름으로 다른 클래스로 교체할 때 사용합니다. */
     static FName EquipmentManagerName;
 
@@ -39,7 +42,7 @@ private:
 
     // 어빌리티 전용 입력 바인딩을 위한 컴포넌트
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Component", meta = (AllowPrivateAccess = "true"))
-    TObjectPtr<UGGFAbilityInputBinder> AbilityInputBinder;
+    TObjectPtr<UGGFInputManager> InputManager;
 
     // 장비를 관리하기 위한 컴포넌트입니다.
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Component", meta = (AllowPrivateAccess = "true"))
