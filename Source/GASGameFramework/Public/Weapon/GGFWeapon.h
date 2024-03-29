@@ -12,6 +12,7 @@ class UGameplayAbility;
 class UAbilitySystemComponent;
 class UAnimInstance;
 
+// TODO 삼인칭, 일인칭 설정이 중복되니 구조체 사용?
 UCLASS(Abstract, Blueprintable, BlueprintType)
 class GASGAMEFRAMEWORK_API AGGFWeapon : public AGGFEquipment, public IGGFCameraInterface
 {
@@ -27,6 +28,11 @@ class GASGAMEFRAMEWORK_API AGGFWeapon : public AGGFEquipment, public IGGFCameraI
     TWeakObjectPtr<UAnimInstance> FirstPersonAnimInstance;
 
 protected:
+    UPROPERTY(EditAnywhere, Category = "Config|Weapon")
+    TArray<TSubclassOf<UAnimInstance>> ThirdPersonAnimLinkClasses;
+
+    UPROPERTY(EditAnywhere, Category = "Config|Weapon")
+    TArray<TSubclassOf<UAnimInstance>> FirstPersonAnimLinkClasses;
 
     // 무기를 사용하기 위한 어빌리티로 장착 시에만 부여됩니다.
     UPROPERTY(EditAnywhere, Category = "Config|Weapon")
@@ -59,10 +65,20 @@ protected:
     // 1인칭 몽타주 애니메이션 재생
     void PlayThirdPersonMontage(UAnimMontage* Montage) const;
 
+    // 무기 전용 캐릭터 애님 클래스 링크
+    void LinkAnimClasses() const;
+
+    // 무기 전용 캐릭터 애님 클래스 링크 제거
+    void UnLinkAnimClasses() const;
+
     /* GSFEquipmentBase */
 
     virtual void OnEquip_Implementation() override;
     virtual void OnUnEquip_Implementation() override;
+
+private:
+    static void LinkCharacterAnimClasses(TWeakObjectPtr<UAnimInstance> AnimInstance, const TArray<TSubclassOf<UAnimInstance>>& AnimLinkClasses);
+    static void UnlinkCharacterAnimClasses(TWeakObjectPtr<UAnimInstance> AnimInstance, const TArray<TSubclassOf<UAnimInstance>>& AnimLinkClasses);
 
 protected:
     /* Getter */

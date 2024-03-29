@@ -69,6 +69,18 @@ void AGGFWeapon::PlayThirdPersonMontage(UAnimMontage* Montage) const
         ThirdPersonAnimInstance->Montage_Play(Montage);
 }
 
+void AGGFWeapon::LinkAnimClasses() const
+{
+    LinkCharacterAnimClasses(FirstPersonAnimInstance, FirstPersonAnimLinkClasses);
+    LinkCharacterAnimClasses(ThirdPersonAnimInstance, ThirdPersonAnimLinkClasses);
+}
+
+void AGGFWeapon::UnLinkAnimClasses() const
+{
+    UnlinkCharacterAnimClasses(FirstPersonAnimInstance, FirstPersonAnimLinkClasses);
+    UnlinkCharacterAnimClasses(ThirdPersonAnimInstance, ThirdPersonAnimLinkClasses);
+}
+
 void AGGFWeapon::OnEquip_Implementation()
 {
     Super::OnEquip_Implementation();
@@ -99,12 +111,46 @@ void AGGFWeapon::OnUnEquip_Implementation()
     FirstPersonAnimInstance = nullptr;
 }
 
+void AGGFWeapon::LinkCharacterAnimClasses(TWeakObjectPtr<UAnimInstance> AnimInstance,
+    const TArray<TSubclassOf<UAnimInstance>>& AnimLinkClasses)
+{
+    if(AnimInstance.IsValid())
+    {
+        for (TSubclassOf<UAnimInstance> AnimLinkClass : AnimLinkClasses)
+        {
+            // 유효성 검사
+            if(AnimLinkClass == nullptr) continue;
+
+            // 애님 클래스 링크
+            AnimInstance->LinkAnimClassLayers(AnimLinkClass);
+        }
+    }
+}
+
+void AGGFWeapon::UnlinkCharacterAnimClasses(TWeakObjectPtr<UAnimInstance> AnimInstance,
+    const TArray<TSubclassOf<UAnimInstance>>& AnimLinkClasses)
+{
+    if(AnimInstance.IsValid())
+    {
+        for (TSubclassOf<UAnimInstance> AnimLinkClass : AnimLinkClasses)
+        {
+            // 유효성 검사
+            if(AnimLinkClass == nullptr) continue;
+
+            // 애님 클래스 링크
+            AnimInstance->UnlinkAnimClassLayers(AnimLinkClass);
+        }
+    }
+}
+
 void AGGFWeapon::Activate_Implementation()
 {
     GiveAbilities();
+    LinkAnimClasses();
 }
 
 void AGGFWeapon::Deactivate_Implementation()
 {
     ClearAbilities();
+    UnLinkAnimClasses();
 }
