@@ -23,8 +23,8 @@ class GASGAMEFRAMEWORK_API AGGFWeapon : public AGGFEquipment, public IGGFCameraI
     TWeakObjectPtr<UAbilitySystemComponent> OwnerAbilitySystem;
 
     // 무기 관련 캐릭터 애니메이션 재생을 위한 스켈레탈 메시
-    TWeakObjectPtr<USkeletalMeshComponent> ThirdPersonMesh;
-    TWeakObjectPtr<USkeletalMeshComponent> FirstPersonMesh;
+    TWeakObjectPtr<UAnimInstance> ThirdPersonAnimInstance;
+    TWeakObjectPtr<UAnimInstance> FirstPersonAnimInstance;
 
 protected:
 
@@ -46,13 +46,18 @@ public:
     AGGFWeapon();
 
 protected:
-    /* 가상 메서드 */
-
+    /* 메서드 */
     // 무기 어빌리티를 소유자에게 부여합니다.
-    virtual void GiveAbilities();
+    void GiveAbilities();
 
     // 무기 어빌리티를 소유자로부터 제거합니다.
-    virtual void ClearAbilities();
+    void ClearAbilities();
+
+    // 1인칭 몽타주 애니메이션 재생
+    void PlayFirstPersonMontage(UAnimMontage* Montage) const;
+
+    // 1인칭 몽타주 애니메이션 재생
+    void PlayThirdPersonMontage(UAnimMontage* Montage) const;
 
     /* GSFEquipmentBase */
 
@@ -65,16 +70,10 @@ protected:
     FORCEINLINE UAbilitySystemComponent* GetOwnerAbilitySystem() const { return OwnerAbilitySystem.Get(); }
 
     UFUNCTION(BlueprintGetter)
-    FORCEINLINE USkeletalMeshComponent* GetThirdPersonMesh() const { return ThirdPersonMesh.Get(); }
+    FORCEINLINE UAnimInstance* GetThirdPersonAnimInstance() const { return ThirdPersonAnimInstance.Get(); }
 
     UFUNCTION(BlueprintGetter)
-    FORCEINLINE UAnimInstance* GetThirdPersonAnimInstance() const { return ThirdPersonMesh.IsValid() ? ThirdPersonMesh.Get()->GetAnimInstance() : nullptr; }
-
-    UFUNCTION(BlueprintGetter)
-    FORCEINLINE USkeletalMeshComponent* GetFirstPersonMesh() const { return FirstPersonMesh.Get(); }
-
-    UFUNCTION(BlueprintGetter)
-    FORCEINLINE UAnimInstance* GetFirstPersonAnimInstance() const { return FirstPersonMesh.IsValid() ? FirstPersonMesh.Get()->GetAnimInstance() : nullptr; }
+    FORCEINLINE UAnimInstance* GetFirstPersonAnimInstance() const { return FirstPersonAnimInstance.Get(); }
 
 public:
     /* GGFEquipmentInterface */

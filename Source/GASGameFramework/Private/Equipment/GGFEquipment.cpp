@@ -1,7 +1,7 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "..\..\Public\Equipment\GGFEquipment.h"
+#include "Equipment/GGFEquipment.h"
 
 AGGFEquipment::AGGFEquipment()
 {

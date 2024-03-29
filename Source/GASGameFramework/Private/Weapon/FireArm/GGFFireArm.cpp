@@ -61,16 +61,9 @@ void AGGFFireArm::MulticastFire_Implementation()
     // 무기 애니메이션 재생
     PlayAnimation(FireAnimation);
 
+    // TODO 삼인칭 애니메이션
     // 캐릭터 애니메이션 재생
-    if(UAnimInstance* ThirdPersonAnimInstance = GetThirdPersonAnimInstance())
-    {
-        ThirdPersonAnimInstance->Montage_Play(CharacterFireAnimation);
-    }
-
-    if(UAnimInstance* FirstPersonAnimInstance = GetFirstPersonAnimInstance())
-    {
-        FirstPersonAnimInstance->Montage_Play(CharacterFireAnimation);
-    }
+    PlayFirstPersonMontage(CharacterFireAnimation);
 
     // 파티클 시스템 스폰
     UGameplayStatics::SpawnEmitterAttached(
@@ -145,16 +138,9 @@ void AGGFFireArm::MulticastReload_Implementation()
 {
     PlayAnimation(ReloadAnimation);
 
+    // TODO 삼인칭 애니메이션
     // 캐릭터 애니메이션 재생
-    if(UAnimInstance* ThirdPersonAnimInstance = GetThirdPersonAnimInstance())
-    {
-        ThirdPersonAnimInstance->Montage_Play(CharacterReloadAnimation);
-    }
-
-    if(UAnimInstance* FirstPersonAnimInstance = GetFirstPersonAnimInstance())
-    {
-        FirstPersonAnimInstance->Montage_Play(CharacterReloadAnimation);
-    }
+    PlayFirstPersonMontage(CharacterReloadAnimation);
 }
 
 void AGGFFireArm::FinishReloading()
@@ -201,7 +187,8 @@ void AGGFFireArm::Activate_Implementation()
     // 서버에서만 재장전 가능
     if(HasAuthority())
     {
-        GetFirstPersonAnimInstance()->OnPlayMontageNotifyBegin.AddDynamic(this, &ThisClass::OnPlayMontageNotifyBegin_Event);
+        if(UAnimInstance* LocalFirstPersonAnimInstance = GetFirstPersonAnimInstance())
+            LocalFirstPersonAnimInstance->OnPlayMontageNotifyBegin.AddDynamic(this, &ThisClass::OnPlayMontageNotifyBegin_Event);
     }
 }
 
@@ -212,7 +199,8 @@ void AGGFFireArm::Deactivate_Implementation()
     // 서버에서만 재장전 가능
     if(HasAuthority())
     {
-        GetFirstPersonAnimInstance()->OnPlayMontageNotifyBegin.RemoveDynamic(this, &ThisClass::OnPlayMontageNotifyBegin_Event);
+        if(UAnimInstance* LocalFirstPersonAnimInstance = GetFirstPersonAnimInstance())
+            LocalFirstPersonAnimInstance->OnPlayMontageNotifyBegin.RemoveDynamic(this, &ThisClass::OnPlayMontageNotifyBegin_Event);
     }
 }
 

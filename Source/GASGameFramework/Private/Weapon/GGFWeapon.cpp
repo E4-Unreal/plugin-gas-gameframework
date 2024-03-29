@@ -57,6 +57,18 @@ void AGGFWeapon::ClearAbilities()
     }
 }
 
+void AGGFWeapon::PlayFirstPersonMontage(UAnimMontage* Montage) const
+{
+    if(FirstPersonAnimInstance.IsValid() && Montage)
+        FirstPersonAnimInstance->Montage_Play(Montage);
+}
+
+void AGGFWeapon::PlayThirdPersonMontage(UAnimMontage* Montage) const
+{
+    if(ThirdPersonAnimInstance.IsValid() && Montage)
+        ThirdPersonAnimInstance->Montage_Play(Montage);
+}
+
 void AGGFWeapon::OnEquip_Implementation()
 {
     Super::OnEquip_Implementation();
@@ -65,10 +77,13 @@ void AGGFWeapon::OnEquip_Implementation()
     OwnerAbilitySystem = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(Owner);
 
     // 캐릭터 메시 캐싱
-    if(Owner->GetClass()->ImplementsInterface(UGGFCharacterInterface::StaticClass()))
+    if(Owner->Implements<UGGFCharacterInterface>())
     {
-        ThirdPersonMesh = IGGFCharacterInterface::Execute_GetThirdPersonMesh(Owner);
-        FirstPersonMesh = IGGFCharacterInterface::Execute_GetFirstPersonMesh(Owner);
+        const USkeletalMeshComponent* ThirdPersonMesh = IGGFCharacterInterface::Execute_GetThirdPersonMesh(Owner);
+        ThirdPersonAnimInstance = ThirdPersonMesh ? ThirdPersonMesh->GetAnimInstance() : nullptr;
+
+        const USkeletalMeshComponent* FirstPersonMesh = IGGFCharacterInterface::Execute_GetFirstPersonMesh(Owner);
+        FirstPersonAnimInstance = FirstPersonMesh ? FirstPersonMesh->GetAnimInstance() : nullptr;
     }
 }
 
@@ -80,8 +95,8 @@ void AGGFWeapon::OnUnEquip_Implementation()
     OwnerAbilitySystem = nullptr;
 
     // 캐릭터 메시 캐싱 제거
-    ThirdPersonMesh = nullptr;
-    FirstPersonMesh = nullptr;
+    ThirdPersonAnimInstance = nullptr;
+    FirstPersonAnimInstance = nullptr;
 }
 
 void AGGFWeapon::Activate_Implementation()
