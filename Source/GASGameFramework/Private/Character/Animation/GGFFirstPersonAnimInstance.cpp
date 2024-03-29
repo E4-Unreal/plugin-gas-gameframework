@@ -7,6 +7,10 @@
 
 UGGFFirstPersonAnimInstance::UGGFFirstPersonAnimInstance()
 {
+    // 몽타주 슬롯 연동
+    bUseMainInstanceMontageEvaluationData = true;
+
+    // 바인딩 태그 등록
     TagsToRegister.AddTagFast(GGFGameplayTags::State::Moving);
     TagsToRegister.AddTagFast(GGFGameplayTags::State::ADS);
 }
