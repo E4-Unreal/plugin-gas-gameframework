@@ -3,12 +3,27 @@
 
 #include "Attachment/GFFAttachmentManager.h"
 
-#include "Attachment/GFFAttachmentComponent.h"
 #include "Attachment/GFFAttachmentDefinition.h"
+#include "Attachment/GFFAttachmentSlotInterface.h"
 
 UGFFAttachmentManager::UGFFAttachmentManager()
 {
-    StaticMeshComponentClass = UGFFAttachmentComponent::StaticClass();
+    bWantsInitializeComponent = true;
+}
+
+void UGFFAttachmentManager::InitializeComponent()
+{
+    Super::InitializeComponent();
+
+    if(AActor* Owner = GetOwner())
+    {
+        const TArray<UActorComponent*> Components = Owner->GetComponentsByInterface(UGFFAttachmentSlotInterface::StaticClass());
+        Slots.Reserve(Components.Num());
+        for (UActorComponent* Component : Components)
+        {
+            Slots.Emplace(IGFFAttachmentSlotInterface::Execute_GetSlotTag(Component), Component);
+        }
+    }
 }
 
 void UGFFAttachmentManager::SetTargetMesh(UMeshComponent* InTargetMesh)
@@ -19,8 +34,8 @@ void UGFFAttachmentManager::SetTargetMesh(UMeshComponent* InTargetMesh)
     // TargetMesh 설정
     TargetMesh = InTargetMesh;
 
-    // 슬롯 생성
-    CreateSlots();
+    // 사용 가능한 슬롯 가져오기
+    GetSlots();
 
     // 기본 부착물 부착
     for (UGFFAttachmentDefinition* Attachment : DefaultAttachments)
@@ -39,37 +54,24 @@ void UGFFAttachmentManager::SetAttachment(UGFFAttachmentDefinition* Attachment)
     if(!Slots.Contains(SlotTag)) return;
 
     // 메시 설정
-    Slots[SlotTag]->SetStaticMesh(Attachment->GetAttachmentMesh());
+    const TObjectPtr<UActorComponent> Component = Slots[SlotTag];
+    if(Component->IsA(UStaticMeshComponent::StaticClass()))
+        IGFFAttachmentSlotInterface::Execute_SetMesh(Component, Attachment->GetStaticMesh());
+    else if(Component->IsA(USkeletalMeshComponent::StaticClass()))
+        IGFFAttachmentSlotInterface::Execute_SetMesh(Component, Attachment->GetSkeletalMesh());
 
     // TODO 총기 스탯 혹은 스펙 옵션 설정
 }
 
-void UGFFAttachmentManager::CreateSlots()
+void UGFFAttachmentManager::GetSlots()
 {
-    // 유효성 검사
-    if(!TargetMesh.IsValid()) return;
-
-    // 중복 호출 검사
-    if(!Slots.IsEmpty()) return;
-
-    // 슬롯 생성
-    Slots.Reserve(SlotMap.Num());
-    for (const auto& [SlotTag, SocketName] : SlotMap)
+    if(const AActor* Owner = GetOwner())
     {
-        if(SlotTag.IsValid() && SocketName.IsValid())
+        const TArray<UActorComponent*> Components = Owner->GetComponentsByInterface(UGFFAttachmentSlotInterface::StaticClass());
+        Slots.Reserve(Components.Num());
+        for (UActorComponent* Component : Components)
         {
-            Slots.Add(SlotTag, AttachStaticMeshComponentToTarget(SocketName));
+            Slots.Emplace(IGFFAttachmentSlotInterface::Execute_GetSlotTag(Component), Component);
         }
     }
-}
-
-UStaticMeshComponent* UGFFAttachmentManager::AttachStaticMeshComponentToTarget(const FName& SocketName) const
-{
-    UStaticMeshComponent* StaticMeshComponent = NewObject<UStaticMeshComponent>(TargetMesh->GetOwner(), StaticMeshComponentClass);
-    StaticMeshComponent->CreationMethod = EComponentCreationMethod::Instance; // 에디터 표시
-    StaticMeshComponent->RegisterComponent();
-    TargetMesh->GetOwner()->AddOwnedComponent(StaticMeshComponent);
-    StaticMeshComponent->AttachToComponent(TargetMesh.Get(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), SocketName);
-
-    return StaticMeshComponent;
 }

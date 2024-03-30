@@ -17,19 +17,25 @@ class GASGAMEFRAMEWORK_API UGFFAttachmentDefinition : public UDataAsset
     GENERATED_BODY()
 
 protected:
-    UPROPERTY(EditDefaultsOnly, BlueprintGetter = GetAttachmentMesh)
-    TObjectPtr<UStaticMesh> AttachmentMesh;
+    UPROPERTY(EditDefaultsOnly, BlueprintGetter = GetStaticMesh)
+    TObjectPtr<UStaticMesh> StaticMesh;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintGetter = GetSkeletalMesh)
+    TObjectPtr<USkeletalMesh> SkeletalMesh;
 
     UPROPERTY(EditDefaultsOnly, BlueprintGetter = GetSlot)
     FGameplayTag Slot;
 
 public:
     UFUNCTION(BlueprintGetter)
-    FORCEINLINE UStaticMesh* GetAttachmentMesh() const { return AttachmentMesh; }
+    FORCEINLINE UStaticMesh* GetStaticMesh() const { return StaticMesh; }
+
+    UFUNCTION(BlueprintGetter)
+    FORCEINLINE USkeletalMesh* GetSkeletalMesh() const { return SkeletalMesh; }
 
     UFUNCTION(BlueprintGetter)
     const FORCEINLINE FGameplayTag& GetSlot() const { return Slot; }
 
     UFUNCTION(BlueprintPure)
-    FORCEINLINE bool IsValid() const { return AttachmentMesh && Slot.IsValid(); }
+    FORCEINLINE bool IsValid() const { return Slot.IsValid() && (StaticMesh || SkeletalMesh); }
 };

@@ -7,6 +7,7 @@
 #include "Components/ActorComponent.h"
 #include "GFFAttachmentManager.generated.h"
 
+class IGFFAttachmentSlotInterface;
 class UGFFAttachmentDefinition;
 // TODO EquipmentManager와 병합
 /**
@@ -21,25 +22,18 @@ class GASGAMEFRAMEWORK_API UGFFAttachmentManager : public UActorComponent
     TWeakObjectPtr<UMeshComponent> TargetMesh;
 
 protected:
-    // 사용할 스태틱 메시 컴포넌트 클래스
-    // 콜리전 설정 등 프로젝트에 따라 추가 설정한 C++ 혹은 블루프린트 클래스 사용 권장
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Config")
-    TSubclassOf<UStaticMeshComponent> StaticMeshComponentClass;
-
     // 기본 부착물
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Config")
     TArray<TObjectPtr<UGFFAttachmentDefinition>> DefaultAttachments;
 
-    // <슬롯 태그, 소켓 이름>
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Config")
-    TMap<FGameplayTag, FName> SlotMap;
-
     // 생성된 슬롯 (스태틱 메시 컴포넌트)
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State", Transient)
-    TMap<FGameplayTag, TObjectPtr<UStaticMeshComponent>> Slots;
+    TMap<FGameplayTag, TObjectPtr<UActorComponent>> Slots;
 
 public:
     UGFFAttachmentManager();
+
+    virtual void InitializeComponent() override;
 
     UFUNCTION(BlueprintCallable)
     void SetTargetMesh(UMeshComponent* InTargetMesh);
@@ -47,7 +41,5 @@ public:
     void SetAttachment(UGFFAttachmentDefinition* Attachment);
 
 private:
-    void CreateSlots();
-
-    UStaticMeshComponent* AttachStaticMeshComponentToTarget(const FName& SocketName) const;
+    void GetSlots();
 };
