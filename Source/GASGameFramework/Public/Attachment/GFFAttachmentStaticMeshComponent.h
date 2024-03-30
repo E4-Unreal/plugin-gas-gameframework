@@ -16,7 +16,7 @@ class GASGAMEFRAMEWORK_API UGFFAttachmentStaticMeshComponent : public UStaticMes
     GENERATED_BODY()
 
 protected:
-    UPROPERTY(EditDefaultsOnly, Category = "Config")
+    UPROPERTY(EditDefaultsOnly, Category = "Config", meta = (Categories = "Equipment.Weapon.FireArm.Attachment"))
     FGameplayTag SlotTag;
 
 public:

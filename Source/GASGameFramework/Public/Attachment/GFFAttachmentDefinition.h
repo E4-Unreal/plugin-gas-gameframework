@@ -23,7 +23,7 @@ protected:
     UPROPERTY(EditDefaultsOnly, BlueprintGetter = GetSkeletalMesh)
     TObjectPtr<USkeletalMesh> SkeletalMesh;
 
-    UPROPERTY(EditDefaultsOnly, BlueprintGetter = GetSlot)
+    UPROPERTY(EditDefaultsOnly, BlueprintGetter = GetSlot, meta = (Categories = "Equipment.Weapon.FireArm.Attachment"))
     FGameplayTag Slot;
 
 public:

@@ -16,7 +16,7 @@ class GASGAMEFRAMEWORK_API UGFFAttachmentSkeletalMeshComponent : public USkeleta
     GENERATED_BODY()
 
 protected:
-    UPROPERTY(EditDefaultsOnly, Category = "Config")
+    UPROPERTY(EditDefaultsOnly, Category = "Config", meta = (Categories = "Equipment.Weapon.FireArm.Attachment"))
     FGameplayTag SlotTag;
 
 public:
