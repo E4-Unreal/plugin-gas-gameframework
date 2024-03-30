@@ -122,7 +122,10 @@ void UGGFFunctionLibrary::ApplyGameplayEffectToTargetSystem(const TSubclassOf<UG
     // Instigator AbilitySystem 획득 및 유효성 검사
     if(Instigator == nullptr)
     {
-        LOG_CHECK(LogGASExtension, Instigator == nullptr);
+#if WITH_EDITOR
+        LOG_CHECK(LogGASGameFramework, Instigator == nullptr);
+#endif
+
         ApplyGameplayEffectToSystem(EffectClass, TargetAbilitySystem);
         return;
     }

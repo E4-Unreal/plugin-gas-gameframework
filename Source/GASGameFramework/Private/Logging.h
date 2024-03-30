@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-DECLARE_LOG_CATEGORY_EXTERN(LogGASExtension, Log, All)
+DECLARE_LOG_CATEGORY_EXTERN(LogGASGameFramework, Log, All)
 
 // 클래스명::함수이름(호출 위치)
 #define CALLINFO (FString(__FUNCTION__) + TEXT("(") + FString::FromInt(__LINE__) + TEXT(")"))

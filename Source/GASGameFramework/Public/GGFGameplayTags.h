@@ -43,9 +43,45 @@ namespace GGFGameplayTags
         /* 루트 태그 */
         // 장비
         GASGAMEFRAMEWORK_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Equipment)
-        GASGAMEFRAMEWORK_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Weapon)
-        GASGAMEFRAMEWORK_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Armor)
 
+        // 무기
+        namespace Weapon
+        {
+            GASGAMEFRAMEWORK_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Weapon)
+
+            // 화기
+            namespace FireArm
+            {
+                GASGAMEFRAMEWORK_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(FireArm)
+
+                // 화기 부착물
+                namespace Attachment
+                {
+                    GASGAMEFRAMEWORK_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attachment)
+
+                    GASGAMEFRAMEWORK_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Muzzle) // 총구
+                    GASGAMEFRAMEWORK_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(IronSight) // 가늠쇠
+                    GASGAMEFRAMEWORK_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Scope) // 조준경
+                    GASGAMEFRAMEWORK_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Magazine) // 탄알집
+                    GASGAMEFRAMEWORK_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Grip) // 손잡이
+                    GASGAMEFRAMEWORK_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Laser) // 레이저
+                }
+            }
+        }
+
+        // 방어구
+        namespace Armor
+        {
+            GASGAMEFRAMEWORK_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Armor)
+        }
+
+        // 장신구
+        namespace Accessory
+        {
+            GASGAMEFRAMEWORK_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Accessory)
+        }
+
+        // 장비 슬롯
         namespace Slot
         {
             GASGAMEFRAMEWORK_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Slot)
