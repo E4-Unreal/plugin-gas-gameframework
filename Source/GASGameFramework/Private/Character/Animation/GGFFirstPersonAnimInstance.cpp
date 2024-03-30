@@ -38,7 +38,7 @@ void UGGFFirstPersonAnimInstance::OnGameplayEffectTagCountChanged_Event(const FG
     if(!Tag.MatchesAny(TagsToRegister))
     {
 #if WITH_EDITOR
-        LOG_CALLINFO_COMMENT(LogGASExtension, Warning, TEXT("태그 이벤트가 등록되었지만 사용되지 않고 있습니다: %s"), *Tag.GetTagName().ToString())
+        LOG_CALLINFO_COMMENT(LogGASGameFramework, Warning, TEXT("태그 이벤트가 등록되었지만 사용되지 않고 있습니다: %s"), *Tag.GetTagName().ToString())
 #endif
     }
 }

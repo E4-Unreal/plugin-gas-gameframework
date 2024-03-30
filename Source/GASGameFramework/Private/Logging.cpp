@@ -1,3 +1,3 @@
 ﻿#include "Logging.h"
 
-DEFINE_LOG_CATEGORY(LogGASExtension)
+DEFINE_LOG_CATEGORY(LogGASGameFramework)
