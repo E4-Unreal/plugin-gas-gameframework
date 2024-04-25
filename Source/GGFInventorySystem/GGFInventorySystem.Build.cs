@@ -19,7 +19,8 @@ public class GGFInventorySystem : ModuleRules
                 "CoreUObject",
                 "Engine",
                 "Slate",
-                "SlateCore"
+                "SlateCore",
+                "GGFItemSystem"
             }
         );
     }
