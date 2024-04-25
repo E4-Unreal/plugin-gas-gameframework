@@ -19,7 +19,12 @@
 			"Name": "GASGameFramework",
 			"Type": "Runtime",
 			"LoadingPhase": "Default"
-		}
+		},
+        {
+            "Name": "GGFItemSystem",
+            "Type": "Runtime",
+            "LoadingPhase": "Default"
+        }
 	],
     "Plugins": [
         {
