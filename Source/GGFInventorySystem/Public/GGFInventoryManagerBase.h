@@ -146,6 +146,10 @@ public:
     UFUNCTION(BlueprintCallable, Category = "ServerOnly")
     virtual bool AddItem(const FGGFInventoryItem& Item);
 
+    // 인벤토리에서 아이템을 제거합니다. (서버 전용)
+    UFUNCTION(BlueprintCallable, Category = "ServerOnly")
+    virtual bool RemoveItem(const FGGFInventoryItem& Item);
+
     /* 쿼리 */
     UFUNCTION(BlueprintPure)
     FORCEINLINE bool IsFull() const { return InventoryMap.Num() >= MaxSlotNum; }
@@ -166,6 +170,8 @@ protected:
 
     // 인벤토리 수정 여부 설정 (마지막으로 수정된 서버 시간 기록)
     virtual void SetInventoryDirty();
+
+    virtual FORCEINLINE FGGFInventoryItem& GetInventoryItem(int32 SlotIndex) const { return *InventoryMap[SlotIndex]; }
 
 protected:
     /* 리플리케이트 */

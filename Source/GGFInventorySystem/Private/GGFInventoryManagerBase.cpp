@@ -47,12 +47,15 @@ bool UGGFInventoryManagerBase::AddItem(const FGGFInventoryItem& Item)
 
     // 기존 아이템 슬롯에 먼저 추가
     const TArray<int32> SortedSlotIndices = SearchItem(Item.ItemDefinition);
-    for (int32 SortedIndex : SortedSlotIndices)
+    for (int32 SlotIndex : SortedSlotIndices)
     {
+        // 인벤토리 아이템 참조 변수 선언
+        FGGFInventoryItem& InventoryItem = GetInventoryItem(SlotIndex);
+
         // 기존 아이템 슬롯에 수량 채워넣기
-        int32 FreeAmount = InventoryMap[SortedIndex]->GetFreeAmount();
+        int32 FreeAmount = InventoryItem.GetFreeAmount();
         int32 AmountToAdd = FMath::Min(FreeAmount, NewAmount);
-        InventoryMap[SortedIndex]->Amount += AmountToAdd;
+        InventoryItem.Amount += AmountToAdd;
         NewAmount -= AmountToAdd;
 
         // 아이템 수량이 소진된 경우 조기 종료
@@ -76,6 +79,61 @@ bool UGGFInventoryManagerBase::AddItem(const FGGFInventoryItem& Item)
     }
 
     return bResult;
+}
+
+bool UGGFInventoryManagerBase::RemoveItem(const FGGFInventoryItem& Item)
+{
+    // 지역 변수 선언
+    int32 AmountToRemove = Item.Amount;
+
+    // 아이템 수량 검색
+    const TArray<int32> SortedSlotIndices = SearchItem(Item.ItemDefinition);
+    int32 AvailableItemAmount = 0;
+    for(int32 SlotIndex : SortedSlotIndices)
+    {
+        // 인벤토리 아이템 참조 변수 선언
+        FGGFInventoryItem& InventoryItem = GetInventoryItem(SlotIndex);
+
+        // 아이템 수량 계산
+        AvailableItemAmount += InventoryItem.Amount;
+        if(AvailableItemAmount >= Item.Amount) break;
+    }
+
+    // 아이템 수량이 부족한 경우
+    if(AvailableItemAmount < Item.Amount) return false;
+
+    // 슬롯 인덱스 내림차순으로 아이템 제거
+    for(int i = SortedSlotIndices.Num() - 1; i >= 0; i--)
+    {
+        // 인벤토리 슬롯 인덱스 변수 선언
+        int32 SlotIndex = SortedSlotIndices[i];
+
+        // 인벤토리 아이템 참조 변수 선언
+        FGGFInventoryItem& InventoryItem = GetInventoryItem(SlotIndex);
+
+        // 아이템 제거
+        if(AmountToRemove < InventoryItem.Amount)
+        {
+            // 인벤토리 슬롯에 들어있는 아이템 수량이 충분한 경우
+            InventoryItem.Amount -= AmountToRemove;
+            break;
+        }
+        else
+        {
+            // 인벤토리 슬롯에 들어있는 아이템 수량이 부족한 경우
+            AmountToRemove -= InventoryItem.Amount;
+            Inventory.Slots.RemoveSwap(FGGFInventorySlot(SlotIndex, InventoryItem));
+            InventoryMap.Remove(SlotIndex);
+
+            // 인벤토리 슬롯에 들어있는 아이템 수량이 동일한 경우
+            if(AmountToRemove <= 0) break;
+        }
+    }
+
+    // 인벤토리 업데이트
+    SetInventoryDirty();
+    
+    return true;
 }
 
 bool UGGFInventoryManagerBase::AddItemToEmptySlot(const FGGFInventoryItem& Item)
