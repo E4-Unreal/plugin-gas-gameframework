@@ -3,11 +3,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GGFItemDefinition.h"
 #include "Components/ActorComponent.h"
 #include "GGFInventoryManagerBase.generated.h"
 
-class UGGFItemDefinition;
+class UGGFInventoryItemConfig;
 struct FInventoryItemData;
 
 /**
@@ -21,7 +20,10 @@ struct FGGFInventoryItem
 public:
     // 아이템 정보
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    TObjectPtr<UGGFItemDefinition> ItemDefinition;
+    TObjectPtr<UDataAsset> ItemDefinition;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    TObjectPtr<UGGFInventoryItemConfig> InventoryItemConfig;
 
     // 아이템 수량
     UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (ClampMin = 1))
@@ -71,12 +73,12 @@ struct FGGFInventorySlot
         return !(*this == Other);
     }
 
-    FORCEINLINE bool operator==(const UGGFItemDefinition* OtherItemDefinition) const
+    FORCEINLINE bool operator==(const UDataAsset* OtherItemDefinition) const
     {
         return Item.ItemDefinition == OtherItemDefinition;
     }
 
-    FORCEINLINE bool operator!=(const UGGFItemDefinition* OtherItemDefinition) const
+    FORCEINLINE bool operator!=(const UDataAsset* OtherItemDefinition) const
     {
         return !(*this == OtherItemDefinition);
     }
@@ -166,7 +168,7 @@ protected:
     virtual int32 GetEmptySlotIndex() const;
 
     // 동일한 아이템이 들어있는 슬롯 인덱스 목록 구하기
-    virtual TArray<int32> SearchItem(UGGFItemDefinition* Item) const;
+    virtual TArray<int32> SearchItem(UDataAsset* Item) const;
 
     // 인벤토리 수정 여부 설정 (마지막으로 수정된 서버 시간 기록)
     virtual void SetInventoryDirty();

@@ -3,17 +3,17 @@
 
 #include "GGFInventoryManagerBase.h"
 
-#include "GGFItemConfig_Inventory.h"
+#include "GGFInventoryItemConfig.h"
 #include "Net/UnrealNetwork.h"
 
 bool FGGFInventoryItem::IsValid() const
 {
-    return ItemDefinition && ItemDefinition->FindConfigByClass(UGGFItemConfig_Inventory::StaticClass()) && Amount > 0;
+    return ItemDefinition && InventoryItemConfig && Amount > 0;
 }
 
 const FInventoryItemData& FGGFInventoryItem::GetInventoryData() const
 {
-    return CastChecked<UGGFItemConfig_Inventory>(ItemDefinition->FindConfigByClass(UGGFItemConfig_Inventory::StaticClass()))->GetInventoryData();
+    return InventoryItemConfig->GetInventoryData();
 }
 
 int32 FGGFInventoryItem::GetFreeAmount() const
@@ -66,7 +66,7 @@ bool UGGFInventoryManagerBase::AddItem(const FGGFInventoryItem& Item)
     bool bResult = NewAmount != Item.Amount;
 
     // 아이템 수량이 남은 경우 빈 슬롯에 아이템 추가
-    if(NewAmount > 0 && AddItemToEmptySlot(FGGFInventoryItem(Item.ItemDefinition, NewAmount))) bResult = true;
+    if(NewAmount > 0 && AddItemToEmptySlot(FGGFInventoryItem(Item.ItemDefinition, Item.InventoryItemConfig, NewAmount))) bResult = true;
 
     // 인벤토리에 아이템이 추가된 경우
     if(bResult)
@@ -132,7 +132,7 @@ bool UGGFInventoryManagerBase::RemoveItem(const FGGFInventoryItem& Item)
 
     // 인벤토리 업데이트
     SetInventoryDirty();
-    
+
     return true;
 }
 
@@ -175,7 +175,7 @@ int32 UGGFInventoryManagerBase::GetEmptySlotIndex() const
     return -1;
 }
 
-TArray<int32> UGGFInventoryManagerBase::SearchItem(UGGFItemDefinition* Item) const
+TArray<int32> UGGFInventoryManagerBase::SearchItem(UDataAsset* Item) const
 {
     // 배열 선언
     TArray<int32> SortedSlotIndices;
