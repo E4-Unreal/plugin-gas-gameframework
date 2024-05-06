@@ -6,7 +6,7 @@
 #include "Abilities/GGFGameplayAbility.h"
 #include "Attributes/GGFStaminaAttributes.h"
 #include "Effects/GE_GGFDefaultAttributes.h"
-#include "FunctionLibraries/GGFFunctionLibrary.h"
+#include "GEBlueprintFunctionLibrary.h"
 
 UGGFAbilitySystemBase::UGGFAbilitySystemBase()
 {
@@ -154,13 +154,13 @@ void UGGFAbilitySystemBase::OnDead_Implementation()
 void UGGFAbilitySystemBase::InitializeAbilitySystem()
 {
     // 기본 AttributeSet 생성 및 등록
-    UGGFFunctionLibrary::AddAttributeSetsToSystem(DefaultAttributes, this);
+    UGEBlueprintFunctionLibrary::AddAttributeSetsToSystem(DefaultAttributes, this);
 
     // 기본 GameplayEffect 적용
-    UGGFFunctionLibrary::ApplyGameplayEffectsToSystem(DefaultEffects, this);
+    UGEBlueprintFunctionLibrary::ApplyGameplayEffectsToSystem(DefaultEffects, this);
 
     // 기본 GameplayAbility 부여
-    UGGFFunctionLibrary::GiveAbilitiesToSystem(DefaultAbilities, this);
+    UGEBlueprintFunctionLibrary::GiveAbilitiesToSystem(DefaultAbilities, this);
 }
 
 void UGGFAbilitySystemBase::BindHealthAttributeDelegate()

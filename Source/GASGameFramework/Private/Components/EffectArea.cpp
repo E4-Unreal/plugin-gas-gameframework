@@ -3,7 +3,7 @@
 
 #include "Components/EffectArea.h"
 
-#include "FunctionLibraries/GGFFunctionLibrary.h"
+#include "GEBlueprintFunctionLibrary.h"
 
 
 UEffectArea::UEffectArea()
@@ -75,7 +75,7 @@ void UEffectArea::InjectDependencies(UPrimitiveComponent* InCollider)
 
 void UEffectArea::ApplyEffectsToOverlappedActor_Implementation(AActor* OtherActor)
 {
-    UGGFFunctionLibrary::ApplyGameplayEffectsToTarget(EffectsToApply, GetOwner()->GetInstigator(), OtherActor);
+    UGEBlueprintFunctionLibrary::ApplyGameplayEffectsToTarget(EffectsToApply, GetOwner()->GetInstigator(), OtherActor);
 }
 
 void UEffectArea::AddOverlappedActor(AActor* OtherActor)

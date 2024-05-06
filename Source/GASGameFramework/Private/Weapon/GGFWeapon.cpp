@@ -6,7 +6,7 @@
 #include "AbilitySystemComponent.h"
 #include "AbilitySystemGlobals.h"
 #include "Character/Interface/GGFCharacterInterface.h"
-#include "FunctionLibraries/GGFFunctionLibrary.h"
+#include "GEBlueprintFunctionLibrary.h"
 #include "Weapon/Abilities/GGFWeaponAbilityInterface.h"
 
 AGGFWeapon::AGGFWeapon()
@@ -20,7 +20,7 @@ void AGGFWeapon::GiveAbilities()
     if(!OwnerAbilitySystem.IsValid()) return;
 
     // 무기 어빌리티 부여
-    AbilitySpecHandles = UGGFFunctionLibrary::GiveAbilitiesToSystem(WeaponAbilities, OwnerAbilitySystem.Get());
+    AbilitySpecHandles = UGEBlueprintFunctionLibrary::GiveAbilitiesToSystem(WeaponAbilities, OwnerAbilitySystem.Get());
 
     // 부여된 무기 어빌리티에 무기 레퍼런스 추가
     for (const auto& AbilitySpecHandle : AbilitySpecHandles)

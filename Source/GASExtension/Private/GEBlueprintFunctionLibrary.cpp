@@ -1,22 +1,21 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "FunctionLibraries/GGFFunctionLibrary.h"
+#include "GEBlueprintFunctionLibrary.h"
 
 #include "AbilitySystemComponent.h"
 #include "AbilitySystemGlobals.h"
-#include "Logging.h"
 
 class UAbilitySystemComponent;
 
-void UGGFFunctionLibrary::AddAttributeSetToTarget(const TSubclassOf<UAttributeSet> AttributeSetClass, const AActor* TargetActor)
+void UGEBlueprintFunctionLibrary::AddAttributeSetToTarget(const TSubclassOf<UAttributeSet> AttributeSetClass, const AActor* TargetActor)
 {
     UAbilitySystemComponent* AbilitySystem = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(TargetActor);
 
     AddAttributeSetToSystem(AttributeSetClass, AbilitySystem);
 }
 
-void UGGFFunctionLibrary::AddAttributeSetsToTarget(const TArray<TSubclassOf<UAttributeSet>>& AttributeSetClasses,
+void UGEBlueprintFunctionLibrary::AddAttributeSetsToTarget(const TArray<TSubclassOf<UAttributeSet>>& AttributeSetClasses,
     const AActor* TargetActor)
 {
     UAbilitySystemComponent* AbilitySystem = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(TargetActor);
@@ -24,7 +23,7 @@ void UGGFFunctionLibrary::AddAttributeSetsToTarget(const TArray<TSubclassOf<UAtt
     AddAttributeSetsToSystem(AttributeSetClasses, AbilitySystem);
 }
 
-void UGGFFunctionLibrary::AddAttributeSetToSystem(const TSubclassOf<UAttributeSet> AttributeSetClass,
+void UGEBlueprintFunctionLibrary::AddAttributeSetToSystem(const TSubclassOf<UAttributeSet> AttributeSetClass,
                                          UAbilitySystemComponent* AbilitySystem)
 {
     // 유효성 검사
@@ -35,7 +34,7 @@ void UGGFFunctionLibrary::AddAttributeSetToSystem(const TSubclassOf<UAttributeSe
     AbilitySystem->AddSpawnedAttribute(Attributes);
 }
 
-void UGGFFunctionLibrary::AddAttributeSetsToSystem(const TArray<TSubclassOf<UAttributeSet>>& AttributeSetClasses,
+void UGEBlueprintFunctionLibrary::AddAttributeSetsToSystem(const TArray<TSubclassOf<UAttributeSet>>& AttributeSetClasses,
     UAbilitySystemComponent* AbilitySystem)
 {
     // 유효성 검사
@@ -48,14 +47,14 @@ void UGGFFunctionLibrary::AddAttributeSetsToSystem(const TArray<TSubclassOf<UAtt
     }
 }
 
-void UGGFFunctionLibrary::ApplyGameplayEffectToSelf(const TSubclassOf<UGameplayEffect> EffectClass, const AActor* TargetActor)
+void UGEBlueprintFunctionLibrary::ApplyGameplayEffectToSelf(const TSubclassOf<UGameplayEffect> EffectClass, const AActor* TargetActor)
 {
     UAbilitySystemComponent* AbilitySystem = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(TargetActor);
 
     ApplyGameplayEffectToSystem(EffectClass, AbilitySystem);
 }
 
-void UGGFFunctionLibrary::ApplyGameplayEffectsToSelf(const TArray<TSubclassOf<UGameplayEffect>>& EffectClasses,
+void UGEBlueprintFunctionLibrary::ApplyGameplayEffectsToSelf(const TArray<TSubclassOf<UGameplayEffect>>& EffectClasses,
     const AActor* TargetActor)
 {
     UAbilitySystemComponent* AbilitySystem = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(TargetActor);
@@ -63,7 +62,7 @@ void UGGFFunctionLibrary::ApplyGameplayEffectsToSelf(const TArray<TSubclassOf<UG
     ApplyGameplayEffectsToSystem(EffectClasses, AbilitySystem);
 }
 
-void UGGFFunctionLibrary::ApplyGameplayEffectToTarget(const TSubclassOf<UGameplayEffect> EffectClass, const AActor* Instigator, const AActor* TargetActor)
+void UGEBlueprintFunctionLibrary::ApplyGameplayEffectToTarget(const TSubclassOf<UGameplayEffect> EffectClass, const AActor* Instigator, const AActor* TargetActor)
 {
     UAbilitySystemComponent* InstigatorAbilitySystem = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(Instigator);
     UAbilitySystemComponent* TargetAbilitySystem = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(TargetActor);
@@ -75,7 +74,7 @@ void UGGFFunctionLibrary::ApplyGameplayEffectToTarget(const TSubclassOf<UGamepla
         ApplyGameplayEffectToTargetSystem(EffectClass, InstigatorAbilitySystem, TargetAbilitySystem);
 }
 
-void UGGFFunctionLibrary::ApplyGameplayEffectsToTarget(const TArray<TSubclassOf<UGameplayEffect>>& EffectClasses,
+void UGEBlueprintFunctionLibrary::ApplyGameplayEffectsToTarget(const TArray<TSubclassOf<UGameplayEffect>>& EffectClasses,
     const AActor* Instigator, const AActor* TargetActor)
 {
     UAbilitySystemComponent* InstigatorAbilitySystem = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(Instigator);
@@ -88,7 +87,7 @@ void UGGFFunctionLibrary::ApplyGameplayEffectsToTarget(const TArray<TSubclassOf<
         ApplyGameplayEffectsToTargetSystem(EffectClasses, InstigatorAbilitySystem, TargetAbilitySystem);
 }
 
-void UGGFFunctionLibrary::ApplyGameplayEffectToSystem(const TSubclassOf<UGameplayEffect> EffectClass,
+void UGEBlueprintFunctionLibrary::ApplyGameplayEffectToSystem(const TSubclassOf<UGameplayEffect> EffectClass,
     UAbilitySystemComponent* AbilitySystem)
 {
     // 유효성 검사
@@ -99,7 +98,7 @@ void UGGFFunctionLibrary::ApplyGameplayEffectToSystem(const TSubclassOf<UGamepla
     AbilitySystem->ApplyGameplayEffectToSelf(Effect, UGameplayEffect::INVALID_LEVEL, AbilitySystem->MakeEffectContext());
 }
 
-void UGGFFunctionLibrary::ApplyGameplayEffectsToSystem(const TArray<TSubclassOf<UGameplayEffect>>& EffectClasses,
+void UGEBlueprintFunctionLibrary::ApplyGameplayEffectsToSystem(const TArray<TSubclassOf<UGameplayEffect>>& EffectClasses,
     UAbilitySystemComponent* AbilitySystem)
 {
     // 유효성 검사
@@ -116,16 +115,12 @@ void UGGFFunctionLibrary::ApplyGameplayEffectsToSystem(const TArray<TSubclassOf<
     }
 }
 
-void UGGFFunctionLibrary::ApplyGameplayEffectToTargetSystem(const TSubclassOf<UGameplayEffect> EffectClass,
+void UGEBlueprintFunctionLibrary::ApplyGameplayEffectToTargetSystem(const TSubclassOf<UGameplayEffect> EffectClass,
     UAbilitySystemComponent* Instigator, UAbilitySystemComponent* TargetAbilitySystem)
 {
     // Instigator AbilitySystem 획득 및 유효성 검사
     if(Instigator == nullptr)
     {
-#if WITH_EDITOR
-        LOG_CHECK(LogGASGameFramework, Instigator == nullptr);
-#endif
-
         ApplyGameplayEffectToSystem(EffectClass, TargetAbilitySystem);
         return;
     }
@@ -135,7 +130,7 @@ void UGGFFunctionLibrary::ApplyGameplayEffectToTargetSystem(const TSubclassOf<UG
     Instigator->ApplyGameplayEffectToTarget(Effect, TargetAbilitySystem);
 }
 
-void UGGFFunctionLibrary::ApplyGameplayEffectsToTargetSystem(const TArray<TSubclassOf<UGameplayEffect>>& EffectClasses,
+void UGEBlueprintFunctionLibrary::ApplyGameplayEffectsToTargetSystem(const TArray<TSubclassOf<UGameplayEffect>>& EffectClasses,
     UAbilitySystemComponent* Instigator, UAbilitySystemComponent* TargetAbilitySystem)
 {
     // 서버에서만 호출
@@ -151,14 +146,14 @@ void UGGFFunctionLibrary::ApplyGameplayEffectsToTargetSystem(const TArray<TSubcl
     }
 }
 
-FGameplayAbilitySpecHandle UGGFFunctionLibrary::GiveAbilityToTarget(const TSubclassOf<UGameplayAbility> AbilityClass, const AActor* Target)
+FGameplayAbilitySpecHandle UGEBlueprintFunctionLibrary::GiveAbilityToTarget(const TSubclassOf<UGameplayAbility> AbilityClass, const AActor* Target)
 {
     UAbilitySystemComponent* AbilitySystem = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(Target);
 
     return GiveAbilityToSystem(AbilityClass, AbilitySystem);
 }
 
-TArray<FGameplayAbilitySpecHandle> UGGFFunctionLibrary::GiveAbilitiesToTarget(const TArray<TSubclassOf<UGameplayAbility>>& AbilityClasses,
+TArray<FGameplayAbilitySpecHandle> UGEBlueprintFunctionLibrary::GiveAbilitiesToTarget(const TArray<TSubclassOf<UGameplayAbility>>& AbilityClasses,
     const AActor* Target)
 {
     UAbilitySystemComponent* AbilitySystem = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(Target);
@@ -166,7 +161,7 @@ TArray<FGameplayAbilitySpecHandle> UGGFFunctionLibrary::GiveAbilitiesToTarget(co
     return GiveAbilitiesToSystem(AbilityClasses, AbilitySystem);
 }
 
-FGameplayAbilitySpecHandle UGGFFunctionLibrary::GiveAbilityToSystem(const TSubclassOf<UGameplayAbility> AbilityClass,
+FGameplayAbilitySpecHandle UGEBlueprintFunctionLibrary::GiveAbilityToSystem(const TSubclassOf<UGameplayAbility> AbilityClass,
                                              UAbilitySystemComponent* AbilitySystem)
 {
     // null 검사
@@ -182,7 +177,7 @@ FGameplayAbilitySpecHandle UGGFFunctionLibrary::GiveAbilityToSystem(const TSubcl
     return AbilitySystem->GiveAbility(AbilitySpec);
 }
 
-TArray<FGameplayAbilitySpecHandle> UGGFFunctionLibrary::GiveAbilitiesToSystem(const TArray<TSubclassOf<UGameplayAbility>>& AbilityClasses,
+TArray<FGameplayAbilitySpecHandle> UGEBlueprintFunctionLibrary::GiveAbilitiesToSystem(const TArray<TSubclassOf<UGameplayAbility>>& AbilityClasses,
     UAbilitySystemComponent* AbilitySystem)
 {
     // 변수 선언

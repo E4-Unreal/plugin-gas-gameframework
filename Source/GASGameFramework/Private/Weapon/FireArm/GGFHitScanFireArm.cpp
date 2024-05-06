@@ -3,7 +3,7 @@
 
 #include "Weapon/FireArm/GGFHitScanFireArm.h"
 
-#include "FunctionLibraries/GGFFunctionLibrary.h"
+#include "GEBlueprintFunctionLibrary.h"
 #include "Weapon/HitEffect/GGFHitEffectDefinition.h"
 #include "Weapon/Interface/GGFAimingInterface.h"
 
@@ -74,7 +74,7 @@ void AGGFHitScanFireArm::OnHit_Implementation(const FHitResult& HitResult)
     if(!HasAuthority()) return;
 
     // GGF 적용
-    UGGFFunctionLibrary::ApplyGameplayEffectsToTarget(EffectsToApply, GetInstigator(), HitResult.GetActor());
+    UGEBlueprintFunctionLibrary::ApplyGameplayEffectsToTarget(EffectsToApply, GetInstigator(), HitResult.GetActor());
 }
 
 void AGGFHitScanFireArm::OnMulticastHit_Implementation(const FHitResult& HitResult)

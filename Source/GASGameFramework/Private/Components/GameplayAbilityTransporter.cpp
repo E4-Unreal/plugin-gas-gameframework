@@ -3,10 +3,10 @@
 
 #include "Components/GameplayAbilityTransporter.h"
 
-#include "FunctionLibraries/GGFFunctionLibrary.h"
+#include "GEBlueprintFunctionLibrary.h"
 
 
 void UGameplayAbilityTransporter::GiveAbilitiesToTarget(AActor* Target)
 {
-    UGGFFunctionLibrary::GiveAbilitiesToTarget(AbilitiesToGive, Target);
+    UGEBlueprintFunctionLibrary::GiveAbilitiesToTarget(AbilitiesToGive, Target);
 }

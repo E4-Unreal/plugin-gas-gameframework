@@ -7,7 +7,7 @@
 #include "AbilitySystemGlobals.h"
 #include "NiagaraFunctionLibrary.h"
 #include "Components/SphereComponent.h"
-#include "FunctionLibraries/GGFFunctionLibrary.h"
+#include "GEBlueprintFunctionLibrary.h"
 #include "Kismet/GameplayStatics.h"
 #include "Sound/SoundCue.h"
 
@@ -135,7 +135,7 @@ void AGGFExplosiveProjectile::DetectExplosionHit_Implementation()
 #endif
 
                         // 데미지 적용
-                        UGGFFunctionLibrary::ApplyGameplayEffectsToSystem(EffectsToApply, AbilitySystem);
+                        UGEBlueprintFunctionLibrary::ApplyGameplayEffectsToSystem(EffectsToApply, AbilitySystem);
                     }
                     else
                     {
