@@ -159,6 +159,10 @@ public:
     UFUNCTION(BlueprintPure)
     FORCEINLINE bool IsFull() const { return InventoryMap.Num() >= MaxSlotNum; }
 
+    // 주어진 인벤토리 슬롯에 대응하는 인벤토리 아이템 반환 (읽기 전용)
+    UFUNCTION(BlueprintPure)
+    virtual const FORCEINLINE FGGFInventoryItem& GetInventoryItem(int32 SlotIndex) const { return Inventory.Slots[InventoryMap[SlotIndex]].Item; }
+
 protected:
     // 인벤토리 및 캐시에 아이템 등록
     virtual void RegisterInventoryItemToSlot(const FGGFInventoryItem& Item, int32 SlotIndex);
@@ -185,7 +189,8 @@ protected:
     // 인벤토리 수정 여부 설정 (마지막으로 수정된 서버 시간 기록)
     virtual void SetInventoryDirty();
 
-    virtual FORCEINLINE FGGFInventoryItem& GetInventoryItem(int32 SlotIndex) { return Inventory.Slots[InventoryMap[SlotIndex]].Item; }
+    // 주어진 인벤토리 슬롯에 대응하는 인벤토리 아이템을 참조 타입으로 반환
+    FORCEINLINE virtual FGGFInventoryItem& GetInventoryItemReference(int32 SlotIndex) { return Inventory.Slots[InventoryMap[SlotIndex]].Item; }
 
 protected:
     /* 리플리케이트 */

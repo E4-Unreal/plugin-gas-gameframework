@@ -55,7 +55,7 @@ bool UGGFInventoryManagerBase::AddItem(const FGGFInventoryItem& Item, int32& Rem
     for (int32 SlotIndex : SortedSlotIndices)
     {
         // 기존 인벤토리 아이템 가져오기
-        FGGFInventoryItem& ExistingInventoryItem = GetInventoryItem(SlotIndex);
+        FGGFInventoryItem& ExistingInventoryItem = GetInventoryItemReference(SlotIndex);
 
         // 기존 인벤토리 아이템에 수량 채워넣기
         int32 FreeAmount = ExistingInventoryItem.GetFreeAmount();
@@ -100,7 +100,7 @@ bool UGGFInventoryManagerBase::RemoveItem(const FGGFInventoryItem& Item)
     for(int32 SlotIndex : SortedSlotIndices)
     {
         // 인벤토리 아이템 참조 변수 선언
-        FGGFInventoryItem& InventoryItem = GetInventoryItem(SlotIndex);
+        FGGFInventoryItem& InventoryItem = GetInventoryItemReference(SlotIndex);
 
         // 아이템 수량 계산
         AvailableItemAmount += InventoryItem.Amount;
@@ -117,7 +117,7 @@ bool UGGFInventoryManagerBase::RemoveItem(const FGGFInventoryItem& Item)
         int32 SlotIndex = SortedSlotIndices[i];
 
         // 인벤토리 아이템 참조 변수 선언
-        FGGFInventoryItem& InventoryItem = GetInventoryItem(SlotIndex);
+        FGGFInventoryItem& InventoryItem = GetInventoryItemReference(SlotIndex);
 
         // 아이템 제거
         if(AmountToRemove < InventoryItem.Amount)
