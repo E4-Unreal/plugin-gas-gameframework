@@ -3,6 +3,9 @@
 
 #include "Effects/GE_GGFDefaultAttributes.h"
 
+#include "Attributes/GGFHealthAttributes.h"
+#include "Attributes/GGFManaAttributes.h"
+#include "Attributes/GGFShieldAttributes.h"
 #include "Attributes/GGFStaminaAttributes.h"
 
 UGE_GGFDefaultAttributes::UGE_GGFDefaultAttributes()

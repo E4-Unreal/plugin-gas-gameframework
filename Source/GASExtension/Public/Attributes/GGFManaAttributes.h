@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Attributes/GGFShieldAttributes.h"
+#include "GGFAttributeSetBase.h"
 #include "GGFManaAttributes.generated.h"
 
 /**
  * GGFShieldAttributes에서 마나 어트리뷰트가 추가된 AttributeSet 클래스입니다.
  */
 UCLASS()
-class GASGAMEFRAMEWORK_API UGGFManaAttributes : public UGGFShieldAttributes
+class GASEXTENSION_API UGGFManaAttributes : public UGGFAttributeSetBase
 {
     GENERATED_BODY()
 

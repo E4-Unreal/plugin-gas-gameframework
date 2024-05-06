@@ -42,7 +42,10 @@ public class GASGameFramework : ModuleRules
                 "GameplayTasks",
 
                 // 모듈형 게임 피처
-                "ModularGameplay"
+                "ModularGameplay",
+
+                // 하위 모듈
+                "GASExtension"
             }
 			);
 

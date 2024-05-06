@@ -10,6 +10,11 @@ public class GASExtension : ModuleRules
             new string[]
             {
                 "Core",
+
+                // GAS
+                "GameplayTags",
+                "GameplayTasks",
+                "GameplayAbilities"
             }
         );
 

@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Attributes/GGFHealthAttributes.h"
+#include "GGFAttributeSetBase.h"
 #include "GGFShieldAttributes.generated.h"
 
 /**
  * GGFHealthAttributes에서 방어막 어트리뷰트가 추가된 AttributeSet 클래스입니다.
  */
 UCLASS(Blueprintable, BlueprintType)
-class GASGAMEFRAMEWORK_API UGGFShieldAttributes : public UGGFHealthAttributes
+class GASEXTENSION_API UGGFShieldAttributes : public UGGFAttributeSetBase
 {
     GENERATED_BODY()
 
@@ -39,9 +39,6 @@ protected:
     virtual void ClampAttributes(const FGameplayAttribute& Attribute, float& NewValue) const override;
 
     virtual void AdjustAttributes(const FGameplayAttribute& Attribute, float OldValue, float NewValue) override;
-
-    /* GGFHealthAttributes */
-    virtual void TakeDamageByGameplayEffect(const FGameplayEffectModCallbackData& Data, const float InDamage) override;
 
     /* 리플리케이트 */
     UFUNCTION()
