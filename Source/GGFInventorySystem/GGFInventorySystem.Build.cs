@@ -10,6 +10,7 @@ public class GGFInventorySystem : ModuleRules
             new string[]
             {
                 "Core",
+                "UMG"
             }
         );
 
