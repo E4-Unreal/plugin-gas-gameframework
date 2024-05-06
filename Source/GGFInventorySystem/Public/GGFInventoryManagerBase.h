@@ -136,9 +136,15 @@ protected:
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State", Transient, ReplicatedUsing = OnRep_Inventory)
     FGGFInventory Inventory;
 
+    // 인벤토리 슬롯 인덱스와 실제 배열 인덱스 매핑 정보
     // TMap<SlotIndex, ArrayIndex>
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State", Transient)
-    TMap<int32, int32> InventoryMap;
+    TMap<int32, int32> InventoryIndexMap;
+
+    // 아이템 별 수량 통계
+    // TMap<ItemDefinition, Amount>
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State", Transient)
+    TMap<TObjectPtr<UDataAsset>, int32> ItemAmountMap;
 
 public:
     UGGFInventoryManagerBase();
@@ -161,11 +167,14 @@ public:
 
     /* 쿼리 */
     UFUNCTION(BlueprintPure)
-    FORCEINLINE bool IsFull() const { return InventoryMap.Num() >= MaxSlotNum; }
+    FORCEINLINE bool IsFull() const { return InventoryIndexMap.Num() >= MaxSlotNum; }
+
+    UFUNCTION(BlueprintPure)
+    FORCEINLINE int32 GetItemAmount(UDataAsset* ItemDefinition) const { return ItemAmountMap.Contains(ItemDefinition) ? ItemAmountMap[ItemDefinition] : 0; }
 
     // 주어진 인벤토리 슬롯 인덱스에 대응하는 인벤토리 슬롯 반환 (읽기 전용)
     UFUNCTION(BlueprintPure)
-    virtual const FORCEINLINE FGGFInventorySlot& GetInventorySlot(int32 SlotIndex) const { return Inventory.Slots[InventoryMap[SlotIndex]]; }
+    virtual const FORCEINLINE FGGFInventorySlot& GetInventorySlot(int32 SlotIndex) const { return Inventory.Slots[InventoryIndexMap[SlotIndex]]; }
 
     // 주어진 인벤토리 슬롯 인덱스에 대응하는 인벤토리 아이템 반환 (읽기 전용)
     UFUNCTION(BlueprintPure)
@@ -184,6 +193,9 @@ protected:
     // 빈 슬롯에 아이템 추가
     virtual bool AddItemToEmptySlot(const FGGFInventoryItem& Item, int32& Remainder);
 
+    // 아이템 수량 통계 갱신
+    virtual void UpdateItemAmount(UDataAsset* ItemDefinition, int32 InAmount);
+
     /* 쿼리 */
     // 비어있는 인벤토리 슬롯 중 가장 작은 인덱스 구하기
     virtual int32 GetEmptySlotIndex() const;
@@ -198,7 +210,7 @@ protected:
     virtual void SetInventoryDirty();
 
     // 주어진 인벤토리 슬롯 인덱스에 대응하는 인벤토리 아이템을 참조 타입으로 반환
-    FORCEINLINE virtual FGGFInventorySlot& GetInventorySlotReference(int32 SlotIndex) { return Inventory.Slots[InventoryMap[SlotIndex]]; }
+    FORCEINLINE virtual FGGFInventorySlot& GetInventorySlotReference(int32 SlotIndex) { return Inventory.Slots[InventoryIndexMap[SlotIndex]]; }
 
     // 주어진 인벤토리 슬롯 인덱스에 대응하는 인벤토리 아이템을 참조 타입으로 반환
     FORCEINLINE virtual FGGFInventoryItem& GetInventoryItemReference(int32 SlotIndex) { return GetInventorySlotReference(SlotIndex).Item; }

@@ -84,6 +84,9 @@ bool UGGFInventoryManagerBase::AddItem(const FGGFInventoryItem& Item, int32& Rem
 
         // 인벤토리 업데이트
         SetInventoryDirty();
+
+        // 아이템 수량 통계 업데이트
+        UpdateItemAmount(Item.ItemDefinition, Item.Amount - Remainder);
     }
 
     return bResult;
@@ -97,23 +100,11 @@ bool UGGFInventoryManagerBase::RemoveItem(const FGGFInventoryItem& Item)
     // 지역 변수 선언
     int32 AmountToRemove = Item.Amount;
 
-    // 아이템 수량 검색
-    const TArray<int32> SortedSlotIndices = SearchItem(Item.ItemDefinition);
-    int32 AvailableItemAmount = 0;
-    for(int32 SlotIndex : SortedSlotIndices)
-    {
-        // 인벤토리 아이템 참조 변수 선언
-        FGGFInventoryItem& InventoryItem = GetInventoryItemReference(SlotIndex);
-
-        // 아이템 수량 계산
-        AvailableItemAmount += InventoryItem.Amount;
-        if(AvailableItemAmount >= Item.Amount) break;
-    }
-
     // 아이템 수량이 부족한 경우
-    if(AvailableItemAmount < Item.Amount) return false;
+    if(GetItemAmount(Item.ItemDefinition) < Item.Amount) return false;
 
     // 슬롯 인덱스 내림차순으로 아이템 제거
+    const TArray<int32> SortedSlotIndices = SearchItem(Item.ItemDefinition);
     for(int i = SortedSlotIndices.Num() - 1; i >= 0; i--)
     {
         // 인벤토리 슬롯 인덱스 변수 선언
@@ -143,6 +134,9 @@ bool UGGFInventoryManagerBase::RemoveItem(const FGGFInventoryItem& Item)
     // 인벤토리 업데이트
     SetInventoryDirty();
 
+    // 아이템 수량 통계 업데이트
+    UpdateItemAmount(Item.ItemDefinition, -Item.Amount);
+
     return true;
 }
 
@@ -152,16 +146,16 @@ bool UGGFInventoryManagerBase::SwapInventorySlots(const int32 SourceSlotIndex, c
     if(!GetOwner()->HasAuthority()) return false;
 
     // 지역 변수 초기화
-    int32 SourceArrayIndex = InventoryMap[SourceSlotIndex];
-    int32 TargetArrayIndex = InventoryMap[TargetSlotIndex];
+    int32 SourceArrayIndex = InventoryIndexMap[SourceSlotIndex];
+    int32 TargetArrayIndex = InventoryIndexMap[TargetSlotIndex];
 
     // 슬롯 인덱스 수정
     GetInventorySlotReference(SourceSlotIndex).Index = TargetSlotIndex;
     GetInventorySlotReference(TargetSlotIndex).Index = SourceSlotIndex;
 
     // 캐시 업데이트
-    InventoryMap[SourceSlotIndex] = TargetArrayIndex;
-    InventoryMap[TargetSlotIndex] = SourceArrayIndex;
+    InventoryIndexMap[SourceSlotIndex] = TargetArrayIndex;
+    InventoryIndexMap[TargetSlotIndex] = SourceArrayIndex;
 
     return true;
 }
@@ -185,19 +179,30 @@ bool UGGFInventoryManagerBase::AddItemToEmptySlot(const FGGFInventoryItem& Item,
     return true;
 }
 
+void UGGFInventoryManagerBase::UpdateItemAmount(UDataAsset* ItemDefinition, int32 InAmount)
+{
+    // 입력 유효성 검사
+    if(ItemDefinition == nullptr || InAmount == 0) return;
+
+    // 아이템 수량 업데이트
+    int32 NewAmount = ItemAmountMap.Contains(ItemDefinition) ? ItemAmountMap[ItemDefinition] + InAmount : InAmount;
+    NewAmount = FMath::Max(NewAmount, 0);
+    ItemAmountMap.Emplace(ItemDefinition, NewAmount);
+}
+
 void UGGFInventoryManagerBase::RegisterInventoryItemToSlot(const FGGFInventoryItem& Item, int32 SlotIndex)
 {
     // 인벤토리에 아이템 추가
     int32 ArrayIndex = Inventory.Slots.Emplace(SlotIndex, Item);
 
     // 인덱스 매핑
-    InventoryMap.Emplace(SlotIndex, ArrayIndex);
+    InventoryIndexMap.Emplace(SlotIndex, ArrayIndex);
 }
 
 void UGGFInventoryManagerBase::UnregisterInventoryItemFromSlot(int32 SlotIndex)
 {
     // 인벤토리에서 슬롯 제거
-    int32 ArrayIndex = InventoryMap[SlotIndex];
+    int32 ArrayIndex = InventoryIndexMap[SlotIndex];
     Inventory.Slots.RemoveAtSwap(ArrayIndex);
 
     // RemoveSwap으로 인해 Index 순서가 보장되지 않기 때문에 캐시 초기화 진행
@@ -207,13 +212,22 @@ void UGGFInventoryManagerBase::UnregisterInventoryItemFromSlot(int32 SlotIndex)
 void UGGFInventoryManagerBase::CachingInventory()
 {
     // 인벤토리 맵 초기화
-    InventoryMap.Empty(Inventory.Slots.Num());
+    InventoryIndexMap.Empty(Inventory.Slots.Num());
+    ItemAmountMap.Empty(Inventory.Slots.Num());
 
-    // 인벤토리 맵 캐싱
+    // 인벤토리 캐싱
     for (int32 ArrayIndex = 0; ArrayIndex < Inventory.Slots.Num(); ArrayIndex++)
     {
-        int32 SlotIndex = Inventory.Slots[ArrayIndex].Index;
-        InventoryMap.Emplace(SlotIndex, ArrayIndex);
+        // 지역 변수 초기화
+        const FGGFInventorySlot& InventorySlot = Inventory.Slots[ArrayIndex];
+        const int32 SlotIndex = InventorySlot.Index;
+        const FGGFInventoryItem& InventoryItem = InventorySlot.Item;
+
+        // 슬롯 인덱스 매핑
+        InventoryIndexMap.Emplace(SlotIndex, ArrayIndex);
+
+        // 아이템 수량 매핑
+        UpdateItemAmount(InventoryItem.ItemDefinition, InventoryItem.Amount);
     }
 }
 
@@ -221,7 +235,7 @@ int32 UGGFInventoryManagerBase::GetEmptySlotIndex() const
 {
     for (int32 index = 0; index < MaxSlotNum; index++)
     {
-        if(!InventoryMap.Contains(index)) return index;
+        if(!InventoryIndexMap.Contains(index)) return index;
     }
 
     return -1;
@@ -236,7 +250,7 @@ TArray<int32> UGGFInventoryManagerBase::SearchItem(UDataAsset* ItemDefinition) c
     if(ItemDefinition == nullptr) return SortedSlotIndices;
 
     // 메모리 할당
-    SortedSlotIndices.Reserve(InventoryMap.Num());
+    SortedSlotIndices.Reserve(InventoryIndexMap.Num());
 
     // 동일한 아이템 검색
     for(const auto& Slot : Inventory.Slots)
