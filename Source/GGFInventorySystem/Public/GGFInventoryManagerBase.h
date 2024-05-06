@@ -50,11 +50,11 @@ struct FGGFInventorySlot
     GENERATED_BODY()
 
     // 인벤토리 슬롯 인덱스
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (ClampMin = 0))
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
     int32 Index;
 
     // 인벤토리 아이템 정보
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
     FGGFInventoryItem Item;
 
     bool IsValid() const { return Index >= 0 && Item.IsValid(); }
@@ -136,8 +136,9 @@ protected:
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State", Transient, ReplicatedUsing = OnRep_Inventory)
     FGGFInventory Inventory;
 
-    // TMap<Index, InventoryItem>
-    TMap<int32, FGGFInventoryItem*> InventoryMap;
+    // TMap<SlotIndex, ArrayIndex>
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State", Transient)
+    TMap<int32, int32> InventoryMap;
 
 public:
     UGGFInventoryManagerBase();
@@ -160,7 +161,10 @@ public:
 
 protected:
     // 인벤토리 및 캐시에 아이템 등록
-    virtual void AddInventoryItemToSlot(const FGGFInventoryItem& Item, int32 SlotIndex);
+    virtual void RegisterInventoryItemToSlot(const FGGFInventoryItem& Item, int32 SlotIndex);
+
+    // 인벤토리 및 캐시에서 아이템 등록 해제
+    virtual void UnregisterInventoryItemFromSlot(int32 SlotIndex);
 
     // 인벤토리 캐싱
     virtual void CachingInventory();
@@ -172,13 +176,16 @@ protected:
     // 비어있는 인벤토리 슬롯 중 가장 작은 인덱스 구하기
     virtual int32 GetEmptySlotIndex() const;
 
-    // 동일한 아이템이 들어있는 슬롯 인덱스 목록 구하기
-    virtual TArray<int32> SearchItem(UDataAsset* Item) const;
+    /**
+     * 동일한 아이템이 들어있는 슬롯 인덱스 목록 구하기
+     * @return 오름차순으로 정렬된 슬롯 인덱스 목록
+     */
+    virtual TArray<int32> SearchItem(UDataAsset* ItemDefinition) const;
 
     // 인벤토리 수정 여부 설정 (마지막으로 수정된 서버 시간 기록)
     virtual void SetInventoryDirty();
 
-    virtual FORCEINLINE FGGFInventoryItem& GetInventoryItem(int32 SlotIndex) const { return *InventoryMap[SlotIndex]; }
+    virtual FORCEINLINE FGGFInventoryItem& GetInventoryItem(int32 SlotIndex) { return Inventory.Slots[InventoryMap[SlotIndex]].Item; }
 
 protected:
     /* 리플리케이트 */

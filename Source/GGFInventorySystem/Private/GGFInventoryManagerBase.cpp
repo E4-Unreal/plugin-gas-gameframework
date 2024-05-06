@@ -130,8 +130,7 @@ bool UGGFInventoryManagerBase::RemoveItem(const FGGFInventoryItem& Item)
         {
             // 인벤토리 슬롯에 들어있는 아이템 수량이 부족한 경우
             AmountToRemove -= InventoryItem.Amount;
-            Inventory.Slots.RemoveSwap(FGGFInventorySlot(SlotIndex, InventoryItem));
-            InventoryMap.Remove(SlotIndex);
+            UnregisterInventoryItemFromSlot(SlotIndex);
 
             // 인벤토리 슬롯에 들어있는 아이템 수량이 동일한 경우
             if(AmountToRemove <= 0) break;
@@ -157,19 +156,29 @@ bool UGGFInventoryManagerBase::AddItemToEmptySlot(const FGGFInventoryItem& Item,
     FGGFInventoryItem ItemToAdd = Item;
     ItemToAdd.Amount = FMath::Min(Item.Amount, Item.GetMaxStack());
     Remainder = Item.Amount - ItemToAdd.Amount;
-    AddInventoryItemToSlot(ItemToAdd, EmptySlotIndex);
+    RegisterInventoryItemToSlot(ItemToAdd, EmptySlotIndex);
 
     // 아이템 추가 성공
     return true;
 }
 
-void UGGFInventoryManagerBase::AddInventoryItemToSlot(const FGGFInventoryItem& Item, int32 SlotIndex)
+void UGGFInventoryManagerBase::RegisterInventoryItemToSlot(const FGGFInventoryItem& Item, int32 SlotIndex)
 {
     // 인벤토리에 아이템 추가
     int32 ArrayIndex = Inventory.Slots.Emplace(SlotIndex, Item);
 
-    // 캐시 등록
-    InventoryMap.Emplace(SlotIndex, &Inventory.Slots[ArrayIndex].Item);
+    // 인덱스 매핑
+    InventoryMap.Emplace(SlotIndex, ArrayIndex);
+}
+
+void UGGFInventoryManagerBase::UnregisterInventoryItemFromSlot(int32 SlotIndex)
+{
+    // 인벤토리에서 슬롯 제거
+    int32 ArrayIndex = InventoryMap[SlotIndex];
+    Inventory.Slots.RemoveAtSwap(ArrayIndex);
+
+    // RemoveSwap으로 인해 Index 순서가 보장되지 않기 때문에 캐시 초기화 진행
+    CachingInventory();
 }
 
 void UGGFInventoryManagerBase::CachingInventory()
@@ -178,9 +187,10 @@ void UGGFInventoryManagerBase::CachingInventory()
     InventoryMap.Empty(Inventory.Slots.Num());
 
     // 인벤토리 맵 캐싱
-    for (auto& [Index, Item] : Inventory.Slots)
+    for (int32 ArrayIndex = 0; ArrayIndex < Inventory.Slots.Num(); ArrayIndex++)
     {
-        InventoryMap.Emplace(Index, &Item);
+        int32 SlotIndex = Inventory.Slots[ArrayIndex].Index;
+        InventoryMap.Emplace(SlotIndex, ArrayIndex);
     }
 }
 
@@ -194,13 +204,13 @@ int32 UGGFInventoryManagerBase::GetEmptySlotIndex() const
     return -1;
 }
 
-TArray<int32> UGGFInventoryManagerBase::SearchItem(UDataAsset* Item) const
+TArray<int32> UGGFInventoryManagerBase::SearchItem(UDataAsset* ItemDefinition) const
 {
     // 배열 선언
     TArray<int32> SortedSlotIndices;
 
     // 아이템 유효성 검사
-    if(Item == nullptr) return SortedSlotIndices;
+    if(ItemDefinition == nullptr) return SortedSlotIndices;
 
     // 메모리 할당
     SortedSlotIndices.Reserve(InventoryMap.Num());
@@ -209,7 +219,7 @@ TArray<int32> UGGFInventoryManagerBase::SearchItem(UDataAsset* Item) const
     for(const auto& Slot : Inventory.Slots)
     {
         // 동일한 아이템이 들어있는 슬롯 인덱스 저장
-        if(Slot == Item) SortedSlotIndices.Emplace(Slot.Index);
+        if(Slot == ItemDefinition) SortedSlotIndices.Emplace(Slot.Index);
     }
 
     // 일반적으로 가장 작은 인덱스의 아이템부터 채우거나 사용하기 때문에 정렬해줍니다.
