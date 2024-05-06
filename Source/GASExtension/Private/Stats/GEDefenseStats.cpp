@@ -1,8 +1,8 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
-#include "Stats/GGFDefenseStats.h"
+#include "Stats/GEDefenseStats.h"
 
-void UGGFDefenseStats::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+void UGEDefenseStats::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
     Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
@@ -10,7 +10,7 @@ void UGGFDefenseStats::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Out
     GAMEPLAYATTRIBUTE_DOREPLIFETIME_CONDITION_NOTIFY_WITH_MAX(Defense)
 }
 
-void UGGFDefenseStats::ClampAttributes(const FGameplayAttribute& Attribute, float& NewValue) const
+void UGEDefenseStats::ClampAttributes(const FGameplayAttribute& Attribute, float& NewValue) const
 {
     Super::ClampAttributes(Attribute, NewValue);
 
@@ -18,7 +18,7 @@ void UGGFDefenseStats::ClampAttributes(const FGameplayAttribute& Attribute, floa
     CLAMP_ATTRIBUTE_AND_MAX_ATTRIBUTE(Attribute, NewValue, Defense)
 }
 
-void UGGFDefenseStats::AdjustAttributes(const FGameplayAttribute& Attribute, float OldValue, float NewValue)
+void UGEDefenseStats::AdjustAttributes(const FGameplayAttribute& Attribute, float OldValue, float NewValue)
 {
     Super::AdjustAttributes(Attribute, OldValue, NewValue);
 
@@ -26,12 +26,12 @@ void UGGFDefenseStats::AdjustAttributes(const FGameplayAttribute& Attribute, flo
     ADJUST_ATTRIBUTE_FOR_MAX_ATTRIBUTE_CHANGE(Defense)
 }
 
-void UGGFDefenseStats::OnRep_Defense(const FGameplayAttributeData& OldDefense)
+void UGEDefenseStats::OnRep_Defense(const FGameplayAttributeData& OldDefense)
 {
     GAMEPLAYATTRIBUTE_REPNOTIFY_SIMPLE(Defense);
 }
 
-void UGGFDefenseStats::OnRep_MaxDefense(const FGameplayAttributeData& OldMaxDefense)
+void UGEDefenseStats::OnRep_MaxDefense(const FGameplayAttributeData& OldMaxDefense)
 {
     GAMEPLAYATTRIBUTE_REPNOTIFY_SIMPLE(MaxDefense);
 }

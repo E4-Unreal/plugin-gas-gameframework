@@ -1,7 +1,6 @@
 ﻿#pragma once
 
 #include "NativeGameplayTags.h"
-#include "GEGameplayTags.h"
 
 namespace GGFGameplayTags
 {

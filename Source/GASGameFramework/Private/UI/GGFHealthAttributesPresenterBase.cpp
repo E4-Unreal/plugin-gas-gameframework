@@ -4,7 +4,7 @@
 #include "UI/GGFHealthAttributesPresenterBase.h"
 
 #include "AbilitySystemComponent.h"
-#include "Attributes/GGFHealthAttributes.h"
+#include "Attributes/GEHealthAttributes.h"
 
 DEFINE_ATTRIBUTE_VALUE_CHANGE_HANDLE(UGGFHealthAttributesPresenterBase, Health)
 DEFINE_ATTRIBUTE_VALUE_CHANGE_HANDLE(UGGFHealthAttributesPresenterBase, MaxHealth)
@@ -14,25 +14,25 @@ void UGGFHealthAttributesPresenterBase::GetAttributeValues()
 {
     Super::GetAttributeValues();
 
-    UPDATE_ATTRIBUTE_VALUE(UGGFHealthAttributes, Health)
-    UPDATE_ATTRIBUTE_VALUE(UGGFHealthAttributes, MaxHealth)
-    UPDATE_ATTRIBUTE_VALUE(UGGFHealthAttributes, HealthRegenRate)
+    UPDATE_ATTRIBUTE_VALUE(UGEHealthAttributes, Health)
+    UPDATE_ATTRIBUTE_VALUE(UGEHealthAttributes, MaxHealth)
+    UPDATE_ATTRIBUTE_VALUE(UGEHealthAttributes, HealthRegenRate)
 }
 
 void UGGFHealthAttributesPresenterBase::BindAttributeValueChangeEvents()
 {
     Super::BindAttributeValueChangeEvents();
 
-    BIND_ATTRIBUTE_VALUE_CHANGE_DELEGATE(UGGFHealthAttributes, Health)
-    BIND_ATTRIBUTE_VALUE_CHANGE_DELEGATE(UGGFHealthAttributes, MaxHealth)
-    BIND_ATTRIBUTE_VALUE_CHANGE_DELEGATE(UGGFHealthAttributes, HealthRegenRate)
+    BIND_ATTRIBUTE_VALUE_CHANGE_DELEGATE(UGEHealthAttributes, Health)
+    BIND_ATTRIBUTE_VALUE_CHANGE_DELEGATE(UGEHealthAttributes, MaxHealth)
+    BIND_ATTRIBUTE_VALUE_CHANGE_DELEGATE(UGEHealthAttributes, HealthRegenRate)
 }
 
 void UGGFHealthAttributesPresenterBase::UnBindAttributeValueChangeEvents()
 {
     Super::UnBindAttributeValueChangeEvents();
 
-    UNBIND_ATTRIBUTE_VALUE_CHANGE_DELEGATE(UGGFHealthAttributes, Health)
-    UNBIND_ATTRIBUTE_VALUE_CHANGE_DELEGATE(UGGFHealthAttributes, MaxHealth)
-    UNBIND_ATTRIBUTE_VALUE_CHANGE_DELEGATE(UGGFHealthAttributes, HealthRegenRate)
+    UNBIND_ATTRIBUTE_VALUE_CHANGE_DELEGATE(UGEHealthAttributes, Health)
+    UNBIND_ATTRIBUTE_VALUE_CHANGE_DELEGATE(UGEHealthAttributes, MaxHealth)
+    UNBIND_ATTRIBUTE_VALUE_CHANGE_DELEGATE(UGEHealthAttributes, HealthRegenRate)
 }

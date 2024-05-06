@@ -6,7 +6,7 @@
 #include "AttributeSet.h"
 #include "Net/UnrealNetwork.h"
 #include "AbilitySystemComponent.h"
-#include "GGFAttributeSetBase.generated.h"
+#include "GEAttributeSetBase.generated.h"
 
 /* 헤더 파일에서 사용 */
 
@@ -102,7 +102,7 @@
  * AttributeSet 클래스에서 공용으로 사용할 헬퍼 매크로 및 함수를 포함하고 있습니다.
  */
 UCLASS()
-class GASEXTENSION_API UGGFAttributeSetBase : public UAttributeSet
+class GASEXTENSION_API UGEAttributeSetBase : public UAttributeSet
 {
     GENERATED_BODY()
 

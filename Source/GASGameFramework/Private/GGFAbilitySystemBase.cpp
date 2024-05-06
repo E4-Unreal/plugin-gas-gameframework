@@ -2,9 +2,9 @@
 
 #include "GGFAbilitySystemBase.h"
 
-#include "GGFGameplayTags.h"
+#include "GEGameplayTags.h"
 #include "Abilities/GGFGameplayAbility.h"
-#include "Attributes/GGFStaminaAttributes.h"
+#include "Attributes/GEStaminaAttributes.h"
 #include "Effects/GE_GGFDefaultAttributes.h"
 #include "GEBlueprintFunctionLibrary.h"
 
@@ -14,7 +14,7 @@ UGGFAbilitySystemBase::UGGFAbilitySystemBase()
     bWantsInitializeComponent = true;
 
     // 기본 Attributes 및 GameplayEffect 등록
-    DefaultAttributes.Add(UGGFStaminaAttributes::StaticClass());
+    DefaultAttributes.Add(UGEStaminaAttributes::StaticClass());
     DefaultEffects.Add(UGE_GGFDefaultAttributes::StaticClass());
 }
 
@@ -148,7 +148,7 @@ void UGGFAbilitySystemBase::OnGiveAbility(FGameplayAbilitySpec& AbilitySpec)
 
 void UGGFAbilitySystemBase::OnDead_Implementation()
 {
-    AddLooseGameplayTag(GGFGameplayTags::State::Dead);
+    AddLooseGameplayTag(GEGameplayTags::State::Dead);
 }
 
 void UGGFAbilitySystemBase::InitializeAbilitySystem()
@@ -165,7 +165,7 @@ void UGGFAbilitySystemBase::InitializeAbilitySystem()
 
 void UGGFAbilitySystemBase::BindHealthAttributeDelegate()
 {
-    FOnGameplayAttributeValueChange& Delegate = GetGameplayAttributeValueChangeDelegate(UGGFHealthAttributes::GetHealthAttribute());
+    FOnGameplayAttributeValueChange& Delegate = GetGameplayAttributeValueChangeDelegate(UGEHealthAttributes::GetHealthAttribute());
     Delegate.AddLambda([this](const FOnAttributeChangeData& OnAttributeChangeData)
     {
         if(FMath::IsNearlyZero(OnAttributeChangeData.NewValue))

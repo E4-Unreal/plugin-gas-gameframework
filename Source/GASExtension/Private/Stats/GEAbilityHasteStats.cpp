@@ -1,8 +1,8 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
-#include "Stats/GGFAbilityHasteStats.h"
+#include "Stats/GEAbilityHasteStats.h"
 
-void UGGFAbilityHasteStats::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+void UGEAbilityHasteStats::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
     Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
@@ -10,7 +10,7 @@ void UGGFAbilityHasteStats::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>
     GAMEPLAYATTRIBUTE_DOREPLIFETIME_CONDITION_NOTIFY_WITH_MAX(AbilityHaste)
 }
 
-void UGGFAbilityHasteStats::ClampAttributes(const FGameplayAttribute& Attribute, float& NewValue) const
+void UGEAbilityHasteStats::ClampAttributes(const FGameplayAttribute& Attribute, float& NewValue) const
 {
     Super::ClampAttributes(Attribute, NewValue);
 
@@ -18,7 +18,7 @@ void UGGFAbilityHasteStats::ClampAttributes(const FGameplayAttribute& Attribute,
     CLAMP_ATTRIBUTE_AND_MAX_ATTRIBUTE(Attribute, NewValue, AbilityHaste)
 }
 
-void UGGFAbilityHasteStats::AdjustAttributes(const FGameplayAttribute& Attribute, float OldValue, float NewValue)
+void UGEAbilityHasteStats::AdjustAttributes(const FGameplayAttribute& Attribute, float OldValue, float NewValue)
 {
     Super::AdjustAttributes(Attribute, OldValue, NewValue);
 
@@ -26,12 +26,12 @@ void UGGFAbilityHasteStats::AdjustAttributes(const FGameplayAttribute& Attribute
     ADJUST_ATTRIBUTE_FOR_MAX_ATTRIBUTE_CHANGE(AbilityHaste)
 }
 
-void UGGFAbilityHasteStats::OnRep_AbilityHaste(const FGameplayAttributeData& OldAbilityHaste)
+void UGEAbilityHasteStats::OnRep_AbilityHaste(const FGameplayAttributeData& OldAbilityHaste)
 {
     GAMEPLAYATTRIBUTE_REPNOTIFY_SIMPLE(AbilityHaste);
 }
 
-void UGGFAbilityHasteStats::OnRep_MaxAbilityHaste(const FGameplayAttributeData& OldMaxAbilityHaste)
+void UGEAbilityHasteStats::OnRep_MaxAbilityHaste(const FGameplayAttributeData& OldMaxAbilityHaste)
 {
     GAMEPLAYATTRIBUTE_REPNOTIFY_SIMPLE(MaxAbilityHaste);
 }

@@ -1,6 +1,6 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
-#include "Stats/GGFAttackStats.h"
+#include "..\..\Public\Stats\GEAttackStats.h"
 
 void UGGFAttackStats::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {

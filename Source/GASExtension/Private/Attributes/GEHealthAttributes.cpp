@@ -1,18 +1,18 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
-#include "Attributes/GGFHealthAttributes.h"
+#include "Attributes/GEHealthAttributes.h"
 
 #include "AbilitySystemBlueprintLibrary.h"
 #include "GameplayEffectExtension.h"
 
-void UGGFHealthAttributes::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+void UGEHealthAttributes::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
     Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
     GAMEPLAYATTRIBUTE_DOREPLIFETIME_CONDITION_NOTIFY_WITH_MAX_AND_REGGFNRATE(Health)
 }
 
-void UGGFHealthAttributes::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
+void UGEHealthAttributes::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
 {
     Super::PostGameplayEffectExecute(Data);
 
@@ -32,7 +32,7 @@ void UGGFHealthAttributes::PostGameplayEffectExecute(const FGameplayEffectModCal
     }
 }
 
-void UGGFHealthAttributes::ClampAttributes(const FGameplayAttribute& Attribute, float& NewValue) const
+void UGEHealthAttributes::ClampAttributes(const FGameplayAttribute& Attribute, float& NewValue) const
 {
     Super::ClampAttributes(Attribute, NewValue);
 
@@ -40,7 +40,7 @@ void UGGFHealthAttributes::ClampAttributes(const FGameplayAttribute& Attribute, 
     CLAMP_ATTRIBUTE_AND_MAX_ATTRIBUTE(Attribute, NewValue, Health)
 }
 
-void UGGFHealthAttributes::AdjustAttributes(const FGameplayAttribute& Attribute, float OldValue, float NewValue)
+void UGEHealthAttributes::AdjustAttributes(const FGameplayAttribute& Attribute, float OldValue, float NewValue)
 {
     Super::AdjustAttributes(Attribute, OldValue, NewValue);
 
@@ -48,23 +48,23 @@ void UGGFHealthAttributes::AdjustAttributes(const FGameplayAttribute& Attribute,
     ADJUST_ATTRIBUTE_FOR_MAX_ATTRIBUTE_CHANGE(Health)
 }
 
-void UGGFHealthAttributes::TakeDamageByGameplayEffect(const FGameplayEffectModCallbackData& Data, const float InDamage)
+void UGEHealthAttributes::TakeDamageByGameplayEffect(const FGameplayEffectModCallbackData& Data, const float InDamage)
 {
     // 데미지 적용
     SetHealth(GetHealth() - InDamage);
 }
 
-void UGGFHealthAttributes::OnRep_Health(const FGameplayAttributeData& OldHealth)
+void UGEHealthAttributes::OnRep_Health(const FGameplayAttributeData& OldHealth)
 {
     GAMEPLAYATTRIBUTE_REPNOTIFY_SIMPLE(Health);
 }
 
-void UGGFHealthAttributes::OnRep_MaxHealth(const FGameplayAttributeData& OldMaxHealth)
+void UGEHealthAttributes::OnRep_MaxHealth(const FGameplayAttributeData& OldMaxHealth)
 {
     GAMEPLAYATTRIBUTE_REPNOTIFY_SIMPLE(MaxHealth);
 }
 
-void UGGFHealthAttributes::OnRep_HealthRegenRate(const FGameplayAttributeData& OldHealthRegenRate)
+void UGEHealthAttributes::OnRep_HealthRegenRate(const FGameplayAttributeData& OldHealthRegenRate)
 {
     GAMEPLAYATTRIBUTE_REPNOTIFY_SIMPLE(HealthRegenRate);
 }

@@ -3,8 +3,8 @@
 
 #include "Abilities/GGFGameplayAbility.h"
 
-#include "GGFGameplayTags.h"
-#include "Attributes/GGFHealthAttributes.h"
+#include "GEGameplayTags.h"
+#include "Attributes/GEHealthAttributes.h"
 
 UGGFGameplayAbility::UGGFGameplayAbility()
 {
@@ -12,7 +12,7 @@ UGGFGameplayAbility::UGGFGameplayAbility()
     InstancingPolicy = EGameplayAbilityInstancingPolicy::InstancedPerActor;
 
     /* 태그 설정 */
-    using namespace GGFGameplayTags;
+    using namespace GEGameplayTags;
 
     // 기본 어빌리티 태그 설정
     AbilityTags.AddTagFast(Action::Action);

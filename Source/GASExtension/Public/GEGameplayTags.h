@@ -2,7 +2,7 @@
 
 #include "NativeGameplayTags.h"
 
-namespace GGFGameplayTags
+namespace GEGameplayTags
 {
     /* 캐릭터 상태 */
     namespace State
