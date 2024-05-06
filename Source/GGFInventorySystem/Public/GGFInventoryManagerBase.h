@@ -118,7 +118,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FInventoryUpdatedSignature, const TA
 /**
  * 인벤토리 코어 기능만 구현된 클래스
  */
-UCLASS(meta=(BlueprintSpawnableComponent))
+UCLASS()
 class GGFINVENTORYSYSTEM_API UGGFInventoryManagerBase : public UActorComponent
 {
     GENERATED_BODY()
