@@ -20,24 +20,29 @@
 			"Type": "Runtime",
 			"LoadingPhase": "Default"
 		},
-        {
-            "Name": "GGFItemSystem",
-            "Type": "Runtime",
-            "LoadingPhase": "Default"
-        }
+		{
+			"Name": "GGFItemSystem",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		},
+		{
+			"Name": "GGFInventorySystem",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		}
 	],
-    "Plugins": [
-        {
-            "Name": "EnhancedInput",
-            "Enabled": true
-        },
-        {
-            "Name": "GameplayAbilities",
-            "Enabled": true
-        },
-        {
-            "Name": "ModularGameplay",
-            "Enabled": true
-        }
-    ]
+	"Plugins": [
+		{
+			"Name": "EnhancedInput",
+			"Enabled": true
+		},
+		{
+			"Name": "GameplayAbilities",
+			"Enabled": true
+		},
+		{
+			"Name": "ModularGameplay",
+			"Enabled": true
+		}
+	]
 }
