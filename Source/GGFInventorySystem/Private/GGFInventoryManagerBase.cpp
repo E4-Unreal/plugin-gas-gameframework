@@ -93,7 +93,7 @@ bool UGGFInventoryManagerBase::RemoveItem(const FGGFInventoryItem& Item)
 {
     // 서버에서만 호출 가능
     if(!GetOwner()->HasAuthority()) return false;
-    
+
     // 지역 변수 선언
     int32 AmountToRemove = Item.Amount;
 
@@ -142,6 +142,26 @@ bool UGGFInventoryManagerBase::RemoveItem(const FGGFInventoryItem& Item)
 
     // 인벤토리 업데이트
     SetInventoryDirty();
+
+    return true;
+}
+
+bool UGGFInventoryManagerBase::SwapInventorySlots(const int32 SourceSlotIndex, const int32 TargetSlotIndex)
+{
+    // 서버에서만 호출 가능
+    if(!GetOwner()->HasAuthority()) return false;
+
+    // 지역 변수 초기화
+    int32 SourceArrayIndex = InventoryMap[SourceSlotIndex];
+    int32 TargetArrayIndex = InventoryMap[TargetSlotIndex];
+
+    // 슬롯 인덱스 수정
+    GetInventorySlotReference(SourceSlotIndex).Index = TargetSlotIndex;
+    GetInventorySlotReference(TargetSlotIndex).Index = SourceSlotIndex;
+
+    // 캐시 업데이트
+    InventoryMap[SourceSlotIndex] = TargetArrayIndex;
+    InventoryMap[TargetSlotIndex] = SourceArrayIndex;
 
     return true;
 }

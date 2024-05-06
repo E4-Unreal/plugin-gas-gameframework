@@ -155,13 +155,21 @@ public:
     UFUNCTION(BlueprintCallable, Category = "ServerOnly")
     virtual bool RemoveItem(const FGGFInventoryItem& Item);
 
+    // 인벤토리 슬롯을 교환합니다.
+    UFUNCTION(BlueprintCallable, Category = "ServerOnly")
+    virtual bool SwapInventorySlots(const int32 SourceSlotIndex, const int32 TargetSlotIndex);
+
     /* 쿼리 */
     UFUNCTION(BlueprintPure)
     FORCEINLINE bool IsFull() const { return InventoryMap.Num() >= MaxSlotNum; }
 
-    // 주어진 인벤토리 슬롯에 대응하는 인벤토리 아이템 반환 (읽기 전용)
+    // 주어진 인벤토리 슬롯 인덱스에 대응하는 인벤토리 슬롯 반환 (읽기 전용)
     UFUNCTION(BlueprintPure)
-    virtual const FORCEINLINE FGGFInventoryItem& GetInventoryItem(int32 SlotIndex) const { return Inventory.Slots[InventoryMap[SlotIndex]].Item; }
+    virtual const FORCEINLINE FGGFInventorySlot& GetInventorySlot(int32 SlotIndex) const { return Inventory.Slots[InventoryMap[SlotIndex]]; }
+
+    // 주어진 인벤토리 슬롯 인덱스에 대응하는 인벤토리 아이템 반환 (읽기 전용)
+    UFUNCTION(BlueprintPure)
+    virtual const FORCEINLINE FGGFInventoryItem& GetInventoryItem(int32 SlotIndex) const { return GetInventorySlot(SlotIndex).Item; }
 
 protected:
     // 인벤토리 및 캐시에 아이템 등록
@@ -189,8 +197,11 @@ protected:
     // 인벤토리 수정 여부 설정 (마지막으로 수정된 서버 시간 기록)
     virtual void SetInventoryDirty();
 
-    // 주어진 인벤토리 슬롯에 대응하는 인벤토리 아이템을 참조 타입으로 반환
-    FORCEINLINE virtual FGGFInventoryItem& GetInventoryItemReference(int32 SlotIndex) { return Inventory.Slots[InventoryMap[SlotIndex]].Item; }
+    // 주어진 인벤토리 슬롯 인덱스에 대응하는 인벤토리 아이템을 참조 타입으로 반환
+    FORCEINLINE virtual FGGFInventorySlot& GetInventorySlotReference(int32 SlotIndex) { return Inventory.Slots[InventoryMap[SlotIndex]]; }
+
+    // 주어진 인벤토리 슬롯 인덱스에 대응하는 인벤토리 아이템을 참조 타입으로 반환
+    FORCEINLINE virtual FGGFInventoryItem& GetInventoryItemReference(int32 SlotIndex) { return GetInventorySlotReference(SlotIndex).Item; }
 
 protected:
     /* 리플리케이트 */
