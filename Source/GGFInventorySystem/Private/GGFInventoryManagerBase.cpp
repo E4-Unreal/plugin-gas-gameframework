@@ -91,6 +91,9 @@ bool UGGFInventoryManagerBase::AddItem(const FGGFInventoryItem& Item, int32& Rem
 
 bool UGGFInventoryManagerBase::RemoveItem(const FGGFInventoryItem& Item)
 {
+    // 서버에서만 호출 가능
+    if(!GetOwner()->HasAuthority()) return false;
+    
     // 지역 변수 선언
     int32 AmountToRemove = Item.Amount;
 
