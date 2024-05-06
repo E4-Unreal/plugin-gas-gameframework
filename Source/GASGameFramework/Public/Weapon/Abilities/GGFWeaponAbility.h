@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Abilities/GGFGameplayAbility.h"
+#include "Abilities/GEGameplayAbility.h"
 #include "GGFWeaponAbilityInterface.h"
 #include "GGFWeaponAbility.generated.h"
 
@@ -11,7 +11,7 @@
  * 무기 전용 어빌리티
  */
 UCLASS()
-class GASGAMEFRAMEWORK_API UGGFWeaponAbility : public UGGFGameplayAbility, public IGGFWeaponAbilityInterface
+class GASGAMEFRAMEWORK_API UGGFWeaponAbility : public UGEGameplayAbility, public IGGFWeaponAbilityInterface
 {
     GENERATED_BODY()
 

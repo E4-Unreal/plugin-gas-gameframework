@@ -4,7 +4,7 @@
 #include "Character/GGFCharacterBase.h"
 
 #include "EnhancedInputComponent.h"
-#include "GGFAbilitySystemBase.h"
+#include "GEAbilitySystem.h"
 #include "Character/Components/GGFCharacterMovement.h"
 #include "Abilities/GGFStateMachine.h"
 #include "Equipment/Components/GGFEquipmentManager.h"
@@ -20,7 +20,7 @@ AGGFCharacterBase::AGGFCharacterBase(const FObjectInitializer& ObjectInitializer
     .SetDefaultSubobjectClass<UGGFCharacterMovement>(CharacterMovementComponentName))
 {
     /* 서브 오브젝트 생성 */
-    AbilitySystem = CreateDefaultSubobject<UGGFAbilitySystemBase>(AbilitySystemComponentName);
+    AbilitySystem = CreateDefaultSubobject<UGEAbilitySystem>(AbilitySystemComponentName);
     InputManager = CreateDefaultSubobject<UGGFInputManager>(InputManagerName);
     EquipmentManager = CreateDefaultSubobject<UGGFEquipmentManager>(EquipmentManagerName);
     StateMachine = CreateDefaultSubobject<UGGFStateMachine>(StateMachineName);

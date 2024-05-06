@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "AbilitySystemComponent.h"
-#include "GGFAbilitySystemBase.generated.h"
+#include "GEAbilitySystem.generated.h"
 
 /**
  * 모든 Ability System 클래스의 기저 클래스입니다.
@@ -13,7 +13,7 @@
  * 게임 시작 후 적용할 GameplayEffect 를 설정할 수 있습니다.
  */
 UCLASS(Blueprintable, meta = (BlueprintSpawnableComponent))
-class GASGAMEFRAMEWORK_API UGGFAbilitySystemBase : public UAbilitySystemComponent
+class GASEXTENSION_API UGEAbilitySystem : public UAbilitySystemComponent
 {
     GENERATED_BODY()
 
@@ -32,7 +32,7 @@ protected:
 
 public:
     /* UActorComponent */
-    UGGFAbilitySystemBase();
+    UGEAbilitySystem();
 
     virtual void InitializeComponent() override;
 
