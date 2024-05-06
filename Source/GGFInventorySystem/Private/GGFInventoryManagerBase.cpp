@@ -16,6 +16,11 @@ const FInventoryItemData& FGGFInventoryItem::GetInventoryData() const
     return InventoryItemConfig->GetInventoryData();
 }
 
+int32 FGGFInventoryItem::GetMaxStack() const
+{
+    return GetInventoryData().MaxStack;
+}
+
 int32 FGGFInventoryItem::GetFreeAmount() const
 {
     return GetInventoryData().MaxStack - Amount;
@@ -34,39 +39,42 @@ void UGGFInventoryManagerBase::GetLifetimeReplicatedProps(TArray<FLifetimeProper
     DOREPLIFETIME(ThisClass, Inventory);
 }
 
-bool UGGFInventoryManagerBase::AddItem(const FGGFInventoryItem& Item)
+bool UGGFInventoryManagerBase::AddItem(const FGGFInventoryItem& Item, int32& Remainder)
 {
+    // 변수 초기화
+    Remainder = Item.Amount;
+
     // 서버에서만 호출 가능
     if(!GetOwner()->HasAuthority()) return false;
 
     // 아이템 유효성 검사
     if(Item.IsNotValid()) return false;
 
-    // 지역 변수 선언
-    int32 NewAmount = Item.Amount;
-
     // 기존 아이템 슬롯에 먼저 추가
     const TArray<int32> SortedSlotIndices = SearchItem(Item.ItemDefinition);
     for (int32 SlotIndex : SortedSlotIndices)
     {
-        // 인벤토리 아이템 참조 변수 선언
-        FGGFInventoryItem& InventoryItem = GetInventoryItem(SlotIndex);
+        // 기존 인벤토리 아이템 가져오기
+        FGGFInventoryItem& ExistingInventoryItem = GetInventoryItem(SlotIndex);
 
-        // 기존 아이템 슬롯에 수량 채워넣기
-        int32 FreeAmount = InventoryItem.GetFreeAmount();
-        int32 AmountToAdd = FMath::Min(FreeAmount, NewAmount);
-        InventoryItem.Amount += AmountToAdd;
-        NewAmount -= AmountToAdd;
+        // 기존 인벤토리 아이템에 수량 채워넣기
+        int32 FreeAmount = ExistingInventoryItem.GetFreeAmount();
+        int32 AmountToAdd = FMath::Min(FreeAmount, Remainder);
+        ExistingInventoryItem.Amount += AmountToAdd;
+        Remainder -= AmountToAdd;
 
         // 아이템 수량이 소진된 경우 조기 종료
-        if(NewAmount <= 0) break;
+        if(Remainder <= 0) break;
     }
 
-    // 기존 아이템에 단 1개라도 추가된 경우 결과를 true로 설정
-    bool bResult = NewAmount != Item.Amount;
-
     // 아이템 수량이 남은 경우 빈 슬롯에 아이템 추가
-    if(NewAmount > 0 && AddItemToEmptySlot(FGGFInventoryItem(Item.ItemDefinition, Item.InventoryItemConfig, NewAmount))) bResult = true;
+    while(Remainder > 0 && AddItemToEmptySlot(FGGFInventoryItem(Item.ItemDefinition, Item.InventoryItemConfig, Remainder), Remainder))
+    {
+        // 모든 아이템 수량이 소진되거나 빈 슬롯이 존재하지 않을 때까지 반복
+    }
+
+    // 단 1개라도 인벤토리에 아이템이 추가된 경우 true 설정
+    bool bResult = Remainder != Item.Amount;
 
     // 인벤토리에 아이템이 추가된 경우
     if(bResult)
@@ -136,21 +144,32 @@ bool UGGFInventoryManagerBase::RemoveItem(const FGGFInventoryItem& Item)
     return true;
 }
 
-bool UGGFInventoryManagerBase::AddItemToEmptySlot(const FGGFInventoryItem& Item)
+bool UGGFInventoryManagerBase::AddItemToEmptySlot(const FGGFInventoryItem& Item, int32& Remainder)
 {
-    // 인벤토리 빈 슬롯이 존재하는지 확인
-    if(IsFull()) return false;
+    // 변수 초기화
+    Remainder = Item.Amount;
 
-    // 빈 슬롯 인덱스 유효성 검사
+    // 인벤토리 빈 슬롯 인덱스 가져오기
     int32 EmptySlotIndex = GetEmptySlotIndex();
     if(EmptySlotIndex < 0) return false;
 
     // 빈 슬롯에 아이템 추가
-    int32 ArrayIndex = Inventory.Slots.Emplace(EmptySlotIndex, Item);
-    InventoryMap.Emplace(EmptySlotIndex, &Inventory.Slots[ArrayIndex].Item);
+    FGGFInventoryItem ItemToAdd = Item;
+    ItemToAdd.Amount = FMath::Min(Item.Amount, Item.GetMaxStack());
+    Remainder = Item.Amount - ItemToAdd.Amount;
+    AddInventoryItemToSlot(ItemToAdd, EmptySlotIndex);
 
     // 아이템 추가 성공
     return true;
+}
+
+void UGGFInventoryManagerBase::AddInventoryItemToSlot(const FGGFInventoryItem& Item, int32 SlotIndex)
+{
+    // 인벤토리에 아이템 추가
+    int32 ArrayIndex = Inventory.Slots.Emplace(SlotIndex, Item);
+
+    // 캐시 등록
+    InventoryMap.Emplace(SlotIndex, &Inventory.Slots[ArrayIndex].Item);
 }
 
 void UGGFInventoryManagerBase::CachingInventory()

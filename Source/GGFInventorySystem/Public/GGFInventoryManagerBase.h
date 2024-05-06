@@ -35,6 +35,8 @@ public:
 
     const FInventoryItemData& GetInventoryData() const;
 
+    int32 GetMaxStack() const;
+
     // MaxStack - Amount
     int32 GetFreeAmount() const;
 };
@@ -146,7 +148,7 @@ public:
     /* API */
     // 인벤토리에 아이템을 추가합니다. (서버 전용)
     UFUNCTION(BlueprintCallable, Category = "ServerOnly")
-    virtual bool AddItem(const FGGFInventoryItem& Item);
+    virtual bool AddItem(const FGGFInventoryItem& Item, int32& Remainder);
 
     // 인벤토리에서 아이템을 제거합니다. (서버 전용)
     UFUNCTION(BlueprintCallable, Category = "ServerOnly")
@@ -157,11 +159,14 @@ public:
     FORCEINLINE bool IsFull() const { return InventoryMap.Num() >= MaxSlotNum; }
 
 protected:
+    // 인벤토리 및 캐시에 아이템 등록
+    virtual void AddInventoryItemToSlot(const FGGFInventoryItem& Item, int32 SlotIndex);
+
     // 인벤토리 캐싱
     virtual void CachingInventory();
 
     // 빈 슬롯에 아이템 추가
-    virtual bool AddItemToEmptySlot(const FGGFInventoryItem& Item);
+    virtual bool AddItemToEmptySlot(const FGGFInventoryItem& Item, int32& Remainder);
 
     /* 쿼리 */
     // 비어있는 인벤토리 슬롯 중 가장 작은 인덱스 구하기
