@@ -23,7 +23,7 @@ void UGGFShieldAttributes::AdjustAttributes(const FGameplayAttribute& Attribute,
     Super::AdjustAttributes(Attribute, OldValue, NewValue);
 
     // 방어막
-    ADJUST_ATTRIBUTE_FOR_MAX_ATTRIBUTE_CHANGGF(Shield)
+    ADJUST_ATTRIBUTE_FOR_MAX_ATTRIBUTE_CHANGE(Shield)
 }
 
 void UGGFShieldAttributes::OnRep_Shield(const FGameplayAttributeData& OldShield)

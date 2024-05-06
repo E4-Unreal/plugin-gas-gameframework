@@ -45,7 +45,7 @@ void UGGFHealthAttributes::AdjustAttributes(const FGameplayAttribute& Attribute,
     Super::AdjustAttributes(Attribute, OldValue, NewValue);
 
     // 체력
-    ADJUST_ATTRIBUTE_FOR_MAX_ATTRIBUTE_CHANGGF(Health)
+    ADJUST_ATTRIBUTE_FOR_MAX_ATTRIBUTE_CHANGE(Health)
 }
 
 void UGGFHealthAttributes::TakeDamageByGameplayEffect(const FGameplayEffectModCallbackData& Data, const float InDamage)

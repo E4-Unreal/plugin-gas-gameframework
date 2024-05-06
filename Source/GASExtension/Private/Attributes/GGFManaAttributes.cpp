@@ -24,7 +24,7 @@ void UGGFManaAttributes::AdjustAttributes(const FGameplayAttribute& Attribute, f
     Super::AdjustAttributes(Attribute, OldValue, NewValue);
 
     // 마나
-    ADJUST_ATTRIBUTE_FOR_MAX_ATTRIBUTE_CHANGGF(Mana)
+    ADJUST_ATTRIBUTE_FOR_MAX_ATTRIBUTE_CHANGE(Mana)
 }
 
 void UGGFManaAttributes::OnRep_Mana(const FGameplayAttributeData& OldMana)

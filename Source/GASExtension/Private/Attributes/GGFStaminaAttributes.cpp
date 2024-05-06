@@ -24,7 +24,7 @@ void UGGFStaminaAttributes::AdjustAttributes(const FGameplayAttribute& Attribute
     Super::AdjustAttributes(Attribute, OldValue, NewValue);
 
     // 스태미나
-    ADJUST_ATTRIBUTE_FOR_MAX_ATTRIBUTE_CHANGGF(Stamina)
+    ADJUST_ATTRIBUTE_FOR_MAX_ATTRIBUTE_CHANGE(Stamina)
 }
 
 void UGGFStaminaAttributes::OnRep_Stamina(const FGameplayAttributeData& OldStamina)

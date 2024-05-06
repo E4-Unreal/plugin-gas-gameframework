@@ -91,7 +91,7 @@
 /* AdjustAttributes에서 사용 */
 
 // MaxAttribute 값 변경 시 Attribute / MaxAttribute 비율을 유지하기 위해 Attribute 값 변경
-#define ADJUST_ATTRIBUTE_FOR_MAX_ATTRIBUTE_CHANGGF(AttributeName)    \
+#define ADJUST_ATTRIBUTE_FOR_MAX_ATTRIBUTE_CHANGE(AttributeName)    \
     if(Attribute == GetMax##AttributeName##Attribute())   \
     {   \
         AdjustAttributeForMaxChange(AttributeName, Max##AttributeName, OldValue, NewValue, Get##AttributeName##Attribute());   \
