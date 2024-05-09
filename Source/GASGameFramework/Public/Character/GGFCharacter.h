@@ -3,20 +3,52 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GGFCharacterBase.h"
+#include "GECharacter.h"
 #include "GGFCharacter.generated.h"
 
 struct FInputActionValue;
+class UGGFEquipmentManager;
+class UGGFStateMachine;
 
 /*
  * 기본 움직임 및 입력 액션 바인딩만 담당
  */
 UCLASS()
-class GASGAMEFRAMEWORK_API AGGFCharacter : public AGGFCharacterBase
+class GASGAMEFRAMEWORK_API AGGFCharacter : public AGECharacter
 {
     GENERATED_BODY()
 
 public:
+    /* EquipmentManager의 이름으로 다른 클래스로 교체할 때 사용합니다. */
+    static FName EquipmentManagerName;
+
+    /* EquipmentManager의 이름으로 다른 클래스로 교체할 때 사용합니다. */
+    static FName StateMachineName;
+
+private:
+    /* 컴포넌트 */
+    // 장비를 관리하기 위한 컴포넌트입니다.
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Component", meta = (AllowPrivateAccess = "true"))
+    TObjectPtr<UGGFEquipmentManager> EquipmentManager;
+
+    // 장비를 관리하기 위한 컴포넌트입니다.
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Component", meta = (AllowPrivateAccess = "true"))
+    TObjectPtr<UGGFStateMachine> StateMachine;
+
+public:
+    AGGFCharacter(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
+
+    /* Character */
+    // 앉은 상태에서 점프가 가능하도록 설정
+    virtual bool CanJumpInternal_Implementation() const override;
+
+    // 점프 상태에서 앉기가 불가능하도록 설정
+    virtual bool CanCrouch() const override;
+
+public:
+    // TODO GGFInputConfig_Character로 이전
+    /* API */
+
     // 캐릭터 이동
     virtual void Move(const FInputActionValue& Value);
 
