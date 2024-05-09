@@ -10,6 +10,7 @@ public class GASExtension : ModuleRules
             new string[]
             {
                 "Core",
+                "EnhancedInput",
 
                 // GAS
                 "GameplayTags",

@@ -4,16 +4,16 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
-#include "GGFInputManager.generated.h"
+#include "GEInputManager.generated.h"
 
 class UInputMappingContext;
-class UGGFInputConfig;
+class UGEInputConfig;
 
 /**
  * 향상된 입력 시스템에 입력 액션 바인딩 전용 컴포넌트
  */
 UCLASS(meta=(BlueprintSpawnableComponent))
-class GASGAMEFRAMEWORK_API UGGFInputManager : public UActorComponent
+class GASEXTENSION_API UGEInputManager : public UActorComponent
 {
     GENERATED_BODY()
 
@@ -22,7 +22,7 @@ protected:
     TArray<TObjectPtr<UInputMappingContext>> InputMappingContexts;
 
     UPROPERTY(EditDefaultsOnly, Category = "Config")
-    TArray<TObjectPtr<UGGFInputConfig>> InputConfigs;
+    TArray<TObjectPtr<UGEInputConfig>> InputConfigs;
 
 public:
     /* ActorComponent */

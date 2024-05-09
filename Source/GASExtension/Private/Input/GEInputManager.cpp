@@ -1,11 +1,11 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
-#include "Input/GGFInputManager.h"
+#include "Input/GEInputManager.h"
 
 #include "EnhancedInputSubsystems.h"
-#include "Input/GGFInputConfig.h"
+#include "Input/GEInputConfig.h"
 
-void UGGFInputManager::BeginPlay()
+void UGEInputManager::BeginPlay()
 {
     Super::BeginPlay();
 
@@ -13,12 +13,12 @@ void UGGFInputManager::BeginPlay()
     RegisterInputMappingContexts();
 }
 
-void UGGFInputManager::BindEnhancedInput(UEnhancedInputComponent* EnhancedInputComponent)
+void UGEInputManager::BindEnhancedInput(UEnhancedInputComponent* EnhancedInputComponent)
 {
     // EnhancedInputComponent null 검사
     if(EnhancedInputComponent == nullptr) return;
 
-    for (TObjectPtr<UGGFInputConfig> InputConfig : InputConfigs)
+    for (TObjectPtr<UGEInputConfig> InputConfig : InputConfigs)
     {
         // 유효성 검사
         if(!InputConfig) continue;
@@ -28,7 +28,7 @@ void UGGFInputManager::BindEnhancedInput(UEnhancedInputComponent* EnhancedInputC
     }
 }
 
-void UGGFInputManager::RegisterInputMappingContexts()
+void UGEInputManager::RegisterInputMappingContexts()
 {
     // Pawn 유효성 검사
     const APawn* Pawn = Cast<APawn>(GetOwner());

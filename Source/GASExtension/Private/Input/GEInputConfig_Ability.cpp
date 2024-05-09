@@ -1,13 +1,13 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Input/GGFInputConfig_Ability.h"
+#include "Input/GEInputConfig_Ability.h"
 
 #include "AbilitySystemGlobals.h"
 #include "EnhancedInputComponent.h"
 #include "GEAbilitySystem.h"
 
-void UGGFInputConfig_Ability::OnBindEnhancedInput(UEnhancedInputComponent* EnhancedInputComponent)
+void UGEInputConfig_Ability::OnBindEnhancedInput(UEnhancedInputComponent* EnhancedInputComponent)
 {
     // AbilitySystem 유효성 검사
     UGEAbilitySystem* AbilitySystem = Cast<UGEAbilitySystem>(UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(EnhancedInputComponent->GetOwner()));

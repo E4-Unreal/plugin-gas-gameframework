@@ -8,7 +8,7 @@
 #include "Character/Components/GGFCharacterMovement.h"
 #include "Abilities/GGFStateMachine.h"
 #include "Equipment/Components/GGFEquipmentManager.h"
-#include "Input/GGFInputManager.h"
+#include "Input/GEInputManager.h"
 
 FName AGGFCharacterBase::AbilitySystemComponentName(TEXT("AbilitySystem"));
 FName AGGFCharacterBase::InputManagerName(TEXT("InputManager"));
@@ -21,7 +21,7 @@ AGGFCharacterBase::AGGFCharacterBase(const FObjectInitializer& ObjectInitializer
 {
     /* 서브 오브젝트 생성 */
     AbilitySystem = CreateDefaultSubobject<UGEAbilitySystem>(AbilitySystemComponentName);
-    InputManager = CreateDefaultSubobject<UGGFInputManager>(InputManagerName);
+    InputManager = CreateDefaultSubobject<UGEInputManager>(InputManagerName);
     EquipmentManager = CreateDefaultSubobject<UGGFEquipmentManager>(EquipmentManagerName);
     StateMachine = CreateDefaultSubobject<UGGFStateMachine>(StateMachineName);
 }
