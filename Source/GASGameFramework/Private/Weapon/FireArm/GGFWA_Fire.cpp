@@ -6,6 +6,7 @@
 #include "Abilities/Tasks/AbilityTask_WaitInputRelease.h"
 #include "Equipment/Components/GGFEquipmentManager.h"
 #include "Weapon/FireArm/GGFFireArm.h"
+#include "GEGameplayTags.h"
 
 UGGFWA_Fire::UGGFWA_Fire()
 {
@@ -13,7 +14,7 @@ UGGFWA_Fire::UGGFWA_Fire()
     NetExecutionPolicy = EGameplayAbilityNetExecutionPolicy::LocalOnly;
 
     /* 태그 설정 */
-    using namespace GGFGameplayTags;
+    using namespace GEGameplayTags;
 
     AbilityTags.AddLeafTag(Action::Attack);
     ActivationOwnedTags.AddLeafTag(Action::Attack);

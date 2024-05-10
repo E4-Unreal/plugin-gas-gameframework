@@ -4,7 +4,7 @@
 #include "Abilities/GGFGA_ApplyEffectsToSelf.h"
 
 #include "AbilitySystemComponent.h"
-#include "FunctionLibraries/GGFFunctionLibrary.h"
+#include "GEBlueprintFunctionLibrary.h"
 
 void UGGFGA_ApplyEffectsToSelf::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
                                                const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo,
@@ -13,7 +13,7 @@ void UGGFGA_ApplyEffectsToSelf::ActivateAbility(const FGameplayAbilitySpecHandle
     Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 
     // GameplayEffects 적용
-    UGGFFunctionLibrary::ApplyGameplayEffectsToSystem(EffectsToApply, ActorInfo->AbilitySystemComponent.Get());
+    UGEBlueprintFunctionLibrary::ApplyGameplayEffectsToSystem(EffectsToApply, ActorInfo->AbilitySystemComponent.Get());
 
     // Ability 종료
     EndAbility(Handle, ActorInfo, ActivationInfo, false, false);

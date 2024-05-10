@@ -4,7 +4,7 @@
 #include "Character/States/GGFCSA_Dead.h"
 
 #include "AbilitySystemComponent.h"
-#include "GGFGameplayTags.h"
+#include "GEGameplayTags.h"
 #include "Camera/CameraComponent.h"
 #include "Character/GGFDefaultCharacter.h"
 #include "Components/CapsuleComponent.h"
@@ -14,7 +14,7 @@
 UGGFCSA_Dead::UGGFCSA_Dead()
 {
     /* 태그 설정 */
-    using namespace GGFGameplayTags;
+    using namespace GEGameplayTags;
 
     // 죽은 상태는 절대적이기 때문에 어떠한 태그도 Blocking 할 수 없습니다.
     // 무적 상태를 도입하고 싶은 경우에는 체력을 1로 유지하는 등의 방법을 고려해주세요.

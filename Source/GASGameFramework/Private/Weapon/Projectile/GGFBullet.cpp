@@ -3,7 +3,7 @@
 
 #include "Weapon/Projectile/GGFBullet.h"
 
-#include "FunctionLibraries/GGFFunctionLibrary.h"
+#include "GEBlueprintFunctionLibrary.h"
 
 AGGFBullet::AGGFBullet()
 {
@@ -13,7 +13,7 @@ AGGFBullet::AGGFBullet()
 void AGGFBullet::OnHit_Implementation(const FHitResult& HitResult)
 {
     // 데미지 적용
-    UGGFFunctionLibrary::ApplyGameplayEffectsToTarget(EffectsToApply, GetInstigator(), HitResult.GetActor());
+    UGEBlueprintFunctionLibrary::ApplyGameplayEffectsToTarget(EffectsToApply, GetInstigator(), HitResult.GetActor());
 }
 
 void AGGFBullet::OnMulticastHit_Implementation(const FHitResult& HitResult)

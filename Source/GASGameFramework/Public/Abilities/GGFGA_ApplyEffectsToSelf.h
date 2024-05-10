@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GGFGameplayAbility.h"
+#include "Abilities/GEGameplayAbility.h"
 #include "GGFGA_ApplyEffectsToSelf.generated.h"
 
 /**
@@ -11,7 +11,7 @@
  * 힐이나 버프같은 간단한 스킬 구현에 사용할 수 있습니다.
  */
 UCLASS()
-class GASGAMEFRAMEWORK_API UGGFGA_ApplyEffectsToSelf : public UGGFGameplayAbility
+class GASGAMEFRAMEWORK_API UGGFGA_ApplyEffectsToSelf : public UGEGameplayAbility
 {
     GENERATED_BODY()
 

@@ -3,7 +3,7 @@
 
 #include "Effects/GE_GGFDamage.h"
 
-#include "Attributes/GGFHealthAttributes.h"
+#include "Attributes/GEHealthAttributes.h"
 
 UGE_GGFDamage::UGE_GGFDamage()
 {
@@ -13,7 +13,7 @@ UGE_GGFDamage::UGE_GGFDamage()
     /* Modifiers 설정 */
     const FGameplayModifierInfo DamageModifier
     {
-        UGGFHealthAttributes::GetDamageAttribute(),
+        UGEHealthAttributes::GetDamageAttribute(),
         EGameplayModOp::Additive,
         FGameplayEffectModifierMagnitude(FScalableFloat(Damage))
     };

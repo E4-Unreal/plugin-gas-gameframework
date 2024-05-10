@@ -3,9 +3,9 @@
 
 #include "Components/GameplayEffectApplier.h"
 
-#include "FunctionLibraries/GGFFunctionLibrary.h"
+#include "GEBlueprintFunctionLibrary.h"
 
 void UGameplayEffectApplier::ApplyEffectsToTarget(AActor* Target)
 {
-    UGGFFunctionLibrary::ApplyGameplayEffectsToTarget(EffectsToApply, GetOwner()->GetInstigator(), Target);
+    UGEBlueprintFunctionLibrary::ApplyGameplayEffectsToTarget(EffectsToApply, GetOwner()->GetInstigator(), Target);
 }

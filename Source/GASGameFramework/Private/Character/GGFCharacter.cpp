@@ -3,6 +3,33 @@
 #include "Character/GGFCharacter.h"
 
 #include "EnhancedInputSubsystems.h"
+#include "Character/Components/GGFCharacterMovement.h"
+#include "Equipment/Components/GGFEquipmentManager.h"
+#include "Abilities/GGFStateMachine.h"
+
+FName AGGFCharacter::EquipmentManagerName(TEXT("EquipmentManager"));
+FName AGGFCharacter::StateMachineName(TEXT("StateMachine"));
+
+AGGFCharacter::AGGFCharacter(const FObjectInitializer& ObjectInitializer)
+: Super(ObjectInitializer
+    .SetDefaultSubobjectClass<UGGFCharacterMovement>(CharacterMovementComponentName))
+{
+    /* 서브 오브젝트 생성 */
+    EquipmentManager = CreateDefaultSubobject<UGGFEquipmentManager>(EquipmentManagerName);
+    StateMachine = CreateDefaultSubobject<UGGFStateMachine>(StateMachineName);
+}
+
+bool AGGFCharacter::CanJumpInternal_Implementation() const
+{
+    // 앉은 상태에서도 점프가 가능합니다.
+    return JumpIsAllowedInternal();
+}
+
+bool AGGFCharacter::CanCrouch() const
+{
+    // 점프 상태에서는 앉기가 불가능합니다.
+    return !GetCharacterMovement()->IsFalling() && Super::CanCrouch();
+}
 
 void AGGFCharacter::Move(const FInputActionValue& Value)
 {

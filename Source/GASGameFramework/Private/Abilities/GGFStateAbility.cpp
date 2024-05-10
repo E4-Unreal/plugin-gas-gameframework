@@ -3,8 +3,7 @@
 
 #include "Abilities/GGFStateAbility.h"
 
-#include "GGFGameplayTags.h"
-#include "GameFramework/Character.h"
+#include "GEGameplayTags.h"
 
 UGGFStateAbility::UGGFStateAbility()
 {
@@ -13,7 +12,7 @@ UGGFStateAbility::UGGFStateAbility()
 
     /* 태그 설정 */
     // ActivationBlockedTags 설정
-    ActivationBlockedTags.AddTagFast(GGFGameplayTags::State::Dead);
+    ActivationBlockedTags.AddTagFast(GEGameplayTags::State::Dead);
 }
 
 void UGGFStateAbility::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
