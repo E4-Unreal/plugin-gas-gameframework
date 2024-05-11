@@ -1,7 +1,7 @@
 ﻿#include "GGFItemSystem.h"
 
 #include "GGFItemSystemSetting.h"
-#include "ISettingsModule.h"
+#include "Developer/Settings/Public/ISettingsModule.h"
 
 IMPLEMENT_MODULE(FGGFItemSystemModule, GGFItemSystem)
 

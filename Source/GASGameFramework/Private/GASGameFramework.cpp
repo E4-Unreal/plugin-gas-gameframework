@@ -3,7 +3,10 @@
 #include "GASGameFramework.h"
 
 #include "AbilitySystemGlobals.h"
+
+#if WITH_EDITOR
 #include "PropertyEditorModule.h"
+#endif
 
 IMPLEMENT_MODULE(FGASGameFrameworkModule, GASGameFramework)
 
