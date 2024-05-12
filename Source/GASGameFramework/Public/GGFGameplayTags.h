@@ -63,7 +63,10 @@ namespace GGFGameplayTags
         // 장비 슬롯
         namespace Slot
         {
-            GASGAMEFRAMEWORK_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Slot)
+            GASGAMEFRAMEWORK_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Slot) // 루트
+            GASGAMEFRAMEWORK_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Primary) // 주 장비 슬롯
+            GASGAMEFRAMEWORK_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Secondary) // 보조 장비 슬롯
+            GASGAMEFRAMEWORK_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Special) // 특수 장비 슬롯
         }
     }
 }

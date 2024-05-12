@@ -61,7 +61,10 @@ namespace GGFGameplayTags
         // 장비 슬롯
         namespace Slot
         {
-            UE_DEFINE_GAMEPLAY_TAG(Slot, "Equipment.Slot")
+            UE_DEFINE_GAMEPLAY_TAG(Slot, "Equipment.Slot") // 루트
+            UE_DEFINE_GAMEPLAY_TAG(Primary, "Equipment.Slot.Primary") // 주 장비 슬롯
+            UE_DEFINE_GAMEPLAY_TAG(Secondary, "Equipment.Slot.Secondary") // 보조 장비 슬롯
+            UE_DEFINE_GAMEPLAY_TAG(Special, "Equipment.Slot.Special") // 특수 장비 슬롯
         }
     }
 }
