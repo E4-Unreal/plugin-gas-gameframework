@@ -151,6 +151,9 @@ void UGEAbilitySystem::InitializeAbilitySystem()
     // 기본 AttributeSet 생성 및 등록
     UGEBlueprintFunctionLibrary::AddAttributeSetsToSystem(DefaultAttributes, this);
 
+    // 기본 Stats 생성 및 등록
+    UGEBlueprintFunctionLibrary::AddAttributeSetsToSystem(DefaultStats, this);
+
     // 기본 GameplayEffect 적용
     UGEBlueprintFunctionLibrary::ApplyGameplayEffectsToSystem(DefaultEffects, this);
 
