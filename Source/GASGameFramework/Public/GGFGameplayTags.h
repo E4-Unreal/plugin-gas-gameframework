@@ -17,6 +17,16 @@ namespace GGFGameplayTags
         GASGAMEFRAMEWORK_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(ADS) // 조준
     }
 
+    /* 입력 */
+    namespace Input
+    {
+        GASGAMEFRAMEWORK_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Input) // 루트
+        GASGAMEFRAMEWORK_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Fire) // 총기 발사
+        GASGAMEFRAMEWORK_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(ADS) // 총기 조준
+        GASGAMEFRAMEWORK_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Reload) // 총기 재장전
+        GASGAMEFRAMEWORK_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Interact) // 상호작용
+    }
+
     namespace Equipment
     {
         /* 루트 태그 */
