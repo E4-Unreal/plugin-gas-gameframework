@@ -11,9 +11,14 @@ public class GGFTPSSample : ModuleRules
             {
                 "Core",
 
+                // GAS
+                "GameplayTags",
+                "GameplayTasks",
+                "GameplayAbilities",
+
                 // GAS GameFramework 플러그인
                 "GASExtension",
-                "GASGameFramework"
+                "GASGameFramework",
             }
         );
 

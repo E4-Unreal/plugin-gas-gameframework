@@ -2,6 +2,7 @@
 
 #include "GGFTPSCharacter.h"
 
+#include "GGFTPSAbilitySystem.h"
 #include "Camera/CameraComponent.h"
 #include "Character/Components/GGFSpringArmComponent.h"
 #include "Components/CapsuleComponent.h"
@@ -9,7 +10,8 @@
 FName AGGFTPSCharacter::CameraBoomName(TEXT("CameraBoom"));
 FName AGGFTPSCharacter::FollowCameraName(TEXT("FollowCamera"));
 
-AGGFTPSCharacter::AGGFTPSCharacter()
+AGGFTPSCharacter::AGGFTPSCharacter(const FObjectInitializer& ObjectInitializer)
+    : Super(ObjectInitializer.SetDefaultSubobjectClass(AbilitySystemName, UGGFTPSAbilitySystem::StaticClass()))
 {
     /* Character */
     bUseControllerRotationPitch = false;

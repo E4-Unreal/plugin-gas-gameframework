@@ -33,7 +33,7 @@ public:
     TObjectPtr<UCameraComponent> FollowCamera;
 
 public:
-    AGGFTPSCharacter();
+    AGGFTPSCharacter(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
 public:
     /* Getter */
