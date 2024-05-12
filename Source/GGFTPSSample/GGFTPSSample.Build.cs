@@ -10,6 +10,10 @@ public class GGFTPSSample : ModuleRules
             new string[]
             {
                 "Core",
+
+                // GAS GameFramework 플러그인
+                "GASExtension",
+                "GASGameFramework"
             }
         );
 

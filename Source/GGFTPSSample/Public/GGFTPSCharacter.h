@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GGFCharacter.h"
+#include "Character/GGFCharacter.h"
 #include "GGFTPSCharacter.generated.h"
 
 class USpringArmComponent;
@@ -13,7 +13,7 @@ class UCameraComponent;
  * TPS 전용 캐릭터 클래스
  */
 UCLASS()
-class GASGAMEFRAMEWORK_API AGGFTPSCharacter : public AGGFCharacter
+class GGFTPSSAMPLE_API AGGFTPSCharacter : public AGGFCharacter
 {
     GENERATED_BODY()
 
