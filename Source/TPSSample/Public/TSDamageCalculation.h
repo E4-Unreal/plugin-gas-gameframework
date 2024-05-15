@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "GameplayEffectExecutionCalculation.h"
-#include "GGFTPSDamageCalculation.generated.h"
+#include "TSDamageCalculation.generated.h"
 
 /**
  *
  */
 UCLASS()
-class GGFTPSSAMPLE_API UGGFTPSDamageCalculation : public UGameplayEffectExecutionCalculation
+class TPSSAMPLE_API UTSDamageCalculation : public UGameplayEffectExecutionCalculation
 {
     GENERATED_BODY()
 

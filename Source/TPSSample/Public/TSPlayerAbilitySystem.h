@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "AbilitySystem/GEPlayerAbilitySystem.h"
-#include "GGFTPSAbilitySystem.generated.h"
+#include "TSPlayerAbilitySystem.generated.h"
 
 UCLASS(meta=(BlueprintSpawnableComponent))
-class GGFTPSSAMPLE_API UGGFTPSAbilitySystem : public UGEPlayerAbilitySystem
+class TPSSAMPLE_API UTSPlayerAbilitySystem : public UGEPlayerAbilitySystem
 {
     GENERATED_BODY()
 
 public:
-    UGGFTPSAbilitySystem();
+    UTSPlayerAbilitySystem();
 };

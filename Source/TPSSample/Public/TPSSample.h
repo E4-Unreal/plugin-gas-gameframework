@@ -3,7 +3,7 @@
 #include "CoreMinimal.h"
 #include "Modules/ModuleManager.h"
 
-class FGGFTPSSampleModule : public IModuleInterface
+class FTPSSampleModule : public IModuleInterface
 {
 public:
     virtual void StartupModule() override;

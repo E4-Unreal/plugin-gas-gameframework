@@ -1,14 +1,14 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "GE_GGFTPSCharacterStats.h"
+#include "GE_TSCharacterStats.h"
 
 #include "Stats/GEAttackSpeedStats.h"
 #include "Stats/GEAttackStats.h"
 #include "Stats/GEDefenseStats.h"
 #include "Stats/GEMoveSpeedStats.h"
 
-UGE_GGFTPSCharacterStats::UGE_GGFTPSCharacterStats()
+UGE_TSCharacterStats::UGE_TSCharacterStats()
 {
     /* Modifiers 설정 */
     // 공격력

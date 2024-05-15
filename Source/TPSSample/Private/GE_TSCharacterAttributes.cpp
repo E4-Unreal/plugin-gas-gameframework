@@ -1,12 +1,12 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "GE_GGFTPSCharacterAttributes.h"
+#include "GE_TSCharacterAttributes.h"
 
 #include "Attributes/GEHealthAttributes.h"
 #include "Attributes/GEShieldAttributes.h"
 
-UGE_GGFTPSCharacterAttributes::UGE_GGFTPSCharacterAttributes()
+UGE_TSCharacterAttributes::UGE_TSCharacterAttributes()
 {
     /* Modifiers 설정 */
     // 체력

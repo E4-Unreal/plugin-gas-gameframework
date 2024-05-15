@@ -1,17 +1,17 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
-#include "GGFTPSCharacter.h"
+#include "TSPlayerCharacter.h"
 
-#include "GGFTPSAbilitySystem.h"
+#include "TSPlayerAbilitySystem.h"
 #include "Camera/CameraComponent.h"
 #include "Character/Components/GGFSpringArmComponent.h"
 #include "Components/CapsuleComponent.h"
 
-FName AGGFTPSCharacter::CameraBoomName(TEXT("CameraBoom"));
-FName AGGFTPSCharacter::FollowCameraName(TEXT("FollowCamera"));
+FName ATSPlayerCharacter::CameraBoomName(TEXT("CameraBoom"));
+FName ATSPlayerCharacter::FollowCameraName(TEXT("FollowCamera"));
 
-AGGFTPSCharacter::AGGFTPSCharacter(const FObjectInitializer& ObjectInitializer)
-    : Super(ObjectInitializer.SetDefaultSubobjectClass(AbilitySystemName, UGGFTPSAbilitySystem::StaticClass()))
+ATSPlayerCharacter::ATSPlayerCharacter(const FObjectInitializer& ObjectInitializer)
+    : Super(ObjectInitializer.SetDefaultSubobjectClass(AbilitySystemName, UTSPlayerAbilitySystem::StaticClass()))
 {
     /* Character */
     bUseControllerRotationPitch = false;

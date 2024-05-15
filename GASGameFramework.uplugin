@@ -35,7 +35,7 @@
 			"LoadingPhase": "Default"
 		},
 		{
-			"Name": "GGFTPSSample",
+			"Name": "TPSSample",
 			"Type": "Runtime",
 			"LoadingPhase": "Default"
 		}

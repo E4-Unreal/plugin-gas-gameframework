@@ -1,8 +1,8 @@
 ﻿using UnrealBuildTool;
 
-public class GGFTPSSample : ModuleRules
+public class TPSSample : ModuleRules
 {
-    public GGFTPSSample(ReadOnlyTargetRules Target) : base(Target)
+    public TPSSample(ReadOnlyTargetRules Target) : base(Target)
     {
         PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
 

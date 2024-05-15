@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Character/GGFCharacter.h"
-#include "GGFTPSCharacter.generated.h"
+#include "TSPlayerCharacter.generated.h"
 
 class USpringArmComponent;
 class UCameraComponent;
@@ -13,7 +13,7 @@ class UCameraComponent;
  * TPS 전용 캐릭터 클래스
  */
 UCLASS()
-class GGFTPSSAMPLE_API AGGFTPSCharacter : public AGGFCharacter
+class TPSSAMPLE_API ATSPlayerCharacter : public AGGFCharacter
 {
     GENERATED_BODY()
 
@@ -33,7 +33,7 @@ public:
     TObjectPtr<UCameraComponent> FollowCamera;
 
 public:
-    AGGFTPSCharacter(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
+    ATSPlayerCharacter(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
 public:
     /* Getter */
