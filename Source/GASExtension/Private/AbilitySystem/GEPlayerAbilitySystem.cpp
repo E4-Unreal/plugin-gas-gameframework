@@ -1,34 +1,12 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
-#include "GEAbilitySystem.h"
+#include "AbilitySystem/GEPlayerAbilitySystem.h"
 
 #include "GEGameplayTags.h"
 #include "Abilities/GEGameplayAbility.h"
-#include "GEBlueprintFunctionLibrary.h"
 #include "Attributes/GEHealthAttributes.h"
 
-UGEAbilitySystem::UGEAbilitySystem()
-{
-    // 설정
-    bWantsInitializeComponent = true;
-}
-
-void UGEAbilitySystem::InitializeComponent()
-{
-    Super::InitializeComponent();
-
-    // 서버에서만 초기화 진행
-    if(IsOwnerActorAuthoritative())
-    {
-        // AttributeSet 설정 및 초기화
-        InitializeAbilitySystem();
-    }
-
-    // OnDead 이벤트를 체력 어트리뷰트 델리게이트에 바인딩
-    BindHealthAttributeDelegate();
-}
-
-void UGEAbilitySystem::PressInputTag(FGameplayTag InputTag)
+void UGEPlayerAbilitySystem::PressInputTag(FGameplayTag InputTag)
 {
     // 디버깅을 위한 입력 태그를 추가합니다.
     if(!HasMatchingGameplayTag(InputTag)) AddLooseGameplayTag(InputTag);
@@ -36,7 +14,7 @@ void UGEAbilitySystem::PressInputTag(FGameplayTag InputTag)
     PressInputID(GetTypeHash(InputTag));
 }
 
-void UGEAbilitySystem::ReleaseInputTag(FGameplayTag InputTag)
+void UGEPlayerAbilitySystem::ReleaseInputTag(FGameplayTag InputTag)
 {
     // 디버깅을 위한 입력 태그를 제거합니다.
     if(HasMatchingGameplayTag(InputTag)) RemoveLooseGameplayTag(InputTag);
@@ -44,7 +22,7 @@ void UGEAbilitySystem::ReleaseInputTag(FGameplayTag InputTag)
     ReleaseInputID(GetTypeHash(InputTag));
 }
 
-void UGEAbilitySystem::AbilityLocalInputPressed(int32 InputID)
+void UGEPlayerAbilitySystem::AbilityLocalInputPressed(int32 InputID)
 {
     // Consume the input if this InputID is overloaded with GenericConfirm/Cancel and the GenericConfim/Cancel callback is bound
     if (IsGenericConfirmInputBound(InputID))
@@ -100,7 +78,7 @@ void UGEAbilitySystem::AbilityLocalInputPressed(int32 InputID)
     }
 }
 
-void UGEAbilitySystem::AbilityLocalInputReleased(int32 InputID)
+void UGEPlayerAbilitySystem::AbilityLocalInputReleased(int32 InputID)
 {
     ABILITYLIST_SCOPE_LOCK();
 
@@ -129,7 +107,7 @@ void UGEAbilitySystem::AbilityLocalInputReleased(int32 InputID)
     }
 }
 
-void UGEAbilitySystem::OnGiveAbility(FGameplayAbilitySpec& AbilitySpec)
+void UGEPlayerAbilitySystem::OnGiveAbility(FGameplayAbilitySpec& AbilitySpec)
 {
     Super::OnGiveAbility(AbilitySpec);
 
@@ -139,34 +117,4 @@ void UGEAbilitySystem::OnGiveAbility(FGameplayAbilitySpec& AbilitySpec)
         const FGameplayTag& InputTag = Ability->GetInputTag();
         AbilitySpec.InputID = GetTypeHash(InputTag);
     }
-}
-
-void UGEAbilitySystem::OnDead_Implementation()
-{
-    AddLooseGameplayTag(GEGameplayTags::State::Dead);
-}
-
-void UGEAbilitySystem::InitializeAbilitySystem()
-{
-    // 기본 AttributeSet 생성 및 등록
-    UGEBlueprintFunctionLibrary::AddAttributeSetsToSystem(DefaultAttributes, this);
-
-    // 기본 Stats 생성 및 등록
-    UGEBlueprintFunctionLibrary::AddAttributeSetsToSystem(DefaultStats, this);
-
-    // 기본 GameplayEffect 적용
-    UGEBlueprintFunctionLibrary::ApplyGameplayEffectsToSystem(DefaultEffects, this);
-
-    // 기본 GameplayAbility 부여
-    UGEBlueprintFunctionLibrary::GiveAbilitiesToSystem(DefaultAbilities, this);
-}
-
-void UGEAbilitySystem::BindHealthAttributeDelegate()
-{
-    FOnGameplayAttributeValueChange& Delegate = GetGameplayAttributeValueChangeDelegate(UGEHealthAttributes::GetHealthAttribute());
-    Delegate.AddLambda([this](const FOnAttributeChangeData& OnAttributeChangeData)
-    {
-        if(FMath::IsNearlyZero(OnAttributeChangeData.NewValue))
-            OnDead();
-    });
 }

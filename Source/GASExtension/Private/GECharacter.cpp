@@ -3,7 +3,7 @@
 #include "GECharacter.h"
 
 #include "EnhancedInputComponent.h"
-#include "GEAbilitySystem.h"
+#include "AbilitySystem/GEPlayerAbilitySystem.h"
 #include "Input/GEInputManager.h"
 
 FName AGECharacter::AbilitySystemName(TEXT("AbilitySystem"));
@@ -12,7 +12,7 @@ FName AGECharacter::InputManagerName(TEXT("InputManager"));
 AGECharacter::AGECharacter(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
 {
     /* 서브 오브젝트 생성 */
-    AbilitySystem = CreateDefaultSubobject<UGEAbilitySystem>(AbilitySystemName);
+    AbilitySystem = CreateDefaultSubobject<UGEPlayerAbilitySystem>(AbilitySystemName);
     InputManager = CreateDefaultSubobject<UGEInputManager>(InputManagerName);
 }
 
