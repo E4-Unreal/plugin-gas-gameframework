@@ -22,6 +22,10 @@ protected:
     UPROPERTY(EditAnywhere, Category = "Config")
     TArray<TSubclassOf<UAttributeSet>> DefaultAttributes;
 
+    // 기본으로 사용할 Stats 목록입니다.
+    UPROPERTY(EditAnywhere, Category = "Config")
+    TArray<TSubclassOf<UAttributeSet>> DefaultStats;
+
     // 기본으로 적용시킬 GameplayEffect 목록입니다.
     UPROPERTY(EditAnywhere, Category = "Config")
     TArray<TSubclassOf<UGameplayEffect>> DefaultEffects;
