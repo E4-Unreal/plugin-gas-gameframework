@@ -8,7 +8,7 @@
 
 // This class does not need to be modified.
 UINTERFACE()
-class GASGAMEFRAMEWORK_API UGGFCameraInterface : public UInterface
+class GGFEQUIPMENTSYSTEM_API UGGFCameraInterface : public UInterface
 {
     GENERATED_BODY()
 };
@@ -17,7 +17,7 @@ class GASGAMEFRAMEWORK_API UGGFCameraInterface : public UInterface
  * ADS 상태에서 FOV 및 카메라 위치 조정을 위한 데이터 인터페이스입니다.
  * 캐릭터와 무기에 각각 구현하여 캐릭터 값을 기본 값으로 사용하고 ADS 상태에서는 무기의 값을 사용합니다.
  */
-class GASGAMEFRAMEWORK_API IGGFCameraInterface
+class GGFEQUIPMENTSYSTEM_API IGGFCameraInterface
 {
     GENERATED_BODY()
 

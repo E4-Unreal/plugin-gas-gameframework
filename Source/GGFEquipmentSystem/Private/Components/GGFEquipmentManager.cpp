@@ -1,11 +1,11 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Equipment/Components/GGFEquipmentManager.h"
+#include "Components/GGFEquipmentManager.h"
 
 #include "GameplayTagContainer.h"
 #include "Net/UnrealNetwork.h"
-#include "Weapon/GGFWeapon.h"
+#include "GGFWeapon.h"
 
 const FEquipmentSlot FEquipmentSlot::EmptySlot;
 

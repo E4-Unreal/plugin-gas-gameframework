@@ -3,7 +3,7 @@
 #include "Input/GGFInputConfig_Equipment.h"
 
 #include "EnhancedInputComponent.h"
-#include "Equipment/Components/GGFEquipmentManager.h"
+#include "Components/GGFEquipmentManager.h"
 
 void UGGFInputConfig_Equipment::OnBindEnhancedInput(UEnhancedInputComponent* EnhancedInputComponent)
 {

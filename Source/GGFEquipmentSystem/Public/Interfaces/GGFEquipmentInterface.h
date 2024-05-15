@@ -4,13 +4,12 @@
 
 #include "CoreMinimal.h"
 #include "GameplayTagContainer.h"
-#include "GGFGameplayTags.h"
 #include "UObject/Interface.h"
 #include "GGFEquipmentInterface.generated.h"
 
 // This class does not need to be modified.
 UINTERFACE(Blueprintable, BlueprintType)
-class GASGAMEFRAMEWORK_API UGGFEquipmentInterface : public UInterface
+class GGFEQUIPMENTSYSTEM_API UGGFEquipmentInterface : public UInterface
 {
     GENERATED_BODY()
 };
@@ -18,7 +17,7 @@ class GASGAMEFRAMEWORK_API UGGFEquipmentInterface : public UInterface
 /**
  * EquipmentManager에서 장착 가능한 장비 슬롯을 검사하기 위한 인터페이스입니다.
  */
-class GASGAMEFRAMEWORK_API IGGFEquipmentInterface
+class GGFEQUIPMENTSYSTEM_API IGGFEquipmentInterface
 {
     GENERATED_BODY()
 

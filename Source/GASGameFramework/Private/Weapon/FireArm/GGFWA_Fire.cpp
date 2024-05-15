@@ -4,7 +4,7 @@
 #include "Weapon/FireArm/GGFWA_Fire.h"
 
 #include "Abilities/Tasks/AbilityTask_WaitInputRelease.h"
-#include "Equipment/Components/GGFEquipmentManager.h"
+#include "Components/GGFEquipmentManager.h"
 #include "Weapon/FireArm/GGFFireArm.h"
 #include "GEGameplayTags.h"
 

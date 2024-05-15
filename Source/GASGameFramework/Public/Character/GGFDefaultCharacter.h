@@ -4,9 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "GGFCharacter.h"
-#include "Interface\GGFCharacterInterface.h"
 #include "Weapon/Interface/GGFAimingInterface.h"
-#include "Weapon/Interface/GGFCameraInterface.h"
+#include "Interfaces/GGFCameraInterface.h"
 #include "GGFDefaultCharacter.generated.h"
 
 class USpringArmComponent;
@@ -19,7 +18,6 @@ class UCameraComponent;
 UCLASS()
 class GASGAMEFRAMEWORK_API AGGFDefaultCharacter : public AGGFCharacter,
     public IGGFAimingInterface,
-    public IGGFCharacterInterface,
     public IGGFCameraInterface
 {
     GENERATED_BODY()
@@ -64,10 +62,6 @@ public:
 public:
     /* GGFAimingInterface */
     virtual void GetTarget_Implementation(FVector& Target) override;
-
-    /* GGFCharacterInterface */
-    FORCEINLINE virtual USkeletalMeshComponent* GetFirstPersonMesh_Implementation() const override { return FirstPersonArms; }
-    FORCEINLINE virtual USkeletalMeshComponent* GetThirdPersonMesh_Implementation() const override { return GetMesh(); }
 
     /* GGFCameraInterface */
     FORCEINLINE virtual float GetFieldOfView_Implementation() const override { return FOV; }

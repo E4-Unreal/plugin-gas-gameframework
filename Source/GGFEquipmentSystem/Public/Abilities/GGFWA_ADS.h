@@ -12,7 +12,7 @@ class UAbilityTask_SetCameraFOV;
  *
  */
 UCLASS()
-class GASGAMEFRAMEWORK_API UGGFWA_ADS : public UGGFWeaponAbility
+class GGFEQUIPMENTSYSTEM_API UGGFWA_ADS : public UGGFWeaponAbility
 {
     GENERATED_BODY()
 

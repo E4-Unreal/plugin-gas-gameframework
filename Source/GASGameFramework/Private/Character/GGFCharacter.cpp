@@ -4,7 +4,7 @@
 
 #include "EnhancedInputSubsystems.h"
 #include "Character/Components/GGFCharacterMovement.h"
-#include "Equipment/Components/GGFEquipmentManager.h"
+#include "Components/GGFEquipmentManager.h"
 #include "Abilities/GGFStateMachine.h"
 
 FName AGGFCharacter::EquipmentManagerName(TEXT("EquipmentManager"));

@@ -1,7 +1,7 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Weapon/Abilities/AbilityTask_SetCameraFOV.h"
+#include "Abilities/AbilityTask_SetCameraFOV.h"
 
 #include "AbilitySystemComponent.h"
 #include "Camera/CameraComponent.h"

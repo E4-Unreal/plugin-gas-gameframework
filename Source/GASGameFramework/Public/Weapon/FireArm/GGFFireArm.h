@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Weapon/GGFWeapon.h"
+#include "GGFWeapon.h"
 #include "GGFFireArm.generated.h"
 
 class USoundCue;

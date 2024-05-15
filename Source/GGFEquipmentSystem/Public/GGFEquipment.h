@@ -4,16 +4,16 @@
 
 #include "CoreMinimal.h"
 #include "GameplayTagContainer.h"
-#include "GGFGameplayTags.h"
+#include "GGFEquipmentGameplayTags.h"
 #include "GameFramework/Actor.h"
-#include "Interface/GGFEquipmentInterface.h"
+#include "Interfaces/GGFEquipmentInterface.h"
 #include "GGFEquipment.generated.h"
 
 /**
  * GSFEquipmentComponent에서 사용하기 위한 장비 클래스입니다.
  */
 UCLASS(Abstract, Blueprintable, BlueprintType)
-class GASGAMEFRAMEWORK_API AGGFEquipment : public AActor, public IGGFEquipmentInterface
+class GGFEQUIPMENTSYSTEM_API AGGFEquipment : public AActor, public IGGFEquipmentInterface
 {
     GENERATED_BODY()
 

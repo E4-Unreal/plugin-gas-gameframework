@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Weapon/Abilities/GGFWeaponAbility.h"
+#include "Abilities/GGFWeaponAbility.h"
 #include "GGFFireArmAbility.generated.h"
 
 class AGGFFireArm;

@@ -9,7 +9,7 @@
 struct FGameplayTag;
 
 UCLASS(Abstract, NotBlueprintable)
-class GASGAMEFRAMEWORK_API UGGFEquipmentManagerBase : public UActorComponent
+class GGFEQUIPMENTSYSTEM_API UGGFEquipmentManagerBase : public UActorComponent
 {
     GENERATED_BODY()
 

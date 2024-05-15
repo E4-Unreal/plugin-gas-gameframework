@@ -1,11 +1,11 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Weapon/Abilities/GGFWA_ADS.h"
+#include "Abilities/GGFWA_ADS.h"
 
-#include "Weapon/GGFWeapon.h"
-#include "Weapon/Abilities/AbilityTask_SetCameraFOV.h"
-#include "Weapon/Interface/GGFCameraInterface.h"
+#include "GGFWeapon.h"
+#include "Abilities/AbilityTask_SetCameraFOV.h"
+#include "Interfaces/GGFCameraInterface.h"
 
 bool UGGFWA_ADS::CanActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
     const FGameplayTagContainer* SourceTags, const FGameplayTagContainer* TargetTags,

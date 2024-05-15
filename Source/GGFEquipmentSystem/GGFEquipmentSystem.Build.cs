@@ -10,6 +10,11 @@ public class GGFEquipmentSystem : ModuleRules
             new string[]
             {
                 "Core",
+
+                // GAS
+                "GameplayTags",
+                "GameplayTasks",
+                "GameplayAbilities"
             }
         );
 
@@ -19,7 +24,10 @@ public class GGFEquipmentSystem : ModuleRules
                 "CoreUObject",
                 "Engine",
                 "Slate",
-                "SlateCore"
+                "SlateCore",
+
+                // 커스텀 모듈
+                "GASExtension"
             }
         );
     }

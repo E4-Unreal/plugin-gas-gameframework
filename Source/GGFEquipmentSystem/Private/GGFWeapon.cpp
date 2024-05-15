@@ -1,13 +1,12 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Weapon/GGFWeapon.h"
+#include "GGFWeapon.h"
 
 #include "AbilitySystemComponent.h"
 #include "AbilitySystemGlobals.h"
-#include "Character/Interface/GGFCharacterInterface.h"
 #include "GEBlueprintFunctionLibrary.h"
-#include "Weapon/Abilities/GGFWeaponAbilityInterface.h"
+#include "Interfaces/GGFWeaponAbilityInterface.h"
 
 AGGFWeapon::AGGFWeapon()
 {
@@ -87,16 +86,6 @@ void AGGFWeapon::OnEquip_Implementation()
 
     // AbilitySystem 캐싱
     OwnerAbilitySystem = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(Owner);
-
-    // 캐릭터 메시 캐싱
-    if(Owner->Implements<UGGFCharacterInterface>())
-    {
-        const USkeletalMeshComponent* ThirdPersonMesh = IGGFCharacterInterface::Execute_GetThirdPersonMesh(Owner);
-        ThirdPersonAnimInstance = ThirdPersonMesh ? ThirdPersonMesh->GetAnimInstance() : nullptr;
-
-        const USkeletalMeshComponent* FirstPersonMesh = IGGFCharacterInterface::Execute_GetFirstPersonMesh(Owner);
-        FirstPersonAnimInstance = FirstPersonMesh ? FirstPersonMesh->GetAnimInstance() : nullptr;
-    }
 }
 
 void AGGFWeapon::OnUnEquip_Implementation()

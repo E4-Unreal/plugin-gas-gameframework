@@ -1,9 +1,9 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Equipment/Components/GGFEquipmentManagerBase.h"
+#include "Components/GGFEquipmentManagerBase.h"
 
-#include "Equipment/GGFEquipment.h"
+#include "GGFEquipment.h"
 
 UGGFEquipmentManagerBase::UGGFEquipmentManagerBase()
 {

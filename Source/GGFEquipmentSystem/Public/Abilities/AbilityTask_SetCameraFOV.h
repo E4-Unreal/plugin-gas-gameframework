@@ -14,7 +14,7 @@ class UCameraComponent;
  * 카메라 FOV를 조정을 위한 어빌리티 태스크로 ADS에서 사용하기 위해 작성되었습니다.
  */
 UCLASS()
-class GASGAMEFRAMEWORK_API UAbilityTask_SetCameraFOV : public UAbilityTask
+class GGFEQUIPMENTSYSTEM_API UAbilityTask_SetCameraFOV : public UAbilityTask
 {
     GENERATED_BODY()
 

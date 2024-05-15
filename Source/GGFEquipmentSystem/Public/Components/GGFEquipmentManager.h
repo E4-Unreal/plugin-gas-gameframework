@@ -84,7 +84,7 @@ struct FEquipmentSlot
 };
 
 UCLASS(ClassGroup=(GASSurvivalFramework), meta=(BlueprintSpawnableComponent))
-class GASGAMEFRAMEWORK_API UGGFEquipmentManager : public UGGFEquipmentManagerBase
+class GGFEQUIPMENTSYSTEM_API UGGFEquipmentManager : public UGGFEquipmentManagerBase
 {
     GENERATED_BODY()
 

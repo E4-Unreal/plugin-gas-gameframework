@@ -3,8 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Equipment/GGFEquipment.h"
-#include "Interface/GGFCameraInterface.h"
+#include "GGFEquipment.h"
 #include "GGFWeapon.generated.h"
 
 struct FGameplayAbilitySpecHandle;
@@ -14,7 +13,7 @@ class UAnimInstance;
 
 // TODO 삼인칭, 일인칭 설정이 중복되니 구조체 사용?
 UCLASS(Abstract, Blueprintable, BlueprintType)
-class GASGAMEFRAMEWORK_API AGGFWeapon : public AGGFEquipment, public IGGFCameraInterface
+class GGFEQUIPMENTSYSTEM_API AGGFWeapon : public AGGFEquipment
 {
     GENERATED_BODY()
 
@@ -98,8 +97,4 @@ public:
 
     // 무기가 선택 해제된 경우
     virtual void Deactivate_Implementation() override;
-
-    /* GGFCameraInterface */
-    FORCEINLINE virtual float GetFieldOfView_Implementation() const override { return FOV; }
-    FORCEINLINE virtual float GetInterpSpeed_Implementation() const override { return InterpSpeed; }
 };
