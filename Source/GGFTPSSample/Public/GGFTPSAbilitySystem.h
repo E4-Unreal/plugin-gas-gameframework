@@ -3,11 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GEAbilitySystem.h"
+#include "AbilitySystem/GEPlayerAbilitySystem.h"
 #include "GGFTPSAbilitySystem.generated.h"
 
 UCLASS(meta=(BlueprintSpawnableComponent))
-class GGFTPSSAMPLE_API UGGFTPSAbilitySystem : public UGEAbilitySystem
+class GGFTPSSAMPLE_API UGGFTPSAbilitySystem : public UGEPlayerAbilitySystem
 {
     GENERATED_BODY()
 
