@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GECharacter.h"
+#include "Characters/GEPlayerCharacter.h"
 #include "GGFCharacter.generated.h"
 
 struct FInputActionValue;
@@ -14,7 +14,7 @@ class UGGFStateMachine;
  * 기본 움직임 및 입력 액션 바인딩만 담당
  */
 UCLASS()
-class GASGAMEFRAMEWORK_API AGGFCharacter : public AGECharacter
+class GASGAMEFRAMEWORK_API AGGFCharacter : public AGEPlayerCharacter
 {
     GENERATED_BODY()
 

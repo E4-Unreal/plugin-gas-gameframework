@@ -1,22 +1,22 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
-#include "GECharacter.h"
+#include "Characters/GEPlayerCharacter.h"
 
 #include "EnhancedInputComponent.h"
-#include "AbilitySystem/GEPlayerAbilitySystem.h"
 #include "Input/GEInputManager.h"
 
-FName AGECharacter::AbilitySystemName(TEXT("AbilitySystem"));
-FName AGECharacter::InputManagerName(TEXT("InputManager"));
+class UGEPlayerAbilitySystem;
 
-AGECharacter::AGECharacter(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
+FName AGEPlayerCharacter::InputManagerName(TEXT("InputManager"));
+
+AGEPlayerCharacter::AGEPlayerCharacter(const FObjectInitializer& ObjectInitializer)
+    : Super(ObjectInitializer.SetDefaultSubobjectClass<UGEPlayerAbilitySystem>(AbilitySystemName))
 {
-    /* 서브 오브젝트 생성 */
-    AbilitySystem = CreateDefaultSubobject<UGEPlayerAbilitySystem>(AbilitySystemName);
+    /* InputManager */
     InputManager = CreateDefaultSubobject<UGEInputManager>(InputManagerName);
 }
 
-void AGECharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+void AGEPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
     Super::SetupPlayerInputComponent(PlayerInputComponent);
 
@@ -26,7 +26,7 @@ void AGECharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
     }
 }
 
-void AGECharacter::SetupEnhancedInputComponent(UEnhancedInputComponent* EnhancedInputComponent)
+void AGEPlayerCharacter::SetupEnhancedInputComponent(UEnhancedInputComponent* EnhancedInputComponent)
 {
     // null 검사
     if(EnhancedInputComponent == nullptr) return;
