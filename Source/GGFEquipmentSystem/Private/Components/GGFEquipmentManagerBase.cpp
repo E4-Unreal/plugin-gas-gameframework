@@ -4,6 +4,7 @@
 #include "Components/GGFEquipmentManagerBase.h"
 
 #include "GGFEquipment.h"
+#include "GameFramework/Character.h"
 
 UGGFEquipmentManagerBase::UGGFEquipmentManagerBase()
 {
@@ -11,17 +12,37 @@ UGGFEquipmentManagerBase::UGGFEquipmentManagerBase()
     SetIsReplicatedByDefault(true);
 }
 
-void UGGFEquipmentManagerBase::InjectDependencies(USkeletalMeshComponent* InSkeletalMesh)
+void UGGFEquipmentManagerBase::InitializeComponent()
 {
-    // null 검사
-    if(InSkeletalMesh == nullptr) return;
+    Super::InitializeComponent();
 
-    // 초기화는 한 번만 진행됩니다.
-    if(bInitialized) return;
-    bInitialized = true;
+    // Owner가 캐릭터인 경우 기본 메시 자동 할당
+    if(ACharacter* OwnerCharacter = Cast<ACharacter>(GetOwner()))
+    {
+        SetTargetMesh(OwnerCharacter->GetMesh());
+    }
+}
+
+void UGGFEquipmentManagerBase::SetTargetMesh(USkeletalMeshComponent* NewTargetMesh)
+{
+    // 중복 호출 방지
+    if(TargetMesh == NewTargetMesh) return;
 
     // 스켈레탈 메시 할당
-    SkeletalMesh = InSkeletalMesh;
+    TargetMesh = NewTargetMesh;
+
+    // 스켈레탈 메시 업데이트
+    OnTargetMeshChanged();
+
+#if WITH_EDITOR
+    // 유효성 검사
+    bValid = TargetMesh.IsValid();
+#endif
+}
+
+void UGGFEquipmentManagerBase::OnTargetMeshChanged()
+{
+    // TODO 기존 메시에 부착된 장비들을 새로운 메시에 부착
 }
 
 AActor* UGGFEquipmentManagerBase::SpawnEquipment(TSubclassOf<AActor> EquipmentClass)
@@ -47,13 +68,13 @@ AActor* UGGFEquipmentManagerBase::SpawnEquipment(TSubclassOf<AActor> EquipmentCl
 bool UGGFEquipmentManagerBase::AttachEquipment(AActor* Equipment, FName SocketName)
 {
     // 유효성 검사
-    if(Equipment == nullptr || SkeletalMesh == nullptr || SocketName == NAME_None) return false;
+    if(Equipment == nullptr || TargetMesh == nullptr || SocketName == NAME_None) return false;
 
     // 소켓 존재 여부 검사
-    if(SkeletalMesh->GetSocketByName(SocketName) == nullptr) return false;
+    if(TargetMesh->GetSocketByName(SocketName) == nullptr) return false;
 
     // 액터를 스켈레탈 메시 소켓에 부착
-    Equipment->AttachToComponent(SkeletalMesh, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), SocketName);
+    Equipment->AttachToComponent(TargetMesh.Get(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), SocketName);
 
     return true;
 }

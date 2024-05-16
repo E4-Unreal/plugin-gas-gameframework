@@ -189,6 +189,20 @@ const FEquipmentSlot& UGGFEquipmentManager::GetAvailableSlot(const FGameplayTag&
     return FEquipmentSlot::EmptySlot;
 }
 
+void UGGFEquipmentManager::OnTargetMeshChanged()
+{
+    Super::OnTargetMeshChanged();
+
+    // 기존 메시에 부착된 장비들을 새로운 메시에 부착
+    for (const auto& [EquipmentSlot, Equipment] : EquipmentSlots)
+    {
+        AttachEquipment(Equipment, EquipmentSlot.SocketName);
+    }
+
+    // 선택 장비를 새로운 메시의 손 소켓에 부착
+    AttachEquipment(SelectedEquipment, HandSocketName);
+}
+
 void UGGFEquipmentManager::CreateEquipmentSlots()
 {
     for (const FEquipmentSlotConfig& EquipmentSlotConfig : EquipmentSlotConfigs)

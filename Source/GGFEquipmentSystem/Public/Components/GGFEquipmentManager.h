@@ -83,7 +83,7 @@ struct FEquipmentSlot
     }
 };
 
-UCLASS(ClassGroup=(GASSurvivalFramework), meta=(BlueprintSpawnableComponent))
+UCLASS(meta=(BlueprintSpawnableComponent))
 class GGFEQUIPMENTSYSTEM_API UGGFEquipmentManager : public UGGFEquipmentManagerBase
 {
     GENERATED_BODY()
@@ -114,9 +114,13 @@ protected:
 
 public:
 
+    /* ActorComponent */
+
     virtual void InitializeComponent() override;
 
     virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
+    /* API */
 
     UFUNCTION(BlueprintCallable)
     bool AddEquipment(TSubclassOf<AActor> EquipmentClass);
@@ -162,6 +166,9 @@ public:
 
     UFUNCTION(BlueprintCallable)
     const FEquipmentSlot& GetAvailableSlot(const FGameplayTag& WeaponSlot) const;
+
+protected:
+    virtual void OnTargetMeshChanged() override;
 
 private:
     // AvailableSlots로부터 EquipmentSlots를 생성합니다.

@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "GameplayTagContainer.h"
-#include "GGFEquipmentGameplayTags.h"
 #include "GameFramework/Actor.h"
 #include "Interfaces/GGFEquipmentInterface.h"
 #include "GGFEquipment.generated.h"
@@ -19,10 +18,10 @@ class GGFEQUIPMENTSYSTEM_API AGGFEquipment : public AActor, public IGGFEquipment
 
 protected:
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Config|Equipment", meta = (Categories = "Equipment"))
-    FGameplayTag EquipmentType = GGFGameplayTags::Equipment::Equipment;
+    FGameplayTag EquipmentType;
 
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Config|Equipment", meta = (Categories = "Equipment.Slot"))
-    FGameplayTag EquipmentSlot = GGFGameplayTags::Equipment::Slot::Slot;
+    FGameplayTag EquipmentSlot;
 
 public:
     AGGFEquipment();
@@ -41,8 +40,15 @@ protected:
     UFUNCTION(BlueprintNativeEvent, Category = "Equipment")
     void OnUnEquip();
 
+    // Owner 상태에 따라 OnEquip 혹은 OnUnEquip을 호출합니다.
+    virtual void CheckOwner();
+
 public:
-    /* GGFEquipmentInterface */
+    /* EquipmentInterface */
+    virtual void Equip_Implementation(AActor* NewOwner) override;
+    virtual void UnEquip_Implementation() override;
+    virtual void Activate_Implementation() override;
+    virtual void Deactivate_Implementation() override;
     FORCEINLINE virtual const FGameplayTag GetEquipmentSlot_Implementation() const override { return EquipmentSlot; }
     FORCEINLINE virtual const FGameplayTag GetEquipmentType_Implementation() const override { return EquipmentType; }
 };

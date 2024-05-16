@@ -23,20 +23,27 @@ class GGFEQUIPMENTSYSTEM_API IGGFEquipmentInterface
 
 public:
     // 장비를 활성화합니다. 주로 해당 장비가 선택되었을 때 어빌리티를 부여하기 위해 사용됩니다.
-    UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "GGFEquipmentInterface")
+    UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "EquipmentInterface")
+    void Equip(AActor* NewOwner);
+
+    UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "EquipmentInterface")
+    void UnEquip();
+
+    // 장비를 활성화합니다. 주로 해당 장비가 선택되었을 때 어빌리티를 부여하기 위해 사용됩니다.
+    UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "EquipmentInterface")
     void Activate();
 
     // 장비를 비활성화합니다. 주로 해당 장비가 선택 해제되었을 때 어빌리티를 제거하기 위해 사용됩니다.
-    UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "GGFEquipmentInterface")
+    UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "EquipmentInterface")
     void Deactivate();
 
     /* Getter */
     // 장비 슬롯
-    UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "GGFEquipmentInterface")
+    UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "EquipmentInterface")
     const FGameplayTag GetEquipmentSlot() const;
 
     // TODO 현재 사용하고 있지 않은 상태이며 추후에 ItemInterface의 ItemType으로 이전될 수 있습니다.
     // 장비 종류
-    UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "GGFEquipmentInterface")
+    UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "EquipmentInterface")
     const FGameplayTag GetEquipmentType() const;
 };
