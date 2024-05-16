@@ -58,18 +58,22 @@
 			"Name": "ModularGameplay",
 			"Enabled": true
 		},
-		{
-			"Name": "ParagonBelica",
-			"Enabled": true
-		},
+        {
+            "Name": "LevelPrototyping",
+            "Enabled": true
+        },
 		{
 			"Name": "UnrealMannequins",
 			"Enabled": true
 		},
-		{
-			"Name": "LevelPrototyping",
-			"Enabled": true
-		}
+        {
+            "Name": "LyraContent",
+            "Enabled": true
+        },
+        {
+            "Name": "ParagonBelica",
+            "Enabled": true
+        }
 	],
 	"Installed": false
 }
