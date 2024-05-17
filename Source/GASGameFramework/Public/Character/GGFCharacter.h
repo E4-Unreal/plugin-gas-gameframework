@@ -8,7 +8,6 @@
 
 struct FInputActionValue;
 class UGGFEquipmentManager;
-class UGGFStateMachine;
 
 /*
  * 기본 움직임 및 입력 액션 바인딩만 담당
@@ -22,18 +21,11 @@ public:
     /* EquipmentManager의 이름으로 다른 클래스로 교체할 때 사용합니다. */
     static FName EquipmentManagerName;
 
-    /* EquipmentManager의 이름으로 다른 클래스로 교체할 때 사용합니다. */
-    static FName StateMachineName;
-
 private:
     /* 컴포넌트 */
     // 장비를 관리하기 위한 컴포넌트입니다.
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Component", meta = (AllowPrivateAccess = "true"))
     TObjectPtr<UGGFEquipmentManager> EquipmentManager;
-
-    // 장비를 관리하기 위한 컴포넌트입니다.
-    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Component", meta = (AllowPrivateAccess = "true"))
-    TObjectPtr<UGGFStateMachine> StateMachine;
 
 public:
     AGGFCharacter(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());

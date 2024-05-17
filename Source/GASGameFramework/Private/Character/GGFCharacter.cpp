@@ -4,19 +4,18 @@
 
 #include "EnhancedInputSubsystems.h"
 #include "Character/Components/GGFCharacterMovement.h"
+#include "Character/Components/GGFCharacterStateMachine.h"
 #include "Components/GGFEquipmentManager.h"
-#include "Abilities/GGFStateMachine.h"
 
 FName AGGFCharacter::EquipmentManagerName(TEXT("EquipmentManager"));
-FName AGGFCharacter::StateMachineName(TEXT("StateMachine"));
 
 AGGFCharacter::AGGFCharacter(const FObjectInitializer& ObjectInitializer)
 : Super(ObjectInitializer
-    .SetDefaultSubobjectClass<UGGFCharacterMovement>(CharacterMovementComponentName))
+    .SetDefaultSubobjectClass<UGGFCharacterMovement>(CharacterMovementComponentName)
+    .SetDefaultSubobjectClass<UGGFCharacterStateMachine>(GameplayStateMachineName))
 {
-    /* 서브 오브젝트 생성 */
+    /* EquipmentManager */
     EquipmentManager = CreateDefaultSubobject<UGGFEquipmentManager>(EquipmentManagerName);
-    StateMachine = CreateDefaultSubobject<UGGFStateMachine>(StateMachineName);
 }
 
 bool AGGFCharacter::CanJumpInternal_Implementation() const
