@@ -46,7 +46,8 @@ public class GASGameFramework : ModuleRules
 
                 // 하위 모듈
                 "GASExtension",
-                "GGFEquipmentSystem"
+                "GGFEquipmentSystem",
+                "GGFShooterCore"
             }
 			);
 

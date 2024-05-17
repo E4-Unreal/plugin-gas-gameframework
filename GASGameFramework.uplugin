@@ -43,6 +43,11 @@
 			"Name": "GGFEquipmentSystem",
 			"Type": "Runtime",
 			"LoadingPhase": "Default"
+		},
+		{
+			"Name": "GGFShooterCore",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
 		}
 	],
 	"Plugins": [
@@ -58,22 +63,22 @@
 			"Name": "ModularGameplay",
 			"Enabled": true
 		},
-        {
-            "Name": "LevelPrototyping",
-            "Enabled": true
-        },
+		{
+			"Name": "LevelPrototyping",
+			"Enabled": true
+		},
 		{
 			"Name": "UnrealMannequins",
 			"Enabled": true
 		},
-        {
-            "Name": "LyraContent",
-            "Enabled": true
-        },
-        {
-            "Name": "ParagonBelica",
-            "Enabled": true
-        }
+		{
+			"Name": "LyraContent",
+			"Enabled": true
+		},
+		{
+			"Name": "ParagonBelica",
+			"Enabled": true
+		}
 	],
 	"Installed": false
 }
