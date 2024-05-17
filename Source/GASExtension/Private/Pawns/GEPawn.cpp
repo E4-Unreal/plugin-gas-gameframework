@@ -5,9 +5,11 @@
 #include "GEGameplayTags.h"
 #include "AbilitySystem/GEDamageableAbilitySystem.h"
 #include "Components/GEGameplayEventManager.h"
+#include "Components/GEGameplayStateMachine.h"
 
 FName AGEPawn::AbilitySystemName(TEXT("AbilitySystem"));
 FName AGEPawn::GameplayEventManagerName(TEXT("GameplayEventManager"));
+FName AGEPawn::GameplayStateMachineName(TEXT("GameplayStateMachine"));
 
 AGEPawn::AGEPawn(const FObjectInitializer& ObjectInitializer)
 {
@@ -16,6 +18,9 @@ AGEPawn::AGEPawn(const FObjectInitializer& ObjectInitializer)
 
     /* GameplayEventManager */
     GameplayEventManager = CreateDefaultSubobject<UGEGameplayEventManager>(GameplayEventManagerName);
+
+    /* GameplayStateMachine */
+    GameplayStateMachine = CreateDefaultSubobject<UGEGameplayStateMachine>(GameplayStateMachineName);
 }
 
 void AGEPawn::PostInitializeComponents()
