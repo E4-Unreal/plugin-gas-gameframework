@@ -77,3 +77,13 @@ void AGGFCharacter::ToggleCrouch()
     else
         Crouch();
 }
+
+void AGGFCharacter::PlayMontage_Implementation(UAnimMontage* MontageToPlay)
+{
+    NetMulticast_PlayMontage(MontageToPlay);
+}
+
+void AGGFCharacter::NetMulticast_PlayMontage_Implementation(UAnimMontage* MontageToPlay)
+{
+    GetMesh()->GetAnimInstance()->Montage_Play(MontageToPlay);
+}

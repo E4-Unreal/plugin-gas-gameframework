@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Characters/GEPlayerCharacter.h"
+#include "Interfaces/GGFCharacterInterface.h"
 #include "GGFCharacter.generated.h"
 
 struct FInputActionValue;
@@ -13,7 +14,7 @@ class UGGFEquipmentManager;
  * 기본 움직임 및 입력 액션 바인딩만 담당
  */
 UCLASS()
-class GASGAMEFRAMEWORK_API AGGFCharacter : public AGEPlayerCharacter
+class GASGAMEFRAMEWORK_API AGGFCharacter : public AGEPlayerCharacter, public IGGFCharacterInterface
 {
     GENERATED_BODY()
 
@@ -49,4 +50,12 @@ public:
 
     // 앉기 입력 이벤트 핸들링
     void ToggleCrouch();
+
+public:
+    /* GGFCharacterInterface */
+    virtual void PlayMontage_Implementation(UAnimMontage* MontageToPlay) override;
+
+protected:
+    UFUNCTION(NetMulticast, Unreliable)
+    virtual void NetMulticast_PlayMontage(UAnimMontage* MontageToPlay);
 };

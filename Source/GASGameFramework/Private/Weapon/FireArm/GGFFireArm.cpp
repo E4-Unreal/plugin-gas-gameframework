@@ -63,7 +63,7 @@ void AGGFFireArm::MulticastFire_Implementation()
 
     // TODO 삼인칭 애니메이션
     // 캐릭터 애니메이션 재생
-    PlayFirstPersonMontage(CharacterFireAnimation);
+    PlayCharacterMontage(CharacterFireAnimation);
 
     // 파티클 시스템 스폰
     UGameplayStatics::SpawnEmitterAttached(
@@ -140,7 +140,7 @@ void AGGFFireArm::MulticastReload_Implementation()
 
     // TODO 삼인칭 애니메이션
     // 캐릭터 애니메이션 재생
-    PlayFirstPersonMontage(CharacterReloadAnimation);
+    PlayCharacterMontage(CharacterReloadAnimation);
 }
 
 void AGGFFireArm::FinishReloading()
@@ -187,8 +187,9 @@ void AGGFFireArm::Activate_Implementation()
     // 서버에서만 재장전 가능
     if(HasAuthority())
     {
-        if(UAnimInstance* LocalFirstPersonAnimInstance = GetFirstPersonAnimInstance())
-            LocalFirstPersonAnimInstance->OnPlayMontageNotifyBegin.AddDynamic(this, &ThisClass::OnPlayMontageNotifyBegin_Event);
+        // TODO 재장전 애님 노티파이 이벤트 바인딩
+        /*if(UAnimInstance* LocalFirstPersonAnimInstance = GetFirstPersonAnimInstance())
+            LocalFirstPersonAnimInstance->OnPlayMontageNotifyBegin.AddDynamic(this, &ThisClass::OnPlayMontageNotifyBegin_Event);*/
     }
 }
 
@@ -199,8 +200,9 @@ void AGGFFireArm::Deactivate_Implementation()
     // 서버에서만 재장전 가능
     if(HasAuthority())
     {
-        if(UAnimInstance* LocalFirstPersonAnimInstance = GetFirstPersonAnimInstance())
-            LocalFirstPersonAnimInstance->OnPlayMontageNotifyBegin.RemoveDynamic(this, &ThisClass::OnPlayMontageNotifyBegin_Event);
+        // TODO 재장전 애님 노티파이 이벤트 언바인딩
+        /*if(UAnimInstance* LocalFirstPersonAnimInstance = GetFirstPersonAnimInstance())
+            LocalFirstPersonAnimInstance->OnPlayMontageNotifyBegin.RemoveDynamic(this, &ThisClass::OnPlayMontageNotifyBegin_Event);*/
     }
 }
 

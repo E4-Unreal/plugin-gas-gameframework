@@ -1,11 +1,12 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "GGFWeapon.h"
 
 #include "AbilitySystemComponent.h"
 #include "AbilitySystemGlobals.h"
 #include "GEBlueprintFunctionLibrary.h"
+#include "GGFEquipmentGameplayTags.h"
+#include "Interfaces/GGFCharacterInterface.h"
 #include "Interfaces/GGFWeaponAbilityInterface.h"
 
 AGGFWeapon::AGGFWeapon()
@@ -56,28 +57,13 @@ void AGGFWeapon::ClearAbilities()
     }
 }
 
-void AGGFWeapon::PlayFirstPersonMontage(UAnimMontage* Montage) const
+void AGGFWeapon::PlayCharacterMontage(UAnimMontage* MontageToPlay)
 {
-    if(FirstPersonAnimInstance.IsValid() && Montage)
-        FirstPersonAnimInstance->Montage_Play(Montage);
-}
+    // OwnerCharacter 유효성 검사
+    if(!bOwnerCharacterValid) return;
 
-void AGGFWeapon::PlayThirdPersonMontage(UAnimMontage* Montage) const
-{
-    if(ThirdPersonAnimInstance.IsValid() && Montage)
-        ThirdPersonAnimInstance->Montage_Play(Montage);
-}
-
-void AGGFWeapon::LinkAnimClasses() const
-{
-    LinkCharacterAnimClasses(FirstPersonAnimInstance, FirstPersonAnimLinkClasses);
-    LinkCharacterAnimClasses(ThirdPersonAnimInstance, ThirdPersonAnimLinkClasses);
-}
-
-void AGGFWeapon::UnLinkAnimClasses() const
-{
-    UnlinkCharacterAnimClasses(FirstPersonAnimInstance, FirstPersonAnimLinkClasses);
-    UnlinkCharacterAnimClasses(ThirdPersonAnimInstance, ThirdPersonAnimLinkClasses);
+    // 캐릭터 애니메이션 재생
+    IGGFCharacterInterface::Execute_PlayMontage(Owner, MontageToPlay);
 }
 
 void AGGFWeapon::OnEquip_Implementation()
@@ -86,6 +72,9 @@ void AGGFWeapon::OnEquip_Implementation()
 
     // AbilitySystem 캐싱
     OwnerAbilitySystem = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(Owner);
+
+    // OwnerCharacter 유효성 검사
+    bOwnerCharacterValid = Owner->Implements<UGGFCharacterInterface>();
 }
 
 void AGGFWeapon::OnUnEquip_Implementation()
@@ -95,51 +84,16 @@ void AGGFWeapon::OnUnEquip_Implementation()
     // AbilitySystem 캐시 제거
     OwnerAbilitySystem = nullptr;
 
-    // 캐릭터 메시 캐싱 제거
-    ThirdPersonAnimInstance = nullptr;
-    FirstPersonAnimInstance = nullptr;
-}
-
-void AGGFWeapon::LinkCharacterAnimClasses(TWeakObjectPtr<UAnimInstance> AnimInstance,
-    const TArray<TSubclassOf<UAnimInstance>>& AnimLinkClasses)
-{
-    if(AnimInstance.IsValid())
-    {
-        for (TSubclassOf<UAnimInstance> AnimLinkClass : AnimLinkClasses)
-        {
-            // 유효성 검사
-            if(AnimLinkClass == nullptr) continue;
-
-            // 애님 클래스 링크
-            AnimInstance->LinkAnimClassLayers(AnimLinkClass);
-        }
-    }
-}
-
-void AGGFWeapon::UnlinkCharacterAnimClasses(TWeakObjectPtr<UAnimInstance> AnimInstance,
-    const TArray<TSubclassOf<UAnimInstance>>& AnimLinkClasses)
-{
-    if(AnimInstance.IsValid())
-    {
-        for (TSubclassOf<UAnimInstance> AnimLinkClass : AnimLinkClasses)
-        {
-            // 유효성 검사
-            if(AnimLinkClass == nullptr) continue;
-
-            // 애님 클래스 링크
-            AnimInstance->UnlinkAnimClassLayers(AnimLinkClass);
-        }
-    }
+    // OwnerCharacter 유효성 초기화
+    bOwnerCharacterValid = false;
 }
 
 void AGGFWeapon::Activate_Implementation()
 {
     GiveAbilities();
-    LinkAnimClasses();
 }
 
 void AGGFWeapon::Deactivate_Implementation()
 {
     ClearAbilities();
-    UnLinkAnimClasses();
 }
