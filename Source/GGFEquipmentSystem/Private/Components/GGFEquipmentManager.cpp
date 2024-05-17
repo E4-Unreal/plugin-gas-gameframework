@@ -6,6 +6,7 @@
 #include "GameplayTagContainer.h"
 #include "Net/UnrealNetwork.h"
 #include "GGFWeapon.h"
+#include "Interfaces/GGFCharacterInterface.h"
 
 const FEquipmentSlot FEquipmentSlot::EmptySlot;
 
@@ -44,7 +45,7 @@ bool UGGFEquipmentManager::AddEquipment(TSubclassOf<AActor> EquipmentClass)
     if(!IsSelectedEquipmentExist())
     {
         // 선택 무기가 비어 있다면 새로운 무기를 선택 무기로 지정합니다.
-        SelectEquipment(EquipmentSlot.SlotTag, EquipmentSlot.Index);
+        Server_SelectEquipment(EquipmentSlot.SlotTag, EquipmentSlot.Index);
     }
     else
     {
@@ -68,7 +69,7 @@ void UGGFEquipmentManager::RemoveEquipment(FGameplayTag Slot, int32 Index)
     ClearEquipmentSlot(Slot, Index);
 }
 
-void UGGFEquipmentManager::SelectEquipment(FGameplayTag Slot, int32 Index)
+void UGGFEquipmentManager::Server_SelectEquipment_Implementation(FGameplayTag Slot, int32 Index)
 {
     // 이미 선택된 슬롯이면 무시
     const FEquipmentSlot& EquipmentSlot = FEquipmentSlot(Slot, Index);
@@ -87,6 +88,10 @@ void UGGFEquipmentManager::SelectEquipment(FGameplayTag Slot, int32 Index)
 
     // 선택 장비를 활성화합니다.
     IGGFEquipmentInterface::Execute_Activate(SelectedEquipment);
+
+    // 장비에 대응하는 캐릭터 애님 클래스로 변경 요청
+    const FGameplayTag EquipmentType = IGGFEquipmentInterface::Execute_GetEquipmentType(SelectedEquipment);
+    IGGFCharacterInterface::Execute_ChangeAnimInstance(GetOwner(), EquipmentType);
 }
 
 bool UGGFEquipmentManager::IsEquipmentExist(FGameplayTag Slot, int32 Index) const
@@ -128,6 +133,9 @@ void UGGFEquipmentManager::Deselect()
     // 선택 슬롯을 비웁니다.
     SelectedSlot = FEquipmentSlot::EmptySlot;
     SelectedEquipment = nullptr;
+
+    // 기본 캐릭터 애님 클래스로 변경 요청
+    IGGFCharacterInterface::Execute_ChangeAnimInstance(GetOwner(), FGameplayTag::EmptyTag);
 }
 
 bool UGGFEquipmentManager::AttachEquipment(AActor* Equipment, FName SocketName)
@@ -237,7 +245,7 @@ void UGGFEquipmentManager::AddDefaultEquipments()
 
 void UGGFEquipmentManager::OnRep_SelectedEquipment(AActor* OldEquipment)
 {
-    // TODO Deactivate OldEquipment
-
-    // TODO Activate NewEquipment
+    // 장비에 대응하는 캐릭터 애님 클래스로 변경 요청
+    const FGameplayTag EquipmentType = SelectedEquipment ? IGGFEquipmentInterface::Execute_GetEquipmentType(SelectedEquipment) : FGameplayTag::EmptyTag;
+    IGGFCharacterInterface::Execute_ChangeAnimInstance(GetOwner(), EquipmentType);
 }

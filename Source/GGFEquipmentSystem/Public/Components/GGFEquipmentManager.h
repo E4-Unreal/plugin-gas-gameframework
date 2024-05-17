@@ -128,8 +128,8 @@ public:
     UFUNCTION(BlueprintCallable)
     void RemoveEquipment(FGameplayTag Slot, int32 Index);
 
-    UFUNCTION(BlueprintCallable)
-    void SelectEquipment(FGameplayTag Slot, int32 Index);
+    UFUNCTION(BlueprintCallable, Server, Reliable)
+    void Server_SelectEquipment(FGameplayTag Slot, int32 Index);
 
     UFUNCTION(BlueprintCallable)
     bool IsEquipmentExist(FGameplayTag Slot, int32 Index) const;

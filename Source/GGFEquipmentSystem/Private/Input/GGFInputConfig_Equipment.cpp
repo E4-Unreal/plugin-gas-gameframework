@@ -22,7 +22,7 @@ void UGGFInputConfig_Equipment::OnBindEnhancedInput(UEnhancedInputComponent* Enh
             InputAction,
             ETriggerEvent::Started,
             EquipmentManager,
-            &UGGFEquipmentManager::SelectEquipment,
+            &UGGFEquipmentManager::Server_SelectEquipment,
             SlotTag,
             SlotIndex
             );

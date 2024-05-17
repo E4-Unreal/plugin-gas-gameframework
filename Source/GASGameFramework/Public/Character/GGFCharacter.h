@@ -19,14 +19,25 @@ class GASGAMEFRAMEWORK_API AGGFCharacter : public AGEPlayerCharacter, public IGG
     GENERATED_BODY()
 
 public:
-    /* EquipmentManager의 이름으로 다른 클래스로 교체할 때 사용합니다. */
+    // EquipmentManager 서브 오브젝트 이름
     static FName EquipmentManagerName;
 
 private:
     /* 컴포넌트 */
+
     // 장비를 관리하기 위한 컴포넌트입니다.
-    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Component", meta = (AllowPrivateAccess = "true"))
+    UPROPERTY(VisibleAnywhere, BlueprintGetter = GetEquipmentManager, Category = "Component")
     TObjectPtr<UGGFEquipmentManager> EquipmentManager;
+
+protected:
+    // TODO FEquipmentTag? 구조체로 합치기?
+    // 장착 장비에 따른 애님 클래스 맵
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config", meta = (Categories = "Equipment"))
+    TMap<FGameplayTag, TSubclassOf<UAnimInstance>> AnimInstanceMap;
+
+    // 장비 장착 애님 몽타주
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config", meta = (Categories = "Equipment"))
+    TMap<FGameplayTag, TObjectPtr<UAnimMontage>> EquipMontageMap;
 
 public:
     AGGFCharacter(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
@@ -54,8 +65,13 @@ public:
 public:
     /* GGFCharacterInterface */
     virtual void PlayMontage_Implementation(UAnimMontage* MontageToPlay) override;
+    virtual void ChangeAnimInstance_Implementation(FGameplayTag EquipmentTag) override;
 
 protected:
     UFUNCTION(NetMulticast, Unreliable)
     virtual void NetMulticast_PlayMontage(UAnimMontage* MontageToPlay);
+
+protected:
+    UFUNCTION(BlueprintGetter)
+    FORCEINLINE UGGFEquipmentManager* GetEquipmentManager() const { return EquipmentManager; }
 };

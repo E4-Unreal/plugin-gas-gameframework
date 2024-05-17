@@ -83,6 +83,19 @@ void AGGFCharacter::PlayMontage_Implementation(UAnimMontage* MontageToPlay)
     NetMulticast_PlayMontage(MontageToPlay);
 }
 
+void AGGFCharacter::ChangeAnimInstance_Implementation(FGameplayTag EquipmentTag)
+{
+    if(AnimInstanceMap.Contains(EquipmentTag))
+    {
+        GetMesh()->SetAnimInstanceClass(AnimInstanceMap[EquipmentTag]);
+
+        if(EquipMontageMap.Contains(EquipmentTag))
+        {
+            GetMesh()->GetAnimInstance()->Montage_Play(EquipMontageMap[EquipmentTag]);
+        }
+    }
+}
+
 void AGGFCharacter::NetMulticast_PlayMontage_Implementation(UAnimMontage* MontageToPlay)
 {
     GetMesh()->GetAnimInstance()->Montage_Play(MontageToPlay);
