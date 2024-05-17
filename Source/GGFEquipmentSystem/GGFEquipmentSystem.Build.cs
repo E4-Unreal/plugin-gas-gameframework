@@ -25,6 +25,7 @@ public class GGFEquipmentSystem : ModuleRules
                 "Engine",
                 "Slate",
                 "SlateCore",
+                "EnhancedInput",
 
                 // 커스텀 모듈
                 "GASExtension"

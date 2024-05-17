@@ -29,7 +29,7 @@ struct FGGFEquipmentInputAction
  * 장비창 전용 입력 에셋 설정을 위한 데이터 에셋으로 GGFEquipmentManager에 의존성을 가지고 있습니다.
  */
 UCLASS()
-class GASGAMEFRAMEWORK_API UGGFInputConfig_Equipment : public UGEInputConfig
+class GGFEQUIPMENTSYSTEM_API UGGFInputConfig_Equipment : public UGEInputConfig
 {
     GENERATED_BODY()
 
