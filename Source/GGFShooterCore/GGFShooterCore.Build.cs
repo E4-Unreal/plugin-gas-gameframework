@@ -10,6 +10,21 @@ public class GGFShooterCore : ModuleRules
             new string[]
             {
                 "Core",
+
+                // 이펙트
+                "Niagara",
+                "PhysicsCore",
+
+                // GAS
+                "GameplayAbilities",
+                "GameplayTags",
+                "GameplayTasks",
+
+                // GASExtension
+                "GASExtension",
+
+                // GASGameFramework
+                "GGFEquipmentSystem"
             }
         );
 

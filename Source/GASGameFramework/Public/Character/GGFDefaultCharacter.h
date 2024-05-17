@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GGFCharacter.h"
-#include "Weapon/Interface/GGFAimingInterface.h"
+#include "Interfaces/GGFAimingInterface.h"
 #include "Interfaces/GGFCameraInterface.h"
 #include "GGFDefaultCharacter.generated.h"
 
