@@ -3,6 +3,7 @@
 #include "Character/Animation/GGFFirstPersonAnimInstance.h"
 
 #include "GGFGameplayTags.h"
+#include "GGFShooterGameplayTags.h"
 #include "Logging.h"
 
 UGGFFirstPersonAnimInstance::UGGFFirstPersonAnimInstance()
