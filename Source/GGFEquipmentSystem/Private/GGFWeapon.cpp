@@ -11,7 +11,7 @@
 
 AGGFWeapon::AGGFWeapon()
 {
-    EquipmentType = GGFGameplayTags::Equipment::Weapon::Weapon;
+    EquipmentType = GGFGameplayTags::Equipment::Weapon::Root;
 }
 
 void AGGFWeapon::GiveAbilities()

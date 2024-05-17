@@ -13,8 +13,8 @@ AGGFEquipment::AGGFEquipment()
 
     // 기본값 설정
     using namespace GGFGameplayTags::Equipment;
-    EquipmentType = Equipment;
-    EquipmentSlot = Slot::Slot;
+    EquipmentType = Root;
+    EquipmentSlot = Slot::Root;
 }
 
 void AGGFEquipment::SetOwner(AActor* NewOwner)
