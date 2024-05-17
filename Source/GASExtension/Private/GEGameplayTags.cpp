@@ -2,7 +2,7 @@
 
 namespace GEGameplayTags
 {
-    /* 캐릭터 상태 */
+    /* 상태 */
     namespace State
     {
         UE_DEFINE_GAMEPLAY_TAG(State, "State") // 루트
@@ -11,7 +11,7 @@ namespace GEGameplayTags
         UE_DEFINE_GAMEPLAY_TAG(Stun, "State.Stun") // 일시적으로 행동 불가
     }
 
-    /* 캐릭터 행동 */
+    /* 행동 */
     namespace Action
     {
         UE_DEFINE_GAMEPLAY_TAG(Action, "Action") // 루트
@@ -22,5 +22,11 @@ namespace GEGameplayTags
     namespace Input
     {
         UE_DEFINE_GAMEPLAY_TAG(Input, "Input") // 루트
+    }
+
+    /* 이벤트 */
+    namespace Event
+    {
+        UE_DEFINE_GAMEPLAY_TAG(Root, "Event") // 루트
     }
 }

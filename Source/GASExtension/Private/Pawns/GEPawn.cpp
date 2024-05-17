@@ -4,13 +4,18 @@
 
 #include "GEGameplayTags.h"
 #include "AbilitySystem/GEDamageableAbilitySystem.h"
+#include "Components/GEGameplayEventManager.h"
 
 FName AGEPawn::AbilitySystemName(TEXT("AbilitySystem"));
+FName AGEPawn::GameplayEventManagerName(TEXT("GameplayEventManager"));
 
 AGEPawn::AGEPawn(const FObjectInitializer& ObjectInitializer)
 {
     /* AbilitySystem */
     AbilitySystem = CreateDefaultSubobject<UGEDamageableAbilitySystem>(AbilitySystemName);
+
+    /* GameplayEventManager */
+    GameplayEventManager = CreateDefaultSubobject<UGEGameplayEventManager>(GameplayEventManagerName);
 }
 
 void AGEPawn::PostInitializeComponents()
