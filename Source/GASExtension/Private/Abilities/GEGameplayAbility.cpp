@@ -13,8 +13,8 @@ UGEGameplayAbility::UGEGameplayAbility()
     using namespace GEGameplayTags;
 
     // 기본 어빌리티 태그 설정
-    AbilityTags.AddTagFast(Action::Action);
-    ActivationOwnedTags.AddTagFast(Action::Action);
+    AbilityTags.AddTagFast(Action::Root);
+    ActivationOwnedTags.AddTagFast(Action::Root);
 
     // ActivationBlockedTags 설정
     ActivationBlockedTags.AddTagFast(State::Dead);

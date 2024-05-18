@@ -24,7 +24,7 @@ void UGEGameplayState::SetOwner(AActor* NewOwner)
 
 bool UGEGameplayState::IsValid() const
 {
-    return bValid && StateTag.MatchesTag(GEGameplayTags::State::State);
+    return bValid && StateTag.MatchesTag(GEGameplayTags::State::Root);
 }
 
 void UGEGameplayState::Enter()
