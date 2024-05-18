@@ -2,7 +2,12 @@
 
 #include "GGFEquipment.h"
 
+#include "AbilitySystemComponent.h"
+#include "AbilitySystemGlobals.h"
+#include "GameplayEffect.h"
+#include "GEBlueprintFunctionLibrary.h"
 #include "GGFEquipmentGameplayTags.h"
+#include "Interfaces/GGFWeaponAbilityInterface.h"
 
 AGGFEquipment::AGGFEquipment()
 {
@@ -17,28 +22,51 @@ AGGFEquipment::AGGFEquipment()
     EquipmentSlot = Slot::Root;
 }
 
+void AGGFEquipment::PostInitializeComponents()
+{
+    Super::PostInitializeComponents();
+
+    // 메모리 할당
+    PassiveEffectSpecHandles.Reserve(PassiveEffects.Num());
+    PassiveAbilitySpecHandles.Reserve(PassiveAbilities.Num());
+    ActiveAbilitySpecHandles.Reserve(ActiveAbilities.Num());
+}
+
 void AGGFEquipment::SetOwner(AActor* NewOwner)
 {
+    // 기존 소유자로부터 장비 장착 해제
+    if(AActor* OldOwner = GetOwner())
+    {
+        // 장비 비활성화
+        Deactivate();
+
+        // 장비 장착 해제
+        OnUnEquip();
+
+        // 레퍼런스 제거
+        OwnerAbilitySystem = nullptr;
+    }
+
+    // 소유자 변경
     Super::SetOwner(NewOwner);
 
-    // 서버 로직
-    CheckOwner();
+    // 새로운 소유자에게 장비 장착
+    if(NewOwner)
+    {
+        // 레퍼런스 할당
+        OwnerAbilitySystem = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(NewOwner);
+
+        // 장비 장착
+        OnEquip();
+    }
 }
 
 void AGGFEquipment::OnRep_Owner()
 {
     Super::OnRep_Owner();
 
-    // 클라이언트 로직
-    CheckOwner();
-}
-
-void AGGFEquipment::CheckOwner()
-{
-    if(GetOwner() == nullptr)
-        OnUnEquip();
-    else
-        OnEquip();
+    // 레퍼런스 할당
+    OwnerAbilitySystem = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(GetOwner());
 }
 
 void AGGFEquipment::Equip_Implementation(AActor* NewOwner)
@@ -53,20 +81,88 @@ void AGGFEquipment::UnEquip_Implementation()
 
 void AGGFEquipment::Activate_Implementation()
 {
-    // TODO 장비 기능 활성화 (선택 사항)
+    // 액티브 어빌리티 부여
+    GiveAbilitiesToOwner(ActiveAbilities, ActiveAbilitySpecHandles);
 }
 
 void AGGFEquipment::Deactivate_Implementation()
 {
-    // TODO 장비 기능 비활성화 (선택 사항)
+    // 액티브 어빌리티 제거
+    ClearAbilitiesFromOwner(ActiveAbilitySpecHandles);
 }
 
 void AGGFEquipment::OnEquip_Implementation()
 {
-    // TODO 장비 장착 애니메이션, 장비 스탯 적용 등
+    // TODO 장비 스탯 적용 등
+
+    // 패시브 어빌리티 부여
+    GiveAbilitiesToOwner(PassiveAbilities, PassiveAbilitySpecHandles);
 }
 
 void AGGFEquipment::OnUnEquip_Implementation()
 {
     // TODO 장비 스탯 적용 해제 등
+
+    // 패시브 어빌리티 제거
+    ClearAbilitiesFromOwner(PassiveAbilitySpecHandles);
+}
+
+void AGGFEquipment::GiveAbilitiesToOwner(const TArray<TSubclassOf<UGameplayAbility>>& AbilitiesToGive,
+    TArray<FGameplayAbilitySpecHandle>& AbilitySpecHandles)
+{
+    // 유효성 검사
+    if(!GetOwnerAbilitySystem()) return;
+
+    // AbilitySpecHandles 초기화
+    if(!AbilitySpecHandles.IsEmpty()) AbilitySpecHandles.Reset();
+
+    // 어빌리티 부여
+    AbilitySpecHandles = UGEBlueprintFunctionLibrary::GiveAbilitiesToSystem(AbilitiesToGive, GetOwnerAbilitySystem());
+
+    // 부여된 무기 어빌리티에 무기 레퍼런스 추가
+    for (const auto& AbilitySpecHandle : AbilitySpecHandles)
+    {
+        // 유효성 검사
+        FGameplayAbilitySpec* AbilitySpec = GetOwnerAbilitySystem()->FindAbilitySpecFromHandle(AbilitySpecHandle);
+        if(AbilitySpec == nullptr || AbilitySpec->Ability == nullptr) continue;
+
+        // 인스턴싱 정책 확인
+        if(AbilitySpec->Ability->GetInstancingPolicy() != EGameplayAbilityInstancingPolicy::InstancedPerActor) continue;
+
+        // 단일 어빌리티 인스턴스 가져오기
+        const TArray<UGameplayAbility*>& AbilityInstances = AbilitySpec->GetAbilityInstances();
+        UGameplayAbility* AbilityInstance = AbilityInstances[0];
+
+        // ShowDebug AbilitySystem에서 확인하기 위해 CDO를 어빌리티 인스턴스로 교체
+        AbilitySpec->Ability = AbilityInstance;
+
+        // TODO 장비 어빌리티 인터페이스로 변경
+        // 무기 레퍼런스 주입
+        if(!AbilityInstance->GetClass()->ImplementsInterface(UGGFWeaponAbilityInterface::StaticClass())) continue;
+        IGGFWeaponAbilityInterface::Execute_SetWeapon(AbilityInstance, this);
+    }
+}
+
+void AGGFEquipment::ClearAbilitiesFromOwner(TArray<FGameplayAbilitySpecHandle>& AbilitySpecHandles)
+{
+    // 유효성 검사
+    if(!GetOwnerAbilitySystem()) return;
+
+    // 어빌리티 제거
+    for (const auto& AbilitySpecHandle : AbilitySpecHandles)
+    {
+        GetOwnerAbilitySystem()->ClearAbility(AbilitySpecHandle);
+    }
+
+    // AbilitySpecHandles 초기화
+    AbilitySpecHandles.Reset();
+}
+
+void AGGFEquipment::ApplyEffectsToOwner(const TArray<TSubclassOf<UGameplayEffect>>& EffectsToApply,
+    TArray<FGameplayEffectSpecHandle>& EffectSpecHandles)
+{
+}
+
+void AGGFEquipment::RemoveEffectsFromOwner(TArray<FGameplayEffectSpecHandle>& EffectSpecHandles)
+{
 }
