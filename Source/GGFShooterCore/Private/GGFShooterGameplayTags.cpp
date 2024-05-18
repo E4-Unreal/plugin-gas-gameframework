@@ -6,6 +6,7 @@ namespace GGFGameplayTags
     namespace State
     {
         UE_DEFINE_GAMEPLAY_TAG(ADS, "State.ADS") // 조준
+        UE_DEFINE_GAMEPLAY_TAG(Combat, "State.Combat") // 전투
     }
 
     /* 입력 */

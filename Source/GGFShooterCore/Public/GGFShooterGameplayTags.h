@@ -8,6 +8,7 @@ namespace GGFGameplayTags
     namespace State
     {
         GGFSHOOTERCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(ADS) // 조준
+        GGFSHOOTERCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Combat) // 전투
     }
 
     /* 입력 */
