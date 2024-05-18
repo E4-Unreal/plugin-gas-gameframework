@@ -11,6 +11,11 @@ UGEDamageableAbilitySystem::UGEDamageableAbilitySystem()
     DefaultAttributes.AddUnique(UGEHealthAttributes::StaticClass());
 }
 
+bool UGEDamageableAbilitySystem::IsDead() const
+{
+    return HasMatchingGameplayTag(GEGameplayTags::State::Dead);
+}
+
 void UGEDamageableAbilitySystem::ServerInitializeComponent_Implementation()
 {
     Super::ServerInitializeComponent_Implementation();
@@ -36,7 +41,8 @@ void UGEDamageableAbilitySystem::BindDeadEvent()
     FOnGameplayAttributeValueChange& Delegate = GetGameplayAttributeValueChangeDelegate(UGEHealthAttributes::GetHealthAttribute());
     Delegate.AddLambda([this](const FOnAttributeChangeData& OnAttributeChangeData)
     {
-        if(FMath::IsNearlyZero(OnAttributeChangeData.NewValue))
+        // 중복 호출 방지 및 죽음 판정
+        if(!IsDead() && FMath::IsNearlyZero(OnAttributeChangeData.NewValue))
         {
             // 죽음 처리를 위한 이벤트 메서드 호출
             OnDead();
