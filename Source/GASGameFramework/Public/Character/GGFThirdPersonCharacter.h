@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GGFPlayerCharacter.h"
+#include "Interfaces/GGFAimingInterface.h"
 #include "GGFThirdPersonCharacter.generated.h"
 
 class USpringArmComponent;
@@ -13,7 +14,8 @@ class UCameraComponent;
  * 삼인칭 게임을 위한 기본 설정이 적용된 플레이어 캐릭터 클래스
  */
 UCLASS()
-class GASGAMEFRAMEWORK_API AGGFThirdPersonCharacter : public AGGFPlayerCharacter
+class GASGAMEFRAMEWORK_API AGGFThirdPersonCharacter : public AGGFPlayerCharacter,
+    public IGGFAimingInterface
 {
     GENERATED_BODY()
 
@@ -34,6 +36,9 @@ public:
 
 public:
     AGGFThirdPersonCharacter(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
+
+    /* GGFAimingInterface */
+    virtual void GetTarget_Implementation(FVector& Target) override;
 
 public:
     /* Getter */
