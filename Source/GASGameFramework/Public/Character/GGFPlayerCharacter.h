@@ -5,16 +5,18 @@
 #include "CoreMinimal.h"
 #include "Characters/GEPlayerCharacter.h"
 #include "Interfaces/GGFCharacterInterface.h"
-#include "GGFCharacter.generated.h"
+#include "GGFPlayerCharacter.generated.h"
 
 struct FInputActionValue;
 class UGGFEquipmentManager;
 
+// TODO 플레이어 캐릭터가 아닌 GGFPlayerCharacter 클래스 작성
 /*
  * 기본 움직임 및 입력 액션 바인딩만 담당
  */
 UCLASS()
-class GASGAMEFRAMEWORK_API AGGFCharacter : public AGEPlayerCharacter, public IGGFCharacterInterface
+class GASGAMEFRAMEWORK_API AGGFPlayerCharacter : public AGEPlayerCharacter,
+    public IGGFCharacterInterface
 {
     GENERATED_BODY()
 
@@ -40,7 +42,7 @@ protected:
     TMap<FGameplayTag, TObjectPtr<UAnimMontage>> EquipMontageMap;
 
 public:
-    AGGFCharacter(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
+    AGGFPlayerCharacter(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
     /* Character */
     // 앉은 상태에서 점프가 가능하도록 설정

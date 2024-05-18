@@ -1,15 +1,15 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
-#include "Character/GGFCharacter.h"
+#include "Character/GGFPlayerCharacter.h"
 
 #include "EnhancedInputSubsystems.h"
 #include "Character/Components/GGFCharacterMovement.h"
 #include "Character/Components/GGFCharacterStateMachine.h"
 #include "Components/GGFEquipmentManager.h"
 
-FName AGGFCharacter::EquipmentManagerName(TEXT("EquipmentManager"));
+FName AGGFPlayerCharacter::EquipmentManagerName(TEXT("EquipmentManager"));
 
-AGGFCharacter::AGGFCharacter(const FObjectInitializer& ObjectInitializer)
+AGGFPlayerCharacter::AGGFPlayerCharacter(const FObjectInitializer& ObjectInitializer)
 : Super(ObjectInitializer
     .SetDefaultSubobjectClass<UGGFCharacterMovement>(CharacterMovementComponentName)
     .SetDefaultSubobjectClass<UGGFCharacterStateMachine>(GameplayStateMachineName))
@@ -18,19 +18,19 @@ AGGFCharacter::AGGFCharacter(const FObjectInitializer& ObjectInitializer)
     EquipmentManager = CreateDefaultSubobject<UGGFEquipmentManager>(EquipmentManagerName);
 }
 
-bool AGGFCharacter::CanJumpInternal_Implementation() const
+bool AGGFPlayerCharacter::CanJumpInternal_Implementation() const
 {
     // 앉은 상태에서도 점프가 가능합니다.
     return JumpIsAllowedInternal();
 }
 
-bool AGGFCharacter::CanCrouch() const
+bool AGGFPlayerCharacter::CanCrouch() const
 {
     // 점프 상태에서는 앉기가 불가능합니다.
     return !GetCharacterMovement()->IsFalling() && Super::CanCrouch();
 }
 
-void AGGFCharacter::Move(const FInputActionValue& Value)
+void AGGFPlayerCharacter::Move(const FInputActionValue& Value)
 {
     // 컨트롤러만 사용할 수 있는 메서드입니다.
     if(Controller == nullptr) return;
@@ -57,7 +57,7 @@ void AGGFCharacter::Move(const FInputActionValue& Value)
     }
 }
 
-void AGGFCharacter::Look(const FInputActionValue& Value)
+void AGGFPlayerCharacter::Look(const FInputActionValue& Value)
 {
     // input is a Vector2D
     FVector2D LookAxisVector = Value.Get<FVector2D>();
@@ -70,7 +70,7 @@ void AGGFCharacter::Look(const FInputActionValue& Value)
     }
 }
 
-void AGGFCharacter::ToggleCrouch()
+void AGGFPlayerCharacter::ToggleCrouch()
 {
     if(bIsCrouched)
         UnCrouch();
@@ -78,12 +78,12 @@ void AGGFCharacter::ToggleCrouch()
         Crouch();
 }
 
-void AGGFCharacter::PlayMontage_Implementation(UAnimMontage* MontageToPlay)
+void AGGFPlayerCharacter::PlayMontage_Implementation(UAnimMontage* MontageToPlay)
 {
     NetMulticast_PlayMontage(MontageToPlay);
 }
 
-void AGGFCharacter::ChangeAnimInstance_Implementation(FGameplayTag EquipmentTag)
+void AGGFPlayerCharacter::ChangeAnimInstance_Implementation(FGameplayTag EquipmentTag)
 {
     if(AnimInstanceMap.Contains(EquipmentTag))
     {
@@ -96,7 +96,7 @@ void AGGFCharacter::ChangeAnimInstance_Implementation(FGameplayTag EquipmentTag)
     }
 }
 
-void AGGFCharacter::NetMulticast_PlayMontage_Implementation(UAnimMontage* MontageToPlay)
+void AGGFPlayerCharacter::NetMulticast_PlayMontage_Implementation(UAnimMontage* MontageToPlay)
 {
     GetMesh()->GetAnimInstance()->Montage_Play(MontageToPlay);
 }

@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GGFCharacter.h"
+#include "GGFPlayerCharacter.h"
 #include "Interfaces/GGFAimingInterface.h"
 #include "Interfaces/GGFCameraInterface.h"
 #include "GGFDefaultCharacter.generated.h"
@@ -16,7 +16,7 @@ class UCameraComponent;
  * 1인칭, 3인칭 모두 사용 가능한 캐릭터 클래스입니다.
  */
 UCLASS()
-class GASGAMEFRAMEWORK_API AGGFDefaultCharacter : public AGGFCharacter,
+class GASGAMEFRAMEWORK_API AGGFDefaultCharacter : public AGGFPlayerCharacter,
     public IGGFAimingInterface,
     public IGGFCameraInterface
 {
