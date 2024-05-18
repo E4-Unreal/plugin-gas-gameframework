@@ -38,7 +38,7 @@ void AGGFEquipment::SetOwner(AActor* NewOwner)
     if(AActor* OldOwner = GetOwner())
     {
         // 장비 비활성화
-        Deactivate();
+        Execute_Deactivate(this);
 
         // 장비 장착 해제
         OnUnEquip();
@@ -81,19 +81,26 @@ void AGGFEquipment::UnEquip_Implementation()
 
 void AGGFEquipment::Activate_Implementation()
 {
+    // 액티브 게임플레이 이펙트 적용
+    ApplyEffectsToOwner(ActiveEffects, ActiveEffectSpecHandles);
+
     // 액티브 어빌리티 부여
     GiveAbilitiesToOwner(ActiveAbilities, ActiveAbilitySpecHandles);
 }
 
 void AGGFEquipment::Deactivate_Implementation()
 {
+    // 액티브 게임플레이 이펙트 제거
+    RemoveEffectsFromOwner(ActiveEffectSpecHandles);
+
     // 액티브 어빌리티 제거
     ClearAbilitiesFromOwner(ActiveAbilitySpecHandles);
 }
 
 void AGGFEquipment::OnEquip_Implementation()
 {
-    // TODO 장비 스탯 적용 등
+    // 패시브 게임플레이 이펙트 적용
+    ApplyEffectsToOwner(PassiveEffects, PassiveEffectSpecHandles);
 
     // 패시브 어빌리티 부여
     GiveAbilitiesToOwner(PassiveAbilities, PassiveAbilitySpecHandles);
@@ -101,7 +108,8 @@ void AGGFEquipment::OnEquip_Implementation()
 
 void AGGFEquipment::OnUnEquip_Implementation()
 {
-    // TODO 장비 스탯 적용 해제 등
+    // 패시브 게임플레이 이펙트 제거
+    RemoveEffectsFromOwner(PassiveEffectSpecHandles);
 
     // 패시브 어빌리티 제거
     ClearAbilitiesFromOwner(PassiveAbilitySpecHandles);
@@ -159,10 +167,29 @@ void AGGFEquipment::ClearAbilitiesFromOwner(TArray<FGameplayAbilitySpecHandle>& 
 }
 
 void AGGFEquipment::ApplyEffectsToOwner(const TArray<TSubclassOf<UGameplayEffect>>& EffectsToApply,
-    TArray<FGameplayEffectSpecHandle>& EffectSpecHandles)
+    TArray<FActiveGameplayEffectHandle>& EffectSpecHandles)
 {
+    // 유효성 검사
+    if(!GetOwnerAbilitySystem()) return;
+
+    // EffectSpecHandles 초기화
+    if(!EffectSpecHandles.IsEmpty()) EffectSpecHandles.Reset();
+
+    // 게임플레이 이펙트 적용
+    EffectSpecHandles = UGEBlueprintFunctionLibrary::ApplyGameplayEffectsToSystem(EffectsToApply, GetOwnerAbilitySystem());
 }
 
-void AGGFEquipment::RemoveEffectsFromOwner(TArray<FGameplayEffectSpecHandle>& EffectSpecHandles)
+void AGGFEquipment::RemoveEffectsFromOwner(TArray<FActiveGameplayEffectHandle>& EffectSpecHandles)
 {
+    // 유효성 검사
+    if(!GetOwnerAbilitySystem()) return;
+
+    // 게임플레이 이펙트 제거
+    for (const auto& EffectSpecHandle : EffectSpecHandles)
+    {
+        GetOwnerAbilitySystem()->RemoveActiveGameplayEffect(EffectSpecHandle);
+    }
+
+    // EffectSpecHandles 초기화
+    EffectSpecHandles.Reset();
 }

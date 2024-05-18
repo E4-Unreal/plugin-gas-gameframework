@@ -36,33 +36,44 @@ protected:
 
     // 장비가 장착되는 즉시 소유자에게 적용될 게임플레이 이펙트 목록입니다.
     // ex) 스탯, 버프 등
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Config|Equipment")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Config|Effects|Equipment")
     TArray<TSubclassOf<UGameplayEffect>> PassiveEffects;
 
     // 장비가 장착 해제되는 즉시 적용된 게임플레이 이펙트를 제거하기 위한 핸들
-    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State|Equipment", Transient)
-    TArray<FGameplayEffectSpecHandle> PassiveEffectSpecHandles;
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State|Effects|Equipment", Transient)
+    TArray<FActiveGameplayEffectHandle> PassiveEffectSpecHandles;
 
     /* Passive Ability */
 
     // 장비가 장착되는 즉시 소유자에게 부여될 게임플레이 어빌리티 목록입니다.
     // ex) 특수 스킬 등
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Config|Equipment")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Config|Abilities|Equipment")
     TArray<TSubclassOf<UGameplayAbility>> PassiveAbilities;
 
     // 장비가 장착 해제되는 즉시 부여된 게임플레이 어빌리티를 제거하기 위한 핸들
-    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State|Equipment", Transient)
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State|Abilities|Equipment", Transient)
     TArray<FGameplayAbilitySpecHandle> PassiveAbilitySpecHandles;
+
+    /* Active Effect */
+
+    // 장비가 활성화된 상태에서만 소유자에게 적용될 게임플레이 이펙트 목록입니다.
+    // ex) 스탯, 버프 등
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Config|Effects|Equipment")
+    TArray<TSubclassOf<UGameplayEffect>> ActiveEffects;
+
+    // 장비가 비활성화될 때 적용된 게임플레이 이펙트를 제거하기 위한 핸들
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State|Effects|Equipment", Transient)
+    TArray<FActiveGameplayEffectHandle> ActiveEffectSpecHandles;
 
     /* Active Ability */
 
     // 장비가 활성화된 상태에서만 사용 가능한 게임플레이 어빌리티 목록입니다.
     // ex) 장비 전용 스킬 등
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Config|Equipment")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Config|Abilities|Equipment")
     TArray<TSubclassOf<UGameplayAbility>> ActiveAbilities;
 
     // 장비가 비활성화될 때 부여된 게임플레이 어빌리티를 제거하기 위한 핸들
-    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State|Equipment", Transient)
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State|Abilities|Equipment", Transient)
     TArray<FGameplayAbilitySpecHandle> ActiveAbilitySpecHandles;
 
 public:
@@ -103,11 +114,11 @@ protected:
 
     // 소유자에게 게임플레이 이펙트를 적용합니다.
     UFUNCTION(BlueprintCallable, Category = "Equipment|Effects")
-    virtual void ApplyEffectsToOwner(const TArray<TSubclassOf<UGameplayEffect>>& EffectsToApply, TArray<FGameplayEffectSpecHandle>& EffectSpecHandles);
+    virtual void ApplyEffectsToOwner(const TArray<TSubclassOf<UGameplayEffect>>& EffectsToApply, TArray<FActiveGameplayEffectHandle>& EffectSpecHandles);
 
     // 소유자에게 게임플레이 이펙트를 적용합니다.
     UFUNCTION(BlueprintCallable, Category = "Equipment|Effects")
-    virtual void RemoveEffectsFromOwner(TArray<FGameplayEffectSpecHandle>& EffectSpecHandles);
+    virtual void RemoveEffectsFromOwner(TArray<FActiveGameplayEffectHandle>& EffectSpecHandles);
 
 protected:
     /* Getter */
