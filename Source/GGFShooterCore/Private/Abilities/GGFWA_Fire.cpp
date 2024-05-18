@@ -6,6 +6,7 @@
 #include "Abilities/Tasks/AbilityTask_WaitInputRelease.h"
 #include "Components/GGFEquipmentManager.h"
 #include "GEGameplayTags.h"
+#include "GGFShooterGameplayTags.h"
 #include "Weapons/GGFFireArm.h"
 
 UGGFWA_Fire::UGGFWA_Fire()
@@ -14,10 +15,12 @@ UGGFWA_Fire::UGGFWA_Fire()
     NetExecutionPolicy = EGameplayAbilityNetExecutionPolicy::LocalOnly;
 
     /* 태그 설정 */
-    using namespace GEGameplayTags;
 
-    AbilityTags.AddLeafTag(Action::Attack);
-    ActivationOwnedTags.AddLeafTag(Action::Attack);
+    // 입력 태그
+    InputTag = GGFGameplayTags::Input::Fire;
+
+    AbilityTags.AddLeafTag(GEGameplayTags::Action::Attack);
+    ActivationOwnedTags.AddLeafTag(GEGameplayTags::Action::Attack);
 }
 
 bool UGGFWA_Fire::CanActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
