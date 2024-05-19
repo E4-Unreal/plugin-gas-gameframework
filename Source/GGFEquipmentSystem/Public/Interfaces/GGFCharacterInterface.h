@@ -4,9 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "UObject/Interface.h"
+#include "GameplayTags.h"
 #include "GGFCharacterInterface.generated.h"
 
-struct FGameplayTag;
 // This class does not need to be modified.
 UINTERFACE(BlueprintType, Blueprintable)
 class GGFEQUIPMENTSYSTEM_API UGGFCharacterInterface : public UInterface
