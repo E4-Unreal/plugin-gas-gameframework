@@ -4,7 +4,6 @@
 #include "Abilities/GGFGA_Montage.h"
 
 #include "Animation/AnimInstance.h"
-#include "..\..\Public\Character\Interface\GGFCharacterInterface.h"
 
 void UGGFGA_Montage::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
                                      const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
@@ -15,19 +14,16 @@ void UGGFGA_Montage::ActivateAbility(const FGameplayAbilitySpecHandle Handle, co
         return;
     }
 
-    // 인터페이스 구현 여부 검사
-    if(!ActorInfo->AvatarActor->GetClass()->ImplementsInterface(UGGFCharacterInterface::StaticClass())) return;
-
     // 지역 변수 선언
-    USkeletalMeshComponent* Mesh;
+    //USkeletalMeshComponent* Mesh;
 
     // 1인칭 애니메이션 재생
-    Mesh = IGGFCharacterInterface::Execute_GetFirstPersonMesh(ActorInfo->AvatarActor.Get());
-    PlayMontage(Mesh, FirstPersonMontage);
+    //Mesh = IGGFCharacterInterface::Execute_GetFirstPersonMesh(ActorInfo->AvatarActor.Get());
+    //PlayMontage(Mesh, FirstPersonMontage);
 
     // 3인칭 애니메이션 재생
-    Mesh = IGGFCharacterInterface::Execute_GetThirdPersonMesh(ActorInfo->AvatarActor.Get());
-    PlayMontage(Mesh, ThirdPersonMontage);
+    //Mesh = IGGFCharacterInterface::Execute_GetThirdPersonMesh(ActorInfo->AvatarActor.Get());
+    //PlayMontage(Mesh, ThirdPersonMontage);
 
     /*
      * FirstPersonLegsMesh는 일반적으로 애니메이션 블루프린트에서 CopyPose를 3인칭 메시의 움직임을 이용합니다.

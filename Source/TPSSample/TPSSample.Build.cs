@@ -28,7 +28,10 @@ public class TPSSample : ModuleRules
                 "CoreUObject",
                 "Engine",
                 "Slate",
-                "SlateCore"
+                "SlateCore",
+
+                // 애니메이션
+                "AnimGraphRuntime"
             }
         );
     }

@@ -3,11 +3,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "ActiveGameplayEffectHandle.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "GEBlueprintFunctionLibrary.generated.h"
 
 class UGameplayEffect;
 struct FGameplayAbilitySpecHandle;
+struct FActiveGameplayEffectHandle;
 
 /**
  * GASExtension 모듈에서 사용하는 블루프린트 함수 라이브러리입니다.
@@ -37,30 +39,30 @@ public:
     /* Apply GameplayEffect To Actor */
 
     UFUNCTION(BlueprintCallable, Category = "GameplayEffect|Actor")
-    static void ApplyGameplayEffectToSelf(const TSubclassOf<UGameplayEffect> EffectClass, const AActor* TargetActor);
+    static FActiveGameplayEffectHandle ApplyGameplayEffectToSelf(const TSubclassOf<UGameplayEffect> EffectClass, const AActor* TargetActor);
 
     UFUNCTION(BlueprintCallable, Category = "GameplayEffect|Actor")
-    static void ApplyGameplayEffectsToSelf(const TArray<TSubclassOf<UGameplayEffect>>& EffectClasses, const AActor* TargetActor);
+    static TArray<FActiveGameplayEffectHandle> ApplyGameplayEffectsToSelf(const TArray<TSubclassOf<UGameplayEffect>>& EffectClasses, const AActor* TargetActor);
 
     UFUNCTION(BlueprintCallable, Category = "GameplayEffect|Actor")
-    static void ApplyGameplayEffectToTarget(const TSubclassOf<UGameplayEffect> EffectClass, const AActor* Instigator, const AActor* TargetActor);
+    static FActiveGameplayEffectHandle ApplyGameplayEffectToTarget(const TSubclassOf<UGameplayEffect> EffectClass, const AActor* Instigator, const AActor* TargetActor);
 
     UFUNCTION(BlueprintCallable, Category = "GameplayEffect|Actor")
-    static void ApplyGameplayEffectsToTarget(const TArray<TSubclassOf<UGameplayEffect>>& EffectClasses, const AActor* Instigator, const AActor* TargetActor);
+    static TArray<FActiveGameplayEffectHandle> ApplyGameplayEffectsToTarget(const TArray<TSubclassOf<UGameplayEffect>>& EffectClasses, const AActor* Instigator, const AActor* TargetActor);
 
     /* Apply GameplayEffect To AbilitySystem */
 
     UFUNCTION(BlueprintCallable, Category = "GameplayEffect|System")
-    static void ApplyGameplayEffectToSystem(const TSubclassOf<UGameplayEffect> EffectClass, UAbilitySystemComponent* AbilitySystem);
+    static FActiveGameplayEffectHandle ApplyGameplayEffectToSystem(const TSubclassOf<UGameplayEffect> EffectClass, UAbilitySystemComponent* AbilitySystem);
 
     UFUNCTION(BlueprintCallable, Category = "GameplayEffect|System")
-    static void ApplyGameplayEffectsToSystem(const TArray<TSubclassOf<UGameplayEffect>>& EffectClasses, UAbilitySystemComponent* AbilitySystem);
+    static TArray<FActiveGameplayEffectHandle> ApplyGameplayEffectsToSystem(const TArray<TSubclassOf<UGameplayEffect>>& EffectClasses, UAbilitySystemComponent* AbilitySystem);
 
     UFUNCTION(BlueprintCallable, Category = "GameplayEffect|System")
-    static void ApplyGameplayEffectToTargetSystem(const TSubclassOf<UGameplayEffect> EffectClass, UAbilitySystemComponent* Instigator, UAbilitySystemComponent* TargetAbilitySystem);
+    static FActiveGameplayEffectHandle ApplyGameplayEffectToTargetSystem(const TSubclassOf<UGameplayEffect> EffectClass, UAbilitySystemComponent* InstigatorAbilitySystem, UAbilitySystemComponent* TargetAbilitySystem);
 
     UFUNCTION(BlueprintCallable, Category = "GameplayEffect|System")
-    static void ApplyGameplayEffectsToTargetSystem(const TArray<TSubclassOf<UGameplayEffect>>& EffectClasses, UAbilitySystemComponent* Instigator, UAbilitySystemComponent* TargetAbilitySystem);
+    static TArray<FActiveGameplayEffectHandle> ApplyGameplayEffectsToTargetSystem(const TArray<TSubclassOf<UGameplayEffect>>& EffectClasses, UAbilitySystemComponent* Instigator, UAbilitySystemComponent* TargetAbilitySystem);
 
     /* Give GameplayAbility To Actor */
 

@@ -47,34 +47,38 @@ void UGEBlueprintFunctionLibrary::AddAttributeSetsToSystem(const TArray<TSubclas
     }
 }
 
-void UGEBlueprintFunctionLibrary::ApplyGameplayEffectToSelf(const TSubclassOf<UGameplayEffect> EffectClass, const AActor* TargetActor)
+FActiveGameplayEffectHandle UGEBlueprintFunctionLibrary::ApplyGameplayEffectToSelf(const TSubclassOf<UGameplayEffect> EffectClass, const AActor* TargetActor)
 {
     UAbilitySystemComponent* AbilitySystem = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(TargetActor);
 
-    ApplyGameplayEffectToSystem(EffectClass, AbilitySystem);
+    return ApplyGameplayEffectToSystem(EffectClass, AbilitySystem);
 }
 
-void UGEBlueprintFunctionLibrary::ApplyGameplayEffectsToSelf(const TArray<TSubclassOf<UGameplayEffect>>& EffectClasses,
+TArray<FActiveGameplayEffectHandle> UGEBlueprintFunctionLibrary::ApplyGameplayEffectsToSelf(const TArray<TSubclassOf<UGameplayEffect>>& EffectClasses,
     const AActor* TargetActor)
 {
     UAbilitySystemComponent* AbilitySystem = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(TargetActor);
 
-    ApplyGameplayEffectsToSystem(EffectClasses, AbilitySystem);
+    return ApplyGameplayEffectsToSystem(EffectClasses, AbilitySystem);
 }
 
-void UGEBlueprintFunctionLibrary::ApplyGameplayEffectToTarget(const TSubclassOf<UGameplayEffect> EffectClass, const AActor* Instigator, const AActor* TargetActor)
+FActiveGameplayEffectHandle UGEBlueprintFunctionLibrary::ApplyGameplayEffectToTarget(const TSubclassOf<UGameplayEffect> EffectClass, const AActor* Instigator, const AActor* TargetActor)
 {
     UAbilitySystemComponent* InstigatorAbilitySystem = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(Instigator);
     UAbilitySystemComponent* TargetAbilitySystem = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(TargetActor);
 
     // Instigator가 존재하지 않는 경우 Self로 대신 실행합니다.
     if(InstigatorAbilitySystem == nullptr)
-        ApplyGameplayEffectToSystem(EffectClass, TargetAbilitySystem);
+    {
+        return ApplyGameplayEffectToSystem(EffectClass, TargetAbilitySystem);
+    }
     else
-        ApplyGameplayEffectToTargetSystem(EffectClass, InstigatorAbilitySystem, TargetAbilitySystem);
+    {
+        return ApplyGameplayEffectToTargetSystem(EffectClass, InstigatorAbilitySystem, TargetAbilitySystem);
+    }
 }
 
-void UGEBlueprintFunctionLibrary::ApplyGameplayEffectsToTarget(const TArray<TSubclassOf<UGameplayEffect>>& EffectClasses,
+TArray<FActiveGameplayEffectHandle> UGEBlueprintFunctionLibrary::ApplyGameplayEffectsToTarget(const TArray<TSubclassOf<UGameplayEffect>>& EffectClasses,
     const AActor* Instigator, const AActor* TargetActor)
 {
     UAbilitySystemComponent* InstigatorAbilitySystem = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(Instigator);
@@ -82,27 +86,35 @@ void UGEBlueprintFunctionLibrary::ApplyGameplayEffectsToTarget(const TArray<TSub
 
     // Instigator가 존재하지 않는 경우 Self로 대신 실행합니다.
     if(InstigatorAbilitySystem == nullptr)
-        ApplyGameplayEffectsToSystem(EffectClasses, TargetAbilitySystem);
+    {
+        return ApplyGameplayEffectsToSystem(EffectClasses, TargetAbilitySystem);
+    }
     else
-        ApplyGameplayEffectsToTargetSystem(EffectClasses, InstigatorAbilitySystem, TargetAbilitySystem);
+    {
+        return ApplyGameplayEffectsToTargetSystem(EffectClasses, InstigatorAbilitySystem, TargetAbilitySystem);
+    }
 }
 
-void UGEBlueprintFunctionLibrary::ApplyGameplayEffectToSystem(const TSubclassOf<UGameplayEffect> EffectClass,
+FActiveGameplayEffectHandle UGEBlueprintFunctionLibrary::ApplyGameplayEffectToSystem(const TSubclassOf<UGameplayEffect> EffectClass,
     UAbilitySystemComponent* AbilitySystem)
 {
     // 유효성 검사
-    if(EffectClass == nullptr || AbilitySystem == nullptr) return;
+    if(EffectClass == nullptr || AbilitySystem == nullptr) return FActiveGameplayEffectHandle();
 
     // Effect 적용
     const UGameplayEffect* Effect = EffectClass->GetDefaultObject<UGameplayEffect>();
-    AbilitySystem->ApplyGameplayEffectToSelf(Effect, UGameplayEffect::INVALID_LEVEL, AbilitySystem->MakeEffectContext());
+    return AbilitySystem->ApplyGameplayEffectToSelf(Effect, UGameplayEffect::INVALID_LEVEL, AbilitySystem->MakeEffectContext());
 }
 
-void UGEBlueprintFunctionLibrary::ApplyGameplayEffectsToSystem(const TArray<TSubclassOf<UGameplayEffect>>& EffectClasses,
+TArray<FActiveGameplayEffectHandle> UGEBlueprintFunctionLibrary::ApplyGameplayEffectsToSystem(const TArray<TSubclassOf<UGameplayEffect>>& EffectClasses,
     UAbilitySystemComponent* AbilitySystem)
 {
+    // 지역 변수 선언
+    TArray<FActiveGameplayEffectHandle> Results;
+    Results.Reserve(EffectClasses.Num());
+
     // 유효성 검사
-    if(AbilitySystem == nullptr || !AbilitySystem->IsOwnerActorAuthoritative()) return;
+    if(AbilitySystem == nullptr || !AbilitySystem->IsOwnerActorAuthoritative()) return Results;
 
     // Effects 적용
     for (const TSubclassOf<UGameplayEffect> EffectClass : EffectClasses)
@@ -111,30 +123,35 @@ void UGEBlueprintFunctionLibrary::ApplyGameplayEffectsToSystem(const TArray<TSub
         if(EffectClass == nullptr) continue;
 
         // Effect 적용
-        ApplyGameplayEffectToSystem(EffectClass, AbilitySystem);
+        Results.Emplace(ApplyGameplayEffectToSystem(EffectClass, AbilitySystem));
     }
+
+    return Results;
 }
 
-void UGEBlueprintFunctionLibrary::ApplyGameplayEffectToTargetSystem(const TSubclassOf<UGameplayEffect> EffectClass,
-    UAbilitySystemComponent* Instigator, UAbilitySystemComponent* TargetAbilitySystem)
+FActiveGameplayEffectHandle UGEBlueprintFunctionLibrary::ApplyGameplayEffectToTargetSystem(const TSubclassOf<UGameplayEffect> EffectClass,
+    UAbilitySystemComponent* InstigatorAbilitySystem, UAbilitySystemComponent* TargetAbilitySystem)
 {
+    // 유효성 검사
+    if(EffectClass == nullptr || TargetAbilitySystem == nullptr) return FActiveGameplayEffectHandle();
+
     // Instigator AbilitySystem 획득 및 유효성 검사
-    if(Instigator == nullptr)
-    {
-        ApplyGameplayEffectToSystem(EffectClass, TargetAbilitySystem);
-        return;
-    }
+    if(InstigatorAbilitySystem == nullptr) return ApplyGameplayEffectToSystem(EffectClass, TargetAbilitySystem);
 
     // Instigator가 Target에게 Effect 적용
     UGameplayEffect* Effect = EffectClass->GetDefaultObject<UGameplayEffect>();
-    Instigator->ApplyGameplayEffectToTarget(Effect, TargetAbilitySystem);
+    return InstigatorAbilitySystem->ApplyGameplayEffectToTarget(Effect, TargetAbilitySystem);
 }
 
-void UGEBlueprintFunctionLibrary::ApplyGameplayEffectsToTargetSystem(const TArray<TSubclassOf<UGameplayEffect>>& EffectClasses,
+TArray<FActiveGameplayEffectHandle> UGEBlueprintFunctionLibrary::ApplyGameplayEffectsToTargetSystem(const TArray<TSubclassOf<UGameplayEffect>>& EffectClasses,
     UAbilitySystemComponent* Instigator, UAbilitySystemComponent* TargetAbilitySystem)
 {
+    // 지역 변수 선언
+    TArray<FActiveGameplayEffectHandle> Results;
+    Results.Reserve(EffectClasses.Num());
+
     // 서버에서만 호출
-    if(Instigator == nullptr || !Instigator->IsOwnerActorAuthoritative()) return;
+    if(Instigator == nullptr || !Instigator->IsOwnerActorAuthoritative()) return Results;
 
     for (const TSubclassOf<UGameplayEffect> EffectClass : EffectClasses)
     {
@@ -142,8 +159,10 @@ void UGEBlueprintFunctionLibrary::ApplyGameplayEffectsToTargetSystem(const TArra
         if(EffectClass == nullptr) continue;
 
         // Effect 적용
-        ApplyGameplayEffectToTargetSystem(EffectClass, Instigator, TargetAbilitySystem);
+        Results.Emplace(ApplyGameplayEffectToTargetSystem(EffectClass, Instigator, TargetAbilitySystem));
     }
+
+    return Results;
 }
 
 FGameplayAbilitySpecHandle UGEBlueprintFunctionLibrary::GiveAbilityToTarget(const TSubclassOf<UGameplayAbility> AbilityClass, const AActor* Target)

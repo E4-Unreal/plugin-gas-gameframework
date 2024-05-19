@@ -1,7 +1,7 @@
 {
 	"FileVersion": 3,
-	"Version": 6,
-	"VersionName": "0.2.1",
+	"Version": 7,
+	"VersionName": "0.2.2",
 	"FriendlyName": "GAS GameFramework",
 	"Description": "GAS를 기반으로 멀티플레이 게임 제작을 위한 프레임워크입니다.",
 	"Category": "GAS",
@@ -38,6 +38,16 @@
 			"Name": "TPSSample",
 			"Type": "Runtime",
 			"LoadingPhase": "Default"
+		},
+		{
+			"Name": "GGFEquipmentSystem",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		},
+		{
+			"Name": "GGFShooterCore",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
 		}
 	],
 	"Plugins": [
@@ -54,7 +64,7 @@
 			"Enabled": true
 		},
 		{
-			"Name": "ParagonBelica",
+			"Name": "LevelPrototyping",
 			"Enabled": true
 		},
 		{
@@ -62,7 +72,11 @@
 			"Enabled": true
 		},
 		{
-			"Name": "LevelPrototyping",
+			"Name": "LyraContent",
+			"Enabled": true
+		},
+		{
+			"Name": "ParagonBelica",
 			"Enabled": true
 		}
 	],

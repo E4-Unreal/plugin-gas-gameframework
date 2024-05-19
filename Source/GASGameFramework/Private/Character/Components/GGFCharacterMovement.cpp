@@ -21,7 +21,7 @@ UGGFCharacterMovement::UGGFCharacterMovement()
 
     FallingTag = Falling;
     CrouchingTag = Crouching;
-    MovingTag = Crouching;
+    MovingTag = Moving;
 
     // 일반 설정
     GravityScale = 1.5f;
@@ -67,20 +67,18 @@ void UGGFCharacterMovement::OnMovementUpdated(float DeltaSeconds, const FVector&
 {
     if(OwnerAbilitySystem.IsValid())
     {
-        using namespace GGFGameplayTags::State;
-
         const float GroundSpeed = FVector(Velocity.X, Velocity.Y, 0.f).Length();
 
         // 땅에서 최소한의 속도보다 빠르게 움직이고 있으며 가속도(입력)가 존재하는 경우 Moving 태그 부착
         if(IsMovingOnGround() && !GetCurrentAcceleration().IsNearlyZero() && GroundSpeed > MinAnalogWalkSpeed)
         {
-            if(!OwnerAbilitySystem->HasMatchingGameplayTag(Moving))
-                OwnerAbilitySystem->AddLooseGameplayTag(Moving);
+            if(!OwnerAbilitySystem->HasMatchingGameplayTag(MovingTag))
+                OwnerAbilitySystem->AddLooseGameplayTag(MovingTag);
         }
         else
         {
-            if(OwnerAbilitySystem->HasMatchingGameplayTag(Moving))
-                OwnerAbilitySystem->RemoveLooseGameplayTag(Moving);
+            if(OwnerAbilitySystem->HasMatchingGameplayTag(MovingTag))
+                OwnerAbilitySystem->RemoveLooseGameplayTag(MovingTag);
         }
     }
 

@@ -4,13 +4,23 @@
 
 #include "GEGameplayTags.h"
 #include "AbilitySystem/GEDamageableAbilitySystem.h"
+#include "Components/GEGameplayEventManager.h"
+#include "Components/GEGameplayStateMachine.h"
 
 FName AGECharacter::AbilitySystemName(TEXT("AbilitySystem"));
+FName AGECharacter::GameplayEventManagerName(TEXT("GameplayEventManager"));
+FName AGECharacter::GameplayStateMachineName(TEXT("GameplayStateMachine"));
 
 AGECharacter::AGECharacter(const FObjectInitializer& ObjectInitializer)
 {
     /* AbilitySystem */
     AbilitySystem = CreateDefaultSubobject<UGEDamageableAbilitySystem>(AbilitySystemName);
+
+    /* GameplayEventManager */
+    GameplayEventManager = CreateDefaultSubobject<UGEGameplayEventManager>(GameplayEventManagerName);
+
+    /* GameplayStateMachine */
+    GameplayStateMachine = CreateDefaultSubobject<UGEGameplayStateMachine>(GameplayStateMachineName);
 }
 
 void AGECharacter::PostInitializeComponents()

@@ -3,6 +3,7 @@
 #include "AbilitySystem/GEAbilitySystem.h"
 
 #include "GEBlueprintFunctionLibrary.h"
+#include "GEGameplayTags.h"
 
 UGEAbilitySystem::UGEAbilitySystem()
 {
@@ -20,9 +21,25 @@ void UGEAbilitySystem::InitializeComponent()
     }
 }
 
+int32 UGEAbilitySystem::HandleGameplayEvent(FGameplayTag EventTag, const FGameplayEventData* Payload)
+{
+    // 멀티캐스트 게임플레이 이벤트 사용 설정 및 서버 액터인지 확인
+    if(bUseMulticastGameplayEvent && IsOwnerActorAuthoritative() && EventTag.MatchesTag(GEGameplayTags::Event::Root))
+    {
+        NetMulticast_HandleGameplayEvent(EventTag);
+    }
+
+    return Super::HandleGameplayEvent(EventTag, Payload);
+}
+
 void UGEAbilitySystem::ServerInitializeComponent_Implementation()
 {
     InitializeAbilitySystem();
+}
+
+void UGEAbilitySystem::NetMulticast_HandleGameplayEvent_Implementation(FGameplayTag EventTag)
+{
+    OnGameplayEventInvoked.Broadcast(EventTag);
 }
 
 void UGEAbilitySystem::InitializeAbilitySystem()

@@ -17,6 +17,10 @@ class GASEXTENSION_API UGEDamageableAbilitySystem : public UGEAbilitySystem
 public:
     UGEDamageableAbilitySystem();
 
+    /* API */
+    UFUNCTION(BlueprintPure)
+    bool IsDead() const;
+
     /* GEAbilitySystem */
 
     virtual void ServerInitializeComponent_Implementation() override;
