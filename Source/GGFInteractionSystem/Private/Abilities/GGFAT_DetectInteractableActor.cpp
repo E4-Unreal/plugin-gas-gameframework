@@ -70,6 +70,18 @@ void UGGFAT_DetectInteractableActor::Scan(float DeltaTime)
             // 무기나 장비 등으로 인해 시야를 가리는 형상 방지
             if(OutHit.GetActor()->GetOwner() == AvatarActor) continue;
 
+            // 다른 플레이어 폰인 경우 추가 검사 진행
+            if(APawn* OtherPawn = Cast<APawn>(OutHit.GetActor()))
+            {
+                if(OtherPawn->IsPlayerControlled()) continue;
+            }
+
+            // 다른 플레이어 캐릭터가 소유권을 가진 액터인 경우 추가 검사 진행
+            if(APawn* OtherPawnOwner = Cast<APawn>(OutHit.GetActor()->GetOwner()))
+            {
+                if(OtherPawnOwner->IsPlayerControlled()) continue;
+            }
+
             // 새로운 상호작용 가능한 오브젝트 설정
             if(OutHit.GetActor()->Implements<UGGFInteractableInterface>())
             {
