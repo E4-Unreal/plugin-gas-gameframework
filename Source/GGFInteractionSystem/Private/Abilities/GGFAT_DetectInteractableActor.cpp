@@ -44,52 +44,53 @@ void UGGFAT_DetectInteractableActor::Scan(float DeltaTime)
     float Offset = (AvatarActor->GetActorLocation() - ViewInfo.Location).Size();
     const FVector TraceStart = ViewInfo.Location + Offset * ViewInfo.Rotation.Vector();
     const FVector TraceEnd = TraceStart + MaxDistance * ViewInfo.Rotation.Vector();
-    ECollisionChannel CollisionChannel = ECC_Visibility;
+    FCollisionObjectQueryParams CollisionObjectQueryParams(FCollisionObjectQueryParams::AllObjects);
     TArray<FHitResult> OutHits;
-    FCollisionQueryParams Params;
-    Params.AddIgnoredActor(AvatarActor);
+    FCollisionQueryParams CollisionQueryParams;
+    CollisionQueryParams.AddIgnoredActor(AvatarActor);
 
     // 멀티 라인 트레이스
-    const bool bHit = World->SweepMultiByChannel(OutHits, TraceStart, TraceEnd, FQuat::Identity, CollisionChannel, FCollisionShape::MakeSphere(SphereRadius), Params);
+    World->SweepMultiByObjectType(OutHits, TraceStart, TraceEnd, FQuat::Identity, CollisionObjectQueryParams, FCollisionShape::MakeSphere(SphereRadius), CollisionQueryParams);
 
 #if WITH_EDITOR
     // 디버그 시각화
     if(bShowDebug)
     {
+        bool bHit = OutHits.Num() > 0;
         DrawDebugSphereTraceMulti(World, TraceStart, TraceEnd, SphereRadius, EDrawDebugTrace::ForOneFrame, bHit, OutHits, FLinearColor::Red, FLinearColor::Green, 1);
     }
 #endif
 
     // 상호작용 가능한 오브젝트 탐색
     AActor* InteractableActor = nullptr;
-    if(bHit)
+    for (const FHitResult& OutHit : OutHits)
     {
-        for (const FHitResult& OutHit : OutHits)
+        // Visibility 채널을 무시하는 경우 추가 검사 진행
+        if(OutHit.GetComponent()->GetCollisionResponseToChannel(ECC_Visibility) == ECR_Ignore) continue;
+
+        // Owner와 관련된 액터인 경우 추가 검사 진행
+        // 무기나 장비 등으로 인해 시야를 가리는 형상 방지
+        if(OutHit.GetActor()->GetOwner() == AvatarActor) continue;
+
+        // 다른 플레이어 폰인 경우 추가 검사 진행
+        if(APawn* OtherPawn = Cast<APawn>(OutHit.GetActor()))
         {
-            // Owner와 관련된 액터인 경우 추가 검사 진행
-            // 무기나 장비 등으로 인해 시야를 가리는 형상 방지
-            if(OutHit.GetActor()->GetOwner() == AvatarActor) continue;
-
-            // 다른 플레이어 폰인 경우 추가 검사 진행
-            if(APawn* OtherPawn = Cast<APawn>(OutHit.GetActor()))
-            {
-                if(OtherPawn->IsPlayerControlled()) continue;
-            }
-
-            // 다른 플레이어 캐릭터가 소유권을 가진 액터인 경우 추가 검사 진행
-            if(APawn* OtherPawnOwner = Cast<APawn>(OutHit.GetActor()->GetOwner()))
-            {
-                if(OtherPawnOwner->IsPlayerControlled()) continue;
-            }
-
-            // 새로운 상호작용 가능한 오브젝트 설정
-            if(OutHit.GetActor()->Implements<UGGFInteractableInterface>())
-            {
-                InteractableActor = OutHit.GetActor();
-            }
-
-            break;
+            if(OtherPawn->IsPlayerControlled()) continue;
         }
+
+        // 다른 플레이어 캐릭터가 소유권을 가진 액터인 경우 추가 검사 진행
+        if(APawn* OtherPawnOwner = Cast<APawn>(OutHit.GetActor()->GetOwner()))
+        {
+            if(OtherPawnOwner->IsPlayerControlled()) continue;
+        }
+
+        // 새로운 상호작용 가능한 오브젝트 설정
+        if(OutHit.GetActor()->Implements<UGGFInteractableInterface>())
+        {
+            InteractableActor = OutHit.GetActor();
+        }
+
+        break;
     }
 
     // 이벤트 호출
