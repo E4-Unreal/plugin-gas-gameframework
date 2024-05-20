@@ -2,6 +2,9 @@
 
 #include "GGFInteractableActor.h"
 
+#include "AbilitySystemComponent.h"
+#include "AbilitySystemGlobals.h"
+#include "GGFInteractionGameplayTags.h"
 #include "Logging.h"
 #include "Components/BoxComponent.h"
 #include "Components/WidgetComponent.h"
@@ -68,11 +71,23 @@ void AGGFInteractableActor::PostInitializeComponents()
 void AGGFInteractableActor::OnLocalPlayerPawnBeginOverlap_Implementation(APawn* LocalPlayerPawn)
 {
     EnableOutline(true);
+
+    // Interactable 태그 부여
+    if(UAbilitySystemComponent* AbilitySystem = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(LocalPlayerPawn))
+    {
+        AbilitySystem->AddLooseGameplayTag(GGFGameplayTags::State::Interactable);
+    }
 }
 
 void AGGFInteractableActor::OnLocalPlayerPawnEndOverlap_Implementation(APawn* LocalPlayerPawn)
 {
     EnableOutline(false);
+
+    // Interactable 태그 제거
+    if(UAbilitySystemComponent* AbilitySystem = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(LocalPlayerPawn))
+    {
+        AbilitySystem->RemoveLooseGameplayTag(GGFGameplayTags::State::Interactable);
+    }
 }
 
 void AGGFInteractableActor::EnableOutline_Implementation(bool bEnable)

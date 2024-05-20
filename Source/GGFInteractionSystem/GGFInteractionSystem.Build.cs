@@ -17,7 +17,10 @@ public class GGFInteractionSystem : ModuleRules
                 // GAS
                 "GameplayTags",
                 "GameplayTasks",
-                "GameplayAbilities"
+                "GameplayAbilities",
+
+                // GASExtension
+                "GASExtension"
             }
         );
 
