@@ -14,6 +14,10 @@ FName AGGFInteractableActor::InteractionWidgetName(TEXT("InteractionWidget"));
 AGGFInteractableActor::AGGFInteractableActor()
     : InteractableAreaMargin(FVector(100, 100, 50))
 {
+    /* 기본 설정 */
+    // 리플리케이트 설정
+    bReplicates = true;
+
     /* DefaultSceneComponent */
     // 서브 오브젝트 생성
     DefaultScene = CreateDefaultSubobject<USceneComponent>(TEXT("DefaultScene"));
@@ -71,23 +75,11 @@ void AGGFInteractableActor::PostInitializeComponents()
 void AGGFInteractableActor::OnLocalPlayerPawnBeginOverlap_Implementation(APawn* LocalPlayerPawn)
 {
     EnableOutline(true);
-
-    // Interactable 태그 부여
-    if(UAbilitySystemComponent* AbilitySystem = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(LocalPlayerPawn))
-    {
-        AbilitySystem->AddLooseGameplayTag(GGFGameplayTags::State::Interactable);
-    }
 }
 
 void AGGFInteractableActor::OnLocalPlayerPawnEndOverlap_Implementation(APawn* LocalPlayerPawn)
 {
     EnableOutline(false);
-
-    // Interactable 태그 제거
-    if(UAbilitySystemComponent* AbilitySystem = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(LocalPlayerPawn))
-    {
-        AbilitySystem->RemoveLooseGameplayTag(GGFGameplayTags::State::Interactable);
-    }
 }
 
 void AGGFInteractableActor::EnableOutline_Implementation(bool bEnable)
@@ -147,6 +139,12 @@ void AGGFInteractableActor::OnInteractableAreaBeginOverlap(UPrimitiveComponent* 
             OnLocalPlayerPawnBeginOverlap(OtherPawn);
         }
     }
+
+    // Interactable 태그 부여
+    if(UAbilitySystemComponent* AbilitySystem = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(OtherActor))
+    {
+        AbilitySystem->AddLooseGameplayTag(GGFGameplayTags::State::Interactable);
+    }
 }
 
 void AGGFInteractableActor::OnInteractableAreaEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
@@ -159,6 +157,12 @@ void AGGFInteractableActor::OnInteractableAreaEndOverlap(UPrimitiveComponent* Ov
         {
             OnLocalPlayerPawnEndOverlap(OtherPawn);
         }
+    }
+
+    // Interactable 태그 제거
+    if(UAbilitySystemComponent* AbilitySystem = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(OtherActor))
+    {
+        AbilitySystem->RemoveLooseGameplayTag(GGFGameplayTags::State::Interactable);
     }
 }
 
