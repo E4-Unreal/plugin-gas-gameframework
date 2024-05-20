@@ -10,6 +10,9 @@ public class GGFInteractionSystem : ModuleRules
             new string[]
             {
                 "Core",
+
+                // UI
+                "UMG"
             }
         );
 
