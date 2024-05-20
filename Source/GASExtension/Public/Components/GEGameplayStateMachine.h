@@ -44,16 +44,30 @@ public:
     UFUNCTION(BlueprintPure)
     FORCEINLINE bool IsNotValid() const { return !IsValid(); }
 
+    UFUNCTION(BlueprintCallable)
     virtual void Enter();
 
+    UFUNCTION(BlueprintCallable)
+    virtual void Tick(float DeltaTime);
+
+    UFUNCTION(BlueprintCallable)
     virtual void Exit();
 
+    UFUNCTION(BlueprintPure)
+    bool IsActive() const { return bActivated; }
+
+    /* 이벤트 메서드 */
+
+    // AbilitySystemComponent::RegisterGameplayTagEvent
     UFUNCTION()
     virtual void OnGameplayEffectTagCountChanged(const FGameplayTag Tag, int32 Count);
 
 protected:
     UFUNCTION(BlueprintNativeEvent)
     void OnEnter();
+
+    UFUNCTION(BlueprintNativeEvent)
+    void OnTick(float DeltaTime);
 
     UFUNCTION(BlueprintNativeEvent)
     void OnExit();
@@ -94,19 +108,24 @@ class GASEXTENSION_API UGEGameplayStateMachine : public UActorComponent
     GENERATED_BODY()
 
 protected:
-    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State")
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State", Transient)
     bool bValid;
 
+    // 사용할 모든 상태 클래스
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config")
-    TArray<TSubclassOf<UGEGameplayState>> GameplayStates;
+    TArray<TSubclassOf<UGEGameplayState>> StateClasses;
 
-    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State")
-    TArray<TObjectPtr<UGEGameplayState>> GameplayStateInstances;
+    // 생성된 모든 상태 인스턴스 목록
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State", Transient)
+    TArray<TObjectPtr<UGEGameplayState>> StateInstances;
 
 public:
     UGEGameplayStateMachine();
 
+    /* ActorComponent */
+
     virtual void InitializeComponent() override;
+    virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 protected:
     virtual void CreateGameplayStateInstances();

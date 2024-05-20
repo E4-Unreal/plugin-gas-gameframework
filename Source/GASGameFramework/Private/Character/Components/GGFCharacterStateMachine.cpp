@@ -6,5 +6,5 @@
 
 UGGFCharacterStateMachine::UGGFCharacterStateMachine()
 {
-    GameplayStates.AddUnique(UGGFCharacterState_Dead::StaticClass());
+    StateClasses.AddUnique(UGGFCharacterState_Dead::StaticClass());
 }
