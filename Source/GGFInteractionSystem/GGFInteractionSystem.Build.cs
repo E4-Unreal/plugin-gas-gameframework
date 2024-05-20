@@ -12,7 +12,12 @@ public class GGFInteractionSystem : ModuleRules
                 "Core",
 
                 // UI
-                "UMG"
+                "UMG",
+
+                // GAS
+                "GameplayTags",
+                "GameplayTasks",
+                "GameplayAbilities"
             }
         );
 
