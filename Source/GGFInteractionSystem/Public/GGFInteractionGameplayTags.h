@@ -9,4 +9,10 @@ namespace GGFGameplayTags
     {
         GGFINTERACTIONSYSTEM_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Interactable) // 상호작용 가능한 상태
     }
+
+    /* 입력 */
+    namespace Input
+    {
+        GGFINTERACTIONSYSTEM_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Interact) // 상호작용
+    }
 }

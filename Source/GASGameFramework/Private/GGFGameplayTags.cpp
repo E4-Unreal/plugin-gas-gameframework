@@ -12,11 +12,4 @@ namespace GGFGameplayTags
         UE_DEFINE_GAMEPLAY_TAG(Falling, "State.Falling") // 점프 혹은 낙하
         UE_DEFINE_GAMEPLAY_TAG(Crouching, "State.Crouching") // 앉기
     }
-
-    /* 입력 */
-    namespace Input
-    {
-        UE_DEFINE_GAMEPLAY_TAG(Root, "Input") // 루트
-        UE_DEFINE_GAMEPLAY_TAG(Interact, "Input.Interact") // 상호작용
-    }
 }
