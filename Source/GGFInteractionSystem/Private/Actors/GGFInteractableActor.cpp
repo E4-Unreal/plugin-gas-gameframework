@@ -7,6 +7,7 @@
 #include "GGFInteractionGameplayTags.h"
 #include "Components/BoxComponent.h"
 #include "Components/WidgetComponent.h"
+#include "Interfaces/GGFInteractionInfoWidgetInterface.h"
 
 FName AGGFInteractableActor::InteractionWidgetName(TEXT("InteractionWidget"));
 
@@ -46,6 +47,13 @@ AGGFInteractableActor::AGGFInteractableActor()
 
     // 계층 설정
     DisplayMesh->SetupAttachment(RootComponent);
+
+    /* 블루프린트 에셋 기본 할당 */
+    static ConstructorHelpers::FClassFinder<UUserWidget> InteractionInfoWidgetClassFinder(TEXT("/GASGameFramework/InteractionSystem/WBP_InteractionInfo_Sample.WBP_InteractionInfo_Sample_C"));
+    if (InteractionInfoWidgetClassFinder.Succeeded())
+    {
+        InteractionWidget->SetWidgetClass(InteractionInfoWidgetClassFinder.Class);
+    }
 }
 
 void AGGFInteractableActor::PostInitializeComponents()
@@ -58,6 +66,12 @@ void AGGFInteractableActor::PostInitializeComponents()
 
     // 위치 조정
     AdjustToDisplayMesh();
+
+    // 위젯 컴포넌트 초기화
+    InteractionWidget->InitWidget();
+
+    // UI 설정
+    if(InteractionWidget->GetWidget()) InitWidget(InteractionWidget->GetWidget());
 }
 
 void AGGFInteractableActor::OnLocalPlayerPawnActivate_Implementation(APawn* LocalPlayerPawn)
@@ -107,6 +121,15 @@ void AGGFInteractableActor::OnInteractableAreaEndOverlap(UPrimitiveComponent* Ov
         {
             OnLocalPlayerPawnEndOverlap(OtherPawn);
         }
+    }
+}
+
+void AGGFInteractableActor::InitWidget_Implementation(UUserWidget* InteractionInfoWidget)
+{
+    if(InteractionInfoWidget->Implements<UGGFInteractionInfoWidgetInterface>())
+    {
+        IGGFInteractionInfoWidgetInterface::Execute_SetDisplayName(InteractionInfoWidget, FText::FromName(DisplayName));
+        IGGFInteractionInfoWidgetInterface::Execute_SetInteractionInfo(InteractionInfoWidget, FText::FromString(InteractionInfo));
     }
 }
 

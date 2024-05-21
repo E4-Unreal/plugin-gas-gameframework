@@ -45,6 +45,14 @@ protected:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config")
     FVector InteractableAreaMargin;
 
+    // UI에 표시할 오브젝트 이름
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|UI")
+    FName DisplayName = "Interactable Object";
+
+    // UI에 표시할 상호작용에 대한 설명
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|UI")
+    FString InteractionInfo = "Interact";
+
 public:
     AGGFInteractableActor();
 
@@ -100,6 +108,9 @@ protected:
     // DisplayMesh에 따라 다른 컴포넌트들의 위치 및 크기 자동 조정
     UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
     void AdjustToDisplayMesh();
+
+    UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+    void InitWidget(UUserWidget* InteractionInfoWidget);
 
 protected:
     /* Getter */
