@@ -83,6 +83,10 @@
 		{
 			"Name": "ParagonBelica",
 			"Enabled": true
+		},
+		{
+			"Name": "E4Effects",
+			"Enabled": true
 		}
 	],
 	"Installed": false
