@@ -3,18 +3,20 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Actor.h"
-#include "Interfaces/GGFInteractableInterface.h"
+#include "GGFInteractableActorBase.h"
 #include "GGFInteractableActor.generated.h"
 
 class UBoxComponent;
 class UWidgetComponent;
 
 /**
- * 상호작용이 가능한 액터 클래스입니다.
+ * InteractableArea 범위 안에 들어온 모든 플레이어 폰에 Interactable 상태 태그를 부여합니다.
+ * 추가로 로컬 플레이어 폰인 경우에는 외곽선과 UI를 표시합니다.
+ *
+ * 수집할 수 있는 아이템이나 버튼처럼 단순한 상호작용 오브젝트에 적합합니다.
  */
 UCLASS()
-class GGFINTERACTIONSYSTEM_API AGGFInteractableActor : public AActor, public IGGFInteractableInterface
+class GGFINTERACTIONSYSTEM_API AGGFInteractableActor : public AGGFInteractableActorBase
 {
     GENERATED_BODY()
 
@@ -25,10 +27,6 @@ public:
 
 private:
     /* 컴포넌트 */
-
-    // 루트 컴포넌트
-    UPROPERTY(VisibleAnywhere, BlueprintGetter = "GetDefaultScene", Category = "Component")
-    TObjectPtr<USceneComponent> DefaultScene;
 
     // 상호작용 가능한 범위
     UPROPERTY(VisibleAnywhere, BlueprintGetter = "GetInteractableArea", Category = "Component")
@@ -56,12 +54,21 @@ public:
 
     /* GGFInteractableInterface */
 
+    // 외곽선 및 UI 표시
     virtual bool Activate_Implementation(AActor* OtherActor) override;
+
+    // 외곽선 및 UI 숨기기
     virtual bool Deactivate_Implementation(AActor* OtherActor) override;
-    virtual bool StartInteraction_Implementation(AActor* OtherActor) override;
-    virtual bool StopInteraction_Implementation(AActor* OtherActor) override;
 
 protected:
+    // 플레이어 폰이 상호작용 가능 범위에 들어온 경우
+    UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+    void OnPlayerPawnBeginOverlap(APawn* PlayerPawn);
+
+    // 플레이어 폰이 상호작용 가능 범위에서 벗어난 경우
+    UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+    void OnPlayerPawnEndOverlap(APawn* PlayerPawn);
+
     // 로컬 플레이어 폰이 상호작용 가능 범위에 들어온 경우
     UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
     void OnLocalPlayerPawnBeginOverlap(APawn* LocalPlayerPawn);
@@ -94,9 +101,6 @@ protected:
 
 protected:
     /* Getter */
-
-    UFUNCTION(BlueprintGetter)
-    FORCEINLINE USceneComponent* GetDefaultScene() const { return DefaultScene; }
 
     UFUNCTION(BlueprintGetter)
     FORCEINLINE UBoxComponent* GetInteractableArea() const { return InteractableArea; }

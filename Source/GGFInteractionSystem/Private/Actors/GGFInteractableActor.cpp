@@ -1,11 +1,10 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
-#include "GGFInteractableActor.h"
+#include "Actors/GGFInteractableActor.h"
 
 #include "AbilitySystemComponent.h"
 #include "AbilitySystemGlobals.h"
 #include "GGFInteractionGameplayTags.h"
-#include "Logging.h"
 #include "Components/BoxComponent.h"
 #include "Components/WidgetComponent.h"
 
@@ -14,17 +13,6 @@ FName AGGFInteractableActor::InteractionWidgetName(TEXT("InteractionWidget"));
 AGGFInteractableActor::AGGFInteractableActor()
     : InteractableAreaMargin(FVector(100, 100, 50))
 {
-    /* 기본 설정 */
-    // 리플리케이트 설정
-    bReplicates = true;
-
-    /* DefaultSceneComponent */
-    // 서브 오브젝트 생성
-    DefaultScene = CreateDefaultSubobject<USceneComponent>(TEXT("DefaultScene"));
-
-    // 계층 설정
-    SetRootComponent(DefaultScene);
-
     /* InteractableArea */
     // 서브 오브젝트 생성
     InteractableArea = CreateDefaultSubobject<UBoxComponent>(TEXT("InteractableArea"));
@@ -72,13 +60,73 @@ void AGGFInteractableActor::PostInitializeComponents()
     AdjustToDisplayMesh();
 }
 
+void AGGFInteractableActor::OnInteractableAreaBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+                                                           UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+    // 폰만 감지
+    APawn* OtherPawn = Cast<APawn>(OtherActor);
+    if(OtherPawn == nullptr) return;
+
+    // 플레이어 여부 확인
+    if(OtherPawn->IsPlayerControlled())
+    {
+        OnPlayerPawnBeginOverlap(OtherPawn);
+
+        // 로컬 플레이어 여부 확인
+        if(OtherPawn->IsLocallyControlled())
+        {
+            OnLocalPlayerPawnBeginOverlap(OtherPawn);
+        }
+    }
+}
+
+void AGGFInteractableActor::OnInteractableAreaEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+                                                         UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+    // 폰만 감지
+    APawn* OtherPawn = Cast<APawn>(OtherActor);
+    if(OtherPawn == nullptr) return;
+
+    // 플레이어 여부 확인
+    if(OtherPawn->IsPlayerControlled())
+    {
+        OnPlayerPawnEndOverlap(OtherPawn);
+
+        // 로컬 플레이어 여부 확인
+        if(OtherPawn->IsLocallyControlled())
+        {
+            OnLocalPlayerPawnEndOverlap(OtherPawn);
+        }
+    }
+}
+
+void AGGFInteractableActor::OnPlayerPawnBeginOverlap_Implementation(APawn* PlayerPawn)
+{
+    // Interactable 태그 부여
+    if(UAbilitySystemComponent* AbilitySystem = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(PlayerPawn))
+    {
+        AbilitySystem->AddLooseGameplayTag(GGFGameplayTags::State::Interactable);
+    }
+}
+
+void AGGFInteractableActor::OnPlayerPawnEndOverlap_Implementation(APawn* PlayerPawn)
+{
+    // Interactable 태그 제거
+    if(UAbilitySystemComponent* AbilitySystem = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(PlayerPawn))
+    {
+        AbilitySystem->RemoveLooseGameplayTag(GGFGameplayTags::State::Interactable);
+    }
+}
+
 void AGGFInteractableActor::OnLocalPlayerPawnBeginOverlap_Implementation(APawn* LocalPlayerPawn)
 {
+    // 외곽선 활성화
     EnableOutline(true);
 }
 
 void AGGFInteractableActor::OnLocalPlayerPawnEndOverlap_Implementation(APawn* LocalPlayerPawn)
 {
+    // 외곽선 비활성화
     EnableOutline(false);
 }
 
@@ -128,46 +176,11 @@ void AGGFInteractableActor::AdjustToDisplayMesh_Implementation()
     }
 }
 
-void AGGFInteractableActor::OnInteractableAreaBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-                                                           UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
-{
-    // 로컬 플레이어만 감지
-    if(APawn* OtherPawn = Cast<APawn>(OtherActor))
-    {
-        if(OtherPawn->Controller && OtherPawn->Controller->IsLocalPlayerController())
-        {
-            OnLocalPlayerPawnBeginOverlap(OtherPawn);
-        }
-    }
-
-    // Interactable 태그 부여
-    if(UAbilitySystemComponent* AbilitySystem = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(OtherActor))
-    {
-        AbilitySystem->AddLooseGameplayTag(GGFGameplayTags::State::Interactable);
-    }
-}
-
-void AGGFInteractableActor::OnInteractableAreaEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-                                                         UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
-{
-    // 로컬 플레이어만 감지
-    if(APawn* OtherPawn = Cast<APawn>(OtherActor))
-    {
-        if(OtherPawn->Controller && OtherPawn->Controller->IsLocalPlayerController())
-        {
-            OnLocalPlayerPawnEndOverlap(OtherPawn);
-        }
-    }
-
-    // Interactable 태그 제거
-    if(UAbilitySystemComponent* AbilitySystem = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(OtherActor))
-    {
-        AbilitySystem->RemoveLooseGameplayTag(GGFGameplayTags::State::Interactable);
-    }
-}
-
 bool AGGFInteractableActor::Activate_Implementation(AActor* OtherActor)
 {
+    // 상위 클래스에서 문제가 발생한 경우
+    if(!Super::Activate_Implementation(OtherActor)) return false;
+
     // 로컬 플레이어만 감지
     if(APawn* OtherPawn = Cast<APawn>(OtherActor))
     {
@@ -183,6 +196,9 @@ bool AGGFInteractableActor::Activate_Implementation(AActor* OtherActor)
 
 bool AGGFInteractableActor::Deactivate_Implementation(AActor* OtherActor)
 {
+    // 상위 클래스에서 문제가 발생한 경우
+    if(!Super::Deactivate_Implementation(OtherActor)) return false;
+
     // 로컬 플레이어만 감지
     if(APawn* OtherPawn = Cast<APawn>(OtherActor))
     {
@@ -192,32 +208,6 @@ bool AGGFInteractableActor::Deactivate_Implementation(AActor* OtherActor)
             return true;
         }
     }
-
-    return false;
-}
-
-bool AGGFInteractableActor::StartInteraction_Implementation(AActor* OtherActor)
-{
-#if WITH_EDITOR
-    if(OtherActor)
-    {
-        UE_LOG(LogGGFInteraction, Log, TEXT("Start Interaction: %s > %s"), *OtherActor->GetName(), *GetName())
-        return true;
-    }
-#endif
-
-    return false;
-}
-
-bool AGGFInteractableActor::StopInteraction_Implementation(AActor* OtherActor)
-{
-#if WITH_EDITOR
-    if(OtherActor)
-    {
-        UE_LOG(LogGGFInteraction, Log, TEXT("Stop Interaction: %s > %s"), *OtherActor->GetName(), *GetName())
-        return true;
-    }
-#endif
 
     return false;
 }
