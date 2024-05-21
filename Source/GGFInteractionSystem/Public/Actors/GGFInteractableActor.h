@@ -52,15 +52,27 @@ public:
 
     virtual void PostInitializeComponents() override;
 
-    /* GGFInteractableInterface */
-
-    // 외곽선 및 UI 표시
-    virtual bool Activate_Implementation(AActor* OtherActor) override;
-
-    // 외곽선 및 UI 숨기기
-    virtual bool Deactivate_Implementation(AActor* OtherActor) override;
-
 protected:
+    /* InteractableActorBase */
+
+    // 상호작용 안내를 위한 UI 표시
+    virtual void OnLocalPlayerPawnActivate_Implementation(APawn* LocalPlayerPawn) override;
+
+    // 상호작용 안내를 위한 UI 숨기기
+    virtual void OnLocalPlayerPawnDeactivate_Implementation(APawn* LocalPlayerPawn) override;
+
+    /* 이벤트 메서드 */
+
+    // InteractableArea::OnComponentBeginOverlap
+    UFUNCTION()
+    virtual void OnInteractableAreaBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
+    // InteractableArea::OnComponentEndOverlap
+    UFUNCTION()
+    virtual void OnInteractableAreaEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+
+    /* 메서드 */
+
     // 플레이어 폰이 상호작용 가능 범위에 들어온 경우
     UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
     void OnPlayerPawnBeginOverlap(APawn* PlayerPawn);
@@ -88,16 +100,6 @@ protected:
     // DisplayMesh에 따라 다른 컴포넌트들의 위치 및 크기 자동 조정
     UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
     void AdjustToDisplayMesh();
-
-    /* 이벤트 메서드 */
-
-    // InteractableArea::OnComponentBeginOverlap
-    UFUNCTION()
-    virtual void OnInteractableAreaBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
-
-    // InteractableArea::OnComponentEndOverlap
-    UFUNCTION()
-    virtual void OnInteractableAreaEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
 protected:
     /* Getter */

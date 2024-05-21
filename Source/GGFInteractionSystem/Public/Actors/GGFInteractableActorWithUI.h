@@ -28,11 +28,15 @@ protected:
     TObjectPtr<UUserWidget> Widget;
 
 public:
-    /* GGFInteractableInterface */
-    virtual bool StartInteraction_Implementation(AActor* OtherActor) override;
-    virtual bool Deactivate_Implementation(AActor* OtherActor) override;
+    /* InteractableActorBase */
+
+    // 로컬 플레이어에게 위젯 표시
+    virtual void OnLocalPlayerPawnStartInteraction_Implementation(APawn* LocalPlayerPawn) override;
+
+    // 로컬 플레이어에게 위젯 숨기기
+    virtual void OnLocalPlayerPawnDeactivate_Implementation(APawn* LocalPlayerPawn) override;
 
 protected:
     // 상호작용 시작 시 위젯을 생성합니다.
-    virtual void CreateLocalPlayerWidget(APlayerController* PlayerController);
+    virtual void CreateLocalPlayerWidget(APawn* LocalPlayer);
 };

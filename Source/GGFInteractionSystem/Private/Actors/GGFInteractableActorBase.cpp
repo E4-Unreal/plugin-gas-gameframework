@@ -28,7 +28,18 @@ bool AGGFInteractableActorBase::Activate_Implementation(AActor* OtherActor)
         UE_LOG(LogGGFInteraction, Log, TEXT("%s Activate: %s > %s"), *NetRole, *OtherActor->GetName(), *GetName())
     }
 #endif
-    return OtherActor != nullptr;
+
+    // 플레이어 폰 검사
+    APawn* PlayerPawn = ConvertActorToPlayerPawn(OtherActor);
+    if(PlayerPawn == nullptr) return false;
+
+    // 플레이어 폰인 경우
+    OnPlayerPawnActivate(PlayerPawn);
+
+    // 로컬 플레이어 폰인 경우
+    if(PlayerPawn->IsLocallyControlled()) OnLocalPlayerPawnActivate(PlayerPawn);
+
+    return true;
 }
 
 bool AGGFInteractableActorBase::Deactivate_Implementation(AActor* OtherActor)
@@ -39,10 +50,20 @@ bool AGGFInteractableActorBase::Deactivate_Implementation(AActor* OtherActor)
     {
         FString NetRole = HasAuthority() ? "Server" : "Client";
         UE_LOG(LogGGFInteraction, Log, TEXT("%s Deactivate: %s > %s"), *NetRole, *OtherActor->GetName(), *GetName())
-        return true;
     }
 #endif
-    return OtherActor != nullptr;
+
+    // 플레이어 폰 검사
+    APawn* PlayerPawn = ConvertActorToPlayerPawn(OtherActor);
+    if(PlayerPawn == nullptr) return false;
+
+    // 플레이어 폰인 경우
+    OnPlayerPawnDeactivate(PlayerPawn);
+
+    // 로컬 플레이어 폰인 경우
+    if(PlayerPawn->IsLocallyControlled()) OnLocalPlayerPawnDeactivate(PlayerPawn);
+
+    return true;
 }
 
 bool AGGFInteractableActorBase::StartInteraction_Implementation(AActor* OtherActor)
@@ -53,10 +74,20 @@ bool AGGFInteractableActorBase::StartInteraction_Implementation(AActor* OtherAct
     {
         FString NetRole = HasAuthority() ? "Server" : "Client";
         UE_LOG(LogGGFInteraction, Log, TEXT("%s Start Interaction: %s > %s"), *NetRole, *OtherActor->GetName(), *GetName())
-        return true;
     }
 #endif
-    return OtherActor != nullptr;
+
+    // 플레이어 폰 검사
+    APawn* PlayerPawn = ConvertActorToPlayerPawn(OtherActor);
+    if(PlayerPawn == nullptr) return false;
+
+    // 플레이어 폰인 경우
+    OnPlayerPawnStartInteraction(PlayerPawn);
+
+    // 로컬 플레이어 폰인 경우
+    if(PlayerPawn->IsLocallyControlled()) OnLocalPlayerPawnStartInteraction(PlayerPawn);
+
+    return true;
 }
 
 bool AGGFInteractableActorBase::StopInteraction_Implementation(AActor* OtherActor)
@@ -67,8 +98,59 @@ bool AGGFInteractableActorBase::StopInteraction_Implementation(AActor* OtherActo
     {
         FString NetRole = HasAuthority() ? "Server" : "Client";
         UE_LOG(LogGGFInteraction, Log, TEXT("%s Stop Interaction: %s > %s"), *NetRole, *OtherActor->GetName(), *GetName())
-        return true;
     }
 #endif
-    return OtherActor != nullptr;
+
+    // 플레이어 폰 검사
+    APawn* PlayerPawn = ConvertActorToPlayerPawn(OtherActor);
+    if(PlayerPawn == nullptr) return false;
+
+    // 플레이어 폰인 경우
+    OnPlayerPawnStopInteraction(PlayerPawn);
+
+    // 로컬 플레이어 폰인 경우
+    if(PlayerPawn->IsLocallyControlled()) OnLocalPlayerPawnStopInteraction(PlayerPawn);
+
+    return true;
+}
+
+APawn* AGGFInteractableActorBase::ConvertActorToPlayerPawn(AActor* OtherActor)
+{
+    // 플레이어 폰 검사
+    APawn* OtherPawn = Cast<APawn>(OtherActor);
+    if(OtherPawn && OtherPawn->IsPlayerControlled()) return OtherPawn;
+
+    return nullptr;
+}
+
+void AGGFInteractableActorBase::OnPlayerPawnActivate_Implementation(APawn* PlayerPawn)
+{
+}
+
+void AGGFInteractableActorBase::OnPlayerPawnDeactivate_Implementation(APawn* PlayerPawn)
+{
+}
+
+void AGGFInteractableActorBase::OnPlayerPawnStartInteraction_Implementation(APawn* PlayerPawn)
+{
+}
+
+void AGGFInteractableActorBase::OnPlayerPawnStopInteraction_Implementation(APawn* PlayerPawn)
+{
+}
+
+void AGGFInteractableActorBase::OnLocalPlayerPawnActivate_Implementation(APawn* LocalPlayerPawn)
+{
+}
+
+void AGGFInteractableActorBase::OnLocalPlayerPawnDeactivate_Implementation(APawn* LocalPlayerPawn)
+{
+}
+
+void AGGFInteractableActorBase::OnLocalPlayerPawnStartInteraction_Implementation(APawn* LocalPlayerPawn)
+{
+}
+
+void AGGFInteractableActorBase::OnLocalPlayerPawnStopInteraction_Implementation(APawn* LocalPlayerPawn)
+{
 }

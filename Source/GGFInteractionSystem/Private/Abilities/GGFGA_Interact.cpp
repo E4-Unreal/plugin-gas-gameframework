@@ -63,8 +63,8 @@ void UGGFGA_Interact::InputPressed(const FGameplayAbilitySpecHandle Handle, cons
 {
     Super::InputPressed(Handle, ActorInfo, ActivationInfo);
 
-    // 상호작용 시작 (서버 전용)
-    if(HasAuthority(&ActivationInfo) && InteractableActor.IsValid())
+    // 상호작용 시작
+    if(InteractableActor.IsValid())
     {
         IGGFInteractableInterface::Execute_StartInteraction(InteractableActor.Get(), GetAvatarActorFromActorInfo());
     }
@@ -73,8 +73,8 @@ void UGGFGA_Interact::InputPressed(const FGameplayAbilitySpecHandle Handle, cons
 void UGGFGA_Interact::InputReleased(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
     const FGameplayAbilityActivationInfo ActivationInfo)
 {
-    // 상호작용 종료 (서버 전용)
-    if(bIsActive && HasAuthority(&ActivationInfo) && InteractableActor.IsValid())
+    // 상호작용 종료
+    if(bIsActive && InteractableActor.IsValid())
     {
         IGGFInteractableInterface::Execute_StopInteraction(InteractableActor.Get(), GetAvatarActorFromActorInfo());
     }

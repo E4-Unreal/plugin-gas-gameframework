@@ -60,6 +60,16 @@ void AGGFInteractableActor::PostInitializeComponents()
     AdjustToDisplayMesh();
 }
 
+void AGGFInteractableActor::OnLocalPlayerPawnActivate_Implementation(APawn* LocalPlayerPawn)
+{
+    ActivateInteractionWidget(true);
+}
+
+void AGGFInteractableActor::OnLocalPlayerPawnDeactivate_Implementation(APawn* LocalPlayerPawn)
+{
+    ActivateInteractionWidget(false);
+}
+
 void AGGFInteractableActor::OnInteractableAreaBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
                                                            UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
@@ -174,40 +184,4 @@ void AGGFInteractableActor::AdjustToDisplayMesh_Implementation()
         InteractableArea->SetRelativeLocation(FVector::ZeroVector);
         InteractionWidget->SetRelativeLocation(FVector::ZeroVector);
     }
-}
-
-bool AGGFInteractableActor::Activate_Implementation(AActor* OtherActor)
-{
-    // 상위 클래스에서 문제가 발생한 경우
-    if(!Super::Activate_Implementation(OtherActor)) return false;
-
-    // 로컬 플레이어만 감지
-    if(APawn* OtherPawn = Cast<APawn>(OtherActor))
-    {
-        if(OtherPawn->Controller && OtherPawn->Controller->IsLocalPlayerController())
-        {
-            ActivateInteractionWidget(true);
-            return true;
-        }
-    }
-
-    return false;
-}
-
-bool AGGFInteractableActor::Deactivate_Implementation(AActor* OtherActor)
-{
-    // 상위 클래스에서 문제가 발생한 경우
-    if(!Super::Deactivate_Implementation(OtherActor)) return false;
-
-    // 로컬 플레이어만 감지
-    if(APawn* OtherPawn = Cast<APawn>(OtherActor))
-    {
-        if(OtherPawn->Controller && OtherPawn->Controller->IsLocalPlayerController())
-        {
-            ActivateInteractionWidget(false);
-            return true;
-        }
-    }
-
-    return false;
 }
