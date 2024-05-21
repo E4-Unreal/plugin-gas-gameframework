@@ -14,6 +14,9 @@ public class GGFInteractionSystem : ModuleRules
                 // UI
                 "UMG",
 
+                // 향상된 입력
+                "EnhancedInput",
+
                 // GAS
                 "GameplayTags",
                 "GameplayTasks",
