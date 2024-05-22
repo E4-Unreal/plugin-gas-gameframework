@@ -17,10 +17,10 @@ void UGGFInteractionMenuWidget::NativeConstruct()
 
 void UGGFInteractionMenuWidget::NativeDestruct()
 {
-    Super::NativeDestruct();
-
     // 폰에 대한 플레이어 입력 활성화
     EnablePlayerInputForPawn();
+
+    Super::NativeDestruct();
 }
 
 FReply UGGFInteractionMenuWidget::NativeOnKeyDown(const FGeometry& InGeometry, const FKeyEvent& InKeyEvent)
@@ -35,6 +35,7 @@ void UGGFInteractionMenuWidget::EnablePlayerInputForPawn()
 {
     /* 컨트롤러 설정 */
     APlayerController* LocalPlayerController = GetOwningPlayer();
+    if(!LocalPlayerController) return;
 
     // 마우스 커서 숨기기
     LocalPlayerController->bShowMouseCursor = false;
@@ -45,6 +46,7 @@ void UGGFInteractionMenuWidget::DisablePlayerInputForPawn()
 {
     /* 컨트롤러 설정 */
     APlayerController* LocalPlayerController = GetOwningPlayer();
+    if(!LocalPlayerController) return;
 
     // 포커스 설정
     SetKeyboardFocus();
