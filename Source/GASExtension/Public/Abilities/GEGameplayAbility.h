@@ -6,6 +6,7 @@
 #include "Abilities/GameplayAbility.h"
 #include "GEGameplayAbility.generated.h"
 
+// TODO 기본 어빌리티와 입력 전용 어빌리티 분리
 /**
  * 기본 인스턴스 정책 및 태그와 어빌리티 입력 설정이 적용된 게임플레이 어빌리티입니다.
  */

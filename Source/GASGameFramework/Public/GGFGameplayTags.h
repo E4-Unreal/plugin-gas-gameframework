@@ -14,11 +14,4 @@ namespace GGFGameplayTags
         GASGAMEFRAMEWORK_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Falling) // 점프 혹은 낙하
         GASGAMEFRAMEWORK_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Crouching) // 앉기
     }
-
-    /* 입력 */
-    namespace Input
-    {
-        GASGAMEFRAMEWORK_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Root) // 루트
-        GASGAMEFRAMEWORK_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Interact) // 상호작용
-    }
 }

@@ -31,19 +31,34 @@ void UGEGameplayState::Enter()
 {
     // 이미 활성화된 상태인지 검사
     if(bActivated) return;
+    bActivated = true;
 
     OnEnter();
+}
+
+void UGEGameplayState::Tick(float DeltaTime)
+{
+    // 활성화된 상태인지 검사
+    if(!bActivated) return;
+
+    OnTick(DeltaTime);
 }
 
 void UGEGameplayState::Exit()
 {
     // 활성화된 상태인지 검사
     if(!bActivated) return;
+    bActivated = false;
 
     OnExit();
 }
 
 void UGEGameplayState::OnEnter_Implementation()
+{
+
+}
+
+void UGEGameplayState::OnTick_Implementation(float DeltaTime)
 {
 
 }
@@ -78,6 +93,7 @@ void UGECharacterState::SetOwner(AActor* NewOwner)
 UGEGameplayStateMachine::UGEGameplayStateMachine()
 {
     bWantsInitializeComponent = true;
+    PrimaryComponentTick.bCanEverTick = true;
 }
 
 void UGEGameplayStateMachine::InitializeComponent()
@@ -93,10 +109,21 @@ void UGEGameplayStateMachine::InitializeComponent()
     }
 }
 
+void UGEGameplayStateMachine::TickComponent(float DeltaTime, ELevelTick TickType,
+    FActorComponentTickFunction* ThisTickFunction)
+{
+    Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+
+    for (auto StateInstance : StateInstances)
+    {
+        StateInstance->Tick(DeltaTime);
+    }
+}
+
 void UGEGameplayStateMachine::CreateGameplayStateInstances()
 {
-    GameplayStateInstances.Reserve(GameplayStates.Num());
-    for (TSubclassOf<UGEGameplayState> StateClass : GameplayStates)
+    StateInstances.Reserve(StateClasses.Num());
+    for (TSubclassOf<UGEGameplayState> StateClass : StateClasses)
     {
         // 유혀성 검사
         if(StateClass)
@@ -110,7 +137,7 @@ void UGEGameplayStateMachine::CreateGameplayStateInstances()
             if(StateInstance->IsNotValid()) continue;
 
             // GameplayState 인스턴스 등록
-            GameplayStateInstances.Emplace(StateInstance);
+            StateInstances.Emplace(StateInstance);
 
             // 게임플레이 태그 부착 이벤트 바인딩
             UAbilitySystemComponent* AbilitySystem = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(GetOwner());

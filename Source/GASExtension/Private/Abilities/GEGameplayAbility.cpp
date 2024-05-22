@@ -20,6 +20,12 @@ UGEGameplayAbility::UGEGameplayAbility()
     ActivationBlockedTags.AddTagFast(State::Dead);
     ActivationBlockedTags.AddTagFast(State::Knockdown);
     ActivationBlockedTags.AddTagFast(State::Stun);
+
+    // 입력 리플리케이트
+    bReplicateInputDirectly = true;
+
+    // 정책 설정
+    NetExecutionPolicy = EGameplayAbilityNetExecutionPolicy::ServerInitiated;
 }
 
 void UGEGameplayAbility::InputReleased(const FGameplayAbilitySpecHandle Handle,

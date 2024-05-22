@@ -48,6 +48,11 @@
 			"Name": "GGFShooterCore",
 			"Type": "Runtime",
 			"LoadingPhase": "Default"
+		},
+		{
+			"Name": "GGFInteractionSystem",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
 		}
 	],
 	"Plugins": [
@@ -77,6 +82,10 @@
 		},
 		{
 			"Name": "ParagonBelica",
+			"Enabled": true
+		},
+		{
+			"Name": "E4Effects",
 			"Enabled": true
 		}
 	],
