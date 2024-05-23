@@ -73,6 +73,14 @@
 			"Name": "ModularGameplay",
 			"Enabled": true
 		},
+        {
+            "Name": "OnlineSubsystem",
+            "Enabled": true
+        },
+        {
+            "Name": "OnlineSubsystemSteam",
+            "Enabled": true
+        },
 		{
 			"Name": "LevelPrototyping",
 			"Enabled": true
