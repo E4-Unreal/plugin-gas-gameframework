@@ -2,10 +2,10 @@
 
 #include "AbilitySystem/GGFPlayerAbilitySystem.h"
 
-#include "Abilities/GGFGA_Interact.h"
+#include "Abilities/GGFPA_Interact.h"
 
 UGGFPlayerAbilitySystem::UGGFPlayerAbilitySystem()
 {
     /* 기본 어빌리티 설정 */
-    DefaultAbilities.AddUnique(UGGFGA_Interact::StaticClass()); // 상호작용
+    DefaultAbilities.AddUnique(UGGFPA_Interact::StaticClass()); // 상호작용
 }

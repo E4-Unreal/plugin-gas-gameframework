@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "Abilities/GEPlayerAbility.h"
-#include "GGFGA_Interact.generated.h"
+#include "GGFPA_Interact.generated.h"
 
 /**
  * 상호작용을 위한 게임플레이 어빌리티
  */
 UCLASS()
-class GGFINTERACTIONSYSTEM_API UGGFGA_Interact : public UGEPlayerAbility
+class GGFINTERACTIONSYSTEM_API UGGFPA_Interact : public UGEPlayerAbility
 {
     GENERATED_BODY()
 
@@ -29,7 +29,7 @@ protected:
 #endif
 
 public:
-    UGGFGA_Interact();
+    UGGFPA_Interact();
 
     /* GameplayAbility */
 
