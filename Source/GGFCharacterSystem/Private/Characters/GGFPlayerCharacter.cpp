@@ -7,6 +7,7 @@
 #include "Components/GGFCharacterMovement.h"
 #include "Components/GGFCharacterStateMachine.h"
 #include "Components/GGFEquipmentManager.h"
+#include "Input/GGFInputManager.h"
 
 FName AGGFPlayerCharacter::EquipmentManagerName(TEXT("EquipmentManager"));
 
@@ -14,6 +15,7 @@ AGGFPlayerCharacter::AGGFPlayerCharacter(const FObjectInitializer& ObjectInitial
 : Super(ObjectInitializer
     .SetDefaultSubobjectClass<UGGFCharacterMovement>(CharacterMovementComponentName)
     .SetDefaultSubobjectClass<UGGFPlayerAbilitySystem>(AbilitySystemName)
+    .SetDefaultSubobjectClass<UGGFInputManager>(InputManagerName)
     .SetDefaultSubobjectClass<UGGFCharacterStateMachine>(GameplayStateMachineName))
 {
     /* EquipmentManager */

@@ -3,7 +3,18 @@
 #include "Input/GEInputManager.h"
 
 #include "EnhancedInputSubsystems.h"
+#include "InputMappingContext.h"
 #include "Input/GEInputConfig.h"
+
+UGEInputManager::UGEInputManager()
+{
+    /* GASGameFramework 플러그인 에셋 */
+    ConstructorHelpers::FObjectFinder<UInputMappingContext> InputMappingContextFinder(TEXT("/GASGameFramework/Input/Ability/IMC_Ability.IMC_Ability"));
+    if(InputMappingContextFinder.Succeeded()) InputMappingContexts.Emplace(InputMappingContextFinder.Object);
+
+    ConstructorHelpers::FObjectFinder<UGEInputConfig> InputConfigFinder(TEXT("/GASGameFramework/Input/Ability/IC_Ability.IC_Ability"));
+    if(InputConfigFinder.Succeeded()) InputConfigs.Emplace(InputConfigFinder.Object);
+}
 
 void UGEInputManager::BeginPlay()
 {

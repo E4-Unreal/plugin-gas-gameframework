@@ -25,10 +25,14 @@ protected:
     TArray<TObjectPtr<UGEInputConfig>> InputConfigs;
 
 public:
+    UGEInputManager();
+
     /* ActorComponent */
+
     virtual void BeginPlay() override;
 
     /* API */
+
     // ACharacter::SetupPlayerInputComponent에서 호출해주어야 합니다.
     void BindEnhancedInput(UEnhancedInputComponent* EnhancedInputComponent);
 
