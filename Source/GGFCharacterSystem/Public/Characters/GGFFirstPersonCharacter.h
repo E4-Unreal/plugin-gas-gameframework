@@ -6,17 +6,18 @@
 #include "GGFPlayerCharacter.h"
 #include "Interfaces/GGFAimingInterface.h"
 #include "Interfaces/GGFCameraInterface.h"
-#include "GGFDefaultCharacter.generated.h"
+#include "GGFFirstPersonCharacter.generated.h"
 
 class USpringArmComponent;
 class UCameraComponent;
 
+// TODO 전체적으로 재설계 예정
 // TODO AimingInterface를 크로스헤어 컴포넌트로 분리
 /*
  * 1인칭, 3인칭 모두 사용 가능한 캐릭터 클래스입니다.
  */
 UCLASS()
-class GGFCHARACTERSYSTEM_API AGGFDefaultCharacter : public AGGFPlayerCharacter,
+class GGFCHARACTERSYSTEM_API AGGFFirstPersonCharacter : public AGGFPlayerCharacter,
     public IGGFAimingInterface,
     public IGGFCameraInterface
 {
@@ -43,7 +44,7 @@ protected:
     float InterpSpeed = 15.f;
 
 public:
-    AGGFDefaultCharacter(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
+    AGGFFirstPersonCharacter(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
 public:
     /* Getter */

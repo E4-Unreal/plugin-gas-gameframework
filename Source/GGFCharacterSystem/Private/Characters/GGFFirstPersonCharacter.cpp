@@ -1,11 +1,11 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
-#include "Characters/GGFDefaultCharacter.h"
+#include "Characters/GGFFirstPersonCharacter.h"
 
 #include "Camera/CameraComponent.h"
 #include "Components/GGFSpringArmComponent.h"
 
-AGGFDefaultCharacter::AGGFDefaultCharacter(const FObjectInitializer& ObjectInitializer)
+AGGFFirstPersonCharacter::AGGFFirstPersonCharacter(const FObjectInitializer& ObjectInitializer)
 {
     /* 1인칭 */
     // 스프링 암
@@ -41,7 +41,7 @@ AGGFDefaultCharacter::AGGFDefaultCharacter(const FObjectInitializer& ObjectIniti
     ThirdPersonSkeletalMesh->VisibilityBasedAnimTickOption = EVisibilityBasedAnimTickOption::AlwaysTickPoseAndRefreshBones;
 }
 
-void AGGFDefaultCharacter::GetTarget_Implementation(FVector& Target)
+void AGGFFirstPersonCharacter::GetTarget_Implementation(FVector& Target)
 {
     const UWorld* World = GetWorld();
     if(World == nullptr) return;
