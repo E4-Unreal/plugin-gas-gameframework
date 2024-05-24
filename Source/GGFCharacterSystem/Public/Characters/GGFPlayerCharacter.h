@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Characters/GEPlayerCharacter.h"
-#include "Interfaces/GGFCharacterInterface.h"
+#include "Interfaces/GGFCharacterAnimationInterface.h"
 #include "GGFPlayerCharacter.generated.h"
 
 struct FInputActionValue;
@@ -16,7 +16,7 @@ class UGGFEquipmentManager;
  */
 UCLASS()
 class GGFCHARACTERSYSTEM_API AGGFPlayerCharacter : public AGEPlayerCharacter,
-    public IGGFCharacterInterface
+    public IGGFCharacterAnimationInterface
 {
     GENERATED_BODY()
 

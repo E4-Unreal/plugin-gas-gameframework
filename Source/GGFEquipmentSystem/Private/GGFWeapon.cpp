@@ -4,7 +4,7 @@
 
 #include "AbilitySystemComponent.h"
 #include "GGFEquipmentGameplayTags.h"
-#include "Interfaces/GGFCharacterInterface.h"
+#include "Interfaces/GGFCharacterAnimationInterface.h"
 
 AGGFWeapon::AGGFWeapon()
     : bOwnerCharacterValid(false)
@@ -18,7 +18,7 @@ void AGGFWeapon::PlayCharacterMontage(UAnimMontage* MontageToPlay)
     if(!bOwnerCharacterValid) return;
 
     // 캐릭터 애니메이션 재생
-    IGGFCharacterInterface::Execute_PlayMontage(Owner, MontageToPlay);
+    IGGFCharacterAnimationInterface::Execute_PlayMontage(Owner, MontageToPlay);
 }
 
 void AGGFWeapon::OnEquip_Implementation()
@@ -26,7 +26,7 @@ void AGGFWeapon::OnEquip_Implementation()
     Super::OnEquip_Implementation();
 
     // OwnerCharacter 유효성 검사
-    bOwnerCharacterValid = Owner->Implements<UGGFCharacterInterface>();
+    bOwnerCharacterValid = Owner->Implements<UGGFCharacterAnimationInterface>();
 }
 
 void AGGFWeapon::OnUnEquip_Implementation()

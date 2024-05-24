@@ -5,19 +5,20 @@
 #include "CoreMinimal.h"
 #include "UObject/Interface.h"
 #include "GameplayTags.h"
-#include "GGFCharacterInterface.generated.h"
+#include "GGFCharacterAnimationInterface.generated.h"
 
 // This class does not need to be modified.
 UINTERFACE(BlueprintType, Blueprintable)
-class GGFEQUIPMENTSYSTEM_API UGGFCharacterInterface : public UInterface
+class GGFEQUIPMENTSYSTEM_API UGGFCharacterAnimationInterface : public UInterface
 {
     GENERATED_BODY()
 };
 
+// TODO 다른 모듈로 이전
 /**
- * 캐릭터 인터페이스
+ * 캐릭터 애니메이션 제어를 위한 인터페이스
  */
-class GGFEQUIPMENTSYSTEM_API IGGFCharacterInterface
+class GGFEQUIPMENTSYSTEM_API IGGFCharacterAnimationInterface
 {
     GENERATED_BODY()
 
