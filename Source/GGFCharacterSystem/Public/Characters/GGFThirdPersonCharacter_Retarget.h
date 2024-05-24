@@ -7,7 +7,8 @@
 #include "GGFThirdPersonCharacter_Retarget.generated.h"
 
 /**
- * 애니메이션 전용 스켈레탈 메시와 리타깃 전용 스켈레탈 메시가 존재하는 삼인칭 캐릭터 클래스
+ * 애니메이션 전용 스켈레탈 메시와 리타깃 전용 스켈레탈 메시가 존재하는 삼인칭 캐릭터 클래스입니다.
+ * 샘플로 파라곤 에셋을 사용합니다.
  */
 UCLASS()
 class GGFCHARACTERSYSTEM_API AGGFThirdPersonCharacter_Retarget : public AGGFThirdPersonCharacter
@@ -28,6 +29,9 @@ private:
 
 public:
     AGGFThirdPersonCharacter_Retarget();
+
+protected:
+    virtual void HideBones() override;
 
 public:
     /* Getter */

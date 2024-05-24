@@ -11,7 +11,8 @@ class USpringArmComponent;
 class UCameraComponent;
 
 /**
- * 삼인칭 게임을 위한 기본 설정이 적용된 플레이어 캐릭터 클래스
+ * 삼인칭 게임을 위한 기본 설정이 적용된 플레이어 캐릭터 클래스입니다.
+ * 샘플로 UE4 마네킹 에셋을 사용합니다.
  */
 UCLASS()
 class GGFCHARACTERSYSTEM_API AGGFThirdPersonCharacter : public AGGFPlayerCharacter,
@@ -40,6 +41,7 @@ public:
     AGGFThirdPersonCharacter(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
     /* GGFAimingInterface */
+
     virtual void GetTarget_Implementation(FVector& Target) override;
 
 public:

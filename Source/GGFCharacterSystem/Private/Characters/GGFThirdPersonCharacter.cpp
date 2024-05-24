@@ -37,6 +37,13 @@ AGGFThirdPersonCharacter::AGGFThirdPersonCharacter(const FObjectInitializer& Obj
     FollowCamera = CreateDefaultSubobject<UCameraComponent>(FollowCameraName);
     FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
     FollowCamera->bUsePawnControlRotation = false;
+
+    /* UnrealMannequins 플러그인 에셋 */
+    ConstructorHelpers::FObjectFinder<USkeletalMesh> CharacterMeshFinder(TEXT("/UnrealMannequins/Mannequin_UE4/Meshes/SKM_Mannequin_UE4.SKM_Mannequin_UE4"));
+    if(CharacterMeshFinder.Succeeded()) CharacterMesh->SetSkeletalMeshAsset(CharacterMeshFinder.Object);
+
+    ConstructorHelpers::FClassFinder<UAnimInstance> CharacterAnimInstanceFinder(TEXT("/UnrealMannequins/Mannequin_UE4/Animations/ABP_Mannequin_UE4.ABP_Mannequin_UE4_C"));
+    if(CharacterAnimInstanceFinder.Succeeded()) CharacterMesh->SetAnimInstanceClass(CharacterAnimInstanceFinder.Class);
 }
 
 void AGGFThirdPersonCharacter::GetTarget_Implementation(FVector& Target)
