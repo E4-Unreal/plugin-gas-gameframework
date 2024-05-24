@@ -73,25 +73,3 @@ void AGGFThirdPersonCharacter::GetTarget_Implementation(FVector& Target)
 
     Target = HitResult.bBlockingHit ? HitResult.Location : TraceEnd;
 }
-
-bool AGGFThirdPersonCharacter::SetFullSkin_Implementation(USkeletalMesh* FullSkin)
-{
-    // 입력 유효성 검사
-    if(FullSkin == nullptr) return false;
-
-#if WITH_EDITOR
-    // 스켈레톤 호환 검사
-    if(USkeletalMesh* CurrentMesh = GetMesh()->GetSkeletalMeshAsset())
-    {
-        if(!CurrentMesh->GetSkeleton()->IsCompatibleForEditor(FullSkin->GetSkeleton()))
-        {
-            UE_LOG(LogGGFCharacterSystem, Warning, TEXT("%s의 스켈레톤은 %s의 스켈레톤과 호환되지 않습니다."), *FullSkin->GetName(), *CurrentMesh->GetName());
-        }
-    }
-#endif
-
-    // 스켈레탈 메시 에셋 교체
-    GetMesh()->SetSkeletalMesh(FullSkin);
-
-    return true;
-}

@@ -30,10 +30,6 @@ private:
 public:
     AGGFThirdPersonCharacter_Retarget();
 
-    /* GGFCharacterSkinInterface */
-
-    virtual bool SetFullSkin_Implementation(USkeletalMesh* FullSkin) override;
-
 protected:
     virtual void HideBones() override;
 
