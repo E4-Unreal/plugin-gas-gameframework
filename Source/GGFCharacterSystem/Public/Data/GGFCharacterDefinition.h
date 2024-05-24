@@ -10,7 +10,7 @@
  * 캐릭터 정의를 위한 구조체
  */
 USTRUCT(Atomic, BlueprintType)
-struct FCharacterData
+struct FGGFCharacterData
 {
     GENERATED_BODY()
 
@@ -38,11 +38,11 @@ class GGFCHARACTERSYSTEM_API UGGFCharacterDefinition : public UDataAsset
 protected:
     // 캐릭터 정의를 위한 데이터
     UPROPERTY(EditDefaultsOnly, BlueprintGetter = GetData, Category = "Config")
-    FCharacterData Data;
+    FGGFCharacterData Data;
 
 public:
     /* Getter */
 
     UFUNCTION(BlueprintGetter)
-    const FCharacterData& GetData() const { return Data; }
+    const FGGFCharacterData& GetData() const { return Data; }
 };

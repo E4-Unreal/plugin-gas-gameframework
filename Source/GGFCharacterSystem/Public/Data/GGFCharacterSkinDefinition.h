@@ -4,11 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "Engine/DataAsset.h"
-#include "GGFCharacterSkinDataAsset.generated.h"
+#include "GGFCharacterSkinDefinition.generated.h"
 
 // TODO 확장성? 다른 모듈에서 Type 추가 혹은 변경이 가능한지 조사 필요
 UENUM(BlueprintType)
-enum class ECharacterSkinType : uint8
+enum class EGGFCharacterSkinType : uint8
 {
     None,
 
@@ -26,7 +26,7 @@ enum class ECharacterSkinType : uint8
  * 캐릭터 스킨 설정을 위한 구조체
  */
 USTRUCT(Atomic, BlueprintType)
-struct FCharacterSkinData
+struct FGGFCharacterSkinData
 {
     GENERATED_BODY()
 
@@ -36,7 +36,7 @@ struct FCharacterSkinData
 
     // 스킨 타입
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    ECharacterSkinType SkinType;
+    EGGFCharacterSkinType SkinType;
 
     // 스킨 에셋
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -57,18 +57,18 @@ struct FCharacterSkinData
  * 캐릭터 스킨 설정을 위한 데이터 에셋
  */
 UCLASS()
-class GGFCHARACTERSYSTEM_API UGGFCharacterSkinDataAsset : public UDataAsset
+class GGFCHARACTERSYSTEM_API UGGFCharacterSkinDefinition : public UDataAsset
 {
     GENERATED_BODY()
 
 protected:
     // 캐릭터 스킨 설정을 위한 데이터
     UPROPERTY(EditDefaultsOnly, BlueprintGetter = GetData, Category = "Config")
-    FCharacterSkinData Data;
+    FGGFCharacterSkinData Data;
 
 public:
     /* Getter */
 
     UFUNCTION(BlueprintGetter)
-    const FCharacterSkinData& GetData() const { return Data; }
+    const FGGFCharacterSkinData& GetData() const { return Data; }
 };
