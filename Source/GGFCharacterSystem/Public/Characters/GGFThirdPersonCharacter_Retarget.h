@@ -30,6 +30,11 @@ private:
 public:
     AGGFThirdPersonCharacter_Retarget();
 
+    /* GGFCharacterInterface */
+
+    virtual bool SetCharacterDefinition_Implementation(UGGFCharacterDefinition* NewDefinition) override;
+    virtual bool SetCharacterSkinDefinition_Implementation(UGGFCharacterSkinDefinition* NewDefinition) override;
+
 protected:
     virtual void HideBones() override;
 
