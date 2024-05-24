@@ -20,17 +20,19 @@ class GGFCHARACTERSYSTEM_API AGGFThirdPersonCharacter : public AGGFPlayerCharact
     GENERATED_BODY()
 
 public:
-    /* CameraBoom의 이름으로 다른 클래스로 교체할 때 사용합니다. */
-    static FName CameraBoomName;
+    /* 서브 오브젝트 이름 */
 
-    /* FollowCamera의 이름으로 다른 클래스로 교체할 때 사용합니다. */
+    static FName CameraBoomName;
     static FName FollowCameraName;
 
-    /** Camera boom positioning the camera behind the character */
+private:
+    /* 컴포넌트 */
+
+    // 스프링 암
     UPROPERTY(VisibleAnywhere, BlueprintGetter = GetCameraBoom, Category = "Component")
     TObjectPtr<USpringArmComponent> CameraBoom;
 
-    /** Follow camera */
+    // 백 뷰 시점 카메라
     UPROPERTY(VisibleAnywhere, BlueprintGetter = GetFollowCamera, Category = "Component")
     TObjectPtr<UCameraComponent> FollowCamera;
 
