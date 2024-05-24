@@ -82,6 +82,13 @@ void AGGFPlayerCharacter::ToggleCrouch()
         Crouch();
 }
 
+void AGGFPlayerCharacter::NetMulticast_PlayMontage_Implementation(UAnimMontage* MontageToPlay)
+{
+    GetMesh()->GetAnimInstance()->Montage_Play(MontageToPlay);
+}
+
+/* GGFCharacterAnimationInterface */
+
 void AGGFPlayerCharacter::PlayMontage_Implementation(UAnimMontage* MontageToPlay)
 {
     NetMulticast_PlayMontage(MontageToPlay);
@@ -100,7 +107,55 @@ void AGGFPlayerCharacter::ChangeAnimInstance_Implementation(FGameplayTag Equipme
     }
 }
 
-void AGGFPlayerCharacter::NetMulticast_PlayMontage_Implementation(UAnimMontage* MontageToPlay)
+/* GGFCharacterInterface */
+
+bool AGGFPlayerCharacter::SetCharacterDefinition_Implementation(UGGFCharacterDefinition* NewDefinition)
 {
-    GetMesh()->GetAnimInstance()->Montage_Play(MontageToPlay);
+    // 입력 유효성 검사
+    if(NewDefinition == nullptr) return false;
+
+    // 데이터 에셋 교체
+    CharacterDefinition = NewDefinition;
+
+    // 캐릭터 설정
+    const FGGFCharacterData& Data = CharacterDefinition->GetData();
+    USkeletalMeshComponent* CharacterMesh = GetMesh();
+    CharacterMesh->SetSkeletalMesh(Data.SkeletalMesh);
+    CharacterMesh->SetAnimInstanceClass(Data.AnimInstanceClass);
+
+    return true;
+}
+
+bool AGGFPlayerCharacter::SetCharacterSkinDefinition_Implementation(UGGFCharacterSkinDefinition* NewDefinition)
+{
+    // 입력 유효성 검사
+    if(NewDefinition == nullptr) return false;
+
+    // 데이터 가져오기
+    const FGGFCharacterData& CharacterData = CharacterDefinition->GetData();
+    const FGGFCharacterSkinData& SkinData = NewDefinition->GetData();
+
+    /* 호환성 검사 */
+
+    // 사용 가능한 캐릭터 목록에 존재하는지 확인
+    if(!SkinData.AvailableCharacterIDList.IsEmpty() && !SkinData.AvailableCharacterIDList.Contains(CharacterData.ID)) return false;
+
+    // 사용 불가능한 캐릭터 목록에 존재하는지 확인
+    if(!SkinData.ForbiddenCharacterIDList.IsEmpty() && SkinData.ForbiddenCharacterIDList.Contains(CharacterData.ID)) return false;
+
+    /* 설정 */
+
+    // 스킨 종류 확인
+    switch (SkinData.SkinType)
+    {
+    case EGGFCharacterSkinType::Full:
+        CharacterSkinDefinitionMap.Emplace(EGGFCharacterSkinType::Full, NewDefinition);
+        GetMesh()->SetSkeletalMesh(SkinData.SkeletalMesh);
+        break;
+    default:
+        return false;
+        break;
+    }
+
+    return true;
 }
