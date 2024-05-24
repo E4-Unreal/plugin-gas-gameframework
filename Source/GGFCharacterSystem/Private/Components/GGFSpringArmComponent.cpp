@@ -1,10 +1,8 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
-
-#include "..\..\..\Public\Character\Components\GGFSpringArmComponent.h"
+#include "Components/GGFSpringArmComponent.h"
 
 #include "PhysicsEngine/PhysicsSettings.h"
-
 
 UGGFSpringArmComponent::UGGFSpringArmComponent()
 {

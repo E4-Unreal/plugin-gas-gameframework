@@ -1,10 +1,10 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
-#include "Character/Components/GGFCharacterMovement.h"
+#include "Components/GGFCharacterMovement.h"
 
 #include "AbilitySystemComponent.h"
 #include "AbilitySystemGlobals.h"
-#include "GGFGameplayTags.h"
+#include "GGFCharacterGameplayTags.h"
 #include "GameFramework/Character.h"
 
 UGGFCharacterMovement::UGGFCharacterMovement()

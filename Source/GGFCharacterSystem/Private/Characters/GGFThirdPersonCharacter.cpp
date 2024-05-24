@@ -1,9 +1,9 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
-#include "Character/GGFThirdPersonCharacter.h"
+#include "Characters/GGFThirdPersonCharacter.h"
 
 #include "Camera/CameraComponent.h"
-#include "Character/Components/GGFSpringArmComponent.h"
+#include "Components/GGFSpringArmComponent.h"
 #include "Components/CapsuleComponent.h"
 
 FName AGGFThirdPersonCharacter::CameraBoomName(TEXT("CameraBoom"));

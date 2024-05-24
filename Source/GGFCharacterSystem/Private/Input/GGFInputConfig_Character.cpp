@@ -4,7 +4,7 @@
 #include "Input/GGFInputConfig_Character.h"
 
 #include "EnhancedInputComponent.h"
-#include "Character/GGFPlayerCharacter.h"
+#include "Characters/GGFPlayerCharacter.h"
 
 void UGGFInputConfig_Character::OnBindEnhancedInput(UEnhancedInputComponent* EnhancedInputComponent)
 {

@@ -19,6 +19,7 @@ public class TPSSample : ModuleRules
                 // GAS GameFramework 플러그인
                 "GASExtension",
                 "GASGameFramework",
+                "GGFCharacterSystem"
             }
         );
 

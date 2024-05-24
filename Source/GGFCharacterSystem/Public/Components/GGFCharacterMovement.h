@@ -13,7 +13,7 @@ class UAbilitySystemComponent;
  * 캐릭터 무브먼트에 따라 상태 태그가 자동으로 부착됩니다.
  */
 UCLASS()
-class GASGAMEFRAMEWORK_API UGGFCharacterMovement : public UCharacterMovementComponent
+class GGFCHARACTERSYSTEM_API UGGFCharacterMovement : public UCharacterMovementComponent
 {
     GENERATED_BODY()
 

@@ -1,6 +1,6 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
-#include "Character/States/GGFCharacterState_Dead.h"
+#include "States/GGFCharacterState_Dead.h"
 
 #include "AbilitySystemComponent.h"
 #include "GEGameplayTags.h"

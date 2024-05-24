@@ -7,7 +7,7 @@
 #include "GGFCharacterStateMachine.generated.h"
 
 UCLASS(meta=(BlueprintSpawnableComponent))
-class GASGAMEFRAMEWORK_API UGGFCharacterStateMachine : public UGEGameplayStateMachine
+class GGFCHARACTERSYSTEM_API UGGFCharacterStateMachine : public UGEGameplayStateMachine
 {
     GENERATED_BODY()
 

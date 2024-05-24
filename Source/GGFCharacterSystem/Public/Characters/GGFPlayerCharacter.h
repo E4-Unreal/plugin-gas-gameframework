@@ -15,7 +15,7 @@ class UGGFEquipmentManager;
  * 기본 움직임 및 입력 액션 바인딩만 담당
  */
 UCLASS()
-class GASGAMEFRAMEWORK_API AGGFPlayerCharacter : public AGEPlayerCharacter,
+class GGFCHARACTERSYSTEM_API AGGFPlayerCharacter : public AGEPlayerCharacter,
     public IGGFCharacterInterface
 {
     GENERATED_BODY()

@@ -14,7 +14,7 @@ class UCameraComponent;
  * 삼인칭 게임을 위한 기본 설정이 적용된 플레이어 캐릭터 클래스
  */
 UCLASS()
-class GASGAMEFRAMEWORK_API AGGFThirdPersonCharacter : public AGGFPlayerCharacter,
+class GGFCHARACTERSYSTEM_API AGGFThirdPersonCharacter : public AGGFPlayerCharacter,
     public IGGFAimingInterface
 {
     GENERATED_BODY()

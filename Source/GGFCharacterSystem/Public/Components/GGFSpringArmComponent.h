@@ -11,7 +11,7 @@
  * Crouch, UnCrouch 호출 시 부드러운 카메라 이동을 위해 카메라 랙 기능이 필요하지만 좌우로 달릴 때는 불필요하다고 느껴질 때 사용하면 유용합니다.
  */
 UCLASS(meta=(BlueprintSpawnableComponent))
-class GASGAMEFRAMEWORK_API UGGFSpringArmComponent : public USpringArmComponent
+class GGFCHARACTERSYSTEM_API UGGFSpringArmComponent : public USpringArmComponent
 {
     GENERATED_BODY()
 

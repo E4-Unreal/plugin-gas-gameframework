@@ -10,7 +10,7 @@
  * 캐릭터 죽음 상태
  */
 UCLASS()
-class GASGAMEFRAMEWORK_API UGGFCharacterState_Dead : public UGECharacterState
+class GGFCHARACTERSYSTEM_API UGGFCharacterState_Dead : public UGECharacterState
 {
     GENERATED_BODY()
 

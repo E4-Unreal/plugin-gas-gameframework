@@ -10,6 +10,23 @@ public class GGFCharacterSystem : ModuleRules
             new string[]
             {
                 "Core",
+
+                // 입력
+                "EnhancedInput",
+
+                // UI
+                "UMG",
+
+                // GAS
+                "GameplayTags",
+                "GameplayTasks",
+                "GameplayAbilities",
+
+                // GASGameFramework
+                "GASExtension",
+                "GGFInteractionSystem",
+                "GGFEquipmentSystem",
+                "GGFShooterCore"
             }
         );
 

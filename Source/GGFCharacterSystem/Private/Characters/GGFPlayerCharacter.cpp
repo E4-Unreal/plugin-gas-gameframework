@@ -1,10 +1,10 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
-#include "Character/GGFPlayerCharacter.h"
+#include "Characters/GGFPlayerCharacter.h"
 
 #include "EnhancedInputSubsystems.h"
-#include "Character/Components/GGFCharacterMovement.h"
-#include "Character/Components/GGFCharacterStateMachine.h"
+#include "Components/GGFCharacterMovement.h"
+#include "Components/GGFCharacterStateMachine.h"
 #include "Components/GGFEquipmentManager.h"
 
 FName AGGFPlayerCharacter::EquipmentManagerName(TEXT("EquipmentManager"));

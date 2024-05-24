@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Character/GGFThirdPersonCharacter.h"
+#include "Characters/GGFThirdPersonCharacter.h"
 #include "TSPlayerCharacter.generated.h"
 
 class USpringArmComponent;

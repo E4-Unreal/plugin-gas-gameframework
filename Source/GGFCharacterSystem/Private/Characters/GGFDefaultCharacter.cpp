@@ -1,10 +1,9 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
-
-#include "Character/GGFDefaultCharacter.h"
+#include "Characters/GGFDefaultCharacter.h"
 
 #include "Camera/CameraComponent.h"
-#include "Character/Components/GGFSpringArmComponent.h"
+#include "Components/GGFSpringArmComponent.h"
 
 AGGFDefaultCharacter::AGGFDefaultCharacter(const FObjectInitializer& ObjectInitializer)
 {
