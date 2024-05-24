@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GGFPlayerCharacter.h"
 #include "Interfaces/GGFAimingInterface.h"
+#include "Interfaces/GGFCharacterSkinInterface.h"
 #include "GGFThirdPersonCharacter.generated.h"
 
 class USpringArmComponent;
@@ -16,7 +17,8 @@ class UCameraComponent;
  */
 UCLASS()
 class GGFCHARACTERSYSTEM_API AGGFThirdPersonCharacter : public AGGFPlayerCharacter,
-    public IGGFAimingInterface
+    public IGGFAimingInterface,
+    public IGGFCharacterSkinInterface
 {
     GENERATED_BODY()
 
@@ -43,6 +45,10 @@ public:
     /* GGFAimingInterface */
 
     virtual void GetTarget_Implementation(FVector& Target) override;
+
+    /* GGFCharacterSkinInterface */
+
+    virtual bool SetFullSkin_Implementation(USkeletalMesh* FullSkin) override;
 
 public:
     /* Getter */
