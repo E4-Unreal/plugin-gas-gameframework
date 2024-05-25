@@ -6,6 +6,7 @@
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "GGFDataSubsystem.generated.h"
 
+struct FGGFDataTableRowBase;
 class UGGFDefinitionBase;
 
 /**
@@ -47,6 +48,5 @@ public:
     UGGFDefinitionBase* GetOrCreateDefinition(TSubclassOf<UGGFDefinitionBase> DefinitionClass, int32 ID);
 
     // 데이터 테이블에서 데이터 직접 가져오기
-    template <typename T>
-    static T* GetDefinitionData(TSubclassOf<UGGFDefinitionBase> DefinitionClass, int32 ID);
+    static FGGFDataTableRowBase* GetDirectData(TSubclassOf<UGGFDefinitionBase> DefinitionClass, int32 ID);
 };

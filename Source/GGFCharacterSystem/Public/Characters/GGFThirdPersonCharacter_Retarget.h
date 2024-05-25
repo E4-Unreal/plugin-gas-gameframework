@@ -36,8 +36,8 @@ public:
 
     /* GGFCharacterInterface */
 
-    virtual bool SetCharacterDefinition_Implementation(UGGFCharacterDefinition* NewDefinition) override;
-    virtual bool SetCharacterSkinDefinition_Implementation(UGGFCharacterSkinDefinition* NewDefinition) override;
+    virtual bool SetCharacterData_Implementation(const FGGFCharacterData& NewCharacterData) override;
+    virtual bool SetCharacterSkinData_Implementation(const FGGFCharacterSkinData& NewCharacterSkinData) override;
 
 protected:
     virtual void HideBones() override;

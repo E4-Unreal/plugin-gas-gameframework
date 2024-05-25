@@ -41,8 +41,7 @@ UGGFDefinitionBase* UGGFDataSubsystem::GetOrCreateDefinition(TSubclassOf<UGGFDef
     return NewDefinition;
 }
 
-template <typename T>
-T* UGGFDataSubsystem::GetDefinitionData(TSubclassOf<UGGFDefinitionBase> DefinitionClass, int32 ID)
+FGGFDataTableRowBase* UGGFDataSubsystem::GetDirectData(TSubclassOf<UGGFDefinitionBase> DefinitionClass, int32 ID)
 {
     // 프로젝트 설정 가져오기
     if(UGGFDataSystemSetting* DataSystemSetting = GetMutableDefault<UGGFDataSystemSetting>())
@@ -54,7 +53,7 @@ T* UGGFDataSubsystem::GetDefinitionData(TSubclassOf<UGGFDefinitionBase> Definiti
 
             // 데이터 테이블에서 데이터 가져오기
             UDataTable* DataTable = SettingDataTable.LoadSynchronous();
-            return DataTable->FindRow<T>(FName(FString::FromInt(ID)), "");
+            return DataTable->FindRow<FGGFDataTableRowBase>(FName(FString::FromInt(ID)), "");
         }
     }
 

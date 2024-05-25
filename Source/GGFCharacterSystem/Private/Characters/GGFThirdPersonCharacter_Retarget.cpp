@@ -45,56 +45,44 @@ void AGGFThirdPersonCharacter_Retarget::HideBones()
 
 /* GGFCharacterInterface */
 
-bool AGGFThirdPersonCharacter_Retarget::SetCharacterDefinition_Implementation(UGGFCharacterDefinition* NewDefinition)
+bool AGGFThirdPersonCharacter_Retarget::SetCharacterData_Implementation(const FGGFCharacterData& NewCharacterData)
 {
     // 입력 유효성 검사
-    if(NewDefinition == nullptr || NewDefinition->IsNotValid()) return false;
-
-    // 데이터 에셋 교체
-    CharacterDefinition = NewDefinition;
+    if(NewCharacterData.IsNotValid()) return false;
 
     // 캐릭터 설정
-    const FGGFCharacterData& Data = CharacterDefinition->GetData();
     USkeletalMeshComponent* CharacterMesh = RetargetMesh;
-    CharacterMesh->SetSkeletalMesh(Data.SkeletalMesh);
-    CharacterMesh->SetAnimInstanceClass(Data.AnimInstanceClass);
+    CharacterMesh->SetSkeletalMesh(NewCharacterData.SkeletalMesh);
+    CharacterMesh->SetAnimInstanceClass(NewCharacterData.AnimInstanceClass);
 
     return true;
 }
 
-bool AGGFThirdPersonCharacter_Retarget::SetCharacterSkinDefinition_Implementation(
-    UGGFCharacterSkinDefinition* NewDefinition)
+bool AGGFThirdPersonCharacter_Retarget::SetCharacterSkinData_Implementation(
+    const FGGFCharacterSkinData& NewCharacterSkinData)
 {
     // 입력 유효성 검사
-    if(NewDefinition == nullptr || NewDefinition->IsNotValid()) return false;
+    if(NewCharacterSkinData.IsNotValid()) return false;
 
-    // 데이터 가져오기
-    const FGGFCharacterSkinData& SkinData = NewDefinition->GetData();
-
-    /* 호환성 검사 */
-    int32 CharacterID = CharacterDefinition->GetID();
+    // 캐릭터 ID
+    int32 CharacterID = CharacterDefinition && CharacterDefinition->IsValid() ? CharacterDefinition->GetID() : DefaultCharacterID;
 
     // 사용 가능한 캐릭터 목록에 존재하는지 확인
-    if(!SkinData.AvailableCharacterIDList.IsEmpty() && !SkinData.AvailableCharacterIDList.Contains(CharacterID)) return false;
+    if(!NewCharacterSkinData.AvailableCharacterIDList.IsEmpty() && !NewCharacterSkinData.AvailableCharacterIDList.Contains(CharacterID)) return false;
 
     // 사용 불가능한 캐릭터 목록에 존재하는지 확인
-    if(!SkinData.ForbiddenCharacterIDList.IsEmpty() && SkinData.ForbiddenCharacterIDList.Contains(CharacterID)) return false;
+    if(!NewCharacterSkinData.ForbiddenCharacterIDList.IsEmpty() && NewCharacterSkinData.ForbiddenCharacterIDList.Contains(CharacterID)) return false;
 
-    /* 설정 */
-
-    // 스킨 종류 확인
-    switch (SkinData.SkinType)
+    // 스킨 종류 확인 후 초기화
+    switch (NewCharacterSkinData.SkinType)
     {
     case EGGFCharacterSkinType::Full:
-        RetargetMesh->SetSkeletalMesh(SkinData.SkeletalMesh);
+        RetargetMesh->SetSkeletalMesh(NewCharacterSkinData.SkeletalMesh);
         break;
     default:
         return false;
         break;
     }
-
-    // 데이터 에셋 교체
-    CharacterSkinDefinitionMap.Emplace(SkinData.SkinType, NewDefinition);
 
     return true;
 }

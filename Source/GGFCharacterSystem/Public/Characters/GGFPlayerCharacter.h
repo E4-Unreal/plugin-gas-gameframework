@@ -6,6 +6,8 @@
 #include "Characters/GEPlayerCharacter.h"
 #include "Interfaces/GGFCharacterAnimationInterface.h"
 #include "Interfaces/GGFCharacterInterface.h"
+#include "Data/GGFCharacterDefinition.h"
+#include "Data/GGFCharacterSkinDefinition.h"
 #include "GGFPlayerCharacter.generated.h"
 
 struct FInputActionValue;
@@ -47,16 +49,28 @@ protected:
 
     /* GGFCharacterInterface */
 
-    // 캐릭터 정의 데이터 에셋
+    // 캐릭터 ID
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|GGFCharacterInterface")
+    int32 DefaultCharacterID;
+
+    // 캐릭터 스킨 ID
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|GGFCharacterInterface")
+    TArray<int32> DefaultCharacterSkinIDList;
+
+    // 캐릭터 정의 데이터 에셋
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State|GGFCharacterInterface", Transient)
     TObjectPtr<UGGFCharacterDefinition> CharacterDefinition;
 
     // 캐릭터 스킨 데이터 에셋
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|GGFCharacterInterface")
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State|GGFCharacterInterface", Transient)
     TMap<EGGFCharacterSkinType, TObjectPtr<UGGFCharacterSkinDefinition>> CharacterSkinDefinitionMap;
 
 public:
     AGGFPlayerCharacter(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
+
+    /* Actor */
+
+    virtual void PostInitializeComponents() override;
 
     /* Character */
 
@@ -85,8 +99,12 @@ public:
 
     /* GGFCharacterInterface */
 
+    virtual bool SetCharacterData_Implementation(const FGGFCharacterData& NewCharacterData) override;
+    virtual bool SetCharacterSkinData_Implementation(const FGGFCharacterSkinData& NewCharacterSkinData) override;
     virtual bool SetCharacterDefinition_Implementation(UGGFCharacterDefinition* NewDefinition) override;
     virtual bool SetCharacterSkinDefinition_Implementation(UGGFCharacterSkinDefinition* NewDefinition) override;
+    virtual bool SetCharacterID_Implementation(int32 ID) override;
+    virtual bool SetCharacterSkinID_Implementation(int32 ID) override;
 
 protected:
     UFUNCTION(NetMulticast, Unreliable)
