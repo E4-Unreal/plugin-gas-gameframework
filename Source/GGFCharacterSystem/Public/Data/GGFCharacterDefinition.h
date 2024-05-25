@@ -3,15 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Engine/DataAsset.h"
-#include "Engine/DataTable.h"
+#include "GGFDefinitionBase.h"
 #include "GGFCharacterDefinition.generated.h"
 
 /**
- * 캐릭터 정의를 위한 데이터 테이블
+ * 캐릭터 정의를 위한 데이터 테이블 구조체
  */
-USTRUCT(BlueprintType)
-struct FGGFCharacterDataTableRow : public FTableRowBase
+USTRUCT()
+struct FGGFCharacterData : public FGGFDataTableRowBase
 {
     GENERATED_BODY()
 
@@ -22,44 +21,13 @@ struct FGGFCharacterDataTableRow : public FTableRowBase
     // 기본 애니메이션
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     TSubclassOf<UAnimInstance> AnimInstanceClass;
-};
-
-/**
- * 캐릭터 정의를 위한 구조체
- */
-USTRUCT(Atomic, BlueprintType)
-struct FGGFCharacterData
-{
-    GENERATED_BODY()
-
-    // 캐릭터 ID
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (ClampMin = 0))
-    int32 ID;
-
-    // 기본 스켈레탈 메시
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    TObjectPtr<USkeletalMesh> SkeletalMesh;
-
-    // 기본 애니메이션
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    TSubclassOf<UAnimInstance> AnimInstanceClass;
-
-    /* 대입 연산자 오버로딩 */
-
-    FGGFCharacterData& operator=(const FGGFCharacterDataTableRow& DataTableRow)
-    {
-        SkeletalMesh = DataTableRow.SkeletalMesh;
-        AnimInstanceClass = DataTableRow.AnimInstanceClass;
-
-        return *this;
-    }
 };
 
 /**
  * 캐릭터 정의를 위한 데이터 에셋
  */
 UCLASS(BlueprintType, Blueprintable)
-class GGFCHARACTERSYSTEM_API UGGFCharacterDefinition : public UDataAsset
+class GGFCHARACTERSYSTEM_API UGGFCharacterDefinition : public UGGFDefinitionBase
 {
     GENERATED_BODY()
 
@@ -69,12 +37,10 @@ protected:
     FGGFCharacterData Data;
 
 public:
-    /* API */
+    /* GGFDefinitionBase */
 
-    UFUNCTION(BlueprintCallable)
-    virtual void InitFromDataTable(UDataTable* DataTable, int32 ID);
+    virtual bool InitFromDataTableRowBase(FGGFDataTableRowBase* NewDataTableRowBase) override;
 
-public:
     /* Getter */
 
     UFUNCTION(BlueprintGetter)

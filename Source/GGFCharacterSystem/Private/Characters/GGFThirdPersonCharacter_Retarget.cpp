@@ -65,10 +65,10 @@ bool AGGFThirdPersonCharacter_Retarget::SetCharacterSkinDefinition_Implementatio
     /* 호환성 검사 */
 
     // 사용 가능한 캐릭터 목록에 존재하는지 확인
-    if(!SkinData.AvailableCharacterIDList.IsEmpty() && !SkinData.AvailableCharacterIDList.Contains(CharacterData.ID)) return false;
+    if(!SkinData.AvailableCharacterIDList.IsEmpty() && !SkinData.AvailableCharacterIDList.Contains(NewDefinition->GetID())) return false;
 
     // 사용 불가능한 캐릭터 목록에 존재하는지 확인
-    if(!SkinData.ForbiddenCharacterIDList.IsEmpty() && SkinData.ForbiddenCharacterIDList.Contains(CharacterData.ID)) return false;
+    if(!SkinData.ForbiddenCharacterIDList.IsEmpty() && SkinData.ForbiddenCharacterIDList.Contains(NewDefinition->GetID())) return false;
 
     /* 설정 */
 
