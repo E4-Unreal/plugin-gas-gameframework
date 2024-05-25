@@ -48,7 +48,8 @@ public class GASGameFramework : ModuleRules
                 "GASExtension",
                 "GGFEquipmentSystem",
                 "GGFInteractionSystem",
-                "GGFShooterCore"
+                "GGFShooterCore",
+                "GGFCharacterSystem"
             }
 			);
 
