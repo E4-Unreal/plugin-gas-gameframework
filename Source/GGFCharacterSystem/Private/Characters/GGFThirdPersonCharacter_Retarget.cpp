@@ -48,7 +48,7 @@ void AGGFThirdPersonCharacter_Retarget::HideBones()
 bool AGGFThirdPersonCharacter_Retarget::SetCharacterDefinition_Implementation(UGGFCharacterDefinition* NewDefinition)
 {
     // 입력 유효성 검사
-    if(NewDefinition == nullptr) return false;
+    if(NewDefinition == nullptr || NewDefinition->IsNotValid()) return false;
 
     // 데이터 에셋 교체
     CharacterDefinition = NewDefinition;
@@ -66,19 +66,19 @@ bool AGGFThirdPersonCharacter_Retarget::SetCharacterSkinDefinition_Implementatio
     UGGFCharacterSkinDefinition* NewDefinition)
 {
     // 입력 유효성 검사
-    if(NewDefinition == nullptr) return false;
+    if(NewDefinition == nullptr || NewDefinition->IsNotValid()) return false;
 
     // 데이터 가져오기
-    const FGGFCharacterData& CharacterData = CharacterDefinition->GetData();
     const FGGFCharacterSkinData& SkinData = NewDefinition->GetData();
 
     /* 호환성 검사 */
+    int32 CharacterID = CharacterDefinition->GetID();
 
     // 사용 가능한 캐릭터 목록에 존재하는지 확인
-    if(!SkinData.AvailableCharacterIDList.IsEmpty() && !SkinData.AvailableCharacterIDList.Contains(NewDefinition->GetID())) return false;
+    if(!SkinData.AvailableCharacterIDList.IsEmpty() && !SkinData.AvailableCharacterIDList.Contains(CharacterID)) return false;
 
     // 사용 불가능한 캐릭터 목록에 존재하는지 확인
-    if(!SkinData.ForbiddenCharacterIDList.IsEmpty() && SkinData.ForbiddenCharacterIDList.Contains(NewDefinition->GetID())) return false;
+    if(!SkinData.ForbiddenCharacterIDList.IsEmpty() && SkinData.ForbiddenCharacterIDList.Contains(CharacterID)) return false;
 
     /* 설정 */
 
@@ -86,13 +86,15 @@ bool AGGFThirdPersonCharacter_Retarget::SetCharacterSkinDefinition_Implementatio
     switch (SkinData.SkinType)
     {
     case EGGFCharacterSkinType::Full:
-        CharacterSkinDefinitionMap.Emplace(EGGFCharacterSkinType::Full, NewDefinition);
         RetargetMesh->SetSkeletalMesh(SkinData.SkeletalMesh);
         break;
     default:
         return false;
         break;
     }
+
+    // 데이터 에셋 교체
+    CharacterSkinDefinitionMap.Emplace(SkinData.SkinType, NewDefinition);
 
     return true;
 }
