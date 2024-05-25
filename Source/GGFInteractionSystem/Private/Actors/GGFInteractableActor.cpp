@@ -49,7 +49,16 @@ AGGFInteractableActor::AGGFInteractableActor()
     DisplayMesh->SetupAttachment(RootComponent);
 
     /* 블루프린트 에셋 기본 할당 */
-    static ConstructorHelpers::FClassFinder<UUserWidget> InteractionInfoWidgetClassFinder(TEXT("/GASGameFramework/InteractionSystem/WBP_InteractionInfo_Sample.WBP_InteractionInfo_Sample_C"));
+    // LevelPrototyping 플러그인
+    static ConstructorHelpers::FObjectFinder<UStaticMesh> DisplayMeshObjectFinder(TEXT("/LevelPrototyping/Meshes/SM_ChamferCube.SM_ChamferCube"));
+    if(DisplayMeshObjectFinder.Succeeded())
+    {
+        GetDisplayMesh()->SetStaticMesh(DisplayMeshObjectFinder.Object);
+        GetDisplayMesh()->SetRelativeLocation(FVector(0, 0, 50));
+    }
+
+    // GASGameFramework 플러그인
+    static ConstructorHelpers::FClassFinder<UUserWidget> InteractionInfoWidgetClassFinder(TEXT("/GASGameFramework/Objects/Interactable/WBP_InteractionInfo_Sample.WBP_InteractionInfo_Sample_C"));
     if (InteractionInfoWidgetClassFinder.Succeeded())
     {
         InteractionWidget->SetWidgetClass(InteractionInfoWidgetClassFinder.Class);
