@@ -2,9 +2,11 @@
 
 #include "Characters/GGFThirdPersonCharacter_Retarget.h"
 
+#include "Components/GGFEquipmentManager.h"
+
 FName AGGFThirdPersonCharacter_Retarget::RetargetMeshName(TEXT("RetargetMesh"));
 
-AGGFThirdPersonCharacter_Retarget::AGGFThirdPersonCharacter_Retarget()
+AGGFThirdPersonCharacter_Retarget::AGGFThirdPersonCharacter_Retarget(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
 {
     /* Mesh */
     USkeletalMeshComponent* CharacterMesh = GetMesh();
@@ -21,6 +23,14 @@ AGGFThirdPersonCharacter_Retarget::AGGFThirdPersonCharacter_Retarget()
 
     ConstructorHelpers::FClassFinder<UAnimInstance> RetargetAnimInstanceFinder(TEXT("/ParagonBelica/Characters/Heroes/Belica/Rigs/ABP_Retarget_UE4_Belica.ABP_Retarget_UE4_Belica_C"));
     if(RetargetAnimInstanceFinder.Succeeded()) RetargetMesh->SetAnimInstanceClass(RetargetAnimInstanceFinder.Class);
+}
+
+void AGGFThirdPersonCharacter_Retarget::PostInitializeComponents()
+{
+    Super::PostInitializeComponents();
+
+    /* EquipmentManager */
+    GetEquipmentManager()->SetTargetMesh(RetargetMesh);
 }
 
 void AGGFThirdPersonCharacter_Retarget::HideBones()

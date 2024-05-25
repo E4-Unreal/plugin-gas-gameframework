@@ -28,7 +28,11 @@ private:
     TObjectPtr<USkeletalMeshComponent> RetargetMesh;
 
 public:
-    AGGFThirdPersonCharacter_Retarget();
+    AGGFThirdPersonCharacter_Retarget(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
+
+    /* Actor */
+
+    virtual void PostInitializeComponents() override;
 
     /* GGFCharacterInterface */
 
