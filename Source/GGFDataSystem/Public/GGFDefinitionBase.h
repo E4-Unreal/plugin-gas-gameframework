@@ -10,16 +10,16 @@
 /**
  * 데이터 시스템에서 사용되는 기본 데이터 에셋 클래스로 데이터 테이블로부터 초기화를 위한 가상 메서드가 정의되어 있습니다.
  */
-UCLASS(BlueprintType, Blueprintable)
+UCLASS(BlueprintType, Blueprintable, HideDropdown, EditInlineNew)
 class GGFDATASYSTEM_API UGGFDefinitionBase : public UDataAsset
 {
     GENERATED_BODY()
 
-    UPROPERTY(VisibleAnywhere, Category = "State", Transient)
+    UPROPERTY(VisibleAnywhere, BlueprintGetter = GetDataTable, Category = "State", Transient)
     TObjectPtr<UDataTable> DataTable;
 
 protected:
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config", meta = (ClampMin = 0))
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config", meta = (ClampMin = 0, DisplayPriority = -1))
     int32 ID;
 
 public:
@@ -33,4 +33,9 @@ protected:
 
     UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
     bool Internal_InitFromDataTable();
+
+    /* Getter */
+
+    UFUNCTION(BlueprintGetter)
+    FORCEINLINE UDataTable* GetDataTable() const { return DataTable; }
 };
