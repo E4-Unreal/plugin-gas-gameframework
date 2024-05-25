@@ -30,10 +30,6 @@ struct FGGFCharacterSkinData : public FGGFDataTableRowBase
 {
     GENERATED_BODY()
 
-    // 스킨 이름
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    FName DisplayName;
-
     // 스킨 타입
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     EGGFCharacterSkinType SkinType;

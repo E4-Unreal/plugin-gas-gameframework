@@ -16,6 +16,10 @@ struct FGGFDataTableRowBase : public FTableRowBase
 {
     GENERATED_BODY()
 
+    // 표시명
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayPriority = -1))
+    FName DisplayName;
+
     virtual FORCEINLINE bool IsValid() const { return true; }
     FORCEINLINE bool IsNotValid() const { return !IsValid(); }
 };
