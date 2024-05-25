@@ -2,16 +2,14 @@
 
 #include "Tests/GGFTestDefinition.h"
 
-bool UGGFTestDefinition::Internal_InitFromDataTable_Implementation()
+bool UGGFTestDefinition::InitFromDataTableRowBase(FGGFDataTableRowBase* NewDataTableRowBase)
 {
-    if(GetDataTable())
+    // 구조체 캐스팅
+    if(FTestDataTableRow* NewTestData = static_cast<FTestDataTableRow*>(NewDataTableRowBase))
     {
-        if(FTestDataTableRow* NewData = GetDataTable()->FindRow<FTestDataTableRow>(FName(FString::FromInt(ID)), ""))
-        {
-            Data = *NewData;
-
-            return true;
-        }
+        // 데이터 설정
+        TestData = *NewTestData;
+        return true;
     }
 
     return false;

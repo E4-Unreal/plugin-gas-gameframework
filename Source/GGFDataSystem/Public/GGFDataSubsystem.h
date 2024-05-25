@@ -8,6 +8,9 @@
 
 class UGGFDefinitionBase;
 
+/**
+ * DataSubsystem 전용 데이터 구조체
+ */
 USTRUCT(Atomic, BlueprintType)
 struct FGGFDefinitionContainer
 {
