@@ -135,6 +135,42 @@ bool AGGFPlayerCharacter::SetCharacterData_Implementation(const FGGFCharacterDat
     return true;
 }
 
+bool AGGFPlayerCharacter::SetCharacterDefinition_Implementation(UGGFCharacterDefinition* NewDefinition)
+{
+    // 입력 유효성 검사
+    if(NewDefinition == nullptr || NewDefinition->IsNotValid()) return false;
+
+    // 초기화
+    if(Execute_SetCharacterData(this, NewDefinition->GetData()))
+    {
+        // 데이터 에셋 교체
+        CharacterDefinition = NewDefinition;
+
+        return true;
+    }
+
+    return false;
+}
+
+bool AGGFPlayerCharacter::SetCharacterID_Implementation(int32 ID)
+{
+    if(GetGameInstance())
+    {
+        UGGFDataSubsystem* DataSubsystem = GetGameInstance()->GetSubsystem<UGGFDataSubsystem>();
+        UGGFCharacterDefinition* NewCharacterDefinition = Cast<UGGFCharacterDefinition>(DataSubsystem->GetOrCreateDefinition(UGGFCharacterDefinition::StaticClass(), ID));
+
+        return Execute_SetCharacterDefinition(this, NewCharacterDefinition);
+    }
+    else if(FGGFCharacterData* NewCharacterData = static_cast<FGGFCharacterData*>(UGGFDataSubsystem::GetDirectData(UGGFCharacterDefinition::StaticClass(), ID)))
+    {
+        return Execute_SetCharacterData(this, *NewCharacterData);
+    }
+
+    return false;
+}
+
+/* GGFCharacterSkinInterface */
+
 bool AGGFPlayerCharacter::SetCharacterSkinData_Implementation(const FGGFCharacterSkinData& NewCharacterSkinData)
 {
     // 입력 유효성 검사
@@ -163,23 +199,6 @@ bool AGGFPlayerCharacter::SetCharacterSkinData_Implementation(const FGGFCharacte
     return true;
 }
 
-bool AGGFPlayerCharacter::SetCharacterDefinition_Implementation(UGGFCharacterDefinition* NewDefinition)
-{
-    // 입력 유효성 검사
-    if(NewDefinition == nullptr || NewDefinition->IsNotValid()) return false;
-
-    // 초기화
-    if(Execute_SetCharacterData(this, NewDefinition->GetData()))
-    {
-        // 데이터 에셋 교체
-        CharacterDefinition = NewDefinition;
-
-        return true;
-    }
-
-    return false;
-}
-
 bool AGGFPlayerCharacter::SetCharacterSkinDefinition_Implementation(UGGFCharacterSkinDefinition* NewDefinition)
 {
     // 입력 유효성 검사
@@ -192,23 +211,6 @@ bool AGGFPlayerCharacter::SetCharacterSkinDefinition_Implementation(UGGFCharacte
         CharacterSkinDefinitionMap.Emplace(NewDefinition->GetData().SkinType, NewDefinition);
 
         return true;
-    }
-
-    return false;
-}
-
-bool AGGFPlayerCharacter::SetCharacterID_Implementation(int32 ID)
-{
-    if(GetGameInstance())
-    {
-        UGGFDataSubsystem* DataSubsystem = GetGameInstance()->GetSubsystem<UGGFDataSubsystem>();
-        UGGFCharacterDefinition* NewCharacterDefinition = Cast<UGGFCharacterDefinition>(DataSubsystem->GetOrCreateDefinition(UGGFCharacterDefinition::StaticClass(), ID));
-
-        return Execute_SetCharacterDefinition(this, NewCharacterDefinition);
-    }
-    else if(FGGFCharacterData* NewCharacterData = static_cast<FGGFCharacterData*>(UGGFDataSubsystem::GetDirectData(UGGFCharacterDefinition::StaticClass(), ID)))
-    {
-        return Execute_SetCharacterData(this, *NewCharacterData);
     }
 
     return false;

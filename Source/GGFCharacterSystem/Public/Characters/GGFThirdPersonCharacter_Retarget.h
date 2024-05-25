@@ -37,6 +37,9 @@ public:
     /* GGFCharacterInterface */
 
     virtual bool SetCharacterData_Implementation(const FGGFCharacterData& NewCharacterData) override;
+
+    /* GGFCharacterSkinInterface */
+
     virtual bool SetCharacterSkinData_Implementation(const FGGFCharacterSkinData& NewCharacterSkinData) override;
 
 protected:

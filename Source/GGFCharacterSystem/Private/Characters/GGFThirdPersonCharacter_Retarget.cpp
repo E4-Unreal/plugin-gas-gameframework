@@ -58,6 +58,8 @@ bool AGGFThirdPersonCharacter_Retarget::SetCharacterData_Implementation(const FG
     return true;
 }
 
+/* GGFCharacterSkinInterface */
+
 bool AGGFThirdPersonCharacter_Retarget::SetCharacterSkinData_Implementation(
     const FGGFCharacterSkinData& NewCharacterSkinData)
 {

@@ -5,9 +5,10 @@
 #include "CoreMinimal.h"
 #include "Characters/GEPlayerCharacter.h"
 #include "Interfaces/GGFCharacterAnimationInterface.h"
-#include "Interfaces/GGFCharacterInterface.h"
+#include "..\Interfaces\GGFCharacterConfigInterface.h"
 #include "Data/GGFCharacterDefinition.h"
 #include "Data/GGFCharacterSkinDefinition.h"
+#include "Interfaces/GGFCharacterSkinInterface.h"
 #include "GGFPlayerCharacter.generated.h"
 
 struct FInputActionValue;
@@ -19,7 +20,8 @@ class UGGFEquipmentManager;
  */
 UCLASS()
 class GGFCHARACTERSYSTEM_API AGGFPlayerCharacter : public AGEPlayerCharacter,
-    public IGGFCharacterInterface,
+    public IGGFCharacterConfigInterface,
+    public IGGFCharacterSkinInterface,
     public IGGFCharacterAnimationInterface
 {
     GENERATED_BODY()
@@ -53,16 +55,18 @@ protected:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|GGFCharacterInterface")
     int32 DefaultCharacterID;
 
-    // 캐릭터 스킨 ID
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|GGFCharacterInterface")
-    TArray<int32> DefaultCharacterSkinIDList;
-
     // 캐릭터 정의 데이터 에셋
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State|GGFCharacterInterface", Transient)
     TObjectPtr<UGGFCharacterDefinition> CharacterDefinition;
 
+    /* GGFCharacterSkinInterface */
+
+    // 캐릭터 스킨 ID
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|GGFCharacterSkinInterface")
+    TArray<int32> DefaultCharacterSkinIDList;
+
     // 캐릭터 스킨 데이터 에셋
-    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State|GGFCharacterInterface", Transient)
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State|GGFCharacterSkinInterface", Transient)
     TMap<EGGFCharacterSkinType, TObjectPtr<UGGFCharacterSkinDefinition>> CharacterSkinDefinitionMap;
 
 public:
@@ -100,10 +104,13 @@ public:
     /* GGFCharacterInterface */
 
     virtual bool SetCharacterData_Implementation(const FGGFCharacterData& NewCharacterData) override;
-    virtual bool SetCharacterSkinData_Implementation(const FGGFCharacterSkinData& NewCharacterSkinData) override;
     virtual bool SetCharacterDefinition_Implementation(UGGFCharacterDefinition* NewDefinition) override;
-    virtual bool SetCharacterSkinDefinition_Implementation(UGGFCharacterSkinDefinition* NewDefinition) override;
     virtual bool SetCharacterID_Implementation(int32 ID) override;
+
+    /* GGFCharacterSkinInterface */
+
+    virtual bool SetCharacterSkinData_Implementation(const FGGFCharacterSkinData& NewCharacterSkinData) override;
+    virtual bool SetCharacterSkinDefinition_Implementation(UGGFCharacterSkinDefinition* NewDefinition) override;
     virtual bool SetCharacterSkinID_Implementation(int32 ID) override;
 
 protected:
