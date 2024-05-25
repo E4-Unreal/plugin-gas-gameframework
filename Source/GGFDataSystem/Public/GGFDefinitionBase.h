@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Engine/DataAsset.h"
+#include "Engine/DataTable.h"
 #include "GGFDefinitionBase.generated.h"
 
 /**
@@ -18,18 +19,18 @@ class GGFDATASYSTEM_API UGGFDefinitionBase : public UDataAsset
     TObjectPtr<UDataTable> DataTable;
 
 protected:
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (ClampMin = 0))
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config", meta = (ClampMin = 0))
     int32 ID;
 
 public:
     /* API */
 
     UFUNCTION(BlueprintCallable)
-    void InitFromDataTable(UDataTable* NewDataTable, int32 NewID);
+    bool InitFromDataTable(UDataTable* NewDataTable, int32 NewID);
 
 protected:
     /* 메서드 */
 
     UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-    void Internal_InitFromDataTable();
+    bool Internal_InitFromDataTable();
 };
