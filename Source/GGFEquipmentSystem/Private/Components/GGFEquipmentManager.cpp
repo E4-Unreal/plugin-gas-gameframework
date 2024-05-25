@@ -1,12 +1,11 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "Components/GGFEquipmentManager.h"
 
 #include "GameplayTagContainer.h"
 #include "Net/UnrealNetwork.h"
 #include "GGFWeapon.h"
-#include "Interfaces/GGFCharacterInterface.h"
+#include "Interfaces/GGFCharacterAnimationInterface.h"
 
 const FEquipmentSlot FEquipmentSlot::EmptySlot;
 
@@ -91,7 +90,7 @@ void UGGFEquipmentManager::Server_SelectEquipment_Implementation(FGameplayTag Sl
 
     // 장비에 대응하는 캐릭터 애님 클래스로 변경 요청
     const FGameplayTag EquipmentType = IGGFEquipmentInterface::Execute_GetEquipmentType(SelectedEquipment);
-    IGGFCharacterInterface::Execute_ChangeAnimInstance(GetOwner(), EquipmentType);
+    IGGFCharacterAnimationInterface::Execute_ChangeAnimInstance(GetOwner(), EquipmentType);
 }
 
 bool UGGFEquipmentManager::IsEquipmentExist(FGameplayTag Slot, int32 Index) const
@@ -135,7 +134,7 @@ void UGGFEquipmentManager::Deselect()
     SelectedEquipment = nullptr;
 
     // 기본 캐릭터 애님 클래스로 변경 요청
-    IGGFCharacterInterface::Execute_ChangeAnimInstance(GetOwner(), FGameplayTag::EmptyTag);
+    IGGFCharacterAnimationInterface::Execute_ChangeAnimInstance(GetOwner(), FGameplayTag::EmptyTag);
 }
 
 bool UGGFEquipmentManager::AttachEquipment(AActor* Equipment, FName SocketName)
@@ -247,5 +246,5 @@ void UGGFEquipmentManager::OnRep_SelectedEquipment(AActor* OldEquipment)
 {
     // 장비에 대응하는 캐릭터 애님 클래스로 변경 요청
     const FGameplayTag EquipmentType = SelectedEquipment ? IGGFEquipmentInterface::Execute_GetEquipmentType(SelectedEquipment) : FGameplayTag::EmptyTag;
-    IGGFCharacterInterface::Execute_ChangeAnimInstance(GetOwner(), EquipmentType);
+    IGGFCharacterAnimationInterface::Execute_ChangeAnimInstance(GetOwner(), EquipmentType);
 }

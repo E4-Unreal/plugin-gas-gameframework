@@ -10,6 +10,8 @@ public class GASExtension : ModuleRules
             new string[]
             {
                 "Core",
+
+                // 입력
                 "EnhancedInput",
 
                 // GAS

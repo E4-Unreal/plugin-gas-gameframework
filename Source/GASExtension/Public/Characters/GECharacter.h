@@ -45,6 +45,11 @@ private:
     UPROPERTY(VisibleAnywhere, BlueprintGetter = GetGameplayStateMachine, Category = "Component")
     TObjectPtr<UGEGameplayStateMachine> GameplayStateMachine;
 
+protected:
+    // 캐릭터 메시에서 기본적으로 숨길 스켈레톤 이름
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|CharacterMesh")
+    TArray<FName> BoneNamesToHide;
+
 public:
     AGECharacter(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
@@ -59,6 +64,10 @@ protected:
 
     UFUNCTION()
     virtual void OnDeadTagAdded(const FGameplayTag Tag, int32 Count);
+
+    // BoneNamesToHide에 설정된 스켈레톤을 숨깁니다.
+    UFUNCTION(BlueprintCallable)
+    virtual void HideBones();
 
 protected:
     /* Getter */

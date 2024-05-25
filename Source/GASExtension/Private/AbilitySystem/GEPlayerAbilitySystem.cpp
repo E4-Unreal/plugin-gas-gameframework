@@ -3,7 +3,7 @@
 #include "AbilitySystem/GEPlayerAbilitySystem.h"
 
 #include "GEGameplayTags.h"
-#include "Abilities/GEGameplayAbility.h"
+#include "Abilities/GEPlayerAbility.h"
 #include "Attributes/GEHealthAttributes.h"
 
 void UGEPlayerAbilitySystem::PressInputTag(FGameplayTag InputTag)
@@ -112,7 +112,7 @@ void UGEPlayerAbilitySystem::OnGiveAbility(FGameplayAbilitySpec& AbilitySpec)
     Super::OnGiveAbility(AbilitySpec);
 
     // InputTag의 해시 값을 사용하여 InputID 설정
-    if(UGEGameplayAbility* Ability = Cast<UGEGameplayAbility>(AbilitySpec.Ability))
+    if(UGEPlayerAbility* Ability = Cast<UGEPlayerAbility>(AbilitySpec.Ability))
     {
         const FGameplayTag& InputTag = Ability->GetInputTag();
         AbilitySpec.InputID = GetTypeHash(InputTag);
