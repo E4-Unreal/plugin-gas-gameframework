@@ -47,6 +47,10 @@ public:
     UFUNCTION(BlueprintCallable, meta = (DeterminesOutputType = DefinitionClass))
     UGGFDefinitionBase* GetOrCreateDefinition(TSubclassOf<UGGFDefinitionBase> DefinitionClass, int32 ID);
 
+    // 데이터 테이블로부터 생성된 모든 데이터 에셋 가져오기
+    UFUNCTION(BlueprintCallable, meta = (DeterminesOutputType = DefinitionClass))
+    TArray<UGGFDefinitionBase*> GetOrCreateAllDefinitions(TSubclassOf<UGGFDefinitionBase> DefinitionClass);
+
     // 데이터 테이블에서 데이터 직접 가져오기
     static FGGFDataTableRowBase* GetDirectData(TSubclassOf<UGGFDefinitionBase> DefinitionClass, int32 ID);
 };

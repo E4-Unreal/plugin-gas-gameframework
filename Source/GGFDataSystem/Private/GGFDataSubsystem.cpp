@@ -41,6 +41,30 @@ UGGFDefinitionBase* UGGFDataSubsystem::GetOrCreateDefinition(TSubclassOf<UGGFDef
     return NewDefinition;
 }
 
+TArray<UGGFDefinitionBase*> UGGFDataSubsystem::GetOrCreateAllDefinitions(TSubclassOf<UGGFDefinitionBase> DefinitionClass)
+{
+    // 변수 초기화
+    TArray<UGGFDefinitionBase*> Definitions;
+
+    // 입력 유효성 검사
+    if(DefinitionClass == nullptr || !DefinitionContainerMap.Contains(DefinitionClass)) return Definitions;
+
+    // 데이터 테이블에 등록된 모든 ID 확인
+    TArray<FName> RowNames = DefinitionContainerMap[DefinitionClass].DataTable->GetRowNames();
+
+    // 메모리 할당
+    Definitions.Reserve(RowNames.Num());
+
+    // Definition 생성
+    for (const FName& RowName : RowNames)
+    {
+        int32 ID = FCString::Atoi(*RowName.ToString());
+        Definitions.Emplace(GetOrCreateDefinition(DefinitionClass, ID));
+    }
+
+    return Definitions;
+}
+
 FGGFDataTableRowBase* UGGFDataSubsystem::GetDirectData(TSubclassOf<UGGFDefinitionBase> DefinitionClass, int32 ID)
 {
     // 프로젝트 설정 가져오기
