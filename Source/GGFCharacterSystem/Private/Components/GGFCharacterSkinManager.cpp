@@ -6,9 +6,6 @@
 
 UGGFCharacterSkinManager::UGGFCharacterSkinManager()
 {
-    // 리플리케이트 설정
-    SetIsReplicatedByDefault(true);
-
     // 초기화
     bWantsInitializeComponent = true;
 }

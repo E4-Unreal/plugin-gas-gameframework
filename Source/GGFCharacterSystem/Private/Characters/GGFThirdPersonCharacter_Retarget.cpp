@@ -2,6 +2,7 @@
 
 #include "Characters/GGFThirdPersonCharacter_Retarget.h"
 
+#include "Components/GGFCharacterManager.h"
 #include "Components/GGFCharacterSkinManager.h"
 #include "Components/GGFEquipmentManager.h"
 
@@ -18,6 +19,9 @@ AGGFThirdPersonCharacter_Retarget::AGGFThirdPersonCharacter_Retarget(const FObje
     RetargetMesh = CreateDefaultSubobject<USkeletalMeshComponent>(RetargetMeshName);
     RetargetMesh->SetupAttachment(CharacterMesh);
 
+    /* CharacterManager */
+    GetCharacterManager()->SetMesh(RetargetMesh);
+
     /* SkinManager */
     GetSkinManager()->SetCharacterMesh(RetargetMesh);
 
@@ -33,6 +37,7 @@ void AGGFThirdPersonCharacter_Retarget::PostInitializeComponents()
 {
     Super::PostInitializeComponents();
 
+    // TODO 생성자로 이동
     /* EquipmentManager */
     GetEquipmentManager()->SetTargetMesh(RetargetMesh);
 }
@@ -45,19 +50,4 @@ void AGGFThirdPersonCharacter_Retarget::HideBones()
         CharacterMesh->HideBoneByName(BoneName, PBO_None);
         RetargetMesh->HideBoneByName(BoneName, PBO_None);
     }
-}
-
-/* GGFCharacterInterface */
-
-bool AGGFThirdPersonCharacter_Retarget::SetCharacterData_Implementation(const FGGFCharacterData& NewCharacterData)
-{
-    // 입력 유효성 검사
-    if(NewCharacterData.IsNotValid()) return false;
-
-    // 캐릭터 설정
-    USkeletalMeshComponent* CharacterMesh = RetargetMesh;
-    CharacterMesh->SetSkeletalMesh(NewCharacterData.SkeletalMesh);
-    CharacterMesh->SetAnimInstanceClass(NewCharacterData.AnimInstanceClass);
-
-    return true;
 }

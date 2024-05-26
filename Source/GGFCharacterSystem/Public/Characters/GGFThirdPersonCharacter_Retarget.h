@@ -34,10 +34,6 @@ public:
 
     virtual void PostInitializeComponents() override;
 
-    /* GGFCharacterInterface */
-
-    virtual bool SetCharacterData_Implementation(const FGGFCharacterData& NewCharacterData) override;
-
 protected:
     virtual void HideBones() override;
 

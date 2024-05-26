@@ -3,16 +3,16 @@
 #include "Characters/GGFPlayerCharacter.h"
 
 #include "EnhancedInputSubsystems.h"
-#include "GGFDataSubsystem.h"
 #include "AbilitySystem/GGFPlayerAbilitySystem.h"
+#include "Components/GGFCharacterManager.h"
 #include "Components/GGFCharacterMovement.h"
 #include "Components/GGFCharacterSkinManager.h"
 #include "Components/GGFCharacterStateMachine.h"
 #include "Components/GGFEquipmentManager.h"
-#include "Data/GGFCharacterDataSubsystem.h"
 #include "Input/GGFInputManager.h"
 
 FName AGGFPlayerCharacter::EquipmentManagerName(TEXT("EquipmentManager"));
+FName AGGFPlayerCharacter::CharacterManagerName(TEXT("CharacterManager"));
 FName AGGFPlayerCharacter::SkinManagerName(TEXT("SkinManager"));
 
 AGGFPlayerCharacter::AGGFPlayerCharacter(const FObjectInitializer& ObjectInitializer)
@@ -25,35 +25,14 @@ AGGFPlayerCharacter::AGGFPlayerCharacter(const FObjectInitializer& ObjectInitial
     /* EquipmentManager */
     EquipmentManager = CreateDefaultSubobject<UGGFEquipmentManager>(EquipmentManagerName);
 
+    /* CharacterManager */
+    CharacterManager = CreateDefaultSubobject<UGGFCharacterManager>(CharacterManagerName);
+    CharacterManager->SetMesh(GetMesh());
+
     /* SkinManager */
     SkinManager = CreateDefaultSubobject<UGGFCharacterSkinManager>(SkinManagerName);
     SkinManager->SetCharacterMesh(GetMesh());
 }
-
-void AGGFPlayerCharacter::PreInitializeComponents()
-{
-    Super::PreInitializeComponents();
-
-    // 초기화
-    Execute_SetCharacterID(this, DefaultCharacterID);
-}
-
-#if WITH_EDITOR
-void AGGFPlayerCharacter::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent)
-{
-    FName PropertyName = PropertyChangedEvent.GetMemberPropertyName();
-    if(PropertyName == GET_MEMBER_NAME_CHECKED(ThisClass, DefaultCharacterID))
-    {
-        if(FGGFCharacterData* NewCharacterData = UGGFCharacterDataSubsystem::GetDirectCharacterData(DefaultCharacterID))
-        {
-            Execute_SetCharacterData(this, *NewCharacterData);
-        }
-    }
-
-    Super::PostEditChangeProperty(PropertyChangedEvent);
-}
-#endif
-
 
 bool AGGFPlayerCharacter::CanJumpInternal_Implementation() const
 {
@@ -138,49 +117,4 @@ void AGGFPlayerCharacter::ChangeAnimInstance_Implementation(FGameplayTag Equipme
             GetMesh()->GetAnimInstance()->Montage_Play(EquipMontageMap[EquipmentTag]);
         }
     }
-}
-
-/* GGFCharacterInterface */
-
-bool AGGFPlayerCharacter::SetCharacterData_Implementation(const FGGFCharacterData& NewCharacterData)
-{
-    // 입력 유효성 검사
-    if(NewCharacterData.IsNotValid()) return false;
-
-    // 캐릭터 설정
-    USkeletalMeshComponent* CharacterMesh = GetMesh();
-    CharacterMesh->SetSkeletalMesh(NewCharacterData.SkeletalMesh);
-    CharacterMesh->SetAnimInstanceClass(NewCharacterData.AnimInstanceClass);
-
-    return true;
-}
-
-bool AGGFPlayerCharacter::SetCharacterDefinition_Implementation(UGGFCharacterDefinition* NewDefinition)
-{
-    // 입력 유효성 검사
-    if(NewDefinition == nullptr || NewDefinition->IsNotValid()) return false;
-
-    // 초기화
-    if(Execute_SetCharacterData(this, NewDefinition->GetData()))
-    {
-        // 데이터 에셋 교체
-        CharacterDefinition = NewDefinition;
-
-        return true;
-    }
-
-    return false;
-}
-
-bool AGGFPlayerCharacter::SetCharacterID_Implementation(int32 ID)
-{
-    if(GetGameInstance())
-    {
-        UGGFDataSubsystem* DataSubsystem = GetGameInstance()->GetSubsystem<UGGFDataSubsystem>();
-        UGGFCharacterDefinition* NewCharacterDefinition = Cast<UGGFCharacterDefinition>(DataSubsystem->GetOrCreateDefinition(UGGFCharacterDefinition::StaticClass(), ID));
-
-        return Execute_SetCharacterDefinition(this, NewCharacterDefinition);
-    }
-
-    return false;
 }

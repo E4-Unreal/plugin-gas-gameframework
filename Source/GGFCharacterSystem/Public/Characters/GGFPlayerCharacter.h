@@ -5,11 +5,9 @@
 #include "CoreMinimal.h"
 #include "Characters/GEPlayerCharacter.h"
 #include "Interfaces/GGFCharacterAnimationInterface.h"
-#include "Interfaces/GGFCharacterConfigInterface.h"
-#include "Data/GGFCharacterDefinition.h"
-#include "Data/GGFCharacterSkinDefinition.h"
 #include "GGFPlayerCharacter.generated.h"
 
+class UGGFCharacterManager;
 class UGGFCharacterSkinManager;
 struct FInputActionValue;
 class UGGFEquipmentManager;
@@ -20,7 +18,6 @@ class UGGFEquipmentManager;
  */
 UCLASS()
 class GGFCHARACTERSYSTEM_API AGGFPlayerCharacter : public AGEPlayerCharacter,
-    public IGGFCharacterConfigInterface,
     public IGGFCharacterAnimationInterface
 {
     GENERATED_BODY()
@@ -29,6 +26,7 @@ public:
     /* 서브 오브젝트 이름 */
 
     static FName EquipmentManagerName;
+    static FName CharacterManagerName;
     static FName SkinManagerName;
 
 private:
@@ -37,6 +35,10 @@ private:
     // 장비를 관리하기 위한 컴포넌트입니다.
     UPROPERTY(VisibleAnywhere, BlueprintGetter = GetEquipmentManager, Category = "Component")
     TObjectPtr<UGGFEquipmentManager> EquipmentManager;
+
+    // 캐릭터 설정을 관리하기 위한 컴포넌트입니다.
+    UPROPERTY(VisibleAnywhere, BlueprintGetter = GetCharacterManager, Category = "Component")
+    TObjectPtr<UGGFCharacterManager> CharacterManager;
 
     // 캐릭터 스킨을 관리하기 위한 컴포넌트입니다.
     UPROPERTY(VisibleAnywhere, BlueprintGetter = GetSkinManager, Category = "Component")
@@ -54,27 +56,8 @@ protected:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|GGFCharacterAnimationInterface", meta = (Categories = "Equipment"))
     TMap<FGameplayTag, TObjectPtr<UAnimMontage>> EquipMontageMap;
 
-    /* GGFCharacterInterface */
-
-    // 캐릭터 ID
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|GGFCharacterInterface")
-    int32 DefaultCharacterID;
-
-    // 캐릭터 정의 데이터 에셋
-    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State|GGFCharacterInterface", Transient)
-    TObjectPtr<UGGFCharacterDefinition> CharacterDefinition;
-
 public:
     AGGFPlayerCharacter(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
-
-    /* Actor */
-
-    virtual void PreInitializeComponents() override;
-
-#if WITH_EDITOR
-    virtual void PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent) override;
-#endif
-
 
     /* Character */
 
@@ -101,12 +84,6 @@ public:
     virtual void PlayMontage_Implementation(UAnimMontage* MontageToPlay) override;
     virtual void ChangeAnimInstance_Implementation(FGameplayTag EquipmentTag) override;
 
-    /* GGFCharacterInterface */
-
-    virtual bool SetCharacterData_Implementation(const FGGFCharacterData& NewCharacterData) override;
-    virtual bool SetCharacterDefinition_Implementation(UGGFCharacterDefinition* NewDefinition) override;
-    virtual bool SetCharacterID_Implementation(int32 ID) override;
-
 protected:
     UFUNCTION(NetMulticast, Unreliable)
     virtual void NetMulticast_PlayMontage(UAnimMontage* MontageToPlay);
@@ -116,6 +93,9 @@ protected:
 
     UFUNCTION(BlueprintGetter)
     FORCEINLINE UGGFEquipmentManager* GetEquipmentManager() const { return EquipmentManager; }
+
+    UFUNCTION(BlueprintGetter)
+    FORCEINLINE UGGFCharacterManager* GetCharacterManager() const { return CharacterManager; }
 
     UFUNCTION(BlueprintGetter)
     FORCEINLINE UGGFCharacterSkinManager* GetSkinManager() const { return SkinManager; }
