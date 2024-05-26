@@ -6,12 +6,14 @@
 #include "GGFDataSubsystem.h"
 #include "AbilitySystem/GGFPlayerAbilitySystem.h"
 #include "Components/GGFCharacterMovement.h"
+#include "Components/GGFCharacterSkinManager.h"
 #include "Components/GGFCharacterStateMachine.h"
 #include "Components/GGFEquipmentManager.h"
 #include "Data/GGFCharacterDataSubsystem.h"
 #include "Input/GGFInputManager.h"
 
 FName AGGFPlayerCharacter::EquipmentManagerName(TEXT("EquipmentManager"));
+FName AGGFPlayerCharacter::SkinManagerName(TEXT("SkinManager"));
 
 AGGFPlayerCharacter::AGGFPlayerCharacter(const FObjectInitializer& ObjectInitializer)
 : Super(ObjectInitializer
@@ -22,18 +24,18 @@ AGGFPlayerCharacter::AGGFPlayerCharacter(const FObjectInitializer& ObjectInitial
 {
     /* EquipmentManager */
     EquipmentManager = CreateDefaultSubobject<UGGFEquipmentManager>(EquipmentManagerName);
+
+    /* SkinManager */
+    SkinManager = CreateDefaultSubobject<UGGFCharacterSkinManager>(SkinManagerName);
+    SkinManager->SetCharacterMesh(GetMesh());
 }
 
-void AGGFPlayerCharacter::PostInitializeComponents()
+void AGGFPlayerCharacter::PreInitializeComponents()
 {
-    Super::PostInitializeComponents();
+    Super::PreInitializeComponents();
 
     // 초기화
     Execute_SetCharacterID(this, DefaultCharacterID);
-    for (int32 DefaultCharacterSkinID : DefaultCharacterSkinIDList)
-    {
-        Execute_SetCharacterSkinID(this, DefaultCharacterSkinID);
-    }
 }
 
 #if WITH_EDITOR
@@ -45,16 +47,6 @@ void AGGFPlayerCharacter::PostEditChangeProperty(FPropertyChangedEvent& Property
         if(FGGFCharacterData* NewCharacterData = UGGFCharacterDataSubsystem::GetDirectCharacterData(DefaultCharacterID))
         {
             Execute_SetCharacterData(this, *NewCharacterData);
-        }
-    }
-    else if(PropertyName == GET_MEMBER_NAME_CHECKED(ThisClass, DefaultCharacterSkinIDList))
-    {
-        for (int32 DefaultCharacterSkinID : DefaultCharacterSkinIDList)
-        {
-            if(FGGFCharacterSkinData* NewCharacterSkinData = UGGFCharacterDataSubsystem::GetDirectCharacterSkinData(DefaultCharacterSkinID))
-            {
-                Execute_SetCharacterSkinData(this, *NewCharacterSkinData);
-            }
         }
     }
 
@@ -188,66 +180,6 @@ bool AGGFPlayerCharacter::SetCharacterID_Implementation(int32 ID)
         UGGFCharacterDefinition* NewCharacterDefinition = Cast<UGGFCharacterDefinition>(DataSubsystem->GetOrCreateDefinition(UGGFCharacterDefinition::StaticClass(), ID));
 
         return Execute_SetCharacterDefinition(this, NewCharacterDefinition);
-    }
-
-    return false;
-}
-
-/* GGFCharacterSkinInterface */
-
-bool AGGFPlayerCharacter::SetCharacterSkinData_Implementation(const FGGFCharacterSkinData& NewCharacterSkinData)
-{
-    // 입력 유효성 검사
-    if(NewCharacterSkinData.IsNotValid()) return false;
-
-    // 캐릭터 ID
-    int32 CharacterID = CharacterDefinition && CharacterDefinition->IsValid() ? CharacterDefinition->GetID() : DefaultCharacterID;
-
-    // 사용 가능한 캐릭터 목록에 존재하는지 확인
-    if(!NewCharacterSkinData.AvailableCharacterIDList.IsEmpty() && !NewCharacterSkinData.AvailableCharacterIDList.Contains(CharacterID)) return false;
-
-    // 사용 불가능한 캐릭터 목록에 존재하는지 확인
-    if(!NewCharacterSkinData.ForbiddenCharacterIDList.IsEmpty() && NewCharacterSkinData.ForbiddenCharacterIDList.Contains(CharacterID)) return false;
-
-    // 스킨 종류 확인 후 초기화
-    switch (NewCharacterSkinData.SkinType)
-    {
-    case EGGFCharacterSkinType::Full:
-        GetMesh()->SetSkeletalMesh(NewCharacterSkinData.SkeletalMesh);
-        break;
-    default:
-        return false;
-        break;
-    }
-
-    return true;
-}
-
-bool AGGFPlayerCharacter::SetCharacterSkinDefinition_Implementation(UGGFCharacterSkinDefinition* NewDefinition)
-{
-    // 입력 유효성 검사
-    if(NewDefinition == nullptr || NewDefinition->IsNotValid()) return false;
-
-    // 초기화
-    if(Execute_SetCharacterSkinData(this, NewDefinition->GetData()))
-    {
-        // 데이터 에셋 교체
-        CharacterSkinDefinitionMap.Emplace(NewDefinition->GetData().SkinType, NewDefinition);
-
-        return true;
-    }
-
-    return false;
-}
-
-bool AGGFPlayerCharacter::SetCharacterSkinID_Implementation(int32 ID)
-{
-    if(GetGameInstance())
-    {
-        UGGFDataSubsystem* DataSubsystem = GetGameInstance()->GetSubsystem<UGGFDataSubsystem>();
-        UGGFCharacterSkinDefinition* NewCharacterSkinDefinition = Cast<UGGFCharacterSkinDefinition>(DataSubsystem->GetOrCreateDefinition(UGGFCharacterSkinDefinition::StaticClass(), ID));
-
-        return Execute_SetCharacterSkinDefinition(this, NewCharacterSkinDefinition);
     }
 
     return false;

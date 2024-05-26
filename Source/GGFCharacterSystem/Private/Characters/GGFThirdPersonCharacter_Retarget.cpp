@@ -2,6 +2,7 @@
 
 #include "Characters/GGFThirdPersonCharacter_Retarget.h"
 
+#include "Components/GGFCharacterSkinManager.h"
 #include "Components/GGFEquipmentManager.h"
 
 FName AGGFThirdPersonCharacter_Retarget::RetargetMeshName(TEXT("RetargetMesh"));
@@ -16,6 +17,9 @@ AGGFThirdPersonCharacter_Retarget::AGGFThirdPersonCharacter_Retarget(const FObje
     /* Retarget Mesh */
     RetargetMesh = CreateDefaultSubobject<USkeletalMeshComponent>(RetargetMeshName);
     RetargetMesh->SetupAttachment(CharacterMesh);
+
+    /* SkinManager */
+    GetSkinManager()->SetCharacterMesh(RetargetMesh);
 
     /* ParagonBelica 플러그인 에셋 */
     ConstructorHelpers::FObjectFinder<USkeletalMesh> RetargetMeshFinder(TEXT("/ParagonBelica/Characters/Heroes/Belica/Meshes/Belica.Belica"));
@@ -54,37 +58,6 @@ bool AGGFThirdPersonCharacter_Retarget::SetCharacterData_Implementation(const FG
     USkeletalMeshComponent* CharacterMesh = RetargetMesh;
     CharacterMesh->SetSkeletalMesh(NewCharacterData.SkeletalMesh);
     CharacterMesh->SetAnimInstanceClass(NewCharacterData.AnimInstanceClass);
-
-    return true;
-}
-
-/* GGFCharacterSkinInterface */
-
-bool AGGFThirdPersonCharacter_Retarget::SetCharacterSkinData_Implementation(
-    const FGGFCharacterSkinData& NewCharacterSkinData)
-{
-    // 입력 유효성 검사
-    if(NewCharacterSkinData.IsNotValid()) return false;
-
-    // 캐릭터 ID
-    int32 CharacterID = CharacterDefinition && CharacterDefinition->IsValid() ? CharacterDefinition->GetID() : DefaultCharacterID;
-
-    // 사용 가능한 캐릭터 목록에 존재하는지 확인
-    if(!NewCharacterSkinData.AvailableCharacterIDList.IsEmpty() && !NewCharacterSkinData.AvailableCharacterIDList.Contains(CharacterID)) return false;
-
-    // 사용 불가능한 캐릭터 목록에 존재하는지 확인
-    if(!NewCharacterSkinData.ForbiddenCharacterIDList.IsEmpty() && NewCharacterSkinData.ForbiddenCharacterIDList.Contains(CharacterID)) return false;
-
-    // 스킨 종류 확인 후 초기화
-    switch (NewCharacterSkinData.SkinType)
-    {
-    case EGGFCharacterSkinType::Full:
-        RetargetMesh->SetSkeletalMesh(NewCharacterSkinData.SkeletalMesh);
-        break;
-    default:
-        return false;
-        break;
-    }
 
     return true;
 }
