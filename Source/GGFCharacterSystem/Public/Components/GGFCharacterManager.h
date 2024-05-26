@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "Data/GGFCharacterDefinition.h"
 #include "GGFCharacterManager.generated.h"
 
 class UGGFCharacterSkinManager;
@@ -53,6 +54,9 @@ public:
 
     UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
     void SetID(int32 ID);
+
+    UFUNCTION(BlueprintPure)
+    FORCEINLINE int32 GetID() const { return CharacterDefinition ? CharacterDefinition->GetID() : -1; }
 
 protected:
     /* Getter */

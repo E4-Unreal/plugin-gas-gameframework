@@ -38,6 +38,18 @@ void UGGFCharacterSkinManager::PostEditChangeProperty(FPropertyChangedEvent& Pro
 
     Super::PostEditChangeProperty(PropertyChangedEvent);
 }
+
+TArray<int32> UGGFCharacterSkinManager::GetSkinIDList() const
+{
+    TArray<int32> SkinIDList;
+    SkinIDList.Reserve(DefinitionMap.Num());
+    for (const auto& [SkinType, Definition] : DefinitionMap)
+    {
+        if(Definition) SkinIDList.Emplace(Definition->GetID());
+    }
+
+    return SkinIDList;
+}
 #endif
 
 void UGGFCharacterSkinManager::SetCharacterMesh_Implementation(USkeletalMeshComponent* NewCharacterMesh)

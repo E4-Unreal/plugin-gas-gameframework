@@ -56,6 +56,9 @@ public:
     UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
     void SetSkinID(int32 ID);
 
+    UFUNCTION(BlueprintPure)
+    TArray<int32> GetSkinIDList() const;
+
 protected:
     /* Getter */
 
