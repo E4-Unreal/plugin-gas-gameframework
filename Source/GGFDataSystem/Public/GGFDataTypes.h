@@ -14,6 +14,6 @@ struct FGGFIDContainer
 {
     GENERATED_BODY()
 
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (ClampMin = 0))
     TArray<int32> List;
 };

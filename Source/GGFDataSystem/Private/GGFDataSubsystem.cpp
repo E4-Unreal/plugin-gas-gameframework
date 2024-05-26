@@ -62,7 +62,10 @@ TArray<UGGFDefinitionBase*> UGGFDataSubsystem::GetOrCreateAllDefinitions(TSubcla
     for (const FName& RowName : RowNames)
     {
         int32 ID = FCString::Atoi(*RowName.ToString());
-        Definitions.Emplace(GetOrCreateDefinition(DefinitionClass, ID));
+        if (UGGFDefinitionBase* Definition = GetOrCreateDefinition(DefinitionClass, ID))
+        {
+            Definitions.Emplace(Definition);
+        }
     }
 
     return Definitions;

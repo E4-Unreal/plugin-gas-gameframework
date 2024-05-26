@@ -17,10 +17,18 @@ struct FGGFDataTableRowBase : public FTableRowBase
     GENERATED_BODY()
 
     // 표시명
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayPriority = -1))
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayPriority = -30))
     FName DisplayName;
 
-    virtual FORCEINLINE bool IsValid() const { return true; }
+    // 사용이 금지된 데이터 표시를 위한 옵션
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayPriority = -20))
+    bool bForbidden;
+
+    // 더이상 사용되지 않는 데이터 표시를 위한 옵션
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayPriority = -10))
+    bool bDeprecated;
+
+    virtual FORCEINLINE bool IsValid() const { return !(bForbidden || bDeprecated); }
     FORCEINLINE bool IsNotValid() const { return !IsValid(); }
 };
 
