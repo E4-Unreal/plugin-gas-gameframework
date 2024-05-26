@@ -35,6 +35,13 @@ AGGFPlayerCharacter::AGGFPlayerCharacter(const FObjectInitializer& ObjectInitial
     SkinManager->SetCharacterMesh(GetMesh());
 }
 
+void AGGFPlayerCharacter::PreReplication(IRepChangedPropertyTracker& ChangedPropertyTracker)
+{
+    Super::PreReplication(ChangedPropertyTracker);
+
+    UpdateCharacterConfig();
+}
+
 void AGGFPlayerCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
     Super::GetLifetimeReplicatedProps(OutLifetimeProps);
@@ -127,11 +134,13 @@ void AGGFPlayerCharacter::ChangeAnimInstance_Implementation(FGameplayTag Equipme
     }
 }
 
-void AGGFPlayerCharacter::SetCharacterConfig_Implementation(const FGGFCharacterConfig& NewCharacterConfig)
+void AGGFPlayerCharacter::UpdateCharacterConfig_Implementation()
 {
-    const FGGFCharacterConfig& OldCharacterConfig = CharacterConfig;
+    FGGFCharacterConfig NewCharacterConfig;
+    NewCharacterConfig.CharacterID = GetCharacterManager()->GetID();
+    NewCharacterConfig.SkinIDList = GetSkinManager()->GetSkinIDList();
+
     CharacterConfig = NewCharacterConfig;
-    OnRep_CharacterConfig(OldCharacterConfig);
 }
 
 void AGGFPlayerCharacter::OnRep_CharacterConfig(const FGGFCharacterConfig& OldCharacterConfig)
@@ -148,4 +157,17 @@ void AGGFPlayerCharacter::OnRep_CharacterConfig(const FGGFCharacterConfig& OldCh
     {
         GetSkinManager()->SetSkinID(SkinID);
     }
+}
+
+/* GGFCharacterInterface */
+
+void AGGFPlayerCharacter::SetCharacter_Implementation(int32 NewCharacterID)
+{
+    GetCharacterManager()->SetID(NewCharacterID);
+    GetSkinManager()->Reset();
+}
+
+void AGGFPlayerCharacter::SetCharacterSkin_Implementation(int32 NewSkinID)
+{
+    GetSkinManager()->SetSkinID(NewSkinID);
 }

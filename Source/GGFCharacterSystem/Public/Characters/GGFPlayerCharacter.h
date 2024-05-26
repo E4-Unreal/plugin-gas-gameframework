@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Characters/GEPlayerCharacter.h"
 #include "Interfaces/GGFCharacterAnimationInterface.h"
+#include "Interfaces/GGFCharacterInterface.h"
 #include "GGFPlayerCharacter.generated.h"
 
 /**
@@ -33,6 +34,7 @@ class UGGFEquipmentManager;
  */
 UCLASS()
 class GGFCHARACTERSYSTEM_API AGGFPlayerCharacter : public AGEPlayerCharacter,
+    public IGGFCharacterInterface,
     public IGGFCharacterAnimationInterface
 {
     GENERATED_BODY()
@@ -82,6 +84,7 @@ public:
 
     /* Actor */
 
+    virtual void PreReplication(IRepChangedPropertyTracker& ChangedPropertyTracker) override;
     virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
     /* Character */
@@ -109,14 +112,20 @@ public:
     virtual void PlayMontage_Implementation(UAnimMontage* MontageToPlay) override;
     virtual void ChangeAnimInstance_Implementation(FGameplayTag EquipmentTag) override;
 
+    /* GGFCharacterInterface */
+
+    virtual void SetCharacter_Implementation(int32 NewCharacterID) override;
+    virtual void SetCharacterSkin_Implementation(int32 NewSkinID) override;
+
 protected:
     UFUNCTION(NetMulticast, Unreliable)
     virtual void NetMulticast_PlayMontage(UAnimMontage* MontageToPlay);
 
     /* 리플리케이트 */
 
-    UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-    void SetCharacterConfig(const FGGFCharacterConfig& NewCharacterConfig);
+    // 서버 캐릭터의 CharacterConfig 값 업데이트
+    UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "ServerOnly")
+    void UpdateCharacterConfig();
 
     UFUNCTION()
     virtual void OnRep_CharacterConfig(const FGGFCharacterConfig& OldCharacterConfig);
