@@ -7,6 +7,21 @@
 #include "Interfaces/GGFCharacterAnimationInterface.h"
 #include "GGFPlayerCharacter.generated.h"
 
+/**
+ * CharacterManager와 SkinManager 설정을 위한 구조체
+ */
+USTRUCT(Atomic, BlueprintType)
+struct FGGFCharacterConfig
+{
+    GENERATED_BODY()
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (ClampMin = 0))
+    int32 CharacterID;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (ClampMin = 0))
+    TArray<int32> SkinIDList;
+};
+
 class UGGFCharacterManager;
 class UGGFCharacterSkinManager;
 struct FInputActionValue;
@@ -56,8 +71,18 @@ protected:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|GGFCharacterAnimationInterface", meta = (Categories = "Equipment"))
     TMap<FGameplayTag, TObjectPtr<UAnimMontage>> EquipMontageMap;
 
+    /* CharacterManager & SkinManager */
+
+    // CharacterManager 및 SkinManager를 위한 리플리케이트된 변수
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State", Transient, ReplicatedUsing = OnRep_CharacterConfig)
+    FGGFCharacterConfig CharacterConfig;
+
 public:
     AGGFPlayerCharacter(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
+
+    /* Actor */
+
+    virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
     /* Character */
 
@@ -87,6 +112,14 @@ public:
 protected:
     UFUNCTION(NetMulticast, Unreliable)
     virtual void NetMulticast_PlayMontage(UAnimMontage* MontageToPlay);
+
+    /* 리플리케이트 */
+
+    UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+    void SetCharacterConfig(const FGGFCharacterConfig& NewCharacterConfig);
+
+    UFUNCTION()
+    virtual void OnRep_CharacterConfig(const FGGFCharacterConfig& OldCharacterConfig);
 
 protected:
     /* Getter */

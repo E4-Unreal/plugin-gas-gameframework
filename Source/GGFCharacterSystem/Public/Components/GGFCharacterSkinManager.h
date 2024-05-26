@@ -56,6 +56,10 @@ public:
     UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
     void SetSkinID(int32 ID);
 
+    // 캐릭터 스킨 정보를 초기화합니다. 캐릭터가 변경되는 경우 호출하면 됩니다.
+    UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+    void Reset();
+
     UFUNCTION(BlueprintPure)
     TArray<int32> GetSkinIDList() const;
 

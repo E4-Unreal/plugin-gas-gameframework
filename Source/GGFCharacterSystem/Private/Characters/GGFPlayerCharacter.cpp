@@ -10,6 +10,7 @@
 #include "Components/GGFCharacterStateMachine.h"
 #include "Components/GGFEquipmentManager.h"
 #include "Input/GGFInputManager.h"
+#include "Net/UnrealNetwork.h"
 
 FName AGGFPlayerCharacter::EquipmentManagerName(TEXT("EquipmentManager"));
 FName AGGFPlayerCharacter::CharacterManagerName(TEXT("CharacterManager"));
@@ -32,6 +33,13 @@ AGGFPlayerCharacter::AGGFPlayerCharacter(const FObjectInitializer& ObjectInitial
     /* SkinManager */
     SkinManager = CreateDefaultSubobject<UGGFCharacterSkinManager>(SkinManagerName);
     SkinManager->SetCharacterMesh(GetMesh());
+}
+
+void AGGFPlayerCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+    Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+    DOREPLIFETIME(ThisClass, CharacterConfig);
 }
 
 bool AGGFPlayerCharacter::CanJumpInternal_Implementation() const
@@ -116,5 +124,28 @@ void AGGFPlayerCharacter::ChangeAnimInstance_Implementation(FGameplayTag Equipme
         {
             GetMesh()->GetAnimInstance()->Montage_Play(EquipMontageMap[EquipmentTag]);
         }
+    }
+}
+
+void AGGFPlayerCharacter::SetCharacterConfig_Implementation(const FGGFCharacterConfig& NewCharacterConfig)
+{
+    const FGGFCharacterConfig& OldCharacterConfig = CharacterConfig;
+    CharacterConfig = NewCharacterConfig;
+    OnRep_CharacterConfig(OldCharacterConfig);
+}
+
+void AGGFPlayerCharacter::OnRep_CharacterConfig(const FGGFCharacterConfig& OldCharacterConfig)
+{
+    // 캐릭터가 변경된 경우
+    if(CharacterConfig.CharacterID != OldCharacterConfig.CharacterID)
+    {
+        GetCharacterManager()->SetID(CharacterConfig.CharacterID);
+        GetSkinManager()->Reset();
+    }
+
+    // 캐릭터 스킨 설정
+    for (int32 SkinID : CharacterConfig.SkinIDList)
+    {
+        GetSkinManager()->SetSkinID(SkinID);
     }
 }
