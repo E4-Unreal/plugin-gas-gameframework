@@ -51,6 +51,9 @@ public:
     UFUNCTION(BlueprintCallable, meta = (DeterminesOutputType = DefinitionClass))
     TArray<UGGFDefinitionBase*> GetOrCreateAllDefinitions(TSubclassOf<UGGFDefinitionBase> DefinitionClass);
 
-    // 데이터 테이블에서 데이터 직접 가져오기
+#if WITH_EDITOR
+    // 데이터 테이블에서 데이터를 직접 가져옵니다.
+    // PostEditProperty에서 사용할 목적으로 작성되었습니다.
     static FGGFDataTableRowBase* GetDirectData(TSubclassOf<UGGFDefinitionBase> DefinitionClass, int32 ID);
+#endif
 };

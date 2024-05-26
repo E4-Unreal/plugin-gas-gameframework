@@ -8,6 +8,7 @@
 #include "Components/GGFCharacterMovement.h"
 #include "Components/GGFCharacterStateMachine.h"
 #include "Components/GGFEquipmentManager.h"
+#include "Data/GGFCharacterDataSubsystem.h"
 #include "Input/GGFInputManager.h"
 
 FName AGGFPlayerCharacter::EquipmentManagerName(TEXT("EquipmentManager"));
@@ -34,6 +35,33 @@ void AGGFPlayerCharacter::PostInitializeComponents()
         Execute_SetCharacterSkinID(this, DefaultCharacterSkinID);
     }
 }
+
+#if WITH_EDITOR
+void AGGFPlayerCharacter::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent)
+{
+    FName PropertyName = PropertyChangedEvent.GetMemberPropertyName();
+    if(PropertyName == GET_MEMBER_NAME_CHECKED(ThisClass, DefaultCharacterID))
+    {
+        if(FGGFCharacterData* NewCharacterData = UGGFCharacterDataSubsystem::GetDirectCharacterData(DefaultCharacterID))
+        {
+            Execute_SetCharacterData(this, *NewCharacterData);
+        }
+    }
+    else if(PropertyName == GET_MEMBER_NAME_CHECKED(ThisClass, DefaultCharacterSkinIDList))
+    {
+        for (int32 DefaultCharacterSkinID : DefaultCharacterSkinIDList)
+        {
+            if(FGGFCharacterSkinData* NewCharacterSkinData = UGGFCharacterDataSubsystem::GetDirectCharacterSkinData(DefaultCharacterSkinID))
+            {
+                Execute_SetCharacterSkinData(this, *NewCharacterSkinData);
+            }
+        }
+    }
+
+    Super::PostEditChangeProperty(PropertyChangedEvent);
+}
+#endif
+
 
 bool AGGFPlayerCharacter::CanJumpInternal_Implementation() const
 {
@@ -161,10 +189,6 @@ bool AGGFPlayerCharacter::SetCharacterID_Implementation(int32 ID)
 
         return Execute_SetCharacterDefinition(this, NewCharacterDefinition);
     }
-    else if(FGGFCharacterData* NewCharacterData = static_cast<FGGFCharacterData*>(UGGFDataSubsystem::GetDirectData(UGGFCharacterDefinition::StaticClass(), ID)))
-    {
-        return Execute_SetCharacterData(this, *NewCharacterData);
-    }
 
     return false;
 }
@@ -224,10 +248,6 @@ bool AGGFPlayerCharacter::SetCharacterSkinID_Implementation(int32 ID)
         UGGFCharacterSkinDefinition* NewCharacterSkinDefinition = Cast<UGGFCharacterSkinDefinition>(DataSubsystem->GetOrCreateDefinition(UGGFCharacterSkinDefinition::StaticClass(), ID));
 
         return Execute_SetCharacterSkinDefinition(this, NewCharacterSkinDefinition);
-    }
-    else if(FGGFCharacterSkinData* NewCharacterSkinData = static_cast<FGGFCharacterSkinData*>(UGGFDataSubsystem::GetDirectData(UGGFCharacterSkinDefinition::StaticClass(), ID)))
-    {
-        return Execute_SetCharacterSkinData(this, *NewCharacterSkinData);
     }
 
     return false;

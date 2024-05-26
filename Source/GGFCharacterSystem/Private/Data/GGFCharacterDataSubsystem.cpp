@@ -71,6 +71,19 @@ TArray<int32> UGGFCharacterDataSubsystem::GetAllAvailableSkinIDList(const int32 
     return AvailableSkinIDList;
 }
 
+#if WITH_EDITOR
+FGGFCharacterData* UGGFCharacterDataSubsystem::GetDirectCharacterData(int32 ID)
+{
+    return static_cast<FGGFCharacterData*>(UGGFDataSubsystem::GetDirectData(UGGFCharacterDefinition::StaticClass(), ID));
+}
+
+FGGFCharacterSkinData* UGGFCharacterDataSubsystem::GetDirectCharacterSkinData(int32 ID)
+{
+    return static_cast<FGGFCharacterSkinData*>(UGGFDataSubsystem::GetDirectData(UGGFCharacterSkinDefinition::StaticClass(), ID));
+}
+#endif
+
+
 void UGGFCharacterDataSubsystem::CachingDefinition(UGGFCharacterDefinition* Definition)
 {
     // 데이터 에셋 등록

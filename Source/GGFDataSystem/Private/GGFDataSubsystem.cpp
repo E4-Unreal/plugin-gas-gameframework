@@ -71,6 +71,7 @@ TArray<UGGFDefinitionBase*> UGGFDataSubsystem::GetOrCreateAllDefinitions(TSubcla
     return Definitions;
 }
 
+#if WITH_EDITOR
 FGGFDataTableRowBase* UGGFDataSubsystem::GetDirectData(TSubclassOf<UGGFDefinitionBase> DefinitionClass, int32 ID)
 {
     // 프로젝트 설정 가져오기
@@ -89,3 +90,5 @@ FGGFDataTableRowBase* UGGFDataSubsystem::GetDirectData(TSubclassOf<UGGFDefinitio
 
     return nullptr;
 }
+#endif
+

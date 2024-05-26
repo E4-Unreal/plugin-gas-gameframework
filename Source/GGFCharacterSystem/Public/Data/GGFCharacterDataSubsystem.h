@@ -7,6 +7,8 @@
 #include "GGFDataTypes.h"
 #include "GGFCharacterDataSubsystem.generated.h"
 
+struct FGGFCharacterSkinData;
+struct FGGFCharacterData;
 class UGGFCharacterDefinition;
 class UGGFCharacterSkinDefinition;
 
@@ -69,6 +71,14 @@ public:
     // 특정 캐릭터가 사용 가능한 모든 스킨 ID 목록 가져오기
     UFUNCTION(BlueprintPure, Category = "Skin")
     TArray<int32> GetAllAvailableSkinIDList(const int32 CharacterID);
+
+#if WITH_EDITOR
+    // 데이터 테이블로부터 CharacterData 직접 가져오기
+    static FGGFCharacterData* GetDirectCharacterData(int32 ID);
+
+    // 데이터 테이블로부터 CharacterSkinData 직접 가져오기
+    static FGGFCharacterSkinData* GetDirectCharacterSkinData(int32 ID);
+#endif
 
 protected:
     // 캐릭터 정의 데이터 에셋 캐싱

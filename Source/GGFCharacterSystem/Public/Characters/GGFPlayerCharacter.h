@@ -76,6 +76,11 @@ public:
 
     virtual void PostInitializeComponents() override;
 
+#if WITH_EDITOR
+    virtual void PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent) override;
+#endif
+
+
     /* Character */
 
     // 앉은 상태에서 점프가 가능하도록 설정
