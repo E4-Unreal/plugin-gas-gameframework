@@ -36,6 +36,9 @@ UGGFDefinitionBase* UGGFDataSubsystem::GetOrCreateDefinition(TSubclassOf<UGGFDef
     UGGFDefinitionBase* NewDefinition = NewObject<UGGFDefinitionBase>(this, DefinitionClass);
     if(!NewDefinition->InitFromDataTable(DefinitionContainer.DataTable, ID)) return nullptr;
 
+    // 새로운 데이터 에셋 유효성 검사
+    if(NewDefinition->IsNotValid()) return nullptr;
+
     // 새로운 데이터 에셋 저장
     DefinitionContainer.DefinitionMap.Emplace(ID, NewDefinition);
     return NewDefinition;
