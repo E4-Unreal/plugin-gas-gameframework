@@ -17,7 +17,7 @@ void UGGFCharacterSkinManager::InitializeComponent()
     // 기본 스킨 설정
     for (int32 ID : DefaultIDList)
     {
-        SetSkinID(ID);
+        SetSkinByID(ID);
     }
 }
 
@@ -31,7 +31,7 @@ void UGGFCharacterSkinManager::PostEditChangeProperty(FPropertyChangedEvent& Pro
         {
             if(FGGFCharacterSkinData* NewSkinData = UGGFCharacterDataSubsystem::GetDirectCharacterSkinData(ID))
             {
-                SetSkinData(*NewSkinData);
+                SetSkinByData(*NewSkinData);
             }
         }
     }
@@ -49,7 +49,7 @@ void UGGFCharacterSkinManager::SetCharacterMesh_Implementation(USkeletalMeshComp
     CharacterMesh = NewCharacterMesh;
 }
 
-void UGGFCharacterSkinManager::SetSkinData_Implementation(const FGGFCharacterSkinData& NewSkinData)
+void UGGFCharacterSkinManager::SetSkinByData_Implementation(const FGGFCharacterSkinData& NewSkinData)
 {
     // 입력 유효성 검사
     if(NewSkinData.IsNotValid()) return;
@@ -58,7 +58,7 @@ void UGGFCharacterSkinManager::SetSkinData_Implementation(const FGGFCharacterSki
     switch (NewSkinData.SkinType)
     {
     case EGGFCharacterSkinType::Full:
-        if(CharacterMesh)
+        if(CharacterMesh.IsValid())
             CharacterMesh->SetSkeletalMesh(NewSkinData.SkeletalMesh);
         break;
     default:
@@ -66,7 +66,7 @@ void UGGFCharacterSkinManager::SetSkinData_Implementation(const FGGFCharacterSki
     }
 }
 
-void UGGFCharacterSkinManager::SetSkinDefinition_Implementation(UGGFCharacterSkinDefinition* NewSkinDefinition)
+void UGGFCharacterSkinManager::SetSkinByDefinition_Implementation(UGGFCharacterSkinDefinition* NewSkinDefinition)
 {
     // 입력 유효성 검사
     if(NewSkinDefinition == nullptr || NewSkinDefinition->IsNotValid()) return;
@@ -74,14 +74,14 @@ void UGGFCharacterSkinManager::SetSkinDefinition_Implementation(UGGFCharacterSki
     // 스킨 설정
     const FGGFCharacterSkinData& NewSkinData = NewSkinDefinition->GetData();
     DefinitionMap.Emplace(NewSkinData.SkinType, NewSkinDefinition);
-    SetSkinData(NewSkinData);
+    SetSkinByData(NewSkinData);
 }
 
-void UGGFCharacterSkinManager::SetSkinID_Implementation(int32 ID)
+void UGGFCharacterSkinManager::SetSkinByID_Implementation(int32 ID)
 {
     if(UGameInstance* GameInstance = GetOwner()->GetGameInstance())
     {
-        SetSkinDefinition(GameInstance->GetSubsystem<UGGFCharacterDataSubsystem>()->GetSkinDefinition(ID));
+        SetSkinByDefinition(GameInstance->GetSubsystem<UGGFCharacterDataSubsystem>()->GetSkinDefinition(ID));
     }
 }
 
@@ -90,7 +90,7 @@ void UGGFCharacterSkinManager::Reset_Implementation()
     DefinitionMap.Reset();
 }
 
-TArray<int32> UGGFCharacterSkinManager::GetSkinIDList() const
+TArray<int32> UGGFCharacterSkinManager::GetCurrentSkinIDList() const
 {
     TArray<int32> SkinIDList;
     SkinIDList.Reserve(DefinitionMap.Num());

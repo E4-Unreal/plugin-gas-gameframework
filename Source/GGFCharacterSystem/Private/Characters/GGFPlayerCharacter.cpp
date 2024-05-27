@@ -28,7 +28,7 @@ AGGFPlayerCharacter::AGGFPlayerCharacter(const FObjectInitializer& ObjectInitial
 
     /* CharacterManager */
     CharacterManager = CreateDefaultSubobject<UGGFCharacterManager>(CharacterManagerName);
-    CharacterManager->SetMesh(GetMesh());
+    CharacterManager->SetCharacterMesh(GetMesh());
 
     /* SkinManager */
     SkinManager = CreateDefaultSubobject<UGGFCharacterSkinManager>(SkinManagerName);
@@ -137,8 +137,8 @@ void AGGFPlayerCharacter::ChangeAnimInstance_Implementation(FGameplayTag Equipme
 void AGGFPlayerCharacter::UpdateCharacterConfig_Implementation()
 {
     FGGFCharacterConfig NewCharacterConfig;
-    NewCharacterConfig.CharacterID = GetCharacterManager()->GetID();
-    NewCharacterConfig.SkinIDList = GetSkinManager()->GetSkinIDList();
+    NewCharacterConfig.CharacterID = GetCharacterManager()->GetCharacterID();
+    NewCharacterConfig.SkinIDList = GetSkinManager()->GetCurrentSkinIDList();
 
     CharacterConfig = NewCharacterConfig;
 }
@@ -148,14 +148,14 @@ void AGGFPlayerCharacter::OnRep_CharacterConfig(const FGGFCharacterConfig& OldCh
     // 캐릭터가 변경된 경우
     if(CharacterConfig.CharacterID != OldCharacterConfig.CharacterID)
     {
-        GetCharacterManager()->SetID(CharacterConfig.CharacterID);
+        GetCharacterManager()->SetCharacterByID(CharacterConfig.CharacterID);
         GetSkinManager()->Reset();
     }
 
     // 캐릭터 스킨 설정
     for (int32 SkinID : CharacterConfig.SkinIDList)
     {
-        GetSkinManager()->SetSkinID(SkinID);
+        GetSkinManager()->SetSkinByID(SkinID);
     }
 }
 
@@ -163,11 +163,11 @@ void AGGFPlayerCharacter::OnRep_CharacterConfig(const FGGFCharacterConfig& OldCh
 
 void AGGFPlayerCharacter::SetCharacter_Implementation(int32 NewCharacterID)
 {
-    GetCharacterManager()->SetID(NewCharacterID);
+    GetCharacterManager()->SetCharacterByID(NewCharacterID);
     GetSkinManager()->Reset();
 }
 
 void AGGFPlayerCharacter::SetCharacterSkin_Implementation(int32 NewSkinID)
 {
-    GetSkinManager()->SetSkinID(NewSkinID);
+    GetSkinManager()->SetSkinByID(NewSkinID);
 }

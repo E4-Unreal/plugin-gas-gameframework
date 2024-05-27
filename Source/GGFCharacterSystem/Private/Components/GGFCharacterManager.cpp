@@ -15,7 +15,7 @@ void UGGFCharacterManager::InitializeComponent()
 {
     Super::InitializeComponent();
 
-    SetID(DefaultID);
+    SetCharacterByID(DefaultID);
 }
 
 #if WITH_EDITOR
@@ -26,7 +26,7 @@ void UGGFCharacterManager::PostEditChangeProperty(FPropertyChangedEvent& Propert
     {
         if(FGGFCharacterData* NewData = UGGFCharacterDataSubsystem::GetDirectCharacterData(DefaultID))
         {
-            SetData(*NewData);
+            SetCharacterByData(*NewData);
         }
     }
 
@@ -35,26 +35,26 @@ void UGGFCharacterManager::PostEditChangeProperty(FPropertyChangedEvent& Propert
 #endif
 
 
-void UGGFCharacterManager::SetMesh_Implementation(USkeletalMeshComponent* NewMesh)
+void UGGFCharacterManager::SetCharacterMesh_Implementation(USkeletalMeshComponent* NewCharacterMesh)
 {
     // 입력 유효성 검사
-    if(NewMesh == nullptr) return;
+    if(NewCharacterMesh == nullptr) return;
 
     // 캐릭터 메시 할당
-    Mesh = NewMesh;
+    CharacterMesh = NewCharacterMesh;
 }
 
-void UGGFCharacterManager::SetData_Implementation(const FGGFCharacterData& NewCharacterData)
+void UGGFCharacterManager::SetCharacterByData_Implementation(const FGGFCharacterData& NewCharacterData)
 {
     // 입력 유효성 검사
     if(NewCharacterData.IsNotValid()) return;
 
     // 캐릭터 설정
-    Mesh->SetSkeletalMesh(NewCharacterData.SkeletalMesh);
-    Mesh->SetAnimInstanceClass(NewCharacterData.AnimInstanceClass);
+    CharacterMesh->SetSkeletalMesh(NewCharacterData.SkeletalMesh);
+    CharacterMesh->SetAnimInstanceClass(NewCharacterData.AnimInstanceClass);
 }
 
-void UGGFCharacterManager::SetDefinition_Implementation(UGGFCharacterDefinition* NewDefinition)
+void UGGFCharacterManager::SetCharacterByDefinition_Implementation(UGGFCharacterDefinition* NewDefinition)
 {
     // 입력 유효성 검사
     if(NewDefinition == nullptr || NewDefinition->IsNotValid()) return;
@@ -63,13 +63,13 @@ void UGGFCharacterManager::SetDefinition_Implementation(UGGFCharacterDefinition*
     CharacterDefinition = NewDefinition;
 
     // 초기화
-    SetData(NewDefinition->GetData());
+    SetCharacterByData(NewDefinition->GetData());
 }
 
-void UGGFCharacterManager::SetID_Implementation(int32 ID)
+void UGGFCharacterManager::SetCharacterByID_Implementation(int32 ID)
 {
     if(UGameInstance* GameInstance = GetOwner()->GetGameInstance())
     {
-        SetDefinition(GameInstance->GetSubsystem<UGGFCharacterDataSubsystem>()->GetDefinition(ID));
+        SetCharacterByDefinition(GameInstance->GetSubsystem<UGGFCharacterDataSubsystem>()->GetDefinition(ID));
     }
 }

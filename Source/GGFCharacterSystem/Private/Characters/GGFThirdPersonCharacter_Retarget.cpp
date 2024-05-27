@@ -20,7 +20,7 @@ AGGFThirdPersonCharacter_Retarget::AGGFThirdPersonCharacter_Retarget(const FObje
     RetargetMesh->SetupAttachment(CharacterMesh);
 
     /* CharacterManager */
-    GetCharacterManager()->SetMesh(RetargetMesh);
+    GetCharacterManager()->SetCharacterMesh(RetargetMesh);
 
     /* SkinManager */
     GetSkinManager()->SetCharacterMesh(RetargetMesh);

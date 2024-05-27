@@ -18,8 +18,9 @@ class GGFCHARACTERSYSTEM_API UGGFCharacterManager : public UActorComponent
 {
     GENERATED_BODY()
 
-    UPROPERTY(VisibleAnywhere, BlueprintGetter = GetMesh, Category = "Reference", Transient)
-    TObjectPtr<USkeletalMeshComponent> Mesh;
+    /* 레퍼런스 */
+
+    TWeakObjectPtr<USkeletalMeshComponent> CharacterMesh;
 
 protected:
     // 캐릭터 ID
@@ -43,24 +44,29 @@ public:
 
     /* API */
 
+    // 캐릭터 설정 시 스켈레탈 메시와 애님 인스턴스 클래스를 설정할 스켈레탈 메시 컴포넌트
     UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-    void SetMesh(USkeletalMeshComponent* NewMesh);
+    void SetCharacterMesh(USkeletalMeshComponent* NewCharacterMesh);
 
+    // 구조체를 통해 캐릭터 설정
     UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-    void SetData(const FGGFCharacterData& NewCharacterData);
+    void SetCharacterByData(const FGGFCharacterData& NewCharacterData);
 
+    // 데이터 에셋을 통해 캐릭터 설정
     UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-    void SetDefinition(UGGFCharacterDefinition* NewDefinition);
+    void SetCharacterByDefinition(UGGFCharacterDefinition* NewDefinition);
 
+    // ID를 통해 캐릭터 설정
     UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-    void SetID(int32 ID);
+    void SetCharacterByID(int32 ID);
 
+    // 현재 설정된 캐릭터 ID
     UFUNCTION(BlueprintPure)
-    FORCEINLINE int32 GetID() const { return CharacterDefinition ? CharacterDefinition->GetID() : -1; }
+    FORCEINLINE int32 GetCharacterID() const { return CharacterDefinition ? CharacterDefinition->GetID() : -1; }
 
 protected:
     /* Getter */
 
-    UFUNCTION(BlueprintGetter)
-    FORCEINLINE USkeletalMeshComponent* GetMesh() const { return Mesh; }
+    UFUNCTION(BlueprintPure)
+    FORCEINLINE USkeletalMeshComponent* GetCharacterMesh() const { return CharacterMesh.Get(); }
 };
