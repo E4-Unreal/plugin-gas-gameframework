@@ -10,7 +10,7 @@
  * 캐릭터 및 스킨 선택을 위한 위젯 클래스
  */
 UCLASS()
-class GASGAMEFRAMEWORK_API UGGFCharacterMenuWidget : public UGGFInteractionMenuWidget
+class GGFCHARACTERSYSTEM_API UGGFCharacterMenuWidget : public UGGFInteractionMenuWidget
 {
     GENERATED_BODY()
 };
