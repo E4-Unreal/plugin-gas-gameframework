@@ -72,7 +72,7 @@ TArray<UGGFDefinitionBase*> UGGFDataSubsystem::GetOrCreateAllDefinitions(TSubcla
 }
 
 #if WITH_EDITOR
-FGGFDataTableRowBase* UGGFDataSubsystem::GetDirectData(TSubclassOf<UGGFDefinitionBase> DefinitionClass, int32 ID)
+const FGGFDataTableRowBase* UGGFDataSubsystem::GetDirectData(TSubclassOf<UGGFDefinitionBase> DefinitionClass, int32 ID)
 {
     // 프로젝트 설정 가져오기
     if(UGGFDataSystemSetting* DataSystemSetting = GetMutableDefault<UGGFDataSystemSetting>())
@@ -84,11 +84,41 @@ FGGFDataTableRowBase* UGGFDataSubsystem::GetDirectData(TSubclassOf<UGGFDefinitio
 
             // 데이터 테이블에서 데이터 가져오기
             UDataTable* DataTable = SettingDataTable.LoadSynchronous();
+            auto test = DataTable->FindRow<FGGFDataTableRowBase>(FName(FString::FromInt(ID)), "");
+            test->bDeprecated = false;
             return DataTable->FindRow<FGGFDataTableRowBase>(FName(FString::FromInt(ID)), "");
         }
     }
 
     return nullptr;
+}
+
+const TArray<const FGGFDataTableRowBase*> UGGFDataSubsystem::GetAllDirectData(TSubclassOf<UGGFDefinitionBase> DefinitionClass)
+{
+    TArray<const FGGFDataTableRowBase*> AllData;
+
+    // 프로젝트 설정 가져오기
+    if(UGGFDataSystemSetting* DataSystemSetting = GetMutableDefault<UGGFDataSystemSetting>())
+    {
+        for (const auto& [SettingDefinitionClass, SettingDataTable] : DataSystemSetting->DefinitionDataTableMap)
+        {
+            // 일치 여부 확인
+            if(SettingDefinitionClass != DefinitionClass) continue;
+
+            // 데이터 테이블에서 데이터 가져오기
+            UDataTable* DataTable = SettingDataTable.LoadSynchronous();
+            TArray<FName> RowNames = DataTable->GetRowNames();
+            AllData.Reserve(RowNames.Num());
+            for (FName RowName : RowNames)
+            {
+                AllData.Emplace(DataTable->FindRow<FGGFDataTableRowBase>(RowName, ""));
+            }
+
+            return AllData;
+        }
+    }
+
+    return AllData;
 }
 #endif
 

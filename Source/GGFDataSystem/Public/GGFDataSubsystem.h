@@ -52,8 +52,10 @@ public:
     TArray<UGGFDefinitionBase*> GetOrCreateAllDefinitions(TSubclassOf<UGGFDefinitionBase> DefinitionClass);
 
 #if WITH_EDITOR
-    // 데이터 테이블에서 데이터를 직접 가져옵니다.
-    // PostEditProperty에서 사용할 목적으로 작성되었습니다.
-    static FGGFDataTableRowBase* GetDirectData(TSubclassOf<UGGFDefinitionBase> DefinitionClass, int32 ID);
+    // 데이터 테이블로부터 특정 데이터 가져오기
+    static const FGGFDataTableRowBase* GetDirectData(TSubclassOf<UGGFDefinitionBase> DefinitionClass, int32 ID);
+
+    // 데이터 테이블로부터 모든 데이터 가져오기
+    static const TArray<const FGGFDataTableRowBase*> GetAllDirectData(TSubclassOf<UGGFDefinitionBase> DefinitionClass);
 #endif
 };

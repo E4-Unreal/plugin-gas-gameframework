@@ -77,11 +77,17 @@ public:
     TArray<int32> GetAvailableSkinIDList(const int32 CharacterID);
 
 #if WITH_EDITOR
-    // 데이터 테이블로부터 CharacterData 직접 가져오기
-    static FGGFCharacterData* GetDirectCharacterData(int32 ID);
+    // 데이터 테이블로부터 CharacterData 가져오기
+    static const FGGFCharacterData* GetDirectCharacterData(int32 ID);
+
+    // 데이터 테이블로부터 모든 CharacterData 가져오기
+    static const TArray<const FGGFCharacterData*> GetAllDirectCharacterData();
 
     // 데이터 테이블로부터 CharacterSkinData 직접 가져오기
-    static FGGFCharacterSkinData* GetDirectCharacterSkinData(int32 ID);
+    static const FGGFCharacterSkinData* GetDirectCharacterSkinData(int32 ID);
+
+    // 데이터 테이블로부터 CharacterSkinData 직접 가져오기
+    static const TArray<const FGGFCharacterSkinData*> GetAllDirectCharacterSkinData();
 #endif
 
 protected:

@@ -29,7 +29,7 @@ void UGGFCharacterSkinManager::PostEditChangeProperty(FPropertyChangedEvent& Pro
     {
         for (int32 ID : DefaultIDList)
         {
-            if(FGGFCharacterSkinData* NewSkinData = UGGFCharacterDataSubsystem::GetDirectCharacterSkinData(ID))
+            if(const FGGFCharacterSkinData* NewSkinData = UGGFCharacterDataSubsystem::GetDirectCharacterSkinData(ID))
             {
                 SetSkinByData(*NewSkinData);
             }

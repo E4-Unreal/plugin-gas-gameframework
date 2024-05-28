@@ -24,7 +24,7 @@ void UGGFCharacterManager::PostEditChangeProperty(FPropertyChangedEvent& Propert
     FName PropertyName = PropertyChangedEvent.GetPropertyName();
     if(PropertyName == GET_MEMBER_NAME_CHECKED(ThisClass, DefaultID))
     {
-        if(FGGFCharacterData* NewData = UGGFCharacterDataSubsystem::GetDirectCharacterData(DefaultID))
+        if(const FGGFCharacterData* NewData = UGGFCharacterDataSubsystem::GetDirectCharacterData(DefaultID))
         {
             SetCharacterByData(*NewData);
         }
