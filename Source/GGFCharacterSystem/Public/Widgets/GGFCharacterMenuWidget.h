@@ -4,13 +4,17 @@
 
 #include "CoreMinimal.h"
 #include "Components/Button.h"
+#include "Components/ComboBoxString.h"
 #include "Widgets/GGFInteractionMenuWidget.h"
 #include "GGFCharacterMenuWidget.generated.h"
 
+class UComboBoxString;
 class UUniformGridPanel;
 class UGGFCharacterDefinition;
 class UGGFCharacterSlotWidget;
 
+// TODO NativeConstruct에서 플레이어가 사용 불가능한 캐릭터 및 스킨 잠금 기능
+// TODO NativePreConstruct로 에디터 전용 프리뷰 기능 추가, 구조체로 초기화 기능 구현 필요
 // TODO 나중에 틀이 갖춰지면 기능 전용 클래스와 특정 UI 컨트롤 전용 클래스로 분리
 /**
  * 캐릭터 및 스킨 선택을 위한 위젯 클래스
@@ -28,13 +32,20 @@ class GGFCHARACTERSYSTEM_API UGGFCharacterMenuWidget : public UGGFInteractionMen
     UPROPERTY(VisibleAnywhere, Category = "Component", Transient)
     TArray<TObjectPtr<UGGFCharacterSlotWidget>> CharacterSlotWidgets;
 
+    // 콤보 박스를 위한 스킨 ID 매핑
+    TMap<FString, int32> SkinIDMap;
+
     /* 디자인 */
 
     // 캐릭터 슬롯 표시를 위한 패널
     UPROPERTY(meta = (BindWidget))
     TObjectPtr<UUniformGridPanel> CharacterSlotPanel;
 
-    // 캐릭터 및 스킨 설정을 위한 버튼
+    // 캐릭터 스킨 선택을 위한 콤보 박스
+    UPROPERTY(meta = (BindWidget))
+    TObjectPtr<UComboBoxString> SkinComboBox;
+
+    // 결정 버튼
     UPROPERTY(meta = (BindWidget))
     TObjectPtr<UButton> ConfirmButton;
 
@@ -56,17 +67,22 @@ protected:
 protected:
     /* UserWidget */
 
-    virtual void NativePreConstruct() override;
-    virtual void NativeConstruct() override;
+    virtual void NativeOnInitialized() override;
 
     /* 메서드 */
 
     // 캐릭터 슬롯 위젯 초기화
     virtual void InitCharacterSlots();
 
+    /* 이벤트 메서드 */
+
     // 캐릭터 슬롯 버튼 클릭 이벤트
     UFUNCTION(BlueprintNativeEvent)
     void OnSelectButtonClicked(int32 NewCharacterID);
+
+    // 스킨 설정 변경 시
+    UFUNCTION()
+    void OnSkinComboBoxSelectionChanged(FString SelectedItem, ESelectInfo::Type SelectionType);
 
     // 결정 버튼 클릭 이벤트
     UFUNCTION(BlueprintNativeEvent)
