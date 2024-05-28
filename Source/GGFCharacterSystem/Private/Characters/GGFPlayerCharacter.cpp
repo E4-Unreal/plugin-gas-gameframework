@@ -148,14 +148,22 @@ void AGGFPlayerCharacter::OnRep_CharacterConfig(const FGGFCharacterConfig& OldCh
     // 캐릭터가 변경된 경우
     if(CharacterConfig.CharacterID != OldCharacterConfig.CharacterID)
     {
+        // 캐릭터 설정 및 스킨 초기화
         GetCharacterManager()->SetCharacterByID(CharacterConfig.CharacterID);
         GetSkinManager()->Reset();
+
+        // 파라곤처럼 불필요한 스켈레톤 숨기기
+        HideBones();
     }
 
     // 캐릭터 스킨 설정
     for (int32 SkinID : CharacterConfig.SkinIDList)
     {
+        // 스킨 설정
         GetSkinManager()->SetSkinByID(SkinID);
+
+        // 파라곤처럼 불필요한 스켈레톤 숨기기
+        HideBones();
     }
 }
 
@@ -163,11 +171,19 @@ void AGGFPlayerCharacter::OnRep_CharacterConfig(const FGGFCharacterConfig& OldCh
 
 void AGGFPlayerCharacter::SetCharacter_Implementation(int32 NewCharacterID)
 {
+    // 캐릭터 설정 및 스킨 초기화
     GetCharacterManager()->SetCharacterByID(NewCharacterID);
     GetSkinManager()->Reset();
+
+    // 파라곤처럼 불필요한 스켈레톤 숨기기
+    HideBones();
 }
 
 void AGGFPlayerCharacter::SetCharacterSkin_Implementation(int32 NewSkinID)
 {
+    // 스킨 설정
     GetSkinManager()->SetSkinByID(NewSkinID);
+
+    // 파라곤처럼 불필요한 스켈레톤 숨기기
+    HideBones();
 }
