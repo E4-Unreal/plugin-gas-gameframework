@@ -94,6 +94,10 @@
 			"Name": "ParagonBelica",
 			"Enabled": true
 		},
+        {
+            "Name": "ParagonWraith",
+            "Enabled": true
+        },
 		{
 			"Name": "E4Effects",
 			"Enabled": true

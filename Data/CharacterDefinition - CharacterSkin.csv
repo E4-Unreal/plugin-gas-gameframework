@@ -1,6 +1,8 @@
-RowName,DisplayName,SkinType,SkeletalMesh,AvailableCharacterIDList,ForbiddenCharacterIDList
-0,Biohazard,Full,/ParagonBelica/Characters/Heroes/Belica/Skins/Biohazard/Meshes/Belica_Biohazard,(0),
-1,Everfrost,Full,/ParagonBelica/Characters/Heroes/Belica/Skins/Everfrost/Meshes/Belica_Everfrost,(0),
-2,HeavyArmor,Full,/ParagonBelica/Characters/Heroes/Belica/Skins/HeavyArmor/Meshes/Belica_HeavyArmor,(0),
-3,PolarStrike,Full,/ParagonBelica/Characters/Heroes/Belica/Skins/PolarStrike/Meshes/Belica_PolarStrike,(0),
-4,SpiderWitch,Full,/ParagonBelica/Characters/Heroes/Belica/Skins/SpiderWitch/Meshes/Belica_SpiderWitch,(0),
+RowName,DisplayName,bForbidden,bDeprecated,SkinType,SkeletalMesh,AvailableCharacterIDList,ForbiddenCharacterIDList
+0,Biohazard,false,false,Full,/ParagonBelica/Characters/Heroes/Belica/Skins/Biohazard/Meshes/Belica_Biohazard,(0),
+1,Everfrost,false,false,Full,/ParagonBelica/Characters/Heroes/Belica/Skins/Everfrost/Meshes/Belica_Everfrost,(0),
+2,HeavyArmor,false,false,Full,/ParagonBelica/Characters/Heroes/Belica/Skins/HeavyArmor/Meshes/Belica_HeavyArmor,(0),
+3,PolarStrike,false,false,Full,/ParagonBelica/Characters/Heroes/Belica/Skins/PolarStrike/Meshes/Belica_PolarStrike,(0),
+4,SpiderWitch,false,false,Full,/ParagonBelica/Characters/Heroes/Belica/Skins/SpiderWitch/Meshes/Belica_SpiderWitch,(0),
+5,LunarOps,false,false,Full,/ParagonWraith/Characters/Heroes/Wraith/Skins/LunarOps/Meshes/Wraith_LunarOps,(1),
+6,ODGreen,false,false,Full,/ParagonWraith/Characters/Heroes/Wraith/Skins/ODGreen/Meshes/Wraith_ODGreen,(1),
