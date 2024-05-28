@@ -171,6 +171,16 @@ void AGGFPlayerCharacter::OnRep_CharacterConfig(const FGGFCharacterConfig& OldCh
 
 void AGGFPlayerCharacter::SetCharacter_Implementation(int32 NewCharacterID)
 {
+    ServerSetCharacter(NewCharacterID);
+}
+
+void AGGFPlayerCharacter::SetCharacterSkin_Implementation(int32 NewSkinID)
+{
+    ServerSetCharacterSkin(NewSkinID);
+}
+
+void AGGFPlayerCharacter::ServerSetCharacter_Implementation(int32 NewCharacterID)
+{
     // 캐릭터 설정 및 스킨 초기화
     GetCharacterManager()->SetCharacterByID(NewCharacterID);
     GetSkinManager()->Reset();
@@ -179,7 +189,7 @@ void AGGFPlayerCharacter::SetCharacter_Implementation(int32 NewCharacterID)
     HideBones();
 }
 
-void AGGFPlayerCharacter::SetCharacterSkin_Implementation(int32 NewSkinID)
+void AGGFPlayerCharacter::ServerSetCharacterSkin_Implementation(int32 NewSkinID)
 {
     // 스킨 설정
     GetSkinManager()->SetSkinByID(NewSkinID);

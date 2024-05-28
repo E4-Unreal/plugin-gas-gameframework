@@ -1,3 +1,3 @@
-RowName,DisplayName,bForbidden,bDeprecated,SkeletalMesh,AnimInstanceClass
-0,Belica,false,false,/ParagonBelica/Characters/Heroes/Belica/Meshes/Belica,/ParagonBelica/Characters/Heroes/Belica/Rigs/ABP_Retarget_UE4_Belica.ABP_Retarget_UE4_Belica_C
-1,Wraith,false,false,/ParagonWraith/Characters/Heroes/Wraith/Meshes/Wraith,/ParagonWraith/Characters/Heroes/Wraith/Rigs/ABP_Retarget_UE4_Wraith.ABP_Retarget_UE4_Wraith_C
+RowName,DisplayName,bForbidden,bDeprecated,Thumbnail,SkeletalMesh,AnimInstanceClass
+0,Belica,FALSE,FALSE,/GASGameFramework/Arts/Thumbnails/Characters/T_Thumbnail_Belica,/ParagonBelica/Characters/Heroes/Belica/Meshes/Belica,/ParagonBelica/Characters/Heroes/Belica/Rigs/ABP_Retarget_UE4_Belica.ABP_Retarget_UE4_Belica_C
+1,Wraith,FALSE,FALSE,/GASGameFramework/Arts/Thumbnails/Characters/T_Thumbnail_Wraith,/ParagonWraith/Characters/Heroes/Wraith/Meshes/Wraith,/ParagonWraith/Characters/Heroes/Wraith/Rigs/ABP_Retarget_UE4_Wraith.ABP_Retarget_UE4_Wraith_C

@@ -14,6 +14,10 @@ struct FGGFCharacterData : public FGGFDataTableRowBase
 {
     GENERATED_BODY()
 
+    // 캐릭터 썸네일
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    TObjectPtr<UTexture2D> Thumbnail;
+
     // 기본 스켈레탈 메시
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     TObjectPtr<USkeletalMesh> SkeletalMesh;

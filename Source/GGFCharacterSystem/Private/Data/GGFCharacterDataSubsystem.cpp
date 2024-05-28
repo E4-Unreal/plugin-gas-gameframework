@@ -49,7 +49,7 @@ void UGGFCharacterDataSubsystem::Initialize(FSubsystemCollectionBase& Collection
     }
 }
 
-TArray<int32> UGGFCharacterDataSubsystem::GetAllAvailableSkinIDList(const int32 CharacterID)
+TArray<int32> UGGFCharacterDataSubsystem::GetAvailableSkinIDList(const int32 CharacterID)
 {
     // 해당 캐릭터가 사용 가능한 스킨 목록 가져오기
     TArray<int32> AvailableSkinIDList = AvailableSkinMap.Contains(CharacterID) ? AvailableSkinMap[CharacterID].List : TArray<int32>();

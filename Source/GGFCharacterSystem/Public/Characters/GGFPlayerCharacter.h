@@ -112,10 +112,17 @@ public:
     virtual void PlayMontage_Implementation(UAnimMontage* MontageToPlay) override;
     virtual void ChangeAnimInstance_Implementation(FGameplayTag EquipmentTag) override;
 
+    // TODO ServerInitialized 어빌리티
     /* GGFCharacterInterface */
 
     virtual void SetCharacter_Implementation(int32 NewCharacterID) override;
     virtual void SetCharacterSkin_Implementation(int32 NewSkinID) override;
+
+    UFUNCTION(Server, Reliable)
+    void ServerSetCharacter(int32 NewCharacterID);
+
+    UFUNCTION(Server, Reliable)
+    void ServerSetCharacterSkin(int32 NewSkinID);
 
 protected:
     UFUNCTION(NetMulticast, Unreliable)

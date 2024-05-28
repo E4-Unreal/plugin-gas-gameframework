@@ -56,21 +56,25 @@ public:
 
     /* API */
 
+    // 캐릭터 ID에 대응하는 캐릭터 정의 데이터 에셋 가져오기
     UFUNCTION(BlueprintPure, Category = "Character")
     FORCEINLINE UGGFCharacterDefinition* GetDefinition(int32 ID) const { return DefinitionMap.Contains(ID) ? DefinitionMap[ID] : nullptr; }
 
+    // 모든 캐릭터 정의 데이터 에셋 가져오기
     UFUNCTION(BlueprintPure, Category = "Character")
     const FORCEINLINE TArray<UGGFCharacterDefinition*>& GetAllDefinitions() const { return DefinitionList; }
 
+    // 캐릭터 스킨 ID에 대응하는 캐릭터 스킨 데이터 에셋 가져오기
     UFUNCTION(BlueprintPure, Category = "Skin")
     FORCEINLINE UGGFCharacterSkinDefinition* GetSkinDefinition(int32 ID) const { return SkinDefinitionMap.Contains(ID) ? SkinDefinitionMap[ID] : nullptr; }
 
+    // 모든 캐릭터 스킨 데이터 에셋 가져오기
     UFUNCTION(BlueprintPure, Category = "Skin")
     const FORCEINLINE TArray<UGGFCharacterSkinDefinition*>& GetAllSkinDefinitions() const { return SkinDefinitionList; }
 
     // 특정 캐릭터가 사용 가능한 모든 스킨 ID 목록 가져오기
     UFUNCTION(BlueprintPure, Category = "Skin")
-    TArray<int32> GetAllAvailableSkinIDList(const int32 CharacterID);
+    TArray<int32> GetAvailableSkinIDList(const int32 CharacterID);
 
 #if WITH_EDITOR
     // 데이터 테이블로부터 CharacterData 직접 가져오기
