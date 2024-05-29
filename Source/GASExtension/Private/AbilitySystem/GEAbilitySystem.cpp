@@ -14,11 +14,14 @@ void UGEAbilitySystem::InitializeComponent()
 {
     Super::InitializeComponent();
 
-    // 서버 전용 컴포넌트 초기화
+    // 서버 전용 초기화 메서드
     if(IsOwnerActorAuthoritative())
     {
         ServerInitializeComponent();
     }
+
+    // 서버, 클라이언트 공통 초기화 메서드
+    LocalInitializeComponent();
 }
 
 int32 UGEAbilitySystem::HandleGameplayEvent(FGameplayTag EventTag, const FGameplayEventData* Payload)
@@ -34,25 +37,26 @@ int32 UGEAbilitySystem::HandleGameplayEvent(FGameplayTag EventTag, const FGamepl
 
 void UGEAbilitySystem::ServerInitializeComponent_Implementation()
 {
-    InitializeAbilitySystem();
+    // 기본 AttributeSet 생성 및 등록
+    UGEBlueprintFunctionLibrary::AddAttributeSetsToSystem(Attributes, this);
+
+    // 기본 Stats 생성 및 등록
+    UGEBlueprintFunctionLibrary::AddAttributeSetsToSystem(Stats, this);
+
+    // 기본 GameplayEffect 적용
+    UGEBlueprintFunctionLibrary::ApplyGameplayEffectsToSystem(Effects, this);
+
+    // 기본 GameplayAbility 부여
+    UGEBlueprintFunctionLibrary::GiveAbilitiesToSystem(Abilities, this);
+}
+
+void UGEAbilitySystem::LocalInitializeComponent_Implementation()
+{
+    // 기본 게임플레이 태그 부여
+    AddLooseGameplayTags(GameplayTags);
 }
 
 void UGEAbilitySystem::NetMulticast_HandleGameplayEvent_Implementation(FGameplayTag EventTag)
 {
     OnGameplayEventInvoked.Broadcast(EventTag);
-}
-
-void UGEAbilitySystem::InitializeAbilitySystem()
-{
-    // 기본 AttributeSet 생성 및 등록
-    UGEBlueprintFunctionLibrary::AddAttributeSetsToSystem(DefaultAttributes, this);
-
-    // 기본 Stats 생성 및 등록
-    UGEBlueprintFunctionLibrary::AddAttributeSetsToSystem(DefaultStats, this);
-
-    // 기본 GameplayEffect 적용
-    UGEBlueprintFunctionLibrary::ApplyGameplayEffectsToSystem(DefaultEffects, this);
-
-    // 기본 GameplayAbility 부여
-    UGEBlueprintFunctionLibrary::GiveAbilitiesToSystem(DefaultAbilities, this);
 }

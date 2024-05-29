@@ -14,16 +14,16 @@
 UTSPlayerAbilitySystem::UTSPlayerAbilitySystem()
 {
     /* Attributes */
-    DefaultAttributes.AddUnique(UGEHealthAttributes::StaticClass()); // 체력
-    DefaultAttributes.AddUnique(UGEShieldAttributes::StaticClass()); // 방어막
+    Attributes.AddUnique(UGEHealthAttributes::StaticClass()); // 체력
+    Attributes.AddUnique(UGEShieldAttributes::StaticClass()); // 방어막
 
     /* Stats */
-    DefaultStats.AddUnique(UGEAttackStats::StaticClass()); // 공격력
-    DefaultStats.AddUnique(UGEDefenseStats::StaticClass()); // 방어력
-    DefaultStats.AddUnique(UGEAttackSpeedStats::StaticClass()); // 공격속도
-    DefaultStats.AddUnique(UGEMoveSpeedStats::StaticClass()); // 이동속도
+    Stats.AddUnique(UGEAttackStats::StaticClass()); // 공격력
+    Stats.AddUnique(UGEDefenseStats::StaticClass()); // 방어력
+    Stats.AddUnique(UGEAttackSpeedStats::StaticClass()); // 공격속도
+    Stats.AddUnique(UGEMoveSpeedStats::StaticClass()); // 이동속도
 
     /* Effects */
-    DefaultEffects.AddUnique(UGE_TSCharacterAttributes::StaticClass()); // 캐릭터 기본 특성 초기화
-    DefaultEffects.AddUnique(UGE_TSCharacterStats::StaticClass()); // 캐릭터 기본 스탯 초기화
+    Effects.AddUnique(UGE_TSCharacterAttributes::StaticClass()); // 캐릭터 기본 특성 초기화
+    Effects.AddUnique(UGE_TSCharacterStats::StaticClass()); // 캐릭터 기본 스탯 초기화
 }

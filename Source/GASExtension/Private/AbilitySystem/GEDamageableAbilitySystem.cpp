@@ -8,7 +8,7 @@
 UGEDamageableAbilitySystem::UGEDamageableAbilitySystem()
 {
     // 체력 어트리뷰트 추가
-    DefaultAttributes.AddUnique(UGEHealthAttributes::StaticClass());
+    Attributes.AddUnique(UGEHealthAttributes::StaticClass());
 }
 
 bool UGEDamageableAbilitySystem::IsDead() const

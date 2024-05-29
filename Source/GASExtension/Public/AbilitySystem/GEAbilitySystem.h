@@ -22,7 +22,7 @@ class GASEXTENSION_API UGEAbilitySystem : public UAbilitySystemComponent
 public:
     // 멀티캐스트 GameplayEvent 사용 여부
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|Replication")
-    bool bUseMulticastGameplayEvent;
+    bool bUseMulticastGameplayEvent = false;
 
     // GameplayEvent 멀티캐스트에서 호출되는 델리게이트
     UPROPERTY(BlueprintAssignable)
@@ -30,20 +30,24 @@ public:
 
 protected:
     // 기본으로 사용할 AttributeSet 목록입니다.
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config")
-    TArray<TSubclassOf<UAttributeSet>> DefaultAttributes;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|Default")
+    TArray<TSubclassOf<UAttributeSet>> Attributes;
 
     // 기본으로 사용할 Stats 목록입니다.
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config")
-    TArray<TSubclassOf<UAttributeSet>> DefaultStats;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|Default")
+    TArray<TSubclassOf<UAttributeSet>> Stats;
 
     // 기본으로 적용시킬 GameplayEffect 목록입니다.
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config")
-    TArray<TSubclassOf<UGameplayEffect>> DefaultEffects;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|Default")
+    TArray<TSubclassOf<UGameplayEffect>> Effects;
 
     // 기본으로 부여할 GameplayAbility 목록입니다.
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config")
-    TArray<TSubclassOf<UGameplayAbility>> DefaultAbilities;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|Default")
+    TArray<TSubclassOf<UGameplayAbility>> Abilities;
+
+    // 기본으로 부여할 GameplayTag 목록입니다.
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|Default")
+    FGameplayTagContainer GameplayTags;
 
 public:
     UGEAbilitySystem();
@@ -60,14 +64,15 @@ public:
 protected:
     /* 메서드 */
 
-    // 서버 전용 컴포넌트 초기화 이벤트
+    // 서버 전용 초기화 메서드
     UFUNCTION(BlueprintNativeEvent)
     void ServerInitializeComponent();
 
-    // 기본 설정 및 초기화
-    virtual void InitializeAbilitySystem();
+    // 서버, 클라이언트 공통 초기화 메서드
+    UFUNCTION(BlueprintNativeEvent)
+    void LocalInitializeComponent();
 
     // 게임플레이 태그 이벤트를 멀티캐스트합니다.
-    UFUNCTION(NetMulticast, Unreliable)
+    UFUNCTION(NetMulticast, Unreliable, Category = "GameplayEvent")
     virtual void NetMulticast_HandleGameplayEvent(FGameplayTag EventTag);
 };
