@@ -16,11 +16,53 @@ void UGGFCharacterMenuWidget::NativeOnInitialized()
     ConfirmButton->OnClicked.AddDynamic(this, &ThisClass::OnConfirmButtonClicked);
     SkinComboBox->OnSelectionChanged.AddDynamic(this, &ThisClass::OnSkinComboBoxSelectionChanged);
 
+    // 프리뷰 초기화
+    Clear();
+
     // 초기화
     if(CharacterSlotWidgetClass)
     {
         InitCharacterSlots();
     }
+}
+
+void UGGFCharacterMenuWidget::NativeConstruct()
+{
+    Super::NativeConstruct();
+
+    if(APawn* OwnerPawn = GetOwningPlayerPawn())
+    {
+        if(OwnerPawn->Implements<UGGFCharacterInterface>())
+        {
+            OnSelectButtonClicked(IGGFCharacterInterface::Execute_GetCharacterID(OwnerPawn));
+
+            // TODO 부위별, 현재는 풀 스킨만 고려
+            TArray<int32> SkinIDList = IGGFCharacterInterface::Execute_GetCharacterSkinIDList(OwnerPawn);
+            if(auto DataSubsystem = GetGameInstance()->GetSubsystem<UGGFCharacterDataSubsystem>())
+            {
+                for (auto ID : SkinIDList)
+                {
+                    if(auto CharacterSkin = DataSubsystem->GetSkinDefinition(ID))
+                    {
+                        if(CharacterSkin->GetData().SkinType == EGGFCharacterSkinType::Full)
+                        {
+                            SkinComboBox->SetSelectedOption(CharacterSkin->GetData().DisplayName.ToString());
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+void UGGFCharacterMenuWidget::Clear()
+{
+    // CharacterSlotPanel
+    CharacterSlotPanel->ClearChildren();
+
+    // SkinComboBox
+    SkinComboBox->ClearOptions();
+    SkinComboBox->ClearSelection();
 }
 
 void UGGFCharacterMenuWidget::InitCharacterSlots()
@@ -77,6 +119,13 @@ void UGGFCharacterMenuWidget::OnSelectButtonClicked_Implementation(int32 NewChar
             SkinComboBox->ClearSelection();
             SkinIDMap.Reset();
 
+            // 옵션에 기본 스킨 추가
+            FString DefaultSkinNameString = "Default";
+            SkinComboBox->AddOption(DefaultSkinNameString);
+
+            // TODO 현재 장착된 스킨 옵션 선택
+            SkinComboBox->SetSelectedOption(DefaultSkinNameString);
+
             // 콤보 박스 갱신
             for (auto SkinDefinition : SkinDefinitions)
             {
@@ -97,12 +146,17 @@ void UGGFCharacterMenuWidget::OnSkinComboBoxSelectionChanged(FString SelectedIte
         // 스킨 ID 설정
         CharacterSkinID = SkinIDMap[SelectedItem];
     }
+    else
+    {
+        // 기본 스킨 ID 설정
+        CharacterSkinID = -1;
+    }
 }
 
 void UGGFCharacterMenuWidget::OnConfirmButtonClicked_Implementation()
 {
     // 캐릭터 및 스킨 설정
-    if(APawn* OwnerPawn = GetOwningPlayer()->GetPawn())
+    if(APawn* OwnerPawn = GetOwningPlayerPawn())
     {
         if(OwnerPawn->Implements<UGGFCharacterInterface>())
         {

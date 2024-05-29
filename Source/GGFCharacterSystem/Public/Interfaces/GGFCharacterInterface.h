@@ -27,4 +27,10 @@ public:
     // 캐릭터 스킨 설정
     UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
     void SetCharacterSkin(int32 NewSkinID);
+
+    UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+    int32 GetCharacterID() const;
+
+    UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+    TArray<int32> GetCharacterSkinIDList() const;
 };

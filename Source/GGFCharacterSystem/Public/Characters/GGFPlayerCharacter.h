@@ -117,6 +117,8 @@ public:
 
     virtual void SetCharacter_Implementation(int32 NewCharacterID) override;
     virtual void SetCharacterSkin_Implementation(int32 NewSkinID) override;
+    virtual int32 GetCharacterID_Implementation() const override;
+    virtual TArray<int32> GetCharacterSkinIDList_Implementation() const override;
 
     UFUNCTION(Server, Reliable)
     void ServerSetCharacter(int32 NewCharacterID);

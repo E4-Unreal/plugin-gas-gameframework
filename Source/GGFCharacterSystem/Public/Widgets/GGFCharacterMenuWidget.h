@@ -68,8 +68,12 @@ protected:
     /* UserWidget */
 
     virtual void NativeOnInitialized() override;
+    virtual void NativeConstruct() override;
 
     /* 메서드 */
+
+    // 프리뷰 초기화
+    virtual void Clear();
 
     // 캐릭터 슬롯 위젯 초기화
     virtual void InitCharacterSlots();

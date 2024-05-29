@@ -179,6 +179,16 @@ void AGGFPlayerCharacter::SetCharacterSkin_Implementation(int32 NewSkinID)
     ServerSetCharacterSkin(NewSkinID);
 }
 
+int32 AGGFPlayerCharacter::GetCharacterID_Implementation() const
+{
+    return GetCharacterManager()->GetCharacterID();
+}
+
+TArray<int32> AGGFPlayerCharacter::GetCharacterSkinIDList_Implementation() const
+{
+    return GetSkinManager()->GetCurrentSkinIDList();
+}
+
 void AGGFPlayerCharacter::ServerSetCharacter_Implementation(int32 NewCharacterID)
 {
     // 캐릭터 설정 및 스킨 초기화
