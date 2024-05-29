@@ -26,6 +26,7 @@ AGECharacter::AGECharacter(const FObjectInitializer& ObjectInitializer)
     // GECharacter
     BoneNamesToHide.Emplace("weapon"); // 파라곤
     BoneNamesToHide.Emplace("pistol"); // 파라곤
+    BoneNamesToHide.Emplace("weapon_r"); // 파라곤
 }
 
 void AGECharacter::PostInitializeComponents()

@@ -8,6 +8,23 @@
 #include "Interfaces/GGFCharacterInterface.h"
 #include "GGFPlayerCharacter.generated.h"
 
+/**
+ * CharacterManager와 SkinManager 설정을 위한 구조체
+ */
+USTRUCT(Atomic, BlueprintType)
+struct FGGFCharacterConfig
+{
+    GENERATED_BODY()
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (ClampMin = 0))
+    int32 CharacterID;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (ClampMin = 0))
+    TArray<int32> SkinIDList;
+};
+
+class UGGFCharacterManager;
+class UGGFCharacterSkinManager;
 struct FInputActionValue;
 class UGGFEquipmentManager;
 
@@ -23,8 +40,11 @@ class GGFCHARACTERSYSTEM_API AGGFPlayerCharacter : public AGEPlayerCharacter,
     GENERATED_BODY()
 
 public:
-    // EquipmentManager 서브 오브젝트 이름
+    /* 서브 오브젝트 이름 */
+
     static FName EquipmentManagerName;
+    static FName CharacterManagerName;
+    static FName SkinManagerName;
 
 private:
     /* 컴포넌트 */
@@ -32,6 +52,14 @@ private:
     // 장비를 관리하기 위한 컴포넌트입니다.
     UPROPERTY(VisibleAnywhere, BlueprintGetter = GetEquipmentManager, Category = "Component")
     TObjectPtr<UGGFEquipmentManager> EquipmentManager;
+
+    // 캐릭터 설정을 관리하기 위한 컴포넌트입니다.
+    UPROPERTY(VisibleAnywhere, BlueprintGetter = GetCharacterManager, Category = "Component")
+    TObjectPtr<UGGFCharacterManager> CharacterManager;
+
+    // 캐릭터 스킨을 관리하기 위한 컴포넌트입니다.
+    UPROPERTY(VisibleAnywhere, BlueprintGetter = GetSkinManager, Category = "Component")
+    TObjectPtr<UGGFCharacterSkinManager> SkinManager;
 
 protected:
     /* GGFCharacterAnimationInterface */
@@ -45,18 +73,19 @@ protected:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|GGFCharacterAnimationInterface", meta = (Categories = "Equipment"))
     TMap<FGameplayTag, TObjectPtr<UAnimMontage>> EquipMontageMap;
 
-    /* GGFCharacterInterface */
+    /* CharacterManager & SkinManager */
 
-    // 캐릭터 정의 데이터 에셋
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|GGFCharacterInterface")
-    TObjectPtr<UGGFCharacterDefinition> CharacterDefinition;
-
-    // 캐릭터 스킨 데이터 에셋
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|GGFCharacterInterface")
-    TMap<EGGFCharacterSkinType, TObjectPtr<UGGFCharacterSkinDefinition>> CharacterSkinDefinitionMap;
+    // CharacterManager 및 SkinManager를 위한 리플리케이트된 변수
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State", Transient, ReplicatedUsing = OnRep_CharacterConfig)
+    FGGFCharacterConfig CharacterConfig;
 
 public:
     AGGFPlayerCharacter(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
+
+    /* Actor */
+
+    virtual void PreReplication(IRepChangedPropertyTracker& ChangedPropertyTracker) override;
+    virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
     /* Character */
 
@@ -83,18 +112,42 @@ public:
     virtual void PlayMontage_Implementation(UAnimMontage* MontageToPlay) override;
     virtual void ChangeAnimInstance_Implementation(FGameplayTag EquipmentTag) override;
 
+    // TODO ServerInitialized 어빌리티
     /* GGFCharacterInterface */
 
-    virtual bool SetCharacterDefinition_Implementation(UGGFCharacterDefinition* NewDefinition) override;
-    virtual bool SetCharacterSkinDefinition_Implementation(UGGFCharacterSkinDefinition* NewDefinition) override;
+    virtual void SetCharacter_Implementation(int32 NewCharacterID) override;
+    virtual void SetCharacterSkin_Implementation(int32 NewSkinID) override;
+    virtual int32 GetCharacterID_Implementation() const override;
+    virtual TArray<int32> GetCharacterSkinIDList_Implementation() const override;
+
+    UFUNCTION(Server, Reliable)
+    void ServerSetCharacter(int32 NewCharacterID);
+
+    UFUNCTION(Server, Reliable)
+    void ServerSetCharacterSkin(int32 NewSkinID);
 
 protected:
     UFUNCTION(NetMulticast, Unreliable)
     virtual void NetMulticast_PlayMontage(UAnimMontage* MontageToPlay);
+
+    /* 리플리케이트 */
+
+    // 서버 캐릭터의 CharacterConfig 값 업데이트
+    UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "ServerOnly")
+    void UpdateCharacterConfig();
+
+    UFUNCTION()
+    virtual void OnRep_CharacterConfig(const FGGFCharacterConfig& OldCharacterConfig);
 
 protected:
     /* Getter */
 
     UFUNCTION(BlueprintGetter)
     FORCEINLINE UGGFEquipmentManager* GetEquipmentManager() const { return EquipmentManager; }
+
+    UFUNCTION(BlueprintGetter)
+    FORCEINLINE UGGFCharacterManager* GetCharacterManager() const { return CharacterManager; }
+
+    UFUNCTION(BlueprintGetter)
+    FORCEINLINE UGGFCharacterSkinManager* GetSkinManager() const { return SkinManager; }
 };

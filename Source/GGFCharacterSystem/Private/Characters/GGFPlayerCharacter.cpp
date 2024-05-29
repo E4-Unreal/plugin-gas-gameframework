@@ -4,12 +4,17 @@
 
 #include "EnhancedInputSubsystems.h"
 #include "AbilitySystem/GGFPlayerAbilitySystem.h"
+#include "Components/GGFCharacterManager.h"
 #include "Components/GGFCharacterMovement.h"
+#include "Components/GGFCharacterSkinManager.h"
 #include "Components/GGFCharacterStateMachine.h"
 #include "Components/GGFEquipmentManager.h"
 #include "Input/GGFInputManager.h"
+#include "Net/UnrealNetwork.h"
 
 FName AGGFPlayerCharacter::EquipmentManagerName(TEXT("EquipmentManager"));
+FName AGGFPlayerCharacter::CharacterManagerName(TEXT("CharacterManager"));
+FName AGGFPlayerCharacter::SkinManagerName(TEXT("SkinManager"));
 
 AGGFPlayerCharacter::AGGFPlayerCharacter(const FObjectInitializer& ObjectInitializer)
 : Super(ObjectInitializer
@@ -20,6 +25,28 @@ AGGFPlayerCharacter::AGGFPlayerCharacter(const FObjectInitializer& ObjectInitial
 {
     /* EquipmentManager */
     EquipmentManager = CreateDefaultSubobject<UGGFEquipmentManager>(EquipmentManagerName);
+
+    /* CharacterManager */
+    CharacterManager = CreateDefaultSubobject<UGGFCharacterManager>(CharacterManagerName);
+    CharacterManager->SetCharacterMesh(GetMesh());
+
+    /* SkinManager */
+    SkinManager = CreateDefaultSubobject<UGGFCharacterSkinManager>(SkinManagerName);
+    SkinManager->SetCharacterMesh(GetMesh());
+}
+
+void AGGFPlayerCharacter::PreReplication(IRepChangedPropertyTracker& ChangedPropertyTracker)
+{
+    Super::PreReplication(ChangedPropertyTracker);
+
+    UpdateCharacterConfig();
+}
+
+void AGGFPlayerCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+    Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+    DOREPLIFETIME(ThisClass, CharacterConfig);
 }
 
 bool AGGFPlayerCharacter::CanJumpInternal_Implementation() const
@@ -107,55 +134,76 @@ void AGGFPlayerCharacter::ChangeAnimInstance_Implementation(FGameplayTag Equipme
     }
 }
 
-/* GGFCharacterInterface */
-
-bool AGGFPlayerCharacter::SetCharacterDefinition_Implementation(UGGFCharacterDefinition* NewDefinition)
+void AGGFPlayerCharacter::UpdateCharacterConfig_Implementation()
 {
-    // 입력 유효성 검사
-    if(NewDefinition == nullptr) return false;
+    FGGFCharacterConfig NewCharacterConfig;
+    NewCharacterConfig.CharacterID = GetCharacterManager()->GetCharacterID();
+    NewCharacterConfig.SkinIDList = GetSkinManager()->GetCurrentSkinIDList();
 
-    // 데이터 에셋 교체
-    CharacterDefinition = NewDefinition;
-
-    // 캐릭터 설정
-    const FGGFCharacterData& Data = CharacterDefinition->GetData();
-    USkeletalMeshComponent* CharacterMesh = GetMesh();
-    CharacterMesh->SetSkeletalMesh(Data.SkeletalMesh);
-    CharacterMesh->SetAnimInstanceClass(Data.AnimInstanceClass);
-
-    return true;
+    CharacterConfig = NewCharacterConfig;
 }
 
-bool AGGFPlayerCharacter::SetCharacterSkinDefinition_Implementation(UGGFCharacterSkinDefinition* NewDefinition)
+void AGGFPlayerCharacter::OnRep_CharacterConfig(const FGGFCharacterConfig& OldCharacterConfig)
 {
-    // 입력 유효성 검사
-    if(NewDefinition == nullptr) return false;
-
-    // 데이터 가져오기
-    const FGGFCharacterData& CharacterData = CharacterDefinition->GetData();
-    const FGGFCharacterSkinData& SkinData = NewDefinition->GetData();
-
-    /* 호환성 검사 */
-
-    // 사용 가능한 캐릭터 목록에 존재하는지 확인
-    if(!SkinData.AvailableCharacterIDList.IsEmpty() && !SkinData.AvailableCharacterIDList.Contains(CharacterData.ID)) return false;
-
-    // 사용 불가능한 캐릭터 목록에 존재하는지 확인
-    if(!SkinData.ForbiddenCharacterIDList.IsEmpty() && SkinData.ForbiddenCharacterIDList.Contains(CharacterData.ID)) return false;
-
-    /* 설정 */
-
-    // 스킨 종류 확인
-    switch (SkinData.SkinType)
+    // 캐릭터가 변경된 경우
+    if(CharacterConfig.CharacterID != OldCharacterConfig.CharacterID)
     {
-    case EGGFCharacterSkinType::Full:
-        CharacterSkinDefinitionMap.Emplace(EGGFCharacterSkinType::Full, NewDefinition);
-        GetMesh()->SetSkeletalMesh(SkinData.SkeletalMesh);
-        break;
-    default:
-        return false;
-        break;
+        // 캐릭터 설정 및 스킨 초기화
+        GetCharacterManager()->SetCharacterByID(CharacterConfig.CharacterID);
+        GetSkinManager()->Reset();
+
+        // 파라곤처럼 불필요한 스켈레톤 숨기기
+        HideBones();
     }
 
-    return true;
+    // 캐릭터 스킨 설정
+    for (int32 SkinID : CharacterConfig.SkinIDList)
+    {
+        // 스킨 설정
+        GetSkinManager()->SetSkinByID(SkinID);
+
+        // 파라곤처럼 불필요한 스켈레톤 숨기기
+        HideBones();
+    }
+}
+
+/* GGFCharacterInterface */
+
+void AGGFPlayerCharacter::SetCharacter_Implementation(int32 NewCharacterID)
+{
+    ServerSetCharacter(NewCharacterID);
+}
+
+void AGGFPlayerCharacter::SetCharacterSkin_Implementation(int32 NewSkinID)
+{
+    ServerSetCharacterSkin(NewSkinID);
+}
+
+int32 AGGFPlayerCharacter::GetCharacterID_Implementation() const
+{
+    return GetCharacterManager()->GetCharacterID();
+}
+
+TArray<int32> AGGFPlayerCharacter::GetCharacterSkinIDList_Implementation() const
+{
+    return GetSkinManager()->GetCurrentSkinIDList();
+}
+
+void AGGFPlayerCharacter::ServerSetCharacter_Implementation(int32 NewCharacterID)
+{
+    // 캐릭터 설정 및 스킨 초기화
+    GetCharacterManager()->SetCharacterByID(NewCharacterID);
+    GetSkinManager()->Reset();
+
+    // 파라곤처럼 불필요한 스켈레톤 숨기기
+    HideBones();
+}
+
+void AGGFPlayerCharacter::ServerSetCharacterSkin_Implementation(int32 NewSkinID)
+{
+    // 스킨 설정
+    GetSkinManager()->SetSkinByID(NewSkinID);
+
+    // 파라곤처럼 불필요한 스켈레톤 숨기기
+    HideBones();
 }

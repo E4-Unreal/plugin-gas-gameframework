@@ -16,6 +16,7 @@ UCLASS()
 class TPSSAMPLE_API ATSPlayerCharacter : public AGGFThirdPersonCharacter
 {
     GENERATED_BODY()
+
 public:
     ATSPlayerCharacter(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 };

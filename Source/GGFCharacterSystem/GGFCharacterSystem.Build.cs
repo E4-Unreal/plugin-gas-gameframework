@@ -26,7 +26,8 @@ public class GGFCharacterSystem : ModuleRules
                 "GASExtension",
                 "GGFInteractionSystem",
                 "GGFEquipmentSystem",
-                "GGFShooterCore"
+                "GGFShooterCore",
+                "GGFDataSystem"
             }
         );
 

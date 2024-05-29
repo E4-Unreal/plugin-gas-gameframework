@@ -6,8 +6,17 @@
 
 AGGFInteractableMenuActor::AGGFInteractableMenuActor()
 {
+    /* 초기화 */
+    DisplayName = "Interactable Menu Object";
+    InteractionInfo = "Show Menu";
+
     /* 블루프린트 에셋 기본 할당 */
-    static ConstructorHelpers::FClassFinder<UUserWidget> InteractionMenuWidgetClassFinder(TEXT("/GASGameFramework/InteractionSystem/WBP_InteractionMenu_Sample.WBP_InteractionMenu_Sample_C"));
+    // LevelPrototyping 플러그인
+    GetDisplayMesh()->SetRelativeLocation(FVector(0, 0, 100));
+    GetDisplayMesh()->SetRelativeScale3D(FVector(1, 0.1, 2));
+
+    // GASGameFramework 플러그인
+    static ConstructorHelpers::FClassFinder<UUserWidget> InteractionMenuWidgetClassFinder(TEXT("/GASGameFramework/Objects/Interactable/WBP_InteractionMenu_Sample.WBP_InteractionMenu_Sample_C"));
     if (InteractionMenuWidgetClassFinder.Succeeded())
     {
         MenuWidgetClass = InteractionMenuWidgetClassFinder.Class;

@@ -2,15 +2,15 @@
 
 #include "Data/GGFCharacterDefinition.h"
 
-void UGGFCharacterDefinition::InitFromDataTable(UDataTable* DataTable, int32 ID)
+bool UGGFCharacterDefinition::InitFromDataTableRowBase(FGGFDataTableRowBase* NewDataTableRowBase)
 {
-    // 입력 유효성 검사
-    if(DataTable == nullptr || ID < 0) return;
-
-    // 데이터 설정
-    if(FGGFCharacterDataTableRow* NewData = DataTable->FindRow<FGGFCharacterDataTableRow>(FName(FString::FromInt(ID)), ""))
+    // 구조체 캐스팅
+    if(FGGFCharacterData* NewData = static_cast<FGGFCharacterData*>(NewDataTableRowBase))
     {
-        Data.ID = ID;
+        // 데이터 설정
         Data = *NewData;
+        return true;
     }
+
+    return false;
 }

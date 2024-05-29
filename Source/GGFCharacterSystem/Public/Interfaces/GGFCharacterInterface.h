@@ -4,8 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "UObject/Interface.h"
-#include "Data/GGFCharacterDefinition.h"
-#include "Data/GGFCharacterSkinDefinition.h"
 #include "GGFCharacterInterface.generated.h"
 
 UINTERFACE(BlueprintType, Blueprintable)
@@ -15,7 +13,7 @@ class GGFCHARACTERSYSTEM_API UGGFCharacterInterface : public UInterface
 };
 
 /**
- * 캐릭터 전용 인터페이스
+ * GASGameFramework 캐릭터 전용 인터페이스
  */
 class GGFCHARACTERSYSTEM_API IGGFCharacterInterface
 {
@@ -24,9 +22,15 @@ class GGFCHARACTERSYSTEM_API IGGFCharacterInterface
 public:
     // 캐릭터 설정
     UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-    bool SetCharacterDefinition(UGGFCharacterDefinition* NewDefinition);
+    void SetCharacter(int32 NewCharacterID);
 
     // 캐릭터 스킨 설정
     UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-    bool SetCharacterSkinDefinition(UGGFCharacterSkinDefinition* NewDefinition);
+    void SetCharacterSkin(int32 NewSkinID);
+
+    UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+    int32 GetCharacterID() const;
+
+    UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+    TArray<int32> GetCharacterSkinIDList() const;
 };

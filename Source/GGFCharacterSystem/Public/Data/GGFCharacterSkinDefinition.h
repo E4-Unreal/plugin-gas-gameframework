@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Engine/DataAsset.h"
+#include "GGFDefinitionBase.h"
 #include "GGFCharacterSkinDefinition.generated.h"
 
 // TODO 확장성? 다른 모듈에서 Type 추가 혹은 변경이 가능한지 조사 필요
@@ -25,14 +25,10 @@ enum class EGGFCharacterSkinType : uint8
 /**
  * 캐릭터 스킨 설정을 위한 구조체
  */
-USTRUCT(Atomic, BlueprintType)
-struct FGGFCharacterSkinData
+USTRUCT()
+struct FGGFCharacterSkinData : public FGGFDataTableRowBase
 {
     GENERATED_BODY()
-
-    // 스킨 ID
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (ClampMin = 0))
-    int32 ID;
 
     // 스킨 타입
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -57,7 +53,7 @@ struct FGGFCharacterSkinData
  * 캐릭터 스킨 설정을 위한 데이터 에셋
  */
 UCLASS()
-class GGFCHARACTERSYSTEM_API UGGFCharacterSkinDefinition : public UDataAsset
+class GGFCHARACTERSYSTEM_API UGGFCharacterSkinDefinition : public UGGFDefinitionBase
 {
     GENERATED_BODY()
 
@@ -67,6 +63,10 @@ protected:
     FGGFCharacterSkinData Data;
 
 public:
+    /* GGFDefinitionBase */
+
+    virtual bool InitFromDataTableRowBase(FGGFDataTableRowBase* NewDataTableRowBase) override;
+
     /* Getter */
 
     UFUNCTION(BlueprintGetter)
