@@ -63,6 +63,11 @@
 			"Name": "GGFDataSystem",
 			"Type": "Runtime",
 			"LoadingPhase": "Default"
+		},
+		{
+			"Name": "GGFCombatCore",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
 		}
 	],
 	"Plugins": [
@@ -94,10 +99,10 @@
 			"Name": "ParagonBelica",
 			"Enabled": true
 		},
-        {
-            "Name": "ParagonWraith",
-            "Enabled": true
-        },
+		{
+			"Name": "ParagonWraith",
+			"Enabled": true
+		},
 		{
 			"Name": "E4Effects",
 			"Enabled": true
