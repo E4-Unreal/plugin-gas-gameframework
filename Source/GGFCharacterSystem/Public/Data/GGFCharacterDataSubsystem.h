@@ -62,6 +62,9 @@ public:
 
     /* API */
 
+    UFUNCTION(BlueprintPure, Category = "Character")
+    static FORCEINLINE bool GetData(int32 ID, FGGFCharacterData& Data);
+
     // 캐릭터 ID에 대응하는 캐릭터 정의 데이터 에셋 가져오기
     UFUNCTION(BlueprintPure, Category = "Character")
     FORCEINLINE UGGFCharacterDefinition* GetDefinition(int32 ID) const { return CharacterMap.Contains(ID) ? CharacterMap[ID] : nullptr; }
@@ -69,6 +72,9 @@ public:
     // 모든 캐릭터 정의 데이터 에셋 가져오기
     UFUNCTION(BlueprintPure, Category = "Character")
     const FORCEINLINE TArray<UGGFCharacterDefinition*>& GetAllDefinitions() const { return CharacterList; }
+
+    UFUNCTION(BlueprintPure, Category = "Skin")
+    static FORCEINLINE bool GetSkinData(int32 ID, FGGFCharacterSkinData& Data);
 
     // 캐릭터 스킨 ID에 대응하는 캐릭터 스킨 데이터 에셋 가져오기
     UFUNCTION(BlueprintPure, Category = "Skin")
@@ -81,20 +87,6 @@ public:
     // 특정 캐릭터가 사용 가능한 모든 스킨 ID 목록 가져오기
     UFUNCTION(BlueprintPure, Category = "Skin")
     TArray<int32> GetAvailableSkinIDList(const int32 CharacterID) const { return AvailableSkinMap.Contains(CharacterID) ? AvailableSkinMap[CharacterID].List : TArray<int32>(); }
-
-#if WITH_EDITOR
-    // 데이터 테이블로부터 CharacterData 가져오기
-    static const FGGFCharacterData* GetDirectCharacterData(int32 ID);
-
-    // 데이터 테이블로부터 모든 CharacterData 가져오기
-    static const TArray<const FGGFCharacterData*> GetAllDirectCharacterData();
-
-    // 데이터 테이블로부터 CharacterSkinData 직접 가져오기
-    static const FGGFCharacterSkinData* GetDirectCharacterSkinData(int32 ID);
-
-    // 데이터 테이블로부터 CharacterSkinData 직접 가져오기
-    static const TArray<const FGGFCharacterSkinData*> GetAllDirectCharacterSkinData();
-#endif
 
 protected:
     // 데이터 서브 시스템 동기화

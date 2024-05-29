@@ -33,48 +33,6 @@ void UGGFCharacterDataSubsystem::FetchDataSubsystem()
     }
 }
 
-#if WITH_EDITOR
-const FGGFCharacterData* UGGFCharacterDataSubsystem::GetDirectCharacterData(int32 ID)
-{
-    FGGFDataTableRowBase* DirectData = const_cast<FGGFDataTableRowBase*>(UGGFDataSubsystem::GetDirectData(UGGFCharacterDefinition::StaticClass(), ID));
-    return static_cast<FGGFCharacterData*>(DirectData);
-}
-
-const TArray<const FGGFCharacterData*> UGGFCharacterDataSubsystem::GetAllDirectCharacterData()
-{
-    const TArray<const FGGFDataTableRowBase*> AllData = UGGFDataSubsystem::GetAllDirectData(UGGFCharacterDefinition::StaticClass());
-    TArray<const FGGFCharacterData*> AllCharacterData;
-    AllCharacterData.Reserve(AllData.Num());
-    for (auto Data : AllData)
-    {
-        FGGFDataTableRowBase* TempData = const_cast<FGGFDataTableRowBase*>(Data);
-        AllCharacterData.Emplace(static_cast<FGGFCharacterData*>(TempData));
-    }
-
-    return AllCharacterData;
-}
-
-const FGGFCharacterSkinData* UGGFCharacterDataSubsystem::GetDirectCharacterSkinData(int32 ID)
-{
-    FGGFDataTableRowBase* DirectData = const_cast<FGGFDataTableRowBase*>(UGGFDataSubsystem::GetDirectData(UGGFCharacterSkinDefinition::StaticClass(), ID));
-    return static_cast<FGGFCharacterSkinData*>(DirectData);
-}
-
-const TArray<const FGGFCharacterSkinData*> UGGFCharacterDataSubsystem::GetAllDirectCharacterSkinData()
-{
-    TArray<const FGGFDataTableRowBase*> AllData = UGGFDataSubsystem::GetAllDirectData(UGGFCharacterSkinDefinition::StaticClass());
-    TArray<const FGGFCharacterSkinData*> AllSkinData;
-    AllSkinData.Reserve(AllData.Num());
-    for (auto Data : AllData)
-    {
-        FGGFDataTableRowBase* TempData = const_cast<FGGFDataTableRowBase*>(Data);
-        AllSkinData.Emplace(static_cast<FGGFCharacterSkinData*>(TempData));
-    }
-
-    return AllSkinData;
-}
-#endif
-
 void UGGFCharacterDataSubsystem::CachingSkinList()
 {
     for (auto SkinDefinition : SkinList)
@@ -135,4 +93,14 @@ void UGGFCharacterDataSubsystem::MappingAvailableSkin()
         // 등록
         AvailableSkinMap.Emplace(CharacterID, AvailableSkinIDList);
     }
+}
+
+bool UGGFCharacterDataSubsystem::GetData(int32 ID, FGGFCharacterData& Data)
+{
+    return UGGFDataSubsystem::GetData(UGGFCharacterDefinition::StaticClass(), ID, Data);
+}
+
+bool UGGFCharacterDataSubsystem::GetSkinData(int32 ID, FGGFCharacterSkinData& Data)
+{
+    return UGGFDataSubsystem::GetData(UGGFCharacterSkinDefinition::StaticClass(), ID, Data);
 }

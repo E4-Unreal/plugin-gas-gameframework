@@ -2,6 +2,7 @@
 
 #include "Components/GGFCharacterManager.h"
 
+#include "GGFDataSubsystem.h"
 #include "Data/GGFCharacterDataSubsystem.h"
 #include "Data/GGFCharacterDefinition.h"
 
@@ -24,9 +25,10 @@ void UGGFCharacterManager::PostEditChangeProperty(FPropertyChangedEvent& Propert
     FName PropertyName = PropertyChangedEvent.GetPropertyName();
     if(PropertyName == GET_MEMBER_NAME_CHECKED(ThisClass, DefaultID))
     {
-        if(const FGGFCharacterData* NewData = UGGFCharacterDataSubsystem::GetDirectCharacterData(DefaultID))
+        FGGFCharacterData NewData;
+        if(UGGFCharacterDataSubsystem::GetData(DefaultID, NewData))
         {
-            SetCharacterByData(*NewData);
+            SetCharacterByData(NewData);
         }
     }
 
