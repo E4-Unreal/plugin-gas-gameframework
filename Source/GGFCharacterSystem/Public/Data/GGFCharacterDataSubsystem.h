@@ -7,6 +7,7 @@
 #include "GGFDataTypes.h"
 #include "GGFCharacterDataSubsystem.generated.h"
 
+class UGGFDefinitionBase;
 struct FGGFCharacterSkinData;
 struct FGGFCharacterData;
 class UGGFCharacterDefinition;
@@ -21,33 +22,38 @@ class GGFCHARACTERSYSTEM_API UGGFCharacterDataSubsystem : public UGameInstanceSu
     GENERATED_BODY()
 
 protected:
-    // 캐릭터 정의 데이터 에셋 목록
+    // 캐릭터 데이터 에셋 목록
     UPROPERTY(Transient)
-    TArray<TObjectPtr<UGGFCharacterDefinition>> DefinitionList;
+    TArray<TObjectPtr<UGGFCharacterDefinition>> CharacterList;
+
+    // 캐릭터 데이터 에셋의 ID 매핑 정보
+    UPROPERTY(Transient)
+    TMap<int32, TObjectPtr<UGGFCharacterDefinition>> CharacterIDMap;
 
     // 캐릭터 스킨 데이터 에셋 목록
     UPROPERTY(Transient)
-    TArray<TObjectPtr<UGGFCharacterSkinDefinition>> SkinDefinitionList;
-
-    // 캐릭터 정의 데이터 에셋의 ID 매핑 정보
-    UPROPERTY(Transient)
-    TMap<int32, TObjectPtr<UGGFCharacterDefinition>> DefinitionMap;
+    TArray<TObjectPtr<UGGFCharacterSkinDefinition>> SkinList;
 
     // 캐릭터 스킨 데이터 에셋의 ID 매핑 정보
     UPROPERTY(Transient)
-    TMap<int32, TObjectPtr<UGGFCharacterSkinDefinition>> SkinDefinitionMap;
+    TMap<int32, TObjectPtr<UGGFCharacterSkinDefinition>> SkinIDMap;
 
-    // 캐릭터 별 착용 가능한 스킨 매핑 정보
+    // 특정 캐릭터만 착용 가능한 스킨 매핑 정보
     UPROPERTY(Transient)
-    TMap<int32, FGGFIDContainer> AvailableSkinMap;
+    FGGFIDMapContainer UniqueSkinMap;
 
-    // 캐릭터 별 착용이 불가능한 스킨 매핑 정보
+    // 특정 캐릭터만 착용이 불가능한 스킨 매핑 정보
     UPROPERTY(Transient)
-    TMap<int32, FGGFIDContainer> ForbiddenSkinMap;
+    FGGFIDMapContainer ForbiddenSkinMap;
 
     // 모든 캐릭터가 착용 가능한 스킨 리스트
     UPROPERTY(Transient)
     TArray<int32> UniversalSkinList;
+
+    // 특정 캐릭터가 착용 가능한 모든 스킨 매핑 정보
+    // Unique + (Universal - Forbidden)
+    UPROPERTY(Transient)
+    FGGFIDMapContainer AvailableSkinMap;
 
 public:
     /* Subsystem */
@@ -58,23 +64,23 @@ public:
 
     // 캐릭터 ID에 대응하는 캐릭터 정의 데이터 에셋 가져오기
     UFUNCTION(BlueprintPure, Category = "Character")
-    FORCEINLINE UGGFCharacterDefinition* GetDefinition(int32 ID) const { return DefinitionMap.Contains(ID) ? DefinitionMap[ID] : nullptr; }
+    FORCEINLINE UGGFCharacterDefinition* GetDefinition(int32 ID) const { return CharacterIDMap.Contains(ID) ? CharacterIDMap[ID] : nullptr; }
 
     // 모든 캐릭터 정의 데이터 에셋 가져오기
     UFUNCTION(BlueprintPure, Category = "Character")
-    const FORCEINLINE TArray<UGGFCharacterDefinition*>& GetAllDefinitions() const { return DefinitionList; }
+    const FORCEINLINE TArray<UGGFCharacterDefinition*>& GetAllDefinitions() const { return CharacterList; }
 
     // 캐릭터 스킨 ID에 대응하는 캐릭터 스킨 데이터 에셋 가져오기
     UFUNCTION(BlueprintPure, Category = "Skin")
-    FORCEINLINE UGGFCharacterSkinDefinition* GetSkinDefinition(int32 ID) const { return SkinDefinitionMap.Contains(ID) ? SkinDefinitionMap[ID] : nullptr; }
+    FORCEINLINE UGGFCharacterSkinDefinition* GetSkinDefinition(int32 ID) const { return SkinIDMap.Contains(ID) ? SkinIDMap[ID] : nullptr; }
 
     // 모든 캐릭터 스킨 데이터 에셋 가져오기
     UFUNCTION(BlueprintPure, Category = "Skin")
-    const FORCEINLINE TArray<UGGFCharacterSkinDefinition*>& GetAllSkinDefinitions() const { return SkinDefinitionList; }
+    const FORCEINLINE TArray<UGGFCharacterSkinDefinition*>& GetAllSkinDefinitions() const { return SkinList; }
 
     // 특정 캐릭터가 사용 가능한 모든 스킨 ID 목록 가져오기
     UFUNCTION(BlueprintPure, Category = "Skin")
-    TArray<int32> GetAvailableSkinIDList(const int32 CharacterID);
+    TArray<int32> GetAvailableSkinIDList(const int32 CharacterID) const { return AvailableSkinMap.Contains(CharacterID) ? AvailableSkinMap[CharacterID].List : TArray<int32>(); }
 
 #if WITH_EDITOR
     // 데이터 테이블로부터 CharacterData 가져오기
@@ -91,12 +97,19 @@ public:
 #endif
 
 protected:
-    // 캐릭터 정의 데이터 에셋 캐싱
-    virtual void CachingDefinition(UGGFCharacterDefinition* Definition);
+    /* Character */
 
-    // 캐릭터 스킨 데이터 에셋 캐싱
-    virtual void CachingSkinDefinition(UGGFCharacterSkinDefinition* SkinDefinition);
+    // 모든 캐릭터 데이터 등록
+    virtual void CachingAllCharacters();
 
-    // 캐릭터 ID와 캐릭터 스킨 ID 매핑
-    void MappingCharacterSkinID(TMap<int32, FGGFIDContainer>& SkinMap, const int32 NewCharacterID, const int32 NewSkinID);
+    /* Skin */
+
+    // 모든 캐릭터 스킨 데이터 등록
+    virtual void CachingAllSkins();
+
+    // 등록된 모든 캐릭터 스킨 데이터 분석
+    virtual void AnalyzeAllSkins();
+
+    // 주어진 캐릭터가 착용 가능한 모든 스킨 ID 캐싱
+    virtual void RegisterAvailableSkin(int32 CharacterID);
 };

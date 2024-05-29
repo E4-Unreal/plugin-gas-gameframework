@@ -3,11 +3,9 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GGFDefinitionBase.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "GGFDataSubsystem.generated.h"
-
-struct FGGFDataTableRowBase;
-class UGGFDefinitionBase;
 
 /**
  * DataSubsystem 전용 데이터 구조체
@@ -37,6 +35,23 @@ protected:
     TMap<TSubclassOf<UGGFDefinitionBase>, FGGFDefinitionContainer> DefinitionContainerMap;
 
 public:
+    /* Static */
+
+    template <class T>
+    static void CachingDefinition(UGGFDefinitionBase* DefinitionBase, TArray<TObjectPtr<T>>& DefinitionList, TMap<int32, TObjectPtr<T>>& DefinitionIDMap)
+    {
+        static_assert(std::is_base_of_v<UGGFDefinitionBase, T>, "type parameter of this class must derive from BaseClass");
+
+        // 유효성 검사
+        if(DefinitionBase && DefinitionBase->IsValid())
+        {
+            // 캐스팅 후 저장
+            T* Definition = CastChecked<T>(DefinitionBase);
+            DefinitionList.Emplace(Definition);
+            DefinitionIDMap.Emplace(Definition->GetID(), Definition);
+        }
+    }
+
     /* Subsystem */
 
     virtual void Initialize(FSubsystemCollectionBase& Collection) override;
