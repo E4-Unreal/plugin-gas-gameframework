@@ -28,7 +28,7 @@ protected:
 
     // 캐릭터 데이터 에셋의 ID 매핑 정보
     UPROPERTY(Transient)
-    TMap<int32, TObjectPtr<UGGFCharacterDefinition>> CharacterIDMap;
+    TMap<int32, TObjectPtr<UGGFCharacterDefinition>> CharacterMap;
 
     // 캐릭터 스킨 데이터 에셋 목록
     UPROPERTY(Transient)
@@ -36,7 +36,7 @@ protected:
 
     // 캐릭터 스킨 데이터 에셋의 ID 매핑 정보
     UPROPERTY(Transient)
-    TMap<int32, TObjectPtr<UGGFCharacterSkinDefinition>> SkinIDMap;
+    TMap<int32, TObjectPtr<UGGFCharacterSkinDefinition>> SkinMap;
 
     // 특정 캐릭터만 착용 가능한 스킨 매핑 정보
     UPROPERTY(Transient)
@@ -64,7 +64,7 @@ public:
 
     // 캐릭터 ID에 대응하는 캐릭터 정의 데이터 에셋 가져오기
     UFUNCTION(BlueprintPure, Category = "Character")
-    FORCEINLINE UGGFCharacterDefinition* GetDefinition(int32 ID) const { return CharacterIDMap.Contains(ID) ? CharacterIDMap[ID] : nullptr; }
+    FORCEINLINE UGGFCharacterDefinition* GetDefinition(int32 ID) const { return CharacterMap.Contains(ID) ? CharacterMap[ID] : nullptr; }
 
     // 모든 캐릭터 정의 데이터 에셋 가져오기
     UFUNCTION(BlueprintPure, Category = "Character")
@@ -72,7 +72,7 @@ public:
 
     // 캐릭터 스킨 ID에 대응하는 캐릭터 스킨 데이터 에셋 가져오기
     UFUNCTION(BlueprintPure, Category = "Skin")
-    FORCEINLINE UGGFCharacterSkinDefinition* GetSkinDefinition(int32 ID) const { return SkinIDMap.Contains(ID) ? SkinIDMap[ID] : nullptr; }
+    FORCEINLINE UGGFCharacterSkinDefinition* GetSkinDefinition(int32 ID) const { return SkinMap.Contains(ID) ? SkinMap[ID] : nullptr; }
 
     // 모든 캐릭터 스킨 데이터 에셋 가져오기
     UFUNCTION(BlueprintPure, Category = "Skin")
@@ -97,19 +97,12 @@ public:
 #endif
 
 protected:
-    /* Character */
+    // 데이터 서브 시스템 동기화
+    virtual void FetchDataSubsystem();
 
-    // 모든 캐릭터 데이터 등록
-    virtual void CachingAllCharacters();
+    // 모든 캐릭터 스킨 데이터 분석 및 캐싱
+    virtual void CachingSkinList();
 
-    /* Skin */
-
-    // 모든 캐릭터 스킨 데이터 등록
-    virtual void CachingAllSkins();
-
-    // 등록된 모든 캐릭터 스킨 데이터 분석
-    virtual void AnalyzeAllSkins();
-
-    // 주어진 캐릭터가 착용 가능한 모든 스킨 ID 캐싱
-    virtual void RegisterAvailableSkin(int32 CharacterID);
+    // 특정 캐릭터가 착용 가능한 모든 스킨 ID 매핑
+    virtual void MappingAvailableSkin();
 };

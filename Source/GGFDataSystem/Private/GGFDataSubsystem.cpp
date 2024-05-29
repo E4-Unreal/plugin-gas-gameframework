@@ -5,10 +5,54 @@
 #include "GGFDataSystemSetting.h"
 #include "GGFDefinitionBase.h"
 
+/* GGFDefinitionContainer */
+
+bool FGGFDefinitionContainer::Init(UObject* Outer, TSubclassOf<UGGFDefinitionBase> DefinitionClass, UDataTable* DataTable)
+{
+    // 유효성 검사
+    if(DefinitionClass == nullptr || DataTable == nullptr) return false;
+
+    // 지역 변수 초기화
+    const TArray<FName>& RowNames = DataTable->GetRowNames();
+    const int32 MaxNum = RowNames.Num();
+
+    // 메모리 할당
+    List.Reserve(MaxNum);
+    Map.Reserve(MaxNum);
+
+    // Definition 생성
+    for (const FName& RowName : RowNames)
+    {
+        int32 DefinitionID = FCString::Atoi(*RowName.ToString());
+
+        // 새로운 데이터 에셋 생성 및 초기화
+        if(auto NewDefinition = NewObject<UGGFDefinitionBase>(Outer, DefinitionClass))
+        {
+            if(NewDefinition->InitFromDataTable(DataTable, DefinitionID) && NewDefinition->IsValid())
+            {
+                List.Emplace(NewDefinition);
+                Map.Emplace(NewDefinition->GetID(), NewDefinition);
+            }
+        }
+    }
+
+    return true;
+}
+
+/* GGFDataSubsystem */
+
+FGGFDefinitionContainer UGGFDataSubsystem::EmptyDefinitionContainer;
+
 void UGGFDataSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
     Super::Initialize(Collection);
 
+    // 프로젝트 설정 가져오기
+    FetchProjectSettings();
+}
+
+void UGGFDataSubsystem::FetchProjectSettings()
+{
     // 프로젝트 설정 가져오기
     if(UGGFDataSystemSetting* DataSystemSetting = GetMutableDefault<UGGFDataSystemSetting>())
     {
@@ -16,59 +60,56 @@ void UGGFDataSubsystem::Initialize(FSubsystemCollectionBase& Collection)
         DefinitionContainerMap.Reserve(DataSystemSetting->DefinitionDataTableMap.Num());
         for (const auto& [DefinitionClass, DataTable] : DataSystemSetting->DefinitionDataTableMap)
         {
-            FGGFDefinitionContainer NewDefinitionContainer;
-            NewDefinitionContainer.DataTable = DataTable.LoadSynchronous();
-            DefinitionContainerMap.Emplace(DefinitionClass, NewDefinitionContainer);
+            // 데이터 테이블로부터 데이터 에셋 생성
+            CreateDefinitionsFromDataTable(DefinitionClass, DataTable.LoadSynchronous());
         }
     }
 }
 
-UGGFDefinitionBase* UGGFDataSubsystem::GetOrCreateDefinition(TSubclassOf<UGGFDefinitionBase> DefinitionClass, int32 ID)
+void UGGFDataSubsystem::CreateDefinitionsFromDataTable(TSubclassOf<UGGFDefinitionBase> DefinitionClass,
+    UDataTable* DataTable)
 {
-    // 입력 유효성 검사
-    if(DefinitionClass == nullptr || ID < 0 || !DefinitionContainerMap.Contains(DefinitionClass)) return nullptr;
-
-    // 기존 데이터 에셋 검색
-    FGGFDefinitionContainer& DefinitionContainer = DefinitionContainerMap[DefinitionClass];
-    if(DefinitionContainer.DefinitionMap.Contains(ID)) return DefinitionContainer.DefinitionMap[ID];
-
-    // 새로운 데이터 에셋 생성
-    UGGFDefinitionBase* NewDefinition = NewObject<UGGFDefinitionBase>(this, DefinitionClass);
-    if(!NewDefinition->InitFromDataTable(DefinitionContainer.DataTable, ID)) return nullptr;
-
-    // 새로운 데이터 에셋 유효성 검사
-    if(NewDefinition->IsNotValid()) return nullptr;
-
-    // 새로운 데이터 에셋 저장
-    DefinitionContainer.DefinitionMap.Emplace(ID, NewDefinition);
-    return NewDefinition;
+    FGGFDefinitionContainer NewDefinitionContainer;
+    NewDefinitionContainer.Init(this, DefinitionClass, DataTable);
+    DefinitionContainerMap.Emplace(DefinitionClass, NewDefinitionContainer);
 }
 
-TArray<UGGFDefinitionBase*> UGGFDataSubsystem::GetOrCreateAllDefinitions(TSubclassOf<UGGFDefinitionBase> DefinitionClass)
+UGGFDefinitionBase* UGGFDataSubsystem::GetDefinitionBase(TSubclassOf<UGGFDefinitionBase> DefinitionClass, int32 ID) const
 {
-    // 변수 초기화
-    TArray<UGGFDefinitionBase*> Definitions;
-
     // 입력 유효성 검사
-    if(DefinitionClass == nullptr || !DefinitionContainerMap.Contains(DefinitionClass)) return Definitions;
+    if(DefinitionClass == nullptr || ID < 0) return nullptr;
 
-    // 데이터 테이블에 등록된 모든 ID 확인
-    TArray<FName> RowNames = DefinitionContainerMap[DefinitionClass].DataTable->GetRowNames();
+    // 데이터 검색
+    if(!(DefinitionContainerMap.Contains(DefinitionClass) && DefinitionContainerMap[DefinitionClass].Map.Contains(ID))) return nullptr;
 
-    // 메모리 할당
-    Definitions.Reserve(RowNames.Num());
+    // 데이터 반환
+    return DefinitionContainerMap[DefinitionClass].Map[ID];
+}
 
-    // Definition 생성
-    for (const FName& RowName : RowNames)
-    {
-        int32 ID = FCString::Atoi(*RowName.ToString());
-        if (UGGFDefinitionBase* Definition = GetOrCreateDefinition(DefinitionClass, ID))
-        {
-            Definitions.Emplace(Definition);
-        }
-    }
+const TArray<UGGFDefinitionBase*>& UGGFDataSubsystem::GetDefinitionBaseList(
+    TSubclassOf<UGGFDefinitionBase> DefinitionClass) const
+{
+    // 입력 유효성 검사
+    if(DefinitionClass == nullptr) return EmptyDefinitionContainer.List;
 
-    return Definitions;
+    // 데이터 검색
+    if(!DefinitionContainerMap.Contains(DefinitionClass)) return EmptyDefinitionContainer.List;
+
+    // 데이터 반환
+    return DefinitionContainerMap[DefinitionClass].List;
+}
+
+const TMap<int32, UGGFDefinitionBase*>& UGGFDataSubsystem::GetDefinitionBaseMap(
+    TSubclassOf<UGGFDefinitionBase> DefinitionClass) const
+{
+    // 입력 유효성 검사
+    if(DefinitionClass == nullptr) return EmptyDefinitionContainer.Map;
+
+    // 데이터 검색
+    if(!DefinitionContainerMap.Contains(DefinitionClass)) return EmptyDefinitionContainer.Map;
+
+    // 데이터 반환
+    return DefinitionContainerMap[DefinitionClass].Map;
 }
 
 #if WITH_EDITOR
@@ -121,4 +162,3 @@ const TArray<const FGGFDataTableRowBase*> UGGFDataSubsystem::GetAllDirectData(TS
     return AllData;
 }
 #endif
-

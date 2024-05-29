@@ -14,12 +14,23 @@ void UGGFCharacterDataSubsystem::Initialize(FSubsystemCollectionBase& Collection
 
     Super::Initialize(Collection);
 
-    // 데이터 캐싱
-    CachingAllCharacters();
-    CachingAllSkins();
+    // 데이터 서브 시스템 동기화
+    FetchDataSubsystem();
 
-    // 데이터 분석
-    AnalyzeAllSkins();
+    // 스킨 데이터 에셋 캐싱
+    CachingSkinList();
+}
+
+void UGGFCharacterDataSubsystem::FetchDataSubsystem()
+{
+    if(UGameInstance* GameInstance = GetGameInstance())
+    {
+        if(UGGFDataSubsystem* DataSubsystem = GameInstance->GetSubsystem<UGGFDataSubsystem>())
+        {
+            DataSubsystem->GetCastedDefinitionListAndMap(UGGFCharacterDefinition::StaticClass(), CharacterList, CharacterMap);
+            DataSubsystem->GetCastedDefinitionListAndMap(UGGFCharacterSkinDefinition::StaticClass(), SkinList, SkinMap);
+        }
+    }
 }
 
 #if WITH_EDITOR
@@ -64,54 +75,8 @@ const TArray<const FGGFCharacterSkinData*> UGGFCharacterDataSubsystem::GetAllDir
 }
 #endif
 
-void UGGFCharacterDataSubsystem::CachingAllCharacters()
+void UGGFCharacterDataSubsystem::CachingSkinList()
 {
-    if(UGameInstance* GameInstance = GetGameInstance())
-    {
-        if(UGGFDataSubsystem* DataSubsystem = GameInstance->GetSubsystem<UGGFDataSubsystem>())
-        {
-            // 모든 데이터 에셋 가져오기
-            const auto& Definitions = DataSubsystem->GetOrCreateAllDefinitions(UGGFCharacterDefinition::StaticClass());
-
-            // 메모리 할당
-            CharacterList.Reserve(Definitions.Num());
-            CharacterIDMap.Reserve(Definitions.Num());
-
-            // 데이터 에셋 등록
-            for (auto Definition : Definitions)
-            {
-                UGGFDataSubsystem::CachingDefinition(Definition, CharacterList, CharacterIDMap);
-            }
-        }
-    }
-}
-
-void UGGFCharacterDataSubsystem::CachingAllSkins()
-{
-    if(UGameInstance* GameInstance = GetGameInstance())
-    {
-        if(UGGFDataSubsystem* DataSubsystem = GameInstance->GetSubsystem<UGGFDataSubsystem>())
-        {
-            // 모든 데이터 에셋 가져오기
-            const auto& Definitions = DataSubsystem->GetOrCreateAllDefinitions(UGGFCharacterSkinDefinition::StaticClass());
-
-            // 메모리 할당
-            SkinList.Reserve(Definitions.Num());
-            SkinIDMap.Reserve(Definitions.Num());
-
-            // 데이터 에셋 캐싱
-            for (auto Definition : Definitions)
-            {
-                UGGFDataSubsystem::CachingDefinition(Definition, SkinList, SkinIDMap);
-            }
-        }
-    }
-}
-
-void UGGFCharacterDataSubsystem::AnalyzeAllSkins()
-{
-    /* 스킨 데이터 분석 */
-
     for (auto SkinDefinition : SkinList)
     {
         // 지역 변수 정의
@@ -139,33 +104,35 @@ void UGGFCharacterDataSubsystem::AnalyzeAllSkins()
         }
     }
 
-    /* 캐싱 */
-
-    for (auto CharacterDefinition : CharacterList)
-    {
-        RegisterAvailableSkin(CharacterDefinition->GetID());
-    }
+    // 특정 캐릭터가 착용 가능한 모든 스킨 ID 매핑
+    MappingAvailableSkin();
 }
 
-void UGGFCharacterDataSubsystem::RegisterAvailableSkin(int32 CharacterID)
+void UGGFCharacterDataSubsystem::MappingAvailableSkin()
 {
-    // 해당 캐릭터가 사용 가능한 스킨 목록 가져오기
-    TArray<int32> AvailableSkinIDList = UniqueSkinMap.Contains(CharacterID) ? UniqueSkinMap[CharacterID].List : TArray<int32>();
-
-    // 금지된 스킨을 제외한 모든 범용 스킨 목록 추가
-    TArray<int32> LocalUniversalSkinList = UniversalSkinList;
-    if(ForbiddenSkinMap.Contains(CharacterID))
+    for (auto CharacterDefinition : CharacterList)
     {
-        // 범용 스킨 목록에서 금지된 스킨 제외
-        for (int32 ForbiddenSkinID : ForbiddenSkinMap[CharacterID].List)
+        // 캐릭터 ID
+        const int32 CharacterID = CharacterDefinition->GetID();
+
+        // 해당 캐릭터가 사용 가능한 스킨 목록 가져오기
+        TArray<int32> AvailableSkinIDList = UniqueSkinMap.Contains(CharacterID) ? UniqueSkinMap[CharacterID].List : TArray<int32>();
+
+        // 금지된 스킨을 제외한 모든 범용 스킨 목록 추가
+        TArray<int32> LocalUniversalSkinList = UniversalSkinList;
+        if(ForbiddenSkinMap.Contains(CharacterID))
         {
-            LocalUniversalSkinList.RemoveSwap(ForbiddenSkinID);
+            // 범용 스킨 목록에서 금지된 스킨 제외
+            for (int32 ForbiddenSkinID : ForbiddenSkinMap[CharacterID].List)
+            {
+                LocalUniversalSkinList.RemoveSwap(ForbiddenSkinID);
+            }
         }
+
+        // 사용 가능한 스킨 목록에 추가
+        AvailableSkinIDList.Append(LocalUniversalSkinList);
+
+        // 등록
+        AvailableSkinMap.Emplace(CharacterID, AvailableSkinIDList);
     }
-
-    // 사용 가능한 스킨 목록에 추가
-    AvailableSkinIDList.Append(LocalUniversalSkinList);
-
-    // 등록
-    AvailableSkinMap.Emplace(CharacterID, AvailableSkinIDList);
 }
