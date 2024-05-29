@@ -4,6 +4,7 @@
 
 #include "GEBlueprintFunctionLibrary.h"
 #include "GEGameplayTags.h"
+#include "Attributes/GEAttributeSetBase.h"
 
 UGEAbilitySystem::UGEAbilitySystem()
 {
@@ -40,8 +41,15 @@ void UGEAbilitySystem::ServerInitializeComponent_Implementation()
     // 기본 AttributeSet 생성 및 등록
     UGEBlueprintFunctionLibrary::AddAttributeSetsToSystem(Attributes, this);
 
+    // TODO 리팩토링
     // 기본 Stats 생성 및 등록
-    UGEBlueprintFunctionLibrary::AddAttributeSetsToSystem(Stats, this);
+    TArray<TSubclassOf<UAttributeSet>> CastedStats;
+    CastedStats.Reserve(Stats.Num());
+    for (auto StatClass : Stats)
+    {
+        CastedStats.Emplace(StatClass);
+    }
+    UGEBlueprintFunctionLibrary::AddAttributeSetsToSystem(CastedStats, this);
 
     // 기본 GameplayEffect 적용
     UGEBlueprintFunctionLibrary::ApplyGameplayEffectsToSystem(Effects, this);

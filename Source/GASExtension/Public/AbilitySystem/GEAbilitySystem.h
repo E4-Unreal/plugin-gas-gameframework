@@ -8,6 +8,8 @@
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnGameplayEventInvoked, const FGameplayTag&, EventTag);
 
+class UGEStatsBase;
+
 /**
  * 가장 기본이 되는 AbilitySystemComponent 클래스입니다.
  *
@@ -35,7 +37,7 @@ protected:
 
     // 기본으로 사용할 Stats 목록입니다.
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|Default")
-    TArray<TSubclassOf<UAttributeSet>> Stats;
+    TArray<TSubclassOf<UGEStatsBase>> Stats;
 
     // 기본으로 적용시킬 GameplayEffect 목록입니다.
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|Default")

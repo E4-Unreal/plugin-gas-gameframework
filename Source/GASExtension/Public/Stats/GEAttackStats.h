@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Attributes/GEAttributeSetBase.h"
+#include "GEStatsBase.h"
 #include "GEAttackStats.generated.h"
 
 /**
  * 스탯 - 공격력
  */
 UCLASS()
-class GASEXTENSION_API UGEAttackStats : public UGEAttributeSetBase
+class GASEXTENSION_API UGEAttackStats : public UGEStatsBase
 {
     GENERATED_BODY()
 
