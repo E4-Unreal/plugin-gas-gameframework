@@ -3,6 +3,7 @@
 #include "GASGameFramework.h"
 
 #include "AbilitySystemGlobals.h"
+#include "GameplayCueManager.h"
 
 #if WITH_EDITOR
 #include "PropertyEditorModule.h"
@@ -34,7 +35,8 @@ void FGASGameFrameworkModule::InitializeForGameplayAbilitySystem()
     UAbilitySystemGlobals& AbilitySystemGlobals = UAbilitySystemGlobals::Get();
 
     // GameplayCue 경로 추가
-    AbilitySystemGlobals.AddGameplayCueNotifyPath("/GASGameFramework");
+    UGameplayCueManager* GameplayCueManager = AbilitySystemGlobals.GetGameplayCueManager();
+    GameplayCueManager->AddGameplayCueNotifyPath("/GASGameFramework");
 }
 
 #undef LOCTEXT_NAMESPACE

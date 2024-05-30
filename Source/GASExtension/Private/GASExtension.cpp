@@ -1,6 +1,7 @@
 ﻿#include "GASExtension.h"
 
 #include "AbilitySystemGlobals.h"
+#include "GameplayCueManager.h"
 
 #define LOCTEXT_NAMESPACE "FGASExtensionModule"
 
@@ -27,7 +28,8 @@ void FGASExtensionModule::InitializeForGameplayAbilitySystem()
     AbilitySystemGlobals.bUseDebugTargetFromHud = true;
 
     // GameplayCue 경로 추가
-    AbilitySystemGlobals.AddGameplayCueNotifyPath("/GASExtension");
+    UGameplayCueManager* GameplayCueManager = AbilitySystemGlobals.GetGameplayCueManager();
+    GameplayCueManager->AddGameplayCueNotifyPath("/GASExtension");
 }
 
 #undef LOCTEXT_NAMESPACE
