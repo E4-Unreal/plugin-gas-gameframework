@@ -5,16 +5,16 @@ namespace GGFGameplayTags
     /* 상태 */
     namespace State
     {
-        UE_DEFINE_GAMEPLAY_TAG(ADS, "State.ADS") // 조준
-        UE_DEFINE_GAMEPLAY_TAG(Combat, "State.Combat") // 전투
+        UE_DEFINE_GAMEPLAY_TAG_COMMENT(ADS, "State.ADS", "조준 중인 상태")
+        UE_DEFINE_GAMEPLAY_TAG_COMMENT(Combat, "State.Combat", "전투 중인 상태")
     }
 
     /* 입력 */
     namespace Input
     {
-        UE_DEFINE_GAMEPLAY_TAG(Fire, "Input.Fire") // 총기 발사
-        UE_DEFINE_GAMEPLAY_TAG(ADS, "Input.ADS") // 총기 조준
-        UE_DEFINE_GAMEPLAY_TAG(Reload, "Input.Reload") // 총기 재장전
+        UE_DEFINE_GAMEPLAY_TAG_COMMENT(Fire, "Input.Fire", "발사 전용 입력 태그")
+        UE_DEFINE_GAMEPLAY_TAG_COMMENT(ADS, "Input.ADS", "조준 전용 입력 태그")
+        UE_DEFINE_GAMEPLAY_TAG_COMMENT(Reload, "Input.Reload", "재장전 전용 입력 태그")
     }
 
     /* 장비 */
