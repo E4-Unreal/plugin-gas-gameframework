@@ -8,11 +8,26 @@ namespace GGFGameplayTags
         namespace Type
         {
             UE_DEFINE_GAMEPLAY_TAG_COMMENT(Physical, "Damage.Type.Physical", "물리 속성 데미지")
-            UE_DEFINE_GAMEPLAY_TAG_COMMENT(Gravity, "Damage.Type.Physical.Gravity", "중력 속성 데미지")
             UE_DEFINE_GAMEPLAY_TAG_COMMENT(Fire, "Damage.Type.Fire", "불 속성 데미지")
             UE_DEFINE_GAMEPLAY_TAG_COMMENT(Water, "Damage.Type.Water", "물 속성 데미지")
             UE_DEFINE_GAMEPLAY_TAG_COMMENT(Electricity, "Damage.Type.Electricity", "전기 속성 데미지")
             UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ice, "Damage.Type.Ice", "얼음 속성 데미지")
+
+            UE_DEFINE_GAMEPLAY_TAG_COMMENT(Gravity, "Damage.Type.Physical.Gravity", "중력 속성 데미지")
+        }
+    }
+
+    /* 버프 */
+    namespace Buff
+    {
+        /* 면역 */
+        namespace Immunity
+        {
+            UE_DEFINE_GAMEPLAY_TAG_COMMENT(Physical, "Buff.Immunity.Physical", "물리 속성 데미지") // 물리
+            UE_DEFINE_GAMEPLAY_TAG_COMMENT(Fire, "Buff.Immunity.Fire", "불 속성 데미지") // 불
+            UE_DEFINE_GAMEPLAY_TAG_COMMENT(Water, "Buff.Immunity.Water", "물 속성 데미지") // 물
+            UE_DEFINE_GAMEPLAY_TAG_COMMENT(Electricity, "Buff.Immunity.Electricity", "전기 속성 데미지") // 전기
+            UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ice, "Buff.Immunity.Ice", "얼음 속성 데미지") // 얼음
         }
     }
 

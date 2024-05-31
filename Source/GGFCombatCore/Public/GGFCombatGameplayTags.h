@@ -10,7 +10,22 @@ namespace GGFGameplayTags
         namespace Type
         {
             GGFCOMBATCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Physical) // 물리
+            GGFCOMBATCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Fire) // 불
+            GGFCOMBATCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Water) // 물
+            GGFCOMBATCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Electricity) // 전기
+            GGFCOMBATCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Ice) // 얼음
+
             GGFCOMBATCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Gravity) // 중력
+        }
+    }
+
+    /* 버프 */
+    namespace Buff
+    {
+        /* 면역 */
+        namespace Immunity
+        {
+            GGFCOMBATCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Physical) // 물리
             GGFCOMBATCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Fire) // 불
             GGFCOMBATCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Water) // 물
             GGFCOMBATCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Electricity) // 전기

@@ -56,20 +56,29 @@ namespace GEGameplayTags
         namespace Type
         {
             GASEXTENSION_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Root) // 루트
-            GASEXTENSION_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(General) // 일반
+            GASEXTENSION_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Test) // 테스트 전용
         }
     }
 
     /* 버프 */
     namespace Buff
     {
-        GASEXTENSION_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Root)
+        GASEXTENSION_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Root) // 루트
+        GASEXTENSION_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Test) // 테스트 전용
+
+        /* 면역 */
+        namespace Immunity
+        {
+            GASEXTENSION_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Root) // 루트
+            GASEXTENSION_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Test) // 테스트 전용
+        }
     }
 
     /* 디버프 */
     namespace Debuff
     {
-        GASEXTENSION_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Root)
+        GASEXTENSION_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Root) // 루트
+        GASEXTENSION_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Test) // 테스트 전용
     }
 
     /* 오브젝트 */
@@ -80,7 +89,7 @@ namespace GEGameplayTags
         namespace Type
         {
             GASEXTENSION_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Root) // 루트
-            GASEXTENSION_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(General) // 일반
+            GASEXTENSION_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Test) // 테스트 전용
         }
     }
 }

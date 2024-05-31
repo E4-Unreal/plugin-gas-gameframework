@@ -54,7 +54,7 @@ namespace GEGameplayTags
         namespace Type
         {
             UE_DEFINE_GAMEPLAY_TAG_COMMENT(Root, "Damage.Type", "데미지 타입")
-            UE_DEFINE_GAMEPLAY_TAG_COMMENT(General, "Damage.Type.General", "일반 데미지 타입")
+            UE_DEFINE_GAMEPLAY_TAG_COMMENT(Test, "Damage.Type.Test", "테스트 전용 데미지 타입")
         }
     }
 
@@ -62,12 +62,21 @@ namespace GEGameplayTags
     namespace Buff
     {
         UE_DEFINE_GAMEPLAY_TAG_COMMENT(Root, "Buff", "버프")
+        UE_DEFINE_GAMEPLAY_TAG_COMMENT(Test, "Buff.Test", "테스트 전용 버프")
+
+        /* 면역 */
+        namespace Immunity
+        {
+            UE_DEFINE_GAMEPLAY_TAG_COMMENT(Root, "Buff.Immunity", "특정 데미지 타입에 대한 면역")
+            UE_DEFINE_GAMEPLAY_TAG_COMMENT(Test, "Buff.Immunity.Test", "테스트 전용 면역")
+        }
     }
 
     /* 디버프 */
     namespace Debuff
     {
         UE_DEFINE_GAMEPLAY_TAG_COMMENT(Root, "Debuff", "디버프")
+        UE_DEFINE_GAMEPLAY_TAG_COMMENT(Test, "Debuff.Test", "테스트 전용 디버프")
     }
 
     /* 오브젝트 */
@@ -78,7 +87,7 @@ namespace GEGameplayTags
         namespace Type
         {
             UE_DEFINE_GAMEPLAY_TAG_COMMENT(Root, "Object.Type", "오브젝트 타입")
-            UE_DEFINE_GAMEPLAY_TAG_COMMENT(General, "Object.Type.General", "일반 오브젝트 타입")
+            UE_DEFINE_GAMEPLAY_TAG_COMMENT(Test, "Object.Type.Test", "테스트 전용 오브젝트 타입")
         }
     }
 }
