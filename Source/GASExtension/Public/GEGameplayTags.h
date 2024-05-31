@@ -47,4 +47,40 @@ namespace GEGameplayTags
         GASEXTENSION_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Root) // 루트
         GASEXTENSION_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Test) // 테스트 전용
     }
+
+    /* 데미지 */
+    namespace Damage
+    {
+        GASEXTENSION_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Root) // 루트
+
+        namespace Type
+        {
+            GASEXTENSION_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Root) // 루트
+            GASEXTENSION_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(General) // 일반
+        }
+    }
+
+    /* 버프 */
+    namespace Buff
+    {
+        GASEXTENSION_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Root)
+    }
+
+    /* 디버프 */
+    namespace Debuff
+    {
+        GASEXTENSION_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Root)
+    }
+
+    /* 오브젝트 */
+    namespace Object
+    {
+        GASEXTENSION_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Root) // 루트
+
+        namespace Type
+        {
+            GASEXTENSION_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Root) // 루트
+            GASEXTENSION_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(General) // 일반
+        }
+    }
 }

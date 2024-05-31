@@ -45,4 +45,40 @@ namespace GEGameplayTags
         UE_DEFINE_GAMEPLAY_TAG_COMMENT(Root, "Event", "게임플레이 이벤트")
         UE_DEFINE_GAMEPLAY_TAG_COMMENT(Test, "Event.Test", "테스트 전용 게임플레이 이벤트")
     }
+
+    /* 데미지 */
+    namespace Damage
+    {
+        UE_DEFINE_GAMEPLAY_TAG_COMMENT(Root, "Damage", "데미지")
+
+        namespace Type
+        {
+            UE_DEFINE_GAMEPLAY_TAG_COMMENT(Root, "Damage.Type", "데미지 타입")
+            UE_DEFINE_GAMEPLAY_TAG_COMMENT(General, "Damage.Type.General", "일반 데미지 타입")
+        }
+    }
+
+    /* 버프 */
+    namespace Buff
+    {
+        UE_DEFINE_GAMEPLAY_TAG_COMMENT(Root, "Buff", "버프")
+    }
+
+    /* 디버프 */
+    namespace Debuff
+    {
+        UE_DEFINE_GAMEPLAY_TAG_COMMENT(Root, "Debuff", "디버프")
+    }
+
+    /* 오브젝트 */
+    namespace Object
+    {
+        UE_DEFINE_GAMEPLAY_TAG_COMMENT(Root, "Object", "오브젝트")
+
+        namespace Type
+        {
+            UE_DEFINE_GAMEPLAY_TAG_COMMENT(Root, "Object.Type", "오브젝트 타입")
+            UE_DEFINE_GAMEPLAY_TAG_COMMENT(General, "Object.Type.General", "일반 오브젝트 타입")
+        }
+    }
 }
