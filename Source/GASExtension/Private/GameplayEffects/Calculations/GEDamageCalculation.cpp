@@ -31,6 +31,7 @@ void UGEDamageCalculation::Execute_Implementation(const FGameplayEffectCustomExe
     UAbilitySystemComponent* TargetASC = ExecutionParams.GetTargetAbilitySystemComponent();
     AActor* SourceActor = SourceASC->GetAvatarActor();
     AActor* TargetActor = TargetASC->GetAvatarActor();
+    const float FixedDamage = ExecutionParams.GetOwningSpec().GetSetByCallerMagnitude(Damage::Root);
 
     /* 데미지 계산식: Target.Health -= Source.Attack - Target.Defense */
     // Source
@@ -41,7 +42,7 @@ void UGEDamageCalculation::Execute_Implementation(const FGameplayEffectCustomExe
     float TargetShield = TargetASC->GetNumericAttribute(UGEShieldAttributes::GetShieldAttribute());
 
     // 데미지 계산
-    const float TotalDamage = FMath::Max(0, SourceAttack - TargetDefense);
+    const float TotalDamage = FMath::Max(0, SourceAttack - TargetDefense) + FixedDamage;
     float ShieldDamage = FMath::Min(TotalDamage, TargetShield);
     float HealthDamage = TotalDamage - ShieldDamage;
 
