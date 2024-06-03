@@ -3,8 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GASExtensionSetting.h"
 #include "GGFProjectile.h"
-#include "GameplayEffects/Calculations/GEDamageCalculation.h"
 #include "GGFDamageableProjectile.generated.h"
 
 UCLASS()

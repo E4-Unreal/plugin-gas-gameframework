@@ -3,6 +3,7 @@
 #include "GameplayEffects/Calculations/GEDamageCalculation.h"
 
 #include "AbilitySystemComponent.h"
+#include "GASExtensionSetting.h"
 #include "Attributes/GEHealthAttributes.h"
 #include "Attributes/GEShieldAttributes.h"
 #include "Stats/GEAttackStats.h"
@@ -11,11 +12,6 @@
 #include "Logging.h"
 
 using namespace GEGameplayTags;
-
-UGEDamageCalculation::UGEDamageCalculation()
-{
-    DamageImmunityMap.Emplace(Damage::Type::Test, Buff::Immunity::Test);
-}
 
 void UGEDamageCalculation::Execute_Implementation(const FGameplayEffectCustomExecutionParameters& ExecutionParams,
                                                   FGameplayEffectCustomExecutionOutput& OutExecutionOutput) const
@@ -91,6 +87,10 @@ bool UGEDamageCalculation::HasImmunity(UAbilitySystemComponent* TargetASC, const
 {
     // 유효성 검사
     if(!DamageTypeTag.IsValid()) return false;
+
+    // 프로젝트 설정 가져오기
+    auto Setting = GetMutableDefault<UGASExtensionSetting>();
+    const auto& DamageImmunityMap = Setting->DamageImmunityMap;
 
     // 면역 태그 확인
     bool bResult = DamageImmunityMap.Contains(DamageTypeTag) && TargetASC->HasMatchingGameplayTag(DamageImmunityMap[DamageTypeTag].Tag);

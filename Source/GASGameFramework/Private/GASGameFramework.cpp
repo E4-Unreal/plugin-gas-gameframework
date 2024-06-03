@@ -4,6 +4,7 @@
 
 #include "AbilitySystemGlobals.h"
 #include "GameplayCueManager.h"
+#include "GASExtensionSetting.h"
 
 #if WITH_EDITOR
 #include "PropertyEditorModule.h"
@@ -17,6 +18,9 @@ void FGASGameFrameworkModule::StartupModule()
 {
     // GAS를 위한 설정
     InitializeForGameplayAbilitySystem();
+
+    // 설정 리로드
+    ReloadConfigs();
 
 #if WITH_EDITOR
     // 디테일 패널에 커스텀 섹션 추가
@@ -37,6 +41,13 @@ void FGASGameFrameworkModule::InitializeForGameplayAbilitySystem()
     // GameplayCue 경로 추가
     UGameplayCueManager* GameplayCueManager = AbilitySystemGlobals.GetGameplayCueManager();
     GameplayCueManager->AddGameplayCueNotifyPath("/GASGameFramework");
+}
+
+void FGASGameFrameworkModule::ReloadConfigs()
+{
+    // GASExtension (다른 모듈에서 선언된 NativeGameplayTag 갱신)
+    auto GASExtensionSetting = GetMutableDefault<UGASExtensionSetting>();
+    GASExtensionSetting->LoadConfig();
 }
 
 #undef LOCTEXT_NAMESPACE

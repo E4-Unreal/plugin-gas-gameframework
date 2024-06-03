@@ -2,6 +2,8 @@
 
 #include "AbilitySystemGlobals.h"
 #include "GameplayCueManager.h"
+#include "GASExtensionSetting.h"
+#include "ISettingsModule.h"
 
 #define LOCTEXT_NAMESPACE "FGASExtensionModule"
 
@@ -9,11 +11,21 @@ void FGASExtensionModule::StartupModule()
 {
     // GAS를 위한 설정
     InitializeForGameplayAbilitySystem();
+
+    if(ISettingsModule* SettingsModule = FModuleManager::GetModulePtr<ISettingsModule>("Settings"))
+    {
+        SettingsModule->RegisterSettings("Project", "Plugins", "GASExtension",
+            LOCTEXT("RuntimeSettingsName", "GAS Extension"), LOCTEXT("RuntimeSettingsDescription", "Setting for GASExtension"),
+            GetMutableDefault<UGASExtensionSetting>());
+    }
 }
 
 void FGASExtensionModule::ShutdownModule()
 {
-
+    if(ISettingsModule* SettingsModule = FModuleManager::GetModulePtr<ISettingsModule>("Settings"))
+    {
+        SettingsModule->UnregisterSettings("Project", "Plugins", "GASExtension");
+    }
 }
 
 void FGASExtensionModule::InitializeForGameplayAbilitySystem()
