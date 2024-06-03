@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameplayCueNotifyTypes.h"
 #include "GEGameplayCueNotifyTypes.generated.h"
 
 /**
@@ -30,6 +29,9 @@ public:
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = GameplayCueNotify)
     uint32 bCastShadow : 1;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = GameplayCueNotify)
+    uint32 bAttach : 1;
 
 public:
     bool PlayParticleEffect(AActor* Target, const FGameplayCueParameters& Parameters) const;

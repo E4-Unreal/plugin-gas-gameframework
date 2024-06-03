@@ -9,6 +9,8 @@
 #include "Misc/DataValidation.h"
 #endif
 
+#include "GameplayCues/GEGameplayCueNotify_Burst.h"
+
 #include UE_INLINE_GENERATED_CPP_BY_NAME(GEGameplayCueNotifyTypes)
 
 #define LOCTEXT_NAMESPACE "GameplayCueNotify"
@@ -63,7 +65,7 @@ bool FGameplayCueNotify_CascadeInfo::PlayParticleEffect(AActor* Target, const FG
     }
 
     // Attach
-    if (TargetComponent)
+    if (bAttach && TargetComponent)
     {
         const EAttachLocation::Type AttachLocationType = GetAttachLocationTypeFromRule(EAttachmentRule::KeepWorld);
 
