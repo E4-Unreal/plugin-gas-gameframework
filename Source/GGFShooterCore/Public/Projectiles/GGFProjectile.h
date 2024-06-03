@@ -12,15 +12,21 @@ class UProjectileMovementComponent;
 class UGameplayEffect;
 class UGGFHitEffectDefinition;
 
-// TODO 아직 테스트 단계로 클래스 구조 및 API가 변경될 수 있습니다.
 /*
- * 총알, 로켓, 수류탄 등 발사체 및 투척물에 사용되는 기본 클래스로 OnHit과 OnMulticastHit을 오버라이드하시면 됩니다.
+ * 충격이 가해지는 즉시 활성화되는 기본 발사체 클래스입니다.
+ * ex) 총알, 로켓, 충격 수류탄 등
  */
 UCLASS(Abstract, Blueprintable, BlueprintType)
 class GGFSHOOTERCORE_API AGGFProjectile : public AActor
 {
     GENERATED_BODY()
 
+public:
+    /* 서브 오브젝트 이름 */
+
+    static FName ProjectileMovementName;
+
+private:
     /* 컴포넌트 */
 
     // 피격 판정
@@ -32,44 +38,60 @@ class GGFSHOOTERCORE_API AGGFProjectile : public AActor
     TObjectPtr<UProjectileMovementComponent> ProjectileMovement;
 
 protected:
+    // SphereCollider::OnComponentHit 이벤트 바인딩 여부
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|Projectile")
+    bool bEnableHitTrigger = true;
+
+    // 물체에 충돌하지 않더라도 자동으로 파괴되는 시간
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|Projectile")
+    float AutoDestroyTime = 10;
+
+    FTimerHandle AutoDestroyTimer;
+
+    // 피격 혹은 바운스 효과 전용 게임플레이 큐 태그
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|Projectile")
+    FGameplayCueTag HitCueTag;
+
+    // OnProjectileMovementBounce가 동작하기 위한 최소 ImpactResult.Distance
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|Projectile")
+    float BounceThreshold = 2;
+
 #if WITH_EDITORONLY_DATA
-  UPROPERTY(EditAnywhere, Category = "Config|Projectile")
+  UPROPERTY(EditAnywhere, Category = "Config|Debug")
     bool bShowDebug;
 #endif
-
-    // TODO Weapon으로 옮기고 이곳에는 GameplayEffectSpecHandle 저장 예정
-    // 피격 대상에게 적용할 GameplayEffect 목록입니다. 데미지 관련 GameplayEffect 역시 이곳에 포함됩니다.
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|Projectile")
-    TArray<TSubclassOf<UGameplayEffect>> EffectsToApply;
-
-    // 충돌 위치에 스폰할 GameplayCueNotify 태그
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config")
-    FGameplayCueTag HitEffectTag;
 
 public:
     AGGFProjectile();
 
     /* Actor */
+
     virtual void PostInitializeComponents() override;
     virtual void BeginPlay() override;
+    virtual void Destroyed() override;
 
 protected:
     /* 메서드 */
 
-    // HitEffectTag에 대응하는 GameplayCueNotify를 실행하며 주로 멀티캐스트 메서드에서 호출합니다.
+    // 자동 파괴 타이머 설정
     UFUNCTION(BlueprintCallable)
-    void HandleGameplayCueNotify(const FHitResult& HitResult) const;
+    virtual void SetAutoDestroyTimer();
 
-    /* 이벤트 핸들러 */
-    UFUNCTION(BlueprintNativeEvent)
-    void OnComponentHit_Event(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+    // 자동 파괴 타이머 이벤트 메서드
+    UFUNCTION(BlueprintCallable, Category = "Event")
+    virtual void AutoDestroy();
 
-    /* 가상 메서드 */
-    UFUNCTION(BlueprintNativeEvent)
-    void OnHit(const FHitResult& HitResult);
+    // 피격 효과 스폰
+    UFUNCTION(BlueprintCallable)
+    virtual void LocalHandleHitGameplayCue(const FHitResult& HitResult, const FGameplayTag& EffectTag) const;
 
-    UFUNCTION(NetMulticast, Reliable)
-    void OnMulticastHit(const FHitResult& HitResult);
+    // SphereCollider::OnComponentHit 이벤트 메서드
+    UFUNCTION(BlueprintNativeEvent, Category = "Event")
+    void OnSphereColliderHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+
+    // ProjectileMovement::OnProjectileBounce 이벤트 메서드
+    UFUNCTION(BlueprintNativeEvent, Category = "Event")
+    void OnProjectileMovementBounce(const FHitResult& ImpactResult, const FVector& ImpactVelocity);
 
 public:
     /* Getter */

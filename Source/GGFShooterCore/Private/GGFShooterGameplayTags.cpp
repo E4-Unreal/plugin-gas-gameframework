@@ -2,6 +2,31 @@
 
 namespace GGFGameplayTags
 {
+    /* 게임플레이 큐 */
+    namespace GameplayCue
+    {
+        namespace Hit
+        {
+            UE_DEFINE_GAMEPLAY_TAG_COMMENT(Root, "GameplayCue.Hit", "피격 이펙트")
+            UE_DEFINE_GAMEPLAY_TAG_COMMENT(Test, "GameplayCue.Hit.Test", "테스트 전용 피격 이펙트")
+            UE_DEFINE_GAMEPLAY_TAG_COMMENT(Default, "GameplayCue.Hit.Default", "기본 피격 이펙트")
+        }
+
+        namespace Explosion
+        {
+            UE_DEFINE_GAMEPLAY_TAG_COMMENT(Root, "GameplayCue.Explosion", "폭발 이펙트")
+            UE_DEFINE_GAMEPLAY_TAG_COMMENT(Test, "GameplayCue.Explosion.Test", "테스트 전용 폭발 이펙트")
+            UE_DEFINE_GAMEPLAY_TAG_COMMENT(Default, "GameplayCue.Explosion.Default", "기본 폭발 이펙트")
+        }
+
+        namespace Bounce
+        {
+            UE_DEFINE_GAMEPLAY_TAG_COMMENT(Root, "GameplayCue.Bounce", "바운스 이펙트")
+            UE_DEFINE_GAMEPLAY_TAG_COMMENT(Test, "GameplayCue.Bounce.Test", "테스트 전용 바운스 이펙트")
+            UE_DEFINE_GAMEPLAY_TAG_COMMENT(Default, "GameplayCue.Bounce.Default", "기본 바운스 이펙트")
+        }
+    }
+
     /* 상태 */
     namespace State
     {

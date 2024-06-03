@@ -1,89 +1,66 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "Projectiles/GGFExplosiveProjectile.h"
 
 #include "AbilitySystemComponent.h"
 #include "AbilitySystemGlobals.h"
-#include "NiagaraFunctionLibrary.h"
+#include "GameplayCueManager.h"
 #include "Components/SphereComponent.h"
-#include "GEBlueprintFunctionLibrary.h"
-#include "Kismet/GameplayStatics.h"
-#include "Sound/SoundCue.h"
+#include "GGFShooterGameplayTags.h"
+
+using namespace GGFGameplayTags;
 
 AGGFExplosiveProjectile::AGGFExplosiveProjectile()
 {
-    ExplosionSphere = CreateDefaultSubobject<USphereComponent>(TEXT("ExplosionSphere"));
-    ExplosionSphere->SetupAttachment(RootComponent);
+    // ExplosionArea
+    ExplosionArea = CreateDefaultSubobject<USphereComponent>(TEXT("ExplosionSphere"));
+    ExplosionArea->SetupAttachment(RootComponent);
+
+    // 기본 설정
+    ExplosionCueTag = FGameplayCueTag(GameplayCue::Explosion::Default);
 }
 
-void AGGFExplosiveProjectile::BeginPlay()
+void AGGFExplosiveProjectile::Destroyed()
 {
-    Super::BeginPlay();
+    // 폭발 이펙트 스폰
+    LocalHandleExplosionGameplayCue();
 
-    if(!FMath::IsNearlyZero(ExplosionTime))
-    {
-        if(const UWorld* World = GetWorld())
-        {
-            World->GetTimerManager().SetTimer(
-            ExplosionTimer,
-            FTimerDelegate::CreateUObject(this, &ThisClass::OnExplode),
-            ExplosionTime,
-            false
-            );
-        }
-    }
+    Super::Destroyed();
 }
 
-void AGGFExplosiveProjectile::OnComponentHit_Event_Implementation(UPrimitiveComponent* HitComponent, AActor* OtherActor,
+void AGGFExplosiveProjectile::OnSphereColliderHit_Implementation(UPrimitiveComponent* HitComponent, AActor* OtherActor,
                                                                  UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
-    if(bEnableHit)
-    {
-        if(FMath::IsNearlyZero(DelayTime))
-        {
-            OnExplode();
-        }
-        else if(const UWorld* World = GetWorld())
-        {
-            World->GetTimerManager().SetTimer(
-                DelayTimer,
-                FTimerDelegate::CreateUObject(this, &ThisClass::OnExplode),
-                DelayTime,
-                false
-            );
-        }
-    }
+    Explode();
 }
 
-void AGGFExplosiveProjectile::OnExplode_Implementation()
+void AGGFExplosiveProjectile::AutoDestroy()
 {
-    const UWorld* World = GetWorld();
-    if(World == nullptr) return;
-
-    // 타이머 초기화
-    if(ExplosionTimer.IsValid())
-    {
-        World->GetTimerManager().ClearTimer(ExplosionTimer);
-        ExplosionTimer.Invalidate();
-    }
-
-    if(DelayTimer.IsValid())
-    {
-        World->GetTimerManager().ClearTimer(DelayTimer);
-        DelayTimer.Invalidate();
-    }
-
-    // 피격 판정
-    DetectExplosionHit();
-
-    OnMulticastExplode();
+    Explode();
 }
 
-void AGGFExplosiveProjectile::DetectExplosionHit_Implementation()
+void AGGFExplosiveProjectile::Explode_Implementation()
+{
+    // 폭발 범위 내의 모든 액터에 대한 피격 판정
+    CheckExplosionArea();
+
+    // 파괴
+    Destroy();
+}
+
+void AGGFExplosiveProjectile::LocalHandleExplosionGameplayCue()
+{
+    FGameplayCueParameters GameplayCueParameters;
+    GameplayCueParameters.Location = GetActorLocation();
+    GameplayCueParameters.Normal = GetActorRotation().Vector();
+
+    UAbilitySystemGlobals::Get().GetGameplayCueManager()->HandleGameplayCue(this, ExplosionCueTag.GameplayCueTag, EGameplayCueEvent::Executed, GameplayCueParameters);
+}
+
+void AGGFExplosiveProjectile::CheckExplosionArea_Implementation()
 {
     TArray<AActor*> OverlappingActors;
-    ExplosionSphere->GetOverlappingActors(OverlappingActors, AActor::StaticClass());
+    ExplosionArea->GetOverlappingActors(OverlappingActors, AActor::StaticClass());
     for (const AActor* OverlappingActor : OverlappingActors)
     {
         if(UAbilitySystemComponent* AbilitySystem = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(OverlappingActor))
@@ -134,8 +111,8 @@ void AGGFExplosiveProjectile::DetectExplosionHit_Implementation()
                                 );
 #endif
 
-                        // 데미지 적용
-                        UGEBlueprintFunctionLibrary::ApplyGameplayEffectsToSystem(EffectsToApply, AbilitySystem);
+                        // 대상에게 데미지 및 추가 GE 적용
+                        ApplyEffects(HitResult.GetActor());
                     }
                     else
                     {
@@ -193,37 +170,4 @@ void AGGFExplosiveProjectile::GetTargetLocations(const AActor* Target, TArray<FV
     TargetLocations.Add(BottomLocation);
     TargetLocations.Add(LeftLocation);
     TargetLocations.Add(RightLocation);
-}
-
-
-void AGGFExplosiveProjectile::OnMulticastExplode_Implementation()
-{
-    const FVector& ExplosionLocation = GetActorLocation();
-
-    if(ExplosionSound)
-        UGameplayStatics::PlaySoundAtLocation(
-            this,
-            ExplosionSound,
-            ExplosionLocation
-        );
-
-    if(ExplosionParticle)
-    {
-        UGameplayStatics::SpawnEmitterAtLocation(
-            this,
-            ExplosionParticle,
-            ExplosionLocation
-        );
-    }
-
-    if(ExplosionNiagara)
-    {
-        UNiagaraFunctionLibrary::SpawnSystemAtLocation(
-            this,
-            ExplosionNiagara,
-            ExplosionLocation
-        );
-    }
-
-    Destroy();
 }

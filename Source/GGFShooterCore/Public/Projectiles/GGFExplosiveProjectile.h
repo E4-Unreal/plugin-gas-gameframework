@@ -3,73 +3,56 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GGFProjectile.h"
+#include "GGFDamageableProjectile.h"
 #include "GGFExplosiveProjectile.generated.h"
 
-class UParticleSystem;
-class UNiagaraSystem;
-class USoundCue;
-
-// TODO 리팩토링
 /*
- * 수류탄, 로켓 런처 등 폭발성 투사체 클래스입니다.
- * 클래스 계층 구조가 변경될 수 있으니 유의바랍니다.
+ * 일정 시간이 지나면 자동으로 활성화되는 발사체 클래스입니다.
+ * 수류탄 등에서 사용할 수 있습니다.
  */
 UCLASS(Abstract, Blueprintable, BlueprintType)
-class GGFSHOOTERCORE_API AGGFExplosiveProjectile : public AGGFProjectile
+class GGFSHOOTERCORE_API AGGFExplosiveProjectile : public AGGFDamageableProjectile
 {
     GENERATED_BODY()
 
     /* 컴포넌트 */
     UPROPERTY(VisibleAnywhere, Category = "Component")
-    TObjectPtr<USphereComponent> ExplosionSphere;
+    TObjectPtr<USphereComponent> ExplosionArea;
 
-    // 충격 시 폭발 기능 활성화 옵션입니다.
-    UPROPERTY(EditAnywhere, Category = "Config|ExplosiveProjectile")
-    bool bEnableHit = true;
-
-    // EnableHit이 true로 설정된 경우 DelayTime 이후 폭발합니다.
-    UPROPERTY(EditAnywhere, Category = "Config|ExplosiveProjectile")
-    float DelayTime = 0;
-
-    FTimerHandle DelayTimer;
-
-    // 피격 여부와 관계없이 ExplosionTime 시간 이후 자동으로 폭발합니다.
-    // 0초로 설정한 경우 이 옵션은 비활성화 처리됩니다.
-    UPROPERTY(EditAnywhere, Category = "Config|ExplosiveProjectile")
-    float ExplosionTime = 0;
-
-    FTimerHandle ExplosionTimer;
-
-    // TODO 데이터 에셋으로 분리?
-    UPROPERTY(EditAnywhere, Category = "Config|ExplosiveProjectile")
-    TObjectPtr<UParticleSystem> ExplosionParticle;
-
-    UPROPERTY(EditAnywhere, Category = "Config|ExplosiveProjectile")
-    TObjectPtr<UNiagaraSystem> ExplosionNiagara;
-
-    UPROPERTY(EditAnywhere, Category = "Config|ExplosiveProjectile")
-    TObjectPtr<USoundCue> ExplosionSound;
-
+protected:
     UPROPERTY(EditAnywhere, Category = "Config|ExplosiveProjectile")
     TEnumAsByte<ECollisionChannel> CollisionChannel = ECC_WorldDynamic;
+
+    // 폭발 효과 전용 게임플레이 큐 태그
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|ExplosiveProjectile")
+    FGameplayCueTag ExplosionCueTag;
 
 public:
     AGGFExplosiveProjectile();
 
-    virtual void BeginPlay() override;
+    /* Actor */
+
+    virtual void Destroyed() override;
 
 protected:
-    virtual void OnComponentHit_Event_Implementation(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit) override;
+
+    /* Projectile */
+
+    virtual void OnSphereColliderHit_Implementation(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit) override;
+    virtual void AutoDestroy() override;
+
+    /* 메서드 */
 
     UFUNCTION(BlueprintNativeEvent)
-    void OnExplode();
+    void Explode();
 
-    UFUNCTION(NetMulticast, Reliable)
-    void OnMulticastExplode();
+    // 폭발 효과 스폰
+    UFUNCTION(BlueprintCallable)
+    virtual void LocalHandleExplosionGameplayCue();
 
+    // TODO DamageCalculation으로 이동
     UFUNCTION(BlueprintNativeEvent)
-    void DetectExplosionHit();
+    void CheckExplosionArea();
 
     // 타깃 액터 콜라이더의 Center, Top, Bottom, Left, Right 위치 반환
     // 폭발 피격 판정에 사용됩니다.

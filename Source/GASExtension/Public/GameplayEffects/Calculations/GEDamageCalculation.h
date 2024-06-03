@@ -166,6 +166,7 @@ class GASEXTENSION_API UGEDamageCalculation : public UGameplayEffectExecutionCal
     GENERATED_BODY()
 
 protected:
+    // TODO 프로젝트 설정으로 이동
     // 데미지 타입에 대한 면역 태그 매핑
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config")
     TMap<FDamageTypeTag, FImmunityTag> DamageImmunityMap;
