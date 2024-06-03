@@ -42,4 +42,7 @@ protected:
 
     // GameplayEffectSpec에 추가된 AssetTags로부터 DamageTypeTag 가져오기
     virtual FDamageTypeTag GetDamageTypeTag(const FGameplayEffectSpec& Spec) const;
+
+    // 데미지 계산
+    virtual float CalculateTotalDamage(const FGameplayEffectCustomExecutionParameters& ExecutionParams, UAbilitySystemComponent* TargetSystem) const;
 };

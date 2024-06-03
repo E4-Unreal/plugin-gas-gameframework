@@ -22,23 +22,12 @@ void UGEDamageCalculation::Execute_Implementation(const FGameplayEffectCustomExe
     // 데미지 적용 가능 여부 검사
     if(!CanExecute(ExecutionParams)) return;
 
-    // 지역 변수 선언
-    UAbilitySystemComponent* SourceASC = ExecutionParams.GetSourceAbilitySystemComponent();
-    UAbilitySystemComponent* TargetASC = ExecutionParams.GetTargetAbilitySystemComponent();
-    AActor* SourceActor = SourceASC->GetAvatarActor();
-    AActor* TargetActor = TargetASC->GetAvatarActor();
-    const float FixedDamage = ExecutionParams.GetOwningSpec().GetSetByCallerMagnitude(Damage::Root);
+    // Target Attribute 가져오기
+    UAbilitySystemComponent* TargetSystem = ExecutionParams.GetTargetAbilitySystemComponent();
+    float TargetShield = TargetSystem->GetNumericAttribute(UGEShieldAttributes::GetShieldAttribute());
 
-    /* 데미지 계산식: Target.Health -= Source.Attack - Target.Defense */
-    // Source
-    float SourceAttack = SourceASC->GetNumericAttribute(UGEAttackStats::GetAttackAttribute());
-
-    // Target
-    float TargetDefense = TargetASC->GetNumericAttribute(UGEDefenseStats::GetDefenseAttribute());
-    float TargetShield = TargetASC->GetNumericAttribute(UGEShieldAttributes::GetShieldAttribute());
-
-    // 데미지 계산
-    const float TotalDamage = FMath::Max(0, SourceAttack - TargetDefense) + FixedDamage;
+    // Target Attribute 별 데미지 계산
+    const float TotalDamage = CalculateTotalDamage(ExecutionParams, TargetSystem);
     float ShieldDamage = FMath::Min(TotalDamage, TargetShield);
     float HealthDamage = TotalDamage - ShieldDamage;
 
@@ -49,17 +38,10 @@ void UGEDamageCalculation::Execute_Implementation(const FGameplayEffectCustomExe
 
 bool UGEDamageCalculation::IsValid(const FGameplayEffectCustomExecutionParameters& ExecutionParams) const
 {
-    // ASC 유효성 검사
-    UAbilitySystemComponent* SourceASC = ExecutionParams.GetSourceAbilitySystemComponent();
-    UAbilitySystemComponent* TargetASC = ExecutionParams.GetTargetAbilitySystemComponent();
-
-    if(SourceASC && TargetASC)
+    // Target 유효성 검사
+    if(UAbilitySystemComponent* TargetASC = ExecutionParams.GetTargetAbilitySystemComponent())
     {
-        // AvatarActor 유효성 검사
-        AActor* SourceActor = SourceASC->GetAvatarActor();
-        AActor* TargetActor = TargetASC->GetAvatarActor();
-
-        if(SourceActor && TargetActor)
+        if(AActor* TargetActor = TargetASC->GetAvatarActor())
         {
             return true;
         }
@@ -71,7 +53,6 @@ bool UGEDamageCalculation::IsValid(const FGameplayEffectCustomExecutionParameter
 bool UGEDamageCalculation::CanExecute(const FGameplayEffectCustomExecutionParameters& ExecutionParams) const
 {
     // 지역 변수 선언
-    UAbilitySystemComponent* SourceASC = ExecutionParams.GetSourceAbilitySystemComponent();
     UAbilitySystemComponent* TargetASC = ExecutionParams.GetTargetAbilitySystemComponent();
 
     // 상대가 무적 상태인지 확인
@@ -113,4 +94,22 @@ FDamageTypeTag UGEDamageCalculation::GetDamageTypeTag(const FGameplayEffectSpec&
     DamageTypeTags.RemoveTag(Damage::Type::Root);
 
     return DamageTypeTags.IsEmpty() ? FGameplayTag::EmptyTag : DamageTypeTags.First();
+}
+
+float UGEDamageCalculation::CalculateTotalDamage(const FGameplayEffectCustomExecutionParameters& ExecutionParams,
+    UAbilitySystemComponent* TargetSystem) const
+{
+    // 고정 피해량 가져오기
+    const float FixedDamage = ExecutionParams.GetOwningSpec().GetSetByCallerMagnitude(Damage::Root);
+
+    // 스탯 계산이 필요한지 확인
+    UAbilitySystemComponent* SourceSystem = ExecutionParams.GetTargetAbilitySystemComponent();
+    if(SourceSystem == nullptr || SourceSystem == TargetSystem) return FixedDamage;
+
+    // 스탯 계산
+    const float SourceAttack = SourceSystem->GetNumericAttribute(UGEAttackStats::GetAttackAttribute());
+    const float TargetDefense = TargetSystem->GetNumericAttribute(UGEDefenseStats::GetDefenseAttribute());
+    const float TotalDamage = FMath::Max(0, SourceAttack - TargetDefense) + FixedDamage;
+
+    return TotalDamage;
 }
