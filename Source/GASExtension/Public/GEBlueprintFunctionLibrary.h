@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayTagContainer.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "GEBlueprintFunctionLibrary.generated.h"
 
@@ -82,8 +83,8 @@ public:
     /* 데미지 */
 
     UFUNCTION(BlueprintCallable, Category = "GEBlueprintFunctionLibrary|Damage")
-    static void ApplyDamageToSystem(UAbilitySystemComponent* SourceSystem, UAbilitySystemComponent* TargetSystem, TSubclassOf<UGameplayEffect> DamageClass, FGameplayTag DamageTypeTag, float Damage = 0);
+    static void ApplyDamageToSelf(AActor* Target, TSubclassOf<UGameplayEffect> DamageClass, float Damage = 0, float DamageRatio = 1, FGameplayTag DamageTypeTag = FGameplayTag());
 
     UFUNCTION(BlueprintCallable, Category = "GEBlueprintFunctionLibrary|Damage")
-    static void ApplyDamageToTarget(AActor* Source, AActor* Target, TSubclassOf<UGameplayEffect> DamageClass, FGameplayTag DamageTypeTag, float Damage = 0);
+    static void ApplyDamageToTarget(AActor* Source, AActor* Target, TSubclassOf<UGameplayEffect> DamageClass, float Damage = 0, float DamageRatio = 1, FGameplayTag DamageTypeTag = FGameplayTag());
 };

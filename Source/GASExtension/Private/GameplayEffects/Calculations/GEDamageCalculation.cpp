@@ -13,6 +13,12 @@
 
 using namespace GEGameplayTags;
 
+UGEDamageCalculation::UGEDamageCalculation()
+{
+    IgnoreTagContainer.AddLeafTag(State::Dead);
+    IgnoreTagContainer.AddLeafTag(State::Invinsible);
+}
+
 void UGEDamageCalculation::Execute_Implementation(const FGameplayEffectCustomExecutionParameters& ExecutionParams,
                                                   FGameplayEffectCustomExecutionOutput& OutExecutionOutput) const
 {
@@ -22,12 +28,13 @@ void UGEDamageCalculation::Execute_Implementation(const FGameplayEffectCustomExe
     // 데미지 적용 가능 여부 검사
     if(!CanExecute(ExecutionParams)) return;
 
-    // Target Attribute 가져오기
+    // 데미지 계산
     UAbilitySystemComponent* TargetSystem = ExecutionParams.GetTargetAbilitySystemComponent();
-    float TargetShield = TargetSystem->GetNumericAttribute(UGEShieldAttributes::GetShieldAttribute());
+    UAbilitySystemComponent* SourceSystem = ExecutionParams.GetSourceAbilitySystemComponent();
+    const float TotalDamage = CalculateTotalDamage(ExecutionParams, SourceSystem, TargetSystem);
 
-    // Target Attribute 별 데미지 계산
-    const float TotalDamage = CalculateTotalDamage(ExecutionParams, TargetSystem);
+    // Attribute 별 데미지 계산
+    float TargetShield = TargetSystem->GetNumericAttribute(UGEShieldAttributes::GetShieldAttribute());
     float ShieldDamage = FMath::Min(TotalDamage, TargetShield);
     float HealthDamage = TotalDamage - ShieldDamage;
 
@@ -38,10 +45,13 @@ void UGEDamageCalculation::Execute_Implementation(const FGameplayEffectCustomExe
 
 bool UGEDamageCalculation::IsValid(const FGameplayEffectCustomExecutionParameters& ExecutionParams) const
 {
-    // Target 유효성 검사
-    if(UAbilitySystemComponent* TargetASC = ExecutionParams.GetTargetAbilitySystemComponent())
+    UAbilitySystemComponent* SourceSystem = ExecutionParams.GetSourceAbilitySystemComponent();
+    UAbilitySystemComponent* TargetSystem = ExecutionParams.GetTargetAbilitySystemComponent();
+    if(SourceSystem && TargetSystem)
     {
-        if(AActor* TargetActor = TargetASC->GetAvatarActor())
+        AActor* SourceActor = SourceSystem->GetAvatarActor();
+        AActor* TargetActor = TargetSystem->GetAvatarActor();
+        if(SourceActor && TargetActor)
         {
             return true;
         }
@@ -55,8 +65,8 @@ bool UGEDamageCalculation::CanExecute(const FGameplayEffectCustomExecutionParame
     // 지역 변수 선언
     UAbilitySystemComponent* TargetASC = ExecutionParams.GetTargetAbilitySystemComponent();
 
-    // 상대가 무적 상태인지 확인
-    if(TargetASC->HasMatchingGameplayTag(State::Invinsible)) return false;
+    // 상대가 데미지 무시 태그를 가지고 있는지 확인
+    if(TargetASC->HasAnyMatchingGameplayTags(IgnoreTagContainer)) return false;
 
     // 상대가 데미지 타입에 대해 면역 상태인지 확인
     if(HasImmunity(TargetASC, GetDamageTypeTag(ExecutionParams.GetOwningSpec()))) return false;
@@ -97,19 +107,32 @@ FDamageTypeTag UGEDamageCalculation::GetDamageTypeTag(const FGameplayEffectSpec&
 }
 
 float UGEDamageCalculation::CalculateTotalDamage(const FGameplayEffectCustomExecutionParameters& ExecutionParams,
-    UAbilitySystemComponent* TargetSystem) const
+    UAbilitySystemComponent* SourceSystem, UAbilitySystemComponent* TargetSystem) const
 {
-    // 고정 피해량 가져오기
-    const float FixedDamage = ExecutionParams.GetOwningSpec().GetSetByCallerMagnitude(Damage::Root);
+    // 지역 변수 선언
+    const FGameplayEffectSpec& OwningSpec = ExecutionParams.GetOwningSpec();
+    float TotalDamage = 0;
 
     // 스탯 계산이 필요한지 확인
-    UAbilitySystemComponent* SourceSystem = ExecutionParams.GetTargetAbilitySystemComponent();
-    if(SourceSystem == nullptr || SourceSystem == TargetSystem) return FixedDamage;
+    if(SourceSystem != TargetSystem)
+    {
+        // 스탯 계산
+        const float SourceAttack = SourceSystem->GetNumericAttribute(UGEAttackStats::GetAttackAttribute());
+        const float TargetDefense = TargetSystem->GetNumericAttribute(UGEDefenseStats::GetDefenseAttribute());
+        TotalDamage = FMath::Max(0, SourceAttack - TargetDefense);
+    }
 
-    // 스탯 계산
-    const float SourceAttack = SourceSystem->GetNumericAttribute(UGEAttackStats::GetAttackAttribute());
-    const float TargetDefense = TargetSystem->GetNumericAttribute(UGEDefenseStats::GetDefenseAttribute());
-    const float TotalDamage = FMath::Max(0, SourceAttack - TargetDefense) + FixedDamage;
+    // 고정 피해량 추가
+    const float FixedDamage = OwningSpec.GetSetByCallerMagnitude(Damage::Root);
+    TotalDamage += FixedDamage;
+
+    // 데미지 배율 적용
+    const float DamageRatio = OwningSpec.GetLevel();
+    TotalDamage *= DamageRatio;
+
+#if WITH_EDITOR
+    UE_LOG(LogGASExtension, Log, TEXT("%s Take Damage From %s: %f = %f + %f"),*SourceSystem->GetAvatarActor()->GetName(), *TargetSystem->GetAvatarActor()->GetName(), TotalDamage, TotalDamage - FixedDamage, FixedDamage)
+#endif
 
     return TotalDamage;
 }

@@ -25,7 +25,14 @@ class GASEXTENSION_API UGEDamageCalculation : public UGameplayEffectExecutionCal
 {
     GENERATED_BODY()
 
+protected:
+    // 이곳에 설정된 태그 중 하나라도 Target에 존재하는 경우 데미지를 적용하지 않습니다.
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config")
+    FGameplayTagContainer IgnoreTagContainer;
+
 public:
+    UGEDamageCalculation();
+
     /* GameplayEffectExecutionCalculation */
 
     virtual void Execute_Implementation(const FGameplayEffectCustomExecutionParameters& ExecutionParams, FGameplayEffectCustomExecutionOutput& OutExecutionOutput) const override;
@@ -44,5 +51,5 @@ protected:
     virtual FDamageTypeTag GetDamageTypeTag(const FGameplayEffectSpec& Spec) const;
 
     // 데미지 계산
-    virtual float CalculateTotalDamage(const FGameplayEffectCustomExecutionParameters& ExecutionParams, UAbilitySystemComponent* TargetSystem) const;
+    virtual float CalculateTotalDamage(const FGameplayEffectCustomExecutionParameters& ExecutionParams, UAbilitySystemComponent* SourceSystem, UAbilitySystemComponent* TargetSystem) const;
 };

@@ -20,7 +20,7 @@ namespace GEGameplayTags
         UE_DEFINE_GAMEPLAY_TAG_COMMENT(Stun, "State.Stun", "일시적으로 행동 불가")
         UE_DEFINE_GAMEPLAY_TAG_COMMENT(Invinsible, "State.Invinsible", "데미지가 들어가지 않는 무적 상태")
         UE_DEFINE_GAMEPLAY_TAG_COMMENT(Reviving, "State.Reviving", "부활중")
-        UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ready, "State.Ready", "준비중인 상태로 조작이 불가능합니다.")
+        UE_DEFINE_GAMEPLAY_TAG_COMMENT(Wait, "State.Wait", "조작이 불가능한 상태")
     }
 
     /* 행동 */

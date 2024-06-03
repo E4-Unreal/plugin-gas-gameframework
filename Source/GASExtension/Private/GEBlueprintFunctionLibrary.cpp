@@ -223,30 +223,42 @@ TArray<FGameplayAbilitySpecHandle> UGEBlueprintFunctionLibrary::GiveAbilitiesToS
     return AbilitySpecHandles;
 }
 
-void UGEBlueprintFunctionLibrary::ApplyDamageToSystem(UAbilitySystemComponent* SourceSystem,
-    UAbilitySystemComponent* TargetSystem, TSubclassOf<UGameplayEffect> DamageClass, FGameplayTag DamageTypeTag,
-    float Damage)
+void UGEBlueprintFunctionLibrary::ApplyDamageToSelf(AActor* Target, TSubclassOf<UGameplayEffect> DamageClass,
+    float Damage, float DamageRatio, FGameplayTag DamageTypeTag)
 {
-    if(SourceSystem && TargetSystem && DamageClass)
+    if(Target && DamageClass)
     {
-        // 데미지 전용 GameplayEffectSpec 생성
-        FGameplayEffectContextHandle ContextHandle = SourceSystem->MakeEffectContext();
-        FGameplayEffectSpecHandle DamageSpecHandle = SourceSystem->MakeOutgoingSpec(DamageClass, UGameplayEffect::INVALID_LEVEL, ContextHandle);
-        if(DamageTypeTag.IsValid()) DamageSpecHandle.Data->AddDynamicAssetTag(DamageTypeTag);
-        if(Damage > 0) DamageSpecHandle.Data->SetByCallerTagMagnitudes.Emplace(Damage::Root, Damage);
+        if(UAbilitySystemComponent* TargetSystem = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(Target))
+        {
+            // 데미지 전용 GameplayEffectSpec 생성
+            FGameplayEffectContextHandle ContextHandle = TargetSystem->MakeEffectContext();
+            FGameplayEffectSpecHandle DamageSpecHandle = TargetSystem->MakeOutgoingSpec(DamageClass, DamageRatio, ContextHandle);
+            if(DamageTypeTag.IsValid()) DamageSpecHandle.Data->AddDynamicAssetTag(DamageTypeTag);
+            if(Damage > 0) DamageSpecHandle.Data->SetByCallerTagMagnitudes.Emplace(Damage::Root, Damage);
 
-        // 적용
-        SourceSystem->ApplyGameplayEffectSpecToTarget(*DamageSpecHandle.Data.Get(), TargetSystem);
+            // 데미지 적용
+            TargetSystem->ApplyGameplayEffectSpecToSelf(*DamageSpecHandle.Data.Get());
+        }
     }
 }
 
-void UGEBlueprintFunctionLibrary::ApplyDamageToTarget(AActor* Source, AActor* Target, TSubclassOf<UGameplayEffect> DamageClass,
-    FGameplayTag DamageTypeTag, float Damage)
+void UGEBlueprintFunctionLibrary::ApplyDamageToTarget(AActor* Source, AActor* Target,
+    TSubclassOf<UGameplayEffect> DamageClass, float Damage, float DamageRatio, FGameplayTag DamageTypeTag)
 {
     if(Source && Target && DamageClass)
     {
         UAbilitySystemComponent* SourceSystem = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(Source);
         UAbilitySystemComponent* TargetSystem = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(Target);
-        ApplyDamageToSystem(SourceSystem, TargetSystem, DamageClass, DamageTypeTag, Damage);
+        if(SourceSystem && TargetSystem)
+        {
+            // 데미지 전용 GameplayEffectSpec 생성
+            FGameplayEffectContextHandle ContextHandle = SourceSystem->MakeEffectContext();
+            FGameplayEffectSpecHandle DamageSpecHandle = SourceSystem->MakeOutgoingSpec(DamageClass, DamageRatio, ContextHandle);
+            if(DamageTypeTag.IsValid()) DamageSpecHandle.Data->AddDynamicAssetTag(DamageTypeTag);
+            DamageSpecHandle.Data->SetByCallerTagMagnitudes.Emplace(Damage::Root, FMath::Min(Damage, 0));
+
+            // 적용
+            SourceSystem->ApplyGameplayEffectSpecToTarget(*DamageSpecHandle.Data.Get(), TargetSystem);
+        }
     }
 }
