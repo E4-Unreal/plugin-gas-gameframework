@@ -7,7 +7,7 @@
 #include "GameplayCueManager.h"
 #include "Components/SphereComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
-#include "GGFShooterGameplayTags.h"
+#include "GGFCombatGameplayTags.h"
 
 using namespace GGFGameplayTags;
 

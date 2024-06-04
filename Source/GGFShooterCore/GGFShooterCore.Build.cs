@@ -24,7 +24,8 @@ public class GGFShooterCore : ModuleRules
                 "GASExtension",
 
                 // GASGameFramework
-                "GGFEquipmentSystem"
+                "GGFEquipmentSystem",
+                "GGFCombatCore"
             }
         );
 

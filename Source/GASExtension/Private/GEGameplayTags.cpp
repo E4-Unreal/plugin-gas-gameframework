@@ -54,6 +54,7 @@ namespace GEGameplayTags
         namespace Type
         {
             UE_DEFINE_GAMEPLAY_TAG_COMMENT(Root, "Damage.Type", "데미지 타입")
+            UE_DEFINE_GAMEPLAY_TAG_COMMENT(Default, "Damage.Type.Default", "기본 데미지 타입")
             UE_DEFINE_GAMEPLAY_TAG_COMMENT(Test, "Damage.Type.Test", "테스트 전용 데미지 타입")
         }
     }

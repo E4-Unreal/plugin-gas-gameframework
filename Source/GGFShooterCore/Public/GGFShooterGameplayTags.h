@@ -4,31 +4,6 @@
 
 namespace GGFGameplayTags
 {
-    /* 게임플레이 큐 */
-    namespace GameplayCue
-    {
-        namespace Hit
-        {
-            GGFSHOOTERCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Root) // 루트
-            GGFSHOOTERCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Test) // 테스트 전용
-            GGFSHOOTERCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Default) // 기본
-        }
-
-        namespace Explosion
-        {
-            GGFSHOOTERCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Root) // 루트
-            GGFSHOOTERCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Test) // 테스트 전용
-            GGFSHOOTERCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Default) // 기본
-        }
-
-        namespace Bounce
-        {
-            GGFSHOOTERCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Root) // 루트
-            GGFSHOOTERCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Test) // 테스트 전용
-            GGFSHOOTERCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Default) // 기본
-        }
-    }
-
     /* 상태 */
     namespace State
     {

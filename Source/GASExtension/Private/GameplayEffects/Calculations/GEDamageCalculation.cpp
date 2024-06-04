@@ -129,11 +129,14 @@ float UGEDamageCalculation::CalculateTotalDamage(const FGameplayEffectCustomExec
     TotalDamage += FixedDamage;
 
     // 데미지 배율 적용
-    const float DamageRatio = OwningSpec.GetLevel();
+    const float DamageRatio = OwningSpec.GetLevel() == UGameplayEffect::INVALID_LEVEL ? 1 : OwningSpec.GetLevel();
     TotalDamage *= DamageRatio;
 
+    // Clamp
+    TotalDamage = FMath::Max(TotalDamage, 0);
+
 #if WITH_EDITOR
-    UE_LOG(LogGASExtension, Log, TEXT("%s Take Damage From %s: TotalDamage(%f) = (StatsDamage(%f) + FixedDamage(%f)) * DamageRatio(%f)"),*SourceSystem->GetAvatarActor()->GetName(), *TargetSystem->GetAvatarActor()->GetName(), TotalDamage, StatsDamage, FixedDamage, DamageRatio)
+    UE_LOG(LogGASExtension, Log, TEXT("%s Take Damage From %s: TotalDamage(%f) = (StatsDamage(%f) + FixedDamage(%f)) * DamageRatio(%f)"), *TargetSystem->GetAvatarActor()->GetName(), *SourceSystem->GetAvatarActor()->GetName(), TotalDamage, StatsDamage, FixedDamage, DamageRatio)
 #endif
 
     return TotalDamage;

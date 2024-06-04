@@ -17,17 +17,17 @@ protected:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|DamageableProjectile")
     TSubclassOf<UGameplayEffect> DamageClass;
 
-    // 데미지 타입
+    // 추가로 적용할 게임플레이 이펙트 클래스 목록
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|DamageableProjectile")
-    FDamageTypeTag DamageType;
+    TArray<TSubclassOf<UGameplayEffect>> AdditionalEffects;
 
     // 데미지 계산식에 영향을 받지 않는 고정 데미지
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|DamageableProjectile")
     float FixedDamage;
 
-    // 추가로 적용할 게임플레이 이펙트 클래스 목록
+    // 데미지 타입
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|DamageableProjectile")
-    TArray<TSubclassOf<UGameplayEffect>> AdditionalEffects;
+    FDamageTypeTag DamageType;
 
 protected:
     /* Projectile */

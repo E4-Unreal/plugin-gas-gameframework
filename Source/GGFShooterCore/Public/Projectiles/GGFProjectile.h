@@ -56,11 +56,6 @@ protected:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|Projectile")
     float BounceThreshold = 2;
 
-#if WITH_EDITORONLY_DATA
-  UPROPERTY(EditAnywhere, Category = "Config|Debug")
-    bool bShowDebug;
-#endif
-
 public:
     AGGFProjectile();
 

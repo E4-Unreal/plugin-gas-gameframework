@@ -56,6 +56,7 @@ namespace GEGameplayTags
         namespace Type
         {
             GASEXTENSION_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Root) // 루트
+            GASEXTENSION_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Default) // 기본
             GASEXTENSION_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Test) // 테스트 전용
         }
     }
