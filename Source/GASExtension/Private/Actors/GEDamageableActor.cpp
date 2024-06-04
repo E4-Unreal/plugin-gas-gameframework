@@ -3,10 +3,7 @@
 #include "Actors/GEDamageableActor.h"
 
 #include "AbilitySystemComponent.h"
-#include "GameplayEffectTypes.h"
-#include "GEGameplayTags.h"
-
-class UGEDamageableAbilitySystem;
+#include "AbilitySystem/GEDamageableAbilitySystem.h"
 
 AGEDamageableActor::AGEDamageableActor(const FObjectInitializer& ObjectInitializer)
     : Super(ObjectInitializer.SetDefaultSubobjectClass<UGEDamageableAbilitySystem>(AbilitySystemName))
@@ -14,23 +11,16 @@ AGEDamageableActor::AGEDamageableActor(const FObjectInitializer& ObjectInitializ
 
 }
 
-void AGEDamageableActor::PostInitializeComponents()
+void AGEDamageableActor::OnBindEvents()
 {
-    Super::PostInitializeComponents();
+    Super::OnBindEvents();
 
-    // Dead 태그 이벤트 바인딩
-    FOnGameplayEffectTagCountChanged& OnGameplayEffectTagCountChanged =
-        GetAbilitySystem()->RegisterGameplayTagEvent(GEGameplayTags::State::Dead, EGameplayTagEventType::NewOrRemoved);
-    OnGameplayEffectTagCountChanged.AddUObject(this, &ThisClass::OnDeadTagAdded);
+    // OnDead
+    auto CastedAbilitySystem = CastChecked<UGEDamageableAbilitySystem>(GetAbilitySystem());
+    CastedAbilitySystem->OnDead.AddDynamic(this, &ThisClass::OnDead);
 }
 
 void AGEDamageableActor::OnDead_Implementation()
 {
-    // TODO Destroy 등 죽음 처리
-}
 
-void AGEDamageableActor::OnDeadTagAdded(const FGameplayTag Tag, int32 Count)
-{
-    // 죽음 이벤트 호출
-    if(Count > 0) OnDead();
 }

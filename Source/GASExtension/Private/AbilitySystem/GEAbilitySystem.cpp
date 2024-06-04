@@ -15,14 +15,14 @@ void UGEAbilitySystem::InitializeComponent()
 {
     Super::InitializeComponent();
 
+    // 서버, 클라이언트 공통 초기화 메서드
+    LocalInitializeComponent();
+
     // 서버 전용 초기화 메서드
     if(IsOwnerActorAuthoritative())
     {
         ServerInitializeComponent();
     }
-
-    // 서버, 클라이언트 공통 초기화 메서드
-    LocalInitializeComponent();
 }
 
 int32 UGEAbilitySystem::HandleGameplayEvent(FGameplayTag EventTag, const FGameplayEventData* Payload)

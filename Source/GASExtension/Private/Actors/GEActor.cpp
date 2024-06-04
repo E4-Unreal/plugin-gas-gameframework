@@ -21,3 +21,29 @@ AGEActor::AGEActor(const FObjectInitializer& ObjectInitializer)
     /* GameplayStateMachine */
     GameplayStateMachine = CreateDefaultSubobject<UGEGameplayStateMachine>(GameplayStateMachineName);
 }
+
+void AGEActor::PostInitializeComponents()
+{
+    Super::PostInitializeComponents();
+
+    // 이벤트 바인딩
+    BindEvents();
+}
+
+void AGEActor::BindEvents()
+{
+    if(HasAuthority())
+    {
+        OnServerBindEvents();
+    }
+
+    OnBindEvents();
+}
+
+void AGEActor::OnBindEvents()
+{
+}
+
+void AGEActor::OnServerBindEvents()
+{
+}

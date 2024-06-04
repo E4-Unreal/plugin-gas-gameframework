@@ -27,19 +27,32 @@ void AGEPawn::PostInitializeComponents()
 {
     Super::PostInitializeComponents();
 
-    // Dead 태그 이벤트 바인딩
-    FOnGameplayEffectTagCountChanged& OnGameplayEffectTagCountChanged =
-        GetAbilitySystem()->RegisterGameplayTagEvent(GEGameplayTags::State::Dead, EGameplayTagEventType::NewOrRemoved);
-    OnGameplayEffectTagCountChanged.AddUObject(this, &ThisClass::OnDeadTagAdded);
+    // 이벤트 바인딩
+    BindEvents();
+}
+
+void AGEPawn::BindEvents()
+{
+    if(HasAuthority())
+    {
+        OnServerBindEvents();
+    }
+
+    OnBindEvents();
+}
+
+void AGEPawn::OnBindEvents()
+{
+    // OnDead
+    auto CastedAbilitySystem = CastChecked<UGEDamageableAbilitySystem>(GetAbilitySystem());
+    CastedAbilitySystem->OnDead.AddDynamic(this, &ThisClass::OnDead);
+}
+
+void AGEPawn::OnServerBindEvents()
+{
 }
 
 void AGEPawn::OnDead_Implementation()
 {
     // TODO Destroy 등 죽음 처리
-}
-
-void AGEPawn::OnDeadTagAdded(const FGameplayTag Tag, int32 Count)
-{
-    // 죽음 이벤트 호출
-    if(Count > 0) OnDead();
 }

@@ -17,15 +17,12 @@ class GASEXTENSION_API AGEDamageableActor : public AGEActor
 public:
     AGEDamageableActor(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
-    /* Actor */
-
-    virtual void PostInitializeComponents() override;
-
 protected:
+    /* GEActor */
+
+    virtual void OnBindEvents() override;
+
     // 죽음 이벤트
     UFUNCTION(BlueprintNativeEvent)
     void OnDead();
-
-    UFUNCTION()
-    virtual void OnDeadTagAdded(const FGameplayTag Tag, int32 Count);
 };
