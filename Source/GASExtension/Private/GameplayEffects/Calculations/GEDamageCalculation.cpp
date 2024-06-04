@@ -122,6 +122,8 @@ float UGEDamageCalculation::CalculateTotalDamage(const FGameplayEffectCustomExec
         TotalDamage = FMath::Max(0, SourceAttack - TargetDefense);
     }
 
+    const float StatsDamage = TotalDamage;
+
     // 고정 피해량 추가
     const float FixedDamage = OwningSpec.GetSetByCallerMagnitude(Damage::Root);
     TotalDamage += FixedDamage;
@@ -131,7 +133,7 @@ float UGEDamageCalculation::CalculateTotalDamage(const FGameplayEffectCustomExec
     TotalDamage *= DamageRatio;
 
 #if WITH_EDITOR
-    UE_LOG(LogGASExtension, Log, TEXT("%s Take Damage From %s: %f = %f + %f"),*SourceSystem->GetAvatarActor()->GetName(), *TargetSystem->GetAvatarActor()->GetName(), TotalDamage, TotalDamage - FixedDamage, FixedDamage)
+    UE_LOG(LogGASExtension, Log, TEXT("%s Take Damage From %s: TotalDamage(%f) = (StatsDamage(%f) + FixedDamage(%f)) * DamageRatio(%f)"),*SourceSystem->GetAvatarActor()->GetName(), *TargetSystem->GetAvatarActor()->GetName(), TotalDamage, StatsDamage, FixedDamage, DamageRatio)
 #endif
 
     return TotalDamage;

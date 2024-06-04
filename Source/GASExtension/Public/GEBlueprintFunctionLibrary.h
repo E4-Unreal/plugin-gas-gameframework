@@ -87,4 +87,19 @@ public:
 
     UFUNCTION(BlueprintCallable, Category = "GEBlueprintFunctionLibrary|Damage")
     static void ApplyDamageToTarget(AActor* Source, AActor* Target, TSubclassOf<UGameplayEffect> DamageClass, float Damage = 0, float DamageRatio = 1, FGameplayTag DamageTypeTag = FGameplayTag());
+
+    UFUNCTION(BlueprintCallable, Category = "GEBlueprintFunctionLibrary|Damage")
+    static void ApplyRadialDamageToSelf(AActor* Target, AActor* ExplosiveActor, TSubclassOf<UGameplayEffect> DamageClass, float Damage = 0, FGameplayTag DamageTypeTag = FGameplayTag(), float InnerRadius = 200, ECollisionChannel CollisionChannel = ECC_WorldDynamic, bool bShowDebug = false);
+
+    UFUNCTION(BlueprintCallable, Category = "GEBlueprintFunctionLibrary|Damage")
+    static void ApplyRadialDamageToTarget(AActor* Source, AActor* Target, AActor* ExplosiveActor, TSubclassOf<UGameplayEffect> DamageClass, float Damage = 0, FGameplayTag DamageTypeTag = FGameplayTag(), float InnerRadius = 200, ECollisionChannel CollisionChannel = ECC_WorldDynamic, bool bShowDebug = false);
+
+protected:
+    // TODO 리팩토링, 액터 컴포넌트?
+    // ApplyRadialDamage를 위한 데미지 배율 계산
+    static float CalculateDamageRatioForExplosion(AActor* Target, AActor* ExplosiveActor, float InnerRadius = 200, ECollisionChannel CollisionChannel = ECC_WorldDynamic, bool bShowDebug = false);
+
+    // TODO 피격판정 수정 필요
+    // 폭발 피격 판정을 위한 위치 계산
+    static void GetLocationsForExplosionDetection(AActor* Target, TArray<FVector>& TargetLocations);
 };

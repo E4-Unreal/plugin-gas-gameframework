@@ -20,9 +20,6 @@ class GGFSHOOTERCORE_API AGGFExplosiveProjectile : public AGGFDamageableProjecti
     TObjectPtr<USphereComponent> ExplosionArea;
 
 protected:
-    UPROPERTY(EditAnywhere, Category = "Config|ExplosiveProjectile")
-    TEnumAsByte<ECollisionChannel> CollisionChannel = ECC_WorldDynamic;
-
     // 폭발 효과 전용 게임플레이 큐 태그
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|ExplosiveProjectile")
     FGameplayCueTag ExplosionCueTag;
@@ -40,6 +37,7 @@ protected:
 
     virtual void OnSphereColliderHit_Implementation(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit) override;
     virtual void AutoDestroy() override;
+    virtual void ApplyEffects(AActor* Target) override;
 
     /* 메서드 */
 
@@ -50,12 +48,7 @@ protected:
     UFUNCTION(BlueprintCallable)
     virtual void LocalHandleExplosionGameplayCue();
 
-    // TODO DamageCalculation으로 이동
+    // ExplosionArea에 오버랩된 액터에 대한 데미지 적용
     UFUNCTION(BlueprintNativeEvent)
     void CheckExplosionArea();
-
-    // 타깃 액터 콜라이더의 Center, Top, Bottom, Left, Right 위치 반환
-    // 폭발 피격 판정에 사용됩니다.
-    UFUNCTION(BlueprintCallable)
-    void GetTargetLocations(const AActor* Target, TArray<FVector>& TargetLocations);
 };
