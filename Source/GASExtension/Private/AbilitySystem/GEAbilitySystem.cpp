@@ -36,6 +36,18 @@ int32 UGEAbilitySystem::HandleGameplayEvent(FGameplayTag EventTag, const FGamepl
     return Super::HandleGameplayEvent(EventTag, Payload);
 }
 
+void UGEAbilitySystem::InitAttribute(const FGEAttributeContainer& AttributeContainer, float MaxValue, float Ratio,
+    float RegenRate)
+{
+    MaxValue = FMath::Max(MaxValue, 0);
+    Ratio = FMath::Clamp(Ratio, 0, 1);
+    RegenRate = FMath::Max(RegenRate, 0);
+
+    SetNumericAttributeBase(AttributeContainer.MaxAttribute, MaxValue);
+    SetNumericAttributeBase(AttributeContainer.Attribute, MaxValue * Ratio);
+    SetNumericAttributeBase(AttributeContainer.AttributeRegenRate, RegenRate);
+}
+
 void UGEAbilitySystem::ServerInitializeComponent_Implementation()
 {
     // 기본 AttributeSet 생성 및 등록

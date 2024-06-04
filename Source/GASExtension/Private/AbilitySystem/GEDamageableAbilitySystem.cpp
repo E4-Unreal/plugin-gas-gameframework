@@ -22,6 +22,16 @@ void UGEDamageableAbilitySystem::ServerInitializeComponent_Implementation()
 
     // 죽음 이벤트 바인딩
     BindDeadEvent();
+
+    // 체력 어트리뷰트 초기화
+    FGEAttributeContainer HealthAttributeContainer
+    {
+        UGEHealthAttributes::GetHealthAttribute(),
+        UGEHealthAttributes::GetMaxHealthAttribute(),
+        UGEHealthAttributes::GetHealthRegenRateAttribute()
+    };
+
+    InitAttribute(HealthAttributeContainer, MaxHealth);
 }
 
 void UGEDamageableAbilitySystem::OnDead_Implementation()

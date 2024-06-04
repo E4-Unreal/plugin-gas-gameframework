@@ -14,6 +14,11 @@ class GASEXTENSION_API UGEDamageableAbilitySystem : public UGEAbilitySystem
 {
     GENERATED_BODY()
 
+protected:
+    // 기본 체력
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|Default")
+    float MaxHealth = 100;
+
 public:
     UGEDamageableAbilitySystem();
 
@@ -21,11 +26,12 @@ public:
     UFUNCTION(BlueprintPure)
     bool IsDead() const;
 
+protected:
+
     /* GEAbilitySystem */
 
     virtual void ServerInitializeComponent_Implementation() override;
 
-protected:
     // 체력 어트리뷰트가 0이 되었을 때 호출되는 이벤트 메서드로 서버에서만 호출됩니다.
     UFUNCTION(BlueprintNativeEvent, Category = "ServerOnly")
     void OnDead();

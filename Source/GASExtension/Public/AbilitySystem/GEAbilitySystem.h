@@ -6,6 +6,24 @@
 #include "AbilitySystemComponent.h"
 #include "GEAbilitySystem.generated.h"
 
+/**
+ * 체력, 마나, 기력처럼 캐릭터 특성 정보는 일반적으로 Max, Current, RegenRate 3가지로 구성되어 있습니다.
+ */
+USTRUCT(BlueprintType)
+struct FGEAttributeContainer
+{
+    GENERATED_BODY()
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    FGameplayAttribute Attribute;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    FGameplayAttribute MaxAttribute;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    FGameplayAttribute AttributeRegenRate;
+};
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnGameplayEventInvoked, const FGameplayTag&, EventTag);
 
 class UGEStatsBase;
@@ -62,6 +80,11 @@ public:
 
     // 게임플레이 태그 이벤트 멀티캐스트 기능을 추가하였습니다. EventTag만 멀티캐스트됩니다.
     virtual int32 HandleGameplayEvent(FGameplayTag EventTag, const FGameplayEventData* Payload) override;
+
+    /* API */
+
+    // 특성 초기화
+    virtual void InitAttribute(const FGEAttributeContainer& AttributeContainer, float MaxValue, float Ratio = 1, float RegenRate = 0);
 
 protected:
     /* 메서드 */
