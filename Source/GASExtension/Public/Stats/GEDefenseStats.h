@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Attributes/GEAttributeSetBase.h"
+#include "GEStatsBase.h"
 #include "GEDefenseStats.generated.h"
 
 /**
  * 스탯 - 방어력
  */
 UCLASS()
-class GASEXTENSION_API UGEDefenseStats : public UGEAttributeSetBase
+class GASEXTENSION_API UGEDefenseStats : public UGEStatsBase
 {
     GENERATED_BODY()
 

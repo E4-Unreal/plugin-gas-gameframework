@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Attributes/GEAttributeSetBase.h"
+#include "GEStatsBase.h"
 #include "GEMoveSpeedStats.generated.h"
 
 /**
  * 스탯 - 이동 속도
  */
 UCLASS()
-class GASEXTENSION_API UGEMoveSpeedStats : public UGEAttributeSetBase
+class GASEXTENSION_API UGEMoveSpeedStats : public UGEStatsBase
 {
     GENERATED_BODY()
 

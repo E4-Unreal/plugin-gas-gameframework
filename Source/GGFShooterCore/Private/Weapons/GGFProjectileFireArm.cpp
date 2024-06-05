@@ -1,29 +1,40 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "Weapons/GGFProjectileFireArm.h"
 
+#include "Components/SphereComponent.h"
 #include "Interfaces/GGFAimingInterface.h"
+#include "Projectiles/GGFDamageableProjectile.h"
 #include "Projectiles/GGFProjectile.h"
+
+AGGFProjectileFireArm::AGGFProjectileFireArm()
+{
+    // 기본 설정
+    ProjectileClass = AGGFDamageableProjectile::StaticClass();
+}
 
 void AGGFProjectileFireArm::OnFire_Implementation()
 {
-    // null 검사
-    if(ProjectileClass == nullptr || GetOwner() == nullptr) return;
+    // 유효성 검사
+    if(!IsValid()) return;
 
-    // AimingInterface 구현 검사
-    if(!GetOwner()->GetClass()->ImplementsInterface(UGGFAimingInterface::StaticClass())) return;
+    // 발사체 스폰
+    FVector Target;
+    IGGFAimingInterface::Execute_GetTarget(GetOwner(), Target);
+    FVector FireDirection = (Target - GetMuzzleLocation()).GetSafeNormal();
+    auto SpawnedProjectile = SpawnProjectile(FireDirection);
+}
 
+AGGFProjectile* AGGFProjectileFireArm::SpawnProjectile(const FVector& Direction)
+{
     // World 검사
     UWorld* World = GetWorld();
-    if(World == nullptr) return;
+    if(World == nullptr) return nullptr;
 
     /* Projectile 스폰 */
     // 스폰 방향 설정
-    FVector Target;
-    IGGFAimingInterface::Execute_GetTarget(GetOwner(), Target);
-    const FVector& MuzzleLocation = GetMuzzleLocation();
-    const FRotator& SpawnRotation = (Target - MuzzleLocation).GetSafeNormal().Rotation();
+    const FVector MuzzleLocation = GetMuzzleLocation();
+    const FRotator SpawnRotation = Direction.Rotation();
 
     // 스폰 변수 설정
     FActorSpawnParameters SpawnParams;
@@ -31,10 +42,21 @@ void AGGFProjectileFireArm::OnFire_Implementation()
     SpawnParams.Instigator = GetInstigator();
 
     // 스폰
-    World->SpawnActor(
-        ProjectileClass,
-        &MuzzleLocation,
-        &SpawnRotation,
-        SpawnParams
-        );
+    auto SpawnedProjectile = World->SpawnActor<AGGFProjectile>(
+                                ProjectileClass,
+                                MuzzleLocation,
+                                SpawnRotation,
+                                SpawnParams
+                                );
+
+    // 무시할 액터 설정
+    SpawnedProjectile->GetSphereCollider()->IgnoreActorWhenMoving(GetInstigator(), true);
+    SpawnedProjectile->GetSphereCollider()->IgnoreActorWhenMoving(GetOwner(), true);
+
+    return SpawnedProjectile;
+}
+
+bool AGGFProjectileFireArm::IsValid() const
+{
+    return ProjectileClass && GetOwner() && GetOwner()->Implements<UGGFAimingInterface>();
 }

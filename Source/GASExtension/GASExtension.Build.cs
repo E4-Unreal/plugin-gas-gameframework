@@ -17,7 +17,10 @@ public class GASExtension : ModuleRules
                 // GAS
                 "GameplayTags",
                 "GameplayTasks",
-                "GameplayAbilities"
+                "GameplayAbilities",
+
+                // 물리
+                "PhysicsCore"
             }
         );
 

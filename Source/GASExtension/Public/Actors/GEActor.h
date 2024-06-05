@@ -46,6 +46,22 @@ private:
 public:
     AGEActor(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
+    /* Actor */
+
+    virtual void PostInitializeComponents() override;
+
+protected:
+    /* 메서드 */
+
+    // 이벤트 바인딩 전용 메서드로 PostInitializeComponents에서 호출됩니다.
+    void BindEvents();
+
+    // 서버, 클라이언트 모두 필요한 이벤트 바인딩
+    virtual void OnBindEvents();
+
+    // 서버에서만 필요한 이벤트 바인딩
+    virtual void OnServerBindEvents();
+
 protected:
     /* Getter */
 

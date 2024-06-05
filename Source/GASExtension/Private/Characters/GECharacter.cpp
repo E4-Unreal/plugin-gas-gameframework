@@ -33,24 +33,37 @@ void AGECharacter::PostInitializeComponents()
 {
     Super::PostInitializeComponents();
 
-    // Dead 태그 이벤트 바인딩
-    FOnGameplayEffectTagCountChanged& OnGameplayEffectTagCountChanged =
-        GetAbilitySystem()->RegisterGameplayTagEvent(GEGameplayTags::State::Dead, EGameplayTagEventType::NewOrRemoved);
-    OnGameplayEffectTagCountChanged.AddUObject(this, &ThisClass::OnDeadTagAdded);
+    // 이벤트 바인딩
+    BindEvents();
 
     // BoneNamesToHide에 설정된 스켈레톤을 숨깁니다.
     HideBones();
 }
 
+void AGECharacter::BindEvents()
+{
+    if(HasAuthority())
+    {
+        OnServerBindEvents();
+    }
+
+    OnBindEvents();
+}
+
+void AGECharacter::OnBindEvents()
+{
+    // OnDead
+    auto CastedAbilitySystem = CastChecked<UGEDamageableAbilitySystem>(GetAbilitySystem());
+    CastedAbilitySystem->OnDead.AddDynamic(this, &ThisClass::OnDead);
+}
+
+void AGECharacter::OnServerBindEvents()
+{
+}
+
 void AGECharacter::OnDead_Implementation()
 {
     // TODO Destroy 등 죽음 처리
-}
-
-void AGECharacter::OnDeadTagAdded(const FGameplayTag Tag, int32 Count)
-{
-    // 죽음 이벤트 호출
-    if(Count > 0) OnDead();
 }
 
 void AGECharacter::HideBones()
