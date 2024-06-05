@@ -71,6 +71,13 @@ void AGGFProjectile::Destroyed()
     Super::Destroyed();
 }
 
+void AGGFProjectile::Deactivate_Implementation()
+{
+    SetActorHiddenInGame(true);
+    GetProjectileMovement()->Deactivate();
+    GetSphereCollider()->Deactivate();
+}
+
 void AGGFProjectile::SetAutoDestroyTimer()
 {
     // 중복 호출 방지
@@ -79,38 +86,36 @@ void AGGFProjectile::SetAutoDestroyTimer()
     // 타이머 설정
     if(AutoDestroyTime <= 0)
     {
-        AutoDestroy();
+        DestroyDeferred();
     }
     else
     {
         GetWorldTimerManager().SetTimer(
             AutoDestroyTimer,
-            FTimerDelegate::CreateUObject(this, &ThisClass::AutoDestroy),
+            FTimerDelegate::CreateUObject(this, &ThisClass::DestroyDeferred),
             AutoDestroyTime,
             false
             );
     }
 }
 
-void AGGFProjectile::AutoDestroy()
+void AGGFProjectile::DestroyDeferred()
 {
-    Destroy();
+    // 비활성화
+    Deactivate();
+
+    // 2초 후 파괴
+    SetLifeSpan(2);
 }
 
 void AGGFProjectile::LocalHandleHitGameplayCue(const FHitResult& HitResult, const FGameplayTag& EffectTag) const
 {
     FGameplayCueParameters GameplayCueParameters;
-
-    if(GetInstigator())
-    {
-        GameplayCueParameters.EffectContext = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(GetInstigator())->MakeEffectContext();
-        GameplayCueParameters.EffectContext.AddHitResult(HitResult);
-    }
-    else
-    {
-        GameplayCueParameters.Location = HitResult.ImpactPoint;
-        GameplayCueParameters.Normal = HitResult.ImpactNormal;
-    }
+    auto& EffectContext = GameplayCueParameters.EffectContext;
+    EffectContext = FGameplayEffectContextHandle(UAbilitySystemGlobals::Get().AllocGameplayEffectContext());
+    EffectContext.AddInstigator(GetInstigator(), GetOwner());
+    EffectContext.AddSourceObject(this);
+    EffectContext.AddHitResult(HitResult);
 
     UAbilitySystemGlobals::Get().GetGameplayCueManager()->HandleGameplayCue(HitResult.GetActor(), EffectTag, EGameplayCueEvent::Executed, GameplayCueParameters);
 }
@@ -122,7 +127,7 @@ void AGGFProjectile::OnSphereColliderHit_Implementation(UPrimitiveComponent* Hit
     LocalHandleHitGameplayCue(Hit, HitCueTag.GameplayCueTag);
 
     // 파괴
-    Destroy();
+    DestroyDeferred();
 }
 
 void AGGFProjectile::OnProjectileMovementBounce_Implementation(const FHitResult& ImpactResult, const FVector& ImpactVelocity)

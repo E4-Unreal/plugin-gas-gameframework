@@ -68,13 +68,17 @@ public:
 protected:
     /* 메서드 */
 
+    // 파괴 전 불필요한 기능을 정지하는 메서드입니다.
+    UFUNCTION(BlueprintNativeEvent)
+    void Deactivate();
+
     // 자동 파괴 타이머 설정
     UFUNCTION(BlueprintCallable)
     virtual void SetAutoDestroyTimer();
 
-    // 자동 파괴 타이머 이벤트 메서드
-    UFUNCTION(BlueprintCallable, Category = "Event")
-    virtual void AutoDestroy();
+    // 리플리케이트 혹은 이펙트 종료 대기 등의 목적을 위해 파괴를 지연시키는 메서드입니다.
+    UFUNCTION(BlueprintCallable)
+    virtual void DestroyDeferred();
 
     // 피격 효과 스폰
     UFUNCTION(BlueprintCallable)
