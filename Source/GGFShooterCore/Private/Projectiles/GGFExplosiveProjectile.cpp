@@ -4,6 +4,7 @@
 
 #include "Components/SphereComponent.h"
 #include "Components/GGFExplosiveComponent.h"
+#include "GameFramework/ProjectileMovementComponent.h"
 
 AGGFExplosiveProjectile::AGGFExplosiveProjectile()
 {
@@ -16,6 +17,10 @@ AGGFExplosiveProjectile::AGGFExplosiveProjectile()
     ExplosiveComponent->Init(ExplosionArea);
 
     // 기본 설정
+    GetProjectileMovement()->MaxSpeed = 1000;
+    GetProjectileMovement()->InitialSpeed = 1000;
+    GetProjectileMovement()->ProjectileGravityScale = 1;
+
     FixedDamage = 50;
 }
 
@@ -37,8 +42,13 @@ void AGGFExplosiveProjectile::Destroyed()
     Super::Destroyed();
 }
 
+void AGGFExplosiveProjectile::DestroyDeferred()
+{
+    Destroy();
+}
+
 void AGGFExplosiveProjectile::OnSphereColliderHit_Implementation(UPrimitiveComponent* HitComponent, AActor* OtherActor,
                                                                  UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
-    Destroy();
+    DestroyDeferred();
 }

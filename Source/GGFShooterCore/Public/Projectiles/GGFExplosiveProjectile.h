@@ -33,6 +33,10 @@ public:
     virtual void PostInitializeComponents() override;
     virtual void Destroyed() override;
 
+    /* Projectile */
+
+    virtual void DestroyDeferred() override;
+
 protected:
     /* Projectile */
 
