@@ -34,7 +34,7 @@ public:
     virtual void SetOwner(AActor* NewOwner);
 
     UFUNCTION(BlueprintPure)
-    FORCEINLINE bool IsValid() const;
+    bool IsValid() const;
 
     UFUNCTION(BlueprintPure)
     FORCEINLINE bool IsNotValid() const { return !IsValid(); }
