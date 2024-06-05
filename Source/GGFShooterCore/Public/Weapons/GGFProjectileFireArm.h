@@ -17,9 +17,25 @@ class GGFSHOOTERCORE_API AGGFProjectileFireArm : public AGGFFireArm
 {
     GENERATED_BODY()
 
-    UPROPERTY(EditAnywhere, Category = "Config")
+protected:
+    // 스폰할 발사체 클래스
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config")
     TSubclassOf<AGGFProjectile> ProjectileClass;
 
+public:
+    AGGFProjectileFireArm();
+
 protected:
+    /* FireArm */
+
     virtual void OnFire_Implementation() override;
+
+    /* 메서드 */
+
+    // 목표를 향해 발사체 스폰
+    UFUNCTION(BlueprintCallable)
+    virtual AGGFProjectile* SpawnProjectile(const FVector& Direction);
+
+    UFUNCTION(BlueprintPure)
+    virtual bool IsValid() const;
 };
