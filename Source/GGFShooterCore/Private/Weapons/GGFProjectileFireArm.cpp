@@ -2,13 +2,15 @@
 
 #include "Weapons/GGFProjectileFireArm.h"
 
+#include "Components/SphereComponent.h"
 #include "Interfaces/GGFAimingInterface.h"
+#include "Projectiles/GGFDamageableProjectile.h"
 #include "Projectiles/GGFProjectile.h"
 
 AGGFProjectileFireArm::AGGFProjectileFireArm()
 {
     // 기본 설정
-    ProjectileClass = AGGFProjectile::StaticClass();
+    ProjectileClass = AGGFDamageableProjectile::StaticClass();
 }
 
 void AGGFProjectileFireArm::OnFire_Implementation()
@@ -20,7 +22,7 @@ void AGGFProjectileFireArm::OnFire_Implementation()
     FVector Target;
     IGGFAimingInterface::Execute_GetTarget(GetOwner(), Target);
     FVector FireDirection = (Target - GetMuzzleLocation()).GetSafeNormal();
-    SpawnProjectile(FireDirection);
+    auto SpawnedProjectile = SpawnProjectile(FireDirection);
 }
 
 AGGFProjectile* AGGFProjectileFireArm::SpawnProjectile(const FVector& Direction)
@@ -40,12 +42,18 @@ AGGFProjectile* AGGFProjectileFireArm::SpawnProjectile(const FVector& Direction)
     SpawnParams.Instigator = GetInstigator();
 
     // 스폰
-    return World->SpawnActor<AGGFProjectile>(
-        ProjectileClass,
-        MuzzleLocation,
-        SpawnRotation,
-        SpawnParams
-        );
+    auto SpawnedProjectile = World->SpawnActor<AGGFProjectile>(
+                                ProjectileClass,
+                                MuzzleLocation,
+                                SpawnRotation,
+                                SpawnParams
+                                );
+
+    // 무시할 액터 설정
+    SpawnedProjectile->GetSphereCollider()->IgnoreActorWhenMoving(GetInstigator(), true);
+    SpawnedProjectile->GetSphereCollider()->IgnoreActorWhenMoving(GetOwner(), true);
+
+    return SpawnedProjectile;
 }
 
 bool AGGFProjectileFireArm::IsValid() const

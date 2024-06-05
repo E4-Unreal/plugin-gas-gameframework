@@ -33,6 +33,10 @@ private:
     UPROPERTY(VisibleAnywhere, BlueprintGetter = GetSphereCollider, Category = "Component")
     TObjectPtr<USphereComponent> SphereCollider;
 
+    // 시각 요소
+    UPROPERTY(VisibleAnywhere, BlueprintGetter = GetDisplayMesh, Category = "Component")
+    TObjectPtr<UStaticMeshComponent> DisplayMesh;
+
     // 이동
     UPROPERTY(VisibleAnywhere, BlueprintGetter = GetProjectileMovement, Category = "Component")
     TObjectPtr<UProjectileMovementComponent> ProjectileMovement;
@@ -96,6 +100,9 @@ public:
     /* Getter */
     UFUNCTION(BlueprintGetter)
     FORCEINLINE USphereComponent* GetSphereCollider() const { return SphereCollider; }
+
+    UFUNCTION(BlueprintGetter)
+    FORCEINLINE UStaticMeshComponent* GetDisplayMesh() const { return DisplayMesh; }
 
     UFUNCTION(BlueprintGetter)
     FORCEINLINE UProjectileMovementComponent* GetProjectileMovement() const { return ProjectileMovement; }

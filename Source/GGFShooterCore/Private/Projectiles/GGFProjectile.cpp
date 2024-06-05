@@ -8,6 +8,7 @@
 #include "Components/SphereComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "GGFCombatGameplayTags.h"
+#include "Logging.h"
 
 FName AGGFProjectile::ProjectileMovementName(TEXT("ProjectileMovement"));
 
@@ -17,17 +18,23 @@ AGGFProjectile::AGGFProjectile(const FObjectInitializer& ObjectInitializer) : Su
     bReplicates = true;
     SetReplicatingMovement(true);
 
-    // 콜라이더 설정
+    /* SphereCollider */
     SphereCollider = CreateDefaultSubobject<USphereComponent>(TEXT("SphereCollider"));
     SetRootComponent(SphereCollider);
     SphereCollider->InitSphereRadius(1);
     SphereCollider->SetCollisionProfileName("IgnoreOnlyPawn"); // 프로젝트에서 스켈레탈 메시의 오브젝트 타입은 Pawn이 아니라고 가정
 
-    // 발사체 움직임 설정
+    /* DisplayMesh */
+    DisplayMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("DisplayMesh"));
+    DisplayMesh->SetupAttachment(RootComponent);
+    DisplayMesh->SetCollisionProfileName("NoCollision");
+
+    /* ProjectileMovement */
     ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(ProjectileMovementName);
-    ProjectileMovement->InitialSpeed = 71500;
-    ProjectileMovement->MaxSpeed = 71500;
+    ProjectileMovement->InitialSpeed = 10000;
+    ProjectileMovement->MaxSpeed = 10000;
     ProjectileMovement->bRotationFollowsVelocity = true;
+    ProjectileMovement->ProjectileGravityScale = 0.1f;
 
     // 기본 설정
     HitCueTag = FGameplayCueTag(GGFGameplayTags::GameplayCue::Hit::Default);
@@ -73,9 +80,23 @@ void AGGFProjectile::Destroyed()
 
 void AGGFProjectile::Deactivate_Implementation()
 {
-    SetActorHiddenInGame(true);
+    // ProjectileMovement
     GetProjectileMovement()->Deactivate();
+
+    // SphereCollider
+    GetSphereCollider()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
     GetSphereCollider()->Deactivate();
+
+    // DisplayMesh
+    DisplayMesh->SetHiddenInGame(true);
+
+    // ChildrenComponent
+    TArray<USceneComponent*> ChildrenComponents;
+    GetDisplayMesh()->GetChildrenComponents(true, ChildrenComponents);
+    for (auto ChildrenComponent : ChildrenComponents)
+    {
+        ChildrenComponent->SetHiddenInGame(true);
+    }
 }
 
 void AGGFProjectile::SetAutoDestroyTimer()
@@ -123,6 +144,10 @@ void AGGFProjectile::LocalHandleHitGameplayCue(const FHitResult& HitResult, cons
 void AGGFProjectile::OnSphereColliderHit_Implementation(UPrimitiveComponent* HitComponent, AActor* OtherActor,
                                                         UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
+#if WITH_EDITOR
+    UE_LOG(LogGGFShooterCore, Log, TEXT("%s::%s > OtherActor: %s"), *StaticClass()->GetName(), *FString(__func__), *OtherActor->GetName())
+#endif
+
     // 로컬에서 피격 효과 스폰
     LocalHandleHitGameplayCue(Hit, HitCueTag.GameplayCueTag);
 

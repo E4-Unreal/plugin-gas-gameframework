@@ -4,6 +4,7 @@
 
 #include "Components/SphereComponent.h"
 #include "Interfaces/GGFAimingInterface.h"
+#include "Projectiles/GGFDamageableProjectile.h"
 #include "Projectiles/GGFProjectile.h"
 
 void AGGFShotgun::OnFire_Implementation()
@@ -23,7 +24,13 @@ void AGGFShotgun::OnFire_Implementation()
     SpawnedProjectiles.Reserve(ProjectileNum);
     for (const auto& ProjectileDirection : ProjectileDirections)
     {
-        SpawnedProjectiles.Emplace(SpawnProjectile(ProjectileDirection));
+        auto SpawnedProjectile = SpawnProjectile(ProjectileDirection);
+        if(auto SpawnedDamageableProjectile = Cast<AGGFDamageableProjectile>(SpawnedProjectile))
+        {
+            // 데미지 배율 조정
+            SpawnedDamageableProjectile->DamageRatio = 1.f / ProjectileNum;
+        }
+        SpawnedProjectiles.Emplace(SpawnedProjectile);
     }
 
     // 서로 간의 충돌 무시 설정

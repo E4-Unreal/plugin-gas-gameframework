@@ -31,12 +31,12 @@ void AGGFDamageableProjectile::ApplyEffects(AActor* Target)
         // 데미지 및 추가 GE 적용
         if(GetInstigator())
         {
-            UGEBlueprintFunctionLibrary::ApplyDamageToTarget(GetInstigator(), Target, DamageClass, FixedDamage, 1, DamageType.Tag);
+            UGEBlueprintFunctionLibrary::ApplyDamageToTarget(GetInstigator(), Target, DamageClass, FixedDamage, DamageRatio, DamageType.Tag);
             UGEBlueprintFunctionLibrary::ApplyGameplayEffectsToTarget(AdditionalEffects, GetInstigator(), Target);
         }
         else
         {
-            UGEBlueprintFunctionLibrary::ApplyDamageToSelf(Target, DamageClass, FixedDamage, 1, DamageType.Tag);
+            UGEBlueprintFunctionLibrary::ApplyDamageToSelf(Target, DamageClass, FixedDamage, DamageRatio, DamageType.Tag);
             UGEBlueprintFunctionLibrary::ApplyGameplayEffectsToSelf(AdditionalEffects, Target);
         }
     }
