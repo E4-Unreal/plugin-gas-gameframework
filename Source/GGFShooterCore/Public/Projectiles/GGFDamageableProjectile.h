@@ -29,6 +29,9 @@ protected:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|DamageableProjectile")
     FDamageTypeTag DamageType;
 
+public:
+    AGGFDamageableProjectile(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
+
 protected:
     /* Projectile */
 

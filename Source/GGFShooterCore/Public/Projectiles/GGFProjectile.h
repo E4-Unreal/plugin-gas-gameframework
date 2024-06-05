@@ -16,7 +16,7 @@ class UGGFHitEffectDefinition;
  * 충격이 가해지는 즉시 활성화되는 기본 발사체 클래스입니다.
  * ex) 총알, 로켓, 충격 수류탄 등
  */
-UCLASS(Abstract, Blueprintable, BlueprintType)
+UCLASS(BlueprintType, Blueprintable)
 class GGFSHOOTERCORE_API AGGFProjectile : public AActor
 {
     GENERATED_BODY()
@@ -57,7 +57,7 @@ protected:
     float BounceThreshold = 2;
 
 public:
-    AGGFProjectile();
+    AGGFProjectile(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
     /* Actor */
 

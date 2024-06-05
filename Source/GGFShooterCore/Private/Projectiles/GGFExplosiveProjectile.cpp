@@ -14,12 +14,16 @@ AGGFExplosiveProjectile::AGGFExplosiveProjectile()
     // ExplosiveComponent
     ExplosiveComponent = CreateDefaultSubobject<UGGFExplosiveComponent>(TEXT("ExplosiveComponent"));
     ExplosiveComponent->Init(ExplosionArea);
+
+    // 기본 설정
+    FixedDamage = 50;
 }
 
 void AGGFExplosiveProjectile::PostInitializeComponents()
 {
     Super::PostInitializeComponents();
 
+    // TODO 리팩토링 (구조체 혹은 데이터 에셋으로 대체)
     ExplosiveComponent->DamageEffect = DamageClass;
     ExplosiveComponent->AdditionalEffects = AdditionalEffects;
     ExplosiveComponent->FixedDamage = FixedDamage;

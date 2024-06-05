@@ -12,7 +12,7 @@ class UGGFExplosiveComponent;
  * 일정 시간이 지나면 자동으로 활성화되는 발사체 클래스입니다.
  * 수류탄 등에서 사용할 수 있습니다.
  */
-UCLASS(Abstract, Blueprintable, BlueprintType)
+UCLASS()
 class GGFSHOOTERCORE_API AGGFExplosiveProjectile : public AGGFDamageableProjectile
 {
     GENERATED_BODY()

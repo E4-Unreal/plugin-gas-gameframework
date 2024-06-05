@@ -9,14 +9,12 @@
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "GGFCombatGameplayTags.h"
 
-using namespace GGFGameplayTags;
-
 FName AGGFProjectile::ProjectileMovementName(TEXT("ProjectileMovement"));
 
-AGGFProjectile::AGGFProjectile()
+AGGFProjectile::AGGFProjectile(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
 {
     // 서버 스폰을 위한 리플리케이트
-    SetReplicates(true);
+    bReplicates = true;
     SetReplicatingMovement(true);
 
     // 콜라이더 설정
@@ -29,9 +27,10 @@ AGGFProjectile::AGGFProjectile()
     ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(ProjectileMovementName);
     ProjectileMovement->InitialSpeed = 71500;
     ProjectileMovement->MaxSpeed = 71500;
+    ProjectileMovement->bRotationFollowsVelocity = true;
 
     // 기본 설정
-    HitCueTag = FGameplayCueTag(GameplayCue::Hit::Default);
+    HitCueTag = FGameplayCueTag(GGFGameplayTags::GameplayCue::Hit::Default);
 }
 
 void AGGFProjectile::PostInitializeComponents()

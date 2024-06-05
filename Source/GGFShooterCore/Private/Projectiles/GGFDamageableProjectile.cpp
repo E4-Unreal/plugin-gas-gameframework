@@ -3,9 +3,20 @@
 #include "Projectiles/GGFDamageableProjectile.h"
 
 #include "GEBlueprintFunctionLibrary.h"
+#include "GameplayEffects/GEDamageBase.h"
+#include "GEGameplayTags.h"
+
+using namespace GEGameplayTags;
+
+AGGFDamageableProjectile::AGGFDamageableProjectile(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
+{
+    DamageClass = UGEDamageBase::StaticClass();
+    FixedDamage = 10;
+    DamageType = Damage::Type::Default;
+}
 
 void AGGFDamageableProjectile::OnSphereColliderHit_Implementation(UPrimitiveComponent* HitComponent, AActor* OtherActor,
-    UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
+                                                                  UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
     // 피격 대상에게 데미지 및 추가 GE 적용
     ApplyEffects(OtherActor);

@@ -61,6 +61,7 @@ float UGGFExplosiveComponent::CalculateDamageRatio(AActor* Target)
     /* 피격 판정에 따른 데미지 배율 계산 */
     // 피격 카운트
     int32 Count = 0;
+    float MinDistance = ExplosionArea->GetScaledSphereRadius();
 
     // 피격 판정을 위한 위치 지정 (자기 자신도 포함됩니다)
     TArray<FVector> TargetLocations;
@@ -104,6 +105,7 @@ float UGGFExplosiveComponent::CalculateDamageRatio(AActor* Target)
 #endif
                 // 피격 카운트 추가
                 Count++;
+                MinDistance = FMath::Min(MinDistance, HitResult.Distance);
             }
             else
             {
@@ -128,9 +130,9 @@ float UGGFExplosiveComponent::CalculateDamageRatio(AActor* Target)
     float HitRatio = Count == 0 ? 0 : Count / static_cast<float>(TargetLocations.Num());
 
     /* 거리 별 데미지 비율 계산 */
-    float Distance = (Target->GetActorLocation() - ExplosionOrigin).Size();
     float InnerRadius = ExplosionArea->GetScaledSphereRadius() * InnerRadiusRatio;
-    float DistanceRatio = Distance <= InnerRadius ? 1 : InnerRadius / Distance;
+    float OuterRadius = ExplosionArea->GetScaledSphereRadius() - InnerRadius;
+    float DistanceRatio = MinDistance <= InnerRadius ? 1 : FMath::Lerp(1.f, 0.1f, (MinDistance - InnerRadius) / OuterRadius);
 
     /* 최종 데미지 배율 */
     float DamageRatio = HitRatio * DistanceRatio;
@@ -203,6 +205,7 @@ void UGGFExplosiveComponent::ApplyEffects(AActor* Target)
 
     // 데미지 적용
     const float DamageRatio = CalculateDamageRatio(Target);
+    if(DamageRatio == 0) return; // 피격 판정 실패
     UGEBlueprintFunctionLibrary::ApplyDamageToTarget(Instigator, Target, DamageEffect, FixedDamage, DamageRatio, DamageType.Tag);
 
     // 추가 이펙트 적용
