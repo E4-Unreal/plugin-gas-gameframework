@@ -44,8 +44,10 @@ void AGEPawn::BindEvents()
 void AGEPawn::OnBindEvents()
 {
     // OnDead
-    auto CastedAbilitySystem = CastChecked<UGEDamageableAbilitySystem>(GetAbilitySystem());
-    CastedAbilitySystem->OnDead.AddDynamic(this, &ThisClass::OnDead);
+    if(auto CastedAbilitySystem = Cast<UGEDamageableAbilitySystem>(GetAbilitySystem()))
+    {
+        CastedAbilitySystem->OnDead.AddDynamic(this, &ThisClass::OnDead);
+    }
 }
 
 void AGEPawn::OnServerBindEvents()
