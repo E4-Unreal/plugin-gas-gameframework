@@ -36,6 +36,7 @@ GAS를 기반으로 멀티플레이 게임 제작을 위한 프레임워크입�
 - [UnrealMannequins (v1.2.0)](https://github.com/E4-Unreal/plugin-unreal-mannequins/releases/tag/v1.2.0)
 - [LyraContent (v0.1.1)](https://github.com/E4-Unreal/plugin-lyra-content/releases/tag/v0.1.1)
 - [ParagonBelica (v1.1.1)](https://github.com/E4-Unreal/plugin-paragon-belica/releases/tag/v1.1.1)
+- [ParagonWraith (v1.1.0)](https://github.com/E4-Unreal/plugin-paragon-wraith/releases/tag/v1.1.0)
 - [E4 Effects (v0.1.0)](https://github.com/E4-Unreal/plugin-e4-effects/releases/tag/v0.1.0)
 
 ## 프로젝트 설정

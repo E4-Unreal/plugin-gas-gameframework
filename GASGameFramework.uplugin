@@ -1,10 +1,10 @@
 {
 	"FileVersion": 3,
-	"Version": 7,
-	"VersionName": "0.2.2",
+	"Version": 8,
+	"VersionName": "0.2.3",
 	"FriendlyName": "GAS GameFramework",
-	"Description": "GAS를 기반으로 멀티플레이 게임 제작을 위한 프레임워크입니다.",
-	"Category": "GAS",
+	"Description": "멀티플레이 게임 제작을 위한 GAS 기반 프레임워크",
+	"Category": "Gameplay",
 	"CreatedBy": "Eu4ng",
 	"CreatedByURL": "https://github.com/Eu4ng",
 	"DocsURL": "https://github.com/E4-Unreal/plugin-gas-gameframework/releases",
@@ -107,6 +107,5 @@
 			"Name": "E4Effects",
 			"Enabled": true
 		}
-	],
-	"Installed": false
+	]
 }
