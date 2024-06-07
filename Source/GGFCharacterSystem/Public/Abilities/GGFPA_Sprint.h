@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Abilities/GEPlayerAbility.h"
+#include "Abilities/GEGameplayAbility.h"
 #include "GGFPA_Sprint.generated.h"
 
 // TODO 게임플레이 이펙트 연동
@@ -11,7 +11,7 @@
  * 캐릭터의 빠른 달리기를 위한 플레이어 어빌리티
  */
 UCLASS()
-class GGFCHARACTERSYSTEM_API UGGFPA_Sprint : public UGEPlayerAbility
+class GGFCHARACTERSYSTEM_API UGGFPA_Sprint : public UGEGameplayAbility
 {
     GENERATED_BODY()
 

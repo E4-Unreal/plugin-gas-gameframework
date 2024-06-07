@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Abilities/GEPlayerAbility.h"
+#include "Abilities/GEGameplayAbility.h"
 #include "GGFPA_Interact.generated.h"
 
 /**
  * 상호작용을 위한 게임플레이 어빌리티
  */
 UCLASS()
-class GGFINTERACTIONSYSTEM_API UGGFPA_Interact : public UGEPlayerAbility
+class GGFINTERACTIONSYSTEM_API UGGFPA_Interact : public UGEGameplayAbility
 {
     GENERATED_BODY()
 
