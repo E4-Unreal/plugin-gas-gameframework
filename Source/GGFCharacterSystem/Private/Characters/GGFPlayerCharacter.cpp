@@ -49,6 +49,20 @@ void AGGFPlayerCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& 
     DOREPLIFETIME(ThisClass, CharacterConfig);
 }
 
+void AGGFPlayerCharacter::SetActorHiddenInGame(bool bNewHidden)
+{
+    Super::SetActorHiddenInGame(bNewHidden);
+
+    if(bNewHidden)
+    {
+        EquipmentManager->Deactivate();
+    }
+    else
+    {
+        EquipmentManager->Activate(false);
+    }
+}
+
 bool AGGFPlayerCharacter::CanJumpInternal_Implementation() const
 {
     // 앉은 상태에서도 점프가 가능합니다.

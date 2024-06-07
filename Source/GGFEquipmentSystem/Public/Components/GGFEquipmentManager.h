@@ -116,9 +116,12 @@ public:
 
     /* ActorComponent */
 
-    virtual void InitializeComponent() override;
-
     virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
+    virtual void InitializeComponent() override;
+    virtual void Activate(bool bReset) override;
+    virtual void Deactivate() override;
+    virtual void OnComponentDestroyed(bool bDestroyingHierarchy) override;
 
     /* API */
 
@@ -168,7 +171,10 @@ public:
     const FEquipmentSlot& GetAvailableSlot(const FGameplayTag& WeaponSlot) const;
 
 protected:
+    /* 메서드 */
+
     virtual void OnTargetMeshChanged() override;
+    virtual void HideEquipments(bool bHidden);
 
 private:
     // AvailableSlots로부터 EquipmentSlots를 생성합니다.

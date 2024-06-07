@@ -87,6 +87,8 @@ public:
     virtual void PreReplication(IRepChangedPropertyTracker& ChangedPropertyTracker) override;
     virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
+    virtual void SetActorHiddenInGame(bool bNewHidden) override;
+
     /* Character */
 
     // 앉은 상태에서 점프가 가능하도록 설정
