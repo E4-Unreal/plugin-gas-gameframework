@@ -1,13 +1,13 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
-#include "Abilities/GGFPA_Interact.h"
+#include "Abilities/GGFGA_Interact.h"
 
 #include "AbilitySystemComponent.h"
 #include "GGFInteractionGameplayTags.h"
 #include "Abilities/GGFAT_DetectInteractableActor.h"
 #include "Interfaces/GGFInteractableInterface.h"
 
-UGGFPA_Interact::UGGFPA_Interact()
+UGGFGA_Interact::UGGFGA_Interact()
 {
     // 입력 태그 설정
     InputTag = GGFGameplayTags::Input::Interact;
@@ -20,7 +20,7 @@ UGGFPA_Interact::UGGFPA_Interact()
     AbilityTriggers.Emplace(TriggerData);
 }
 
-bool UGGFPA_Interact::CanActivateAbility(const FGameplayAbilitySpecHandle Handle,
+bool UGGFGA_Interact::CanActivateAbility(const FGameplayAbilitySpecHandle Handle,
     const FGameplayAbilityActorInfo* ActorInfo, const FGameplayTagContainer* SourceTags,
     const FGameplayTagContainer* TargetTags, FGameplayTagContainer* OptionalRelevantTags) const
 {
@@ -28,7 +28,7 @@ bool UGGFPA_Interact::CanActivateAbility(const FGameplayAbilitySpecHandle Handle
     return Super::CanActivateAbility(Handle, ActorInfo, SourceTags, TargetTags, OptionalRelevantTags) && AbilitySystem && AbilitySystem->HasMatchingGameplayTag(GGFGameplayTags::State::Interactable);
 }
 
-void UGGFPA_Interact::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
+void UGGFGA_Interact::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
                                       const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo,
                                       const FGameplayEventData* TriggerEventData)
 {
@@ -41,11 +41,11 @@ void UGGFPA_Interact::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
 #endif
 
     auto DetectInteractableActorTask = UGGFAT_DetectInteractableActor::CreateTask(this, ShowDebug, MaxDistance, SphereRadius);
-    DetectInteractableActorTask->OnInteractableActorDetected.AddDynamic(this, &ThisClass::UGGFPA_Interact::OnInteractableActorDetected_Event);
+    DetectInteractableActorTask->OnInteractableActorDetected.AddDynamic(this, &ThisClass::UGGFGA_Interact::OnInteractableActorDetected_Event);
     DetectInteractableActorTask->ReadyForActivation();
 }
 
-void UGGFPA_Interact::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
+void UGGFGA_Interact::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
     const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled)
 {
     Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
@@ -58,7 +58,7 @@ void UGGFPA_Interact::EndAbility(const FGameplayAbilitySpecHandle Handle, const 
     }
 }
 
-void UGGFPA_Interact::InputPressed(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
+void UGGFGA_Interact::InputPressed(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
                                    const FGameplayAbilityActivationInfo ActivationInfo)
 {
     Super::InputPressed(Handle, ActorInfo, ActivationInfo);
@@ -70,7 +70,7 @@ void UGGFPA_Interact::InputPressed(const FGameplayAbilitySpecHandle Handle, cons
     }
 }
 
-void UGGFPA_Interact::InputReleased(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
+void UGGFGA_Interact::InputReleased(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
     const FGameplayAbilityActivationInfo ActivationInfo)
 {
     // 상호작용 종료
@@ -80,7 +80,7 @@ void UGGFPA_Interact::InputReleased(const FGameplayAbilitySpecHandle Handle, con
     }
 }
 
-void UGGFPA_Interact::ActivateInteractableObject(bool bActive)
+void UGGFGA_Interact::ActivateInteractableObject(bool bActive)
 {
     // 유효성 검사
     if(!InteractableActor.IsValid()) return;
@@ -98,7 +98,7 @@ void UGGFPA_Interact::ActivateInteractableObject(bool bActive)
     }
 }
 
-void UGGFPA_Interact::OnInteractableActorDetected_Event(AActor* NewInteractableActor)
+void UGGFGA_Interact::OnInteractableActorDetected_Event(AActor* NewInteractableActor)
 {
     // 이미 감지된 오브젝트와 동일한 경우 무시
     if(InteractableActor == NewInteractableActor) return;

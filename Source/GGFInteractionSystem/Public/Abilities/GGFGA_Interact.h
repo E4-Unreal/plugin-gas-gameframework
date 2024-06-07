@@ -4,30 +4,44 @@
 
 #include "CoreMinimal.h"
 #include "Abilities/GEGameplayAbility.h"
-#include "GGFPA_Sprint.generated.h"
+#include "GGFGA_Interact.generated.h"
 
-// TODO 게임플레이 이펙트 연동
 /**
- * 캐릭터의 빠른 달리기를 위한 플레이어 어빌리티
+ * 상호작용을 위한 게임플레이 어빌리티
  */
 UCLASS()
-class GGFCHARACTERSYSTEM_API UGGFPA_Sprint : public UGEGameplayAbility
+class GGFINTERACTIONSYSTEM_API UGGFGA_Interact : public UGEGameplayAbility
 {
     GENERATED_BODY()
 
 protected:
-    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Config")
-    float MoveSpeedRatio = 1.5f;
+    TWeakObjectPtr<AActor> InteractableActor;
 
-    float DefaultMaxWalkSpeed;
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Config")
+    float MaxDistance = 1000;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Config")
+    float SphereRadius = 20;
+
+#if WITH_EDITORONLY_DATA
+    UPROPERTY(EditDefaultsOnly, Category = "Config")
+    bool bShowDebug;
+#endif
 
 public:
-    UGGFPA_Sprint();
+    UGGFGA_Interact();
 
     /* GameplayAbility */
 
     virtual bool CanActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayTagContainer* SourceTags, const FGameplayTagContainer* TargetTags, FGameplayTagContainer* OptionalRelevantTags) const override;
     virtual void ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData) override;
     virtual void EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled) override;
+    virtual void InputPressed(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo) override;
+    virtual void InputReleased(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo) override;
 
+protected:
+    virtual void ActivateInteractableObject(bool bActive);
+
+    UFUNCTION()
+    virtual void OnInteractableActorDetected_Event(AActor* NewInteractableActor);
 };
