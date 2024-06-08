@@ -21,7 +21,10 @@ AGGFTriggerBox::AGGFTriggerBox()
 
     // 기본 설정
     TriggerBox->InitBoxExtent(FVector(100, 100, 100));
-    TriggerBox->SetCollisionProfileName("OverlapAll");
+
+    /* DisplayMesh */
+    DisplayMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("DisplayMesh"));
+    DisplayMesh->SetupAttachment(RootComponent);
 }
 
 void AGGFTriggerBox::PostInitializeComponents()

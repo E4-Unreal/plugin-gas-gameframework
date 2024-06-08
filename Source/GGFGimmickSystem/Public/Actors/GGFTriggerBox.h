@@ -25,6 +25,9 @@ class GGFGIMMICKSYSTEM_API AGGFTriggerBox : public AActor
     UPROPERTY(VisibleAnywhere, BlueprintGetter = GetTriggerBox, Category = "Component")
     TObjectPtr<UBoxComponent> TriggerBox;
 
+    UPROPERTY(VisibleAnywhere, BlueprintGetter = GetDisplayMesh, Category = "Component")
+    TObjectPtr<UStaticMeshComponent> DisplayMesh;
+
 protected:
     // true로 설정된 경우 서버에서만 트리거 이벤트가 호출됩니다.
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config")
@@ -63,8 +66,11 @@ public:
     /* Getter */
 
     UFUNCTION(BlueprintGetter)
+    FORCEINLINE USceneComponent* GetDefaultScene() const { return DefaultScene; }
+
+    UFUNCTION(BlueprintGetter)
     FORCEINLINE UBoxComponent* GetTriggerBox() const { return TriggerBox; }
 
     UFUNCTION(BlueprintGetter)
-    FORCEINLINE USceneComponent* GetDefaultScene() const { return DefaultScene; }
+    FORCEINLINE UStaticMeshComponent* GetDisplayMesh() const { return DisplayMesh; }
 };
