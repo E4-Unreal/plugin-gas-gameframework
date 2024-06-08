@@ -1,0 +1,94 @@
+﻿// Fill out your copyright notice in the Description page of Project Settings.
+
+#include "Actors/GGFTriggerBox.h"
+
+#include "Logging.h"
+#include "Components/BoxComponent.h"
+
+AGGFTriggerBox::AGGFTriggerBox()
+{
+    /* Default Scene */
+
+    // 서브 오브젝트 생성
+    DefaultScene = CreateDefaultSubobject<USceneComponent>(TEXT("DefaultScene"));
+    SetRootComponent(DefaultScene);
+
+    /* Trigger Box */
+
+    // 서브 오브젝트 생성
+    TriggerBox = CreateDefaultSubobject<UBoxComponent>(TEXT("TriggerBox"));
+    TriggerBox->SetupAttachment(RootComponent);
+
+    // 기본 설정
+    TriggerBox->InitBoxExtent(FVector(100, 100, 100));
+    TriggerBox->SetCollisionProfileName("OverlapAll");
+}
+
+void AGGFTriggerBox::PostInitializeComponents()
+{
+    Super::PostInitializeComponents();
+
+    if(!bServerOnly || HasAuthority())
+    {
+        // 트리거 이벤트 바인딩
+        TriggerBox->OnComponentBeginOverlap.AddDynamic(this, &ThisClass::OnTriggerBoxBeginOverlap);
+        TriggerBox->OnComponentEndOverlap.AddDynamic(this, &ThisClass::OnTriggerBoxEndOverlap);
+    }
+}
+
+void AGGFTriggerBox::OnConstruction(const FTransform& Transform)
+{
+    Super::OnConstruction(Transform);
+
+    // 트리거 박스의 피벗 위치를 정중앙에서 정하단으로 변경
+    RefreshTriggerBox();
+}
+
+void AGGFTriggerBox::RefreshTriggerBox()
+{
+    const FVector ScaledTriggerBoxExtent = TriggerBox->GetScaledBoxExtent();
+    TriggerBox->SetRelativeLocation(FVector(0, 0, ScaledTriggerBoxExtent.Z));
+}
+
+void AGGFTriggerBox::OnTriggerBoxBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+                                              UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+#if WITH_EDITOR
+    LOG_ACTOR_DETAIL(Log, TEXT("OtherActor: %s"), *OtherActor->GetName())
+#endif
+
+    if(APawn* OtherPawn = Cast<APawn>(OtherActor))
+    {
+        OnTriggerBoxBeginOverlapPawn(OverlappedComponent, OtherPawn, OtherComp, OtherBodyIndex, bFromSweep, SweepResult);
+    }
+}
+
+void AGGFTriggerBox::OnTriggerBoxEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+    UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+#if WITH_EDITOR
+    LOG_ACTOR_DETAIL(Log, TEXT("OtherActor: %s"), *OtherActor->GetName())
+#endif
+
+    if(APawn* OtherPawn = Cast<APawn>(OtherActor))
+    {
+        OnTriggerBoxEndOverlapPawn(OverlappedComponent, OtherPawn, OtherComp, OtherBodyIndex);
+    }
+}
+
+void AGGFTriggerBox::OnTriggerBoxBeginOverlapPawn_Implementation(UPrimitiveComponent* OverlappedComponent,
+    APawn* OtherPawn, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
+    const FHitResult& SweepResult)
+{
+#if WITH_EDITOR
+    LOG_ACTOR_DETAIL(Log, TEXT("OtherPawn: %s"), *OtherPawn->GetName())
+#endif
+}
+
+void AGGFTriggerBox::OnTriggerBoxEndOverlapPawn_Implementation(UPrimitiveComponent* OverlappedComponent,
+    APawn* OtherPawn, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+#if WITH_EDITOR
+    LOG_ACTOR_DETAIL(Log, TEXT("OtherPawn: %s"), *OtherPawn->GetName())
+#endif
+}
