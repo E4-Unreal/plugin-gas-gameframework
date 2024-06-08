@@ -44,6 +44,14 @@ public:
 protected:
     /* 메서드 */
 
+    // 트리거 박스와 관련된 이벤트 메서드 바인딩
+    UFUNCTION(BlueprintCallable)
+    virtual void BindTriggerBoxEvents();
+
+    // 트리거 박스와 관련된 이벤트 메서드 언바인딩
+    UFUNCTION(BlueprintCallable)
+    virtual void UnBindTriggerBoxEvents();
+
     // 트리거 박스의 피벗 위치를 정중앙에서 정하단으로 변경
     UFUNCTION(BlueprintCallable)
     virtual void RefreshTriggerBox();

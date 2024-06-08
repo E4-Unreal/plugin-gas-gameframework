@@ -31,12 +31,7 @@ void AGGFTriggerBox::PostInitializeComponents()
 {
     Super::PostInitializeComponents();
 
-    if(!bServerOnly || HasAuthority())
-    {
-        // 트리거 이벤트 바인딩
-        TriggerBox->OnComponentBeginOverlap.AddDynamic(this, &ThisClass::OnTriggerBoxBeginOverlap);
-        TriggerBox->OnComponentEndOverlap.AddDynamic(this, &ThisClass::OnTriggerBoxEndOverlap);
-    }
+    BindTriggerBoxEvents();
 }
 
 void AGGFTriggerBox::OnConstruction(const FTransform& Transform)
@@ -45,6 +40,26 @@ void AGGFTriggerBox::OnConstruction(const FTransform& Transform)
 
     // 트리거 박스의 피벗 위치를 정중앙에서 정하단으로 변경
     RefreshTriggerBox();
+}
+
+void AGGFTriggerBox::BindTriggerBoxEvents()
+{
+    if(!bServerOnly || HasAuthority())
+    {
+        // 트리거 이벤트 바인딩
+        TriggerBox->OnComponentBeginOverlap.AddDynamic(this, &ThisClass::OnTriggerBoxBeginOverlap);
+        TriggerBox->OnComponentEndOverlap.AddDynamic(this, &ThisClass::OnTriggerBoxEndOverlap);
+    }
+}
+
+void AGGFTriggerBox::UnBindTriggerBoxEvents()
+{
+    if(!bServerOnly || HasAuthority())
+    {
+        // 트리거 이벤트 바인딩
+        TriggerBox->OnComponentBeginOverlap.RemoveDynamic(this, &ThisClass::OnTriggerBoxBeginOverlap);
+        TriggerBox->OnComponentEndOverlap.RemoveDynamic(this, &ThisClass::OnTriggerBoxEndOverlap);
+    }
 }
 
 void AGGFTriggerBox::RefreshTriggerBox()

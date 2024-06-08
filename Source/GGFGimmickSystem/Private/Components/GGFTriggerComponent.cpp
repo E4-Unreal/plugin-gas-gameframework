@@ -7,6 +7,9 @@
 
 void UGGFTriggerComponent::ActivateTargets()
 {
+    if(bShouldToggle && bActivated) return;
+    bActivated = true;
+
     for (auto Target : Targets)
     {
         if(!Target)
@@ -29,6 +32,9 @@ void UGGFTriggerComponent::ActivateTargets()
 
 void UGGFTriggerComponent::DeactivateTargets()
 {
+    if(bShouldToggle && !bActivated) return;
+    bActivated = false;
+
     for (auto Target : Targets)
     {
         if(Target->Implements<UGGFActivationInterface>())

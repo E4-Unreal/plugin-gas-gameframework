@@ -15,9 +15,16 @@ class GGFGIMMICKSYSTEM_API UGGFTriggerComponent : public UGGFActorComponent
 {
     GENERATED_BODY()
 
-protected:
+public:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Reference")
     TArray<TObjectPtr<AActor>> Targets;
+
+    // 비활성화된 상태에서만 활성화가 가능해지는 옵션입니다.
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config")
+    bool bShouldToggle = true;
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State", Transient)
+    bool bActivated = false;
 
 public:
     /* API */
@@ -27,6 +34,9 @@ public:
 
     UFUNCTION(BlueprintCallable)
     virtual void DeactivateTargets();
+
+    UFUNCTION(BlueprintPure)
+    FORCEINLINE bool IsActivated() const { return bActivated; }
 
 protected:
     /* GGFActorComponent */
