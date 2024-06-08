@@ -11,6 +11,11 @@ public class GGFGimmickSystem : ModuleRules
             {
                 "Core",
 
+                // GAS
+                "GameplayTags",
+                "GameplayTasks",
+                "GameplayAbilities",
+
                 // GASGameFramework
                 "GGFCore"
             }
