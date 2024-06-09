@@ -33,6 +33,9 @@ public:
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = GameplayCueNotify)
     uint32 bAttach : 1;
 
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = GameplayCueNotify)
+    uint32 bIgnoreRotation : 1;
+
 public:
     bool PlayParticleEffect(AActor* Target, const FGameplayCueParameters& Parameters) const;
 

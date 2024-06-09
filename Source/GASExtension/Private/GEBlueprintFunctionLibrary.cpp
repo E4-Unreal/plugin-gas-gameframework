@@ -5,6 +5,7 @@
 
 #include "AbilitySystemComponent.h"
 #include "AbilitySystemGlobals.h"
+#include "GameplayCueManager.h"
 #include "GameplayEffectTypes.h"
 #include "GEGameplayTags.h"
 #include "Logging.h"
@@ -272,4 +273,24 @@ void UGEBlueprintFunctionLibrary::ApplyDamageToTarget(AActor* Source, AActor* Ta
 #endif
         ApplyDamageToSelf(Target, DamageClass, Damage, DamageRatio, DamageTypeTag);
     }
+}
+
+void UGEBlueprintFunctionLibrary::LocalHandleGameplayCue(AActor* EffectCauser, const FGameplayCueTag& CueTag,
+    AActor* Target, AActor* Instigator)
+{
+    // 유효성 검사
+    if(EffectCauser == nullptr || !CueTag.IsValid()) return;
+
+    // 기본값 설정
+    Target = Target ? Target : EffectCauser;
+    Instigator = Instigator ? Instigator : EffectCauser->GetInstigator();
+
+    // 파라미터 설정
+    FGameplayCueParameters GameplayCueParameters;
+    GameplayCueParameters.EffectCauser = EffectCauser;
+    GameplayCueParameters.Instigator = Instigator;
+    GameplayCueParameters.Location = Target->GetActorLocation();
+    GameplayCueParameters.Normal = Target->GetActorRotation().Vector();
+
+    UAbilitySystemGlobals::Get().GetGameplayCueManager()->HandleGameplayCue(Target, CueTag.GameplayCueTag, EGameplayCueEvent::Executed, GameplayCueParameters);
 }

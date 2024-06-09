@@ -7,6 +7,7 @@
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "GEBlueprintFunctionLibrary.generated.h"
 
+struct FGameplayCueTag;
 class UGameplayEffect;
 struct FGameplayAbilitySpecHandle;
 struct FActiveGameplayEffectHandle;
@@ -87,4 +88,9 @@ public:
 
     UFUNCTION(BlueprintCallable, Category = "GEBlueprintFunctionLibrary|Damage")
     static void ApplyDamageToTarget(AActor* Source, AActor* Target, TSubclassOf<UGameplayEffect> DamageClass, float Damage = 0, float DamageRatio = 1, FGameplayTag DamageTypeTag = FGameplayTag());
+
+    /* 게임플레이 큐 */
+
+    UFUNCTION(BlueprintCallable, Category = "GEBlueprintFunctionLibrary|GameplayCue")
+    static void LocalHandleGameplayCue(AActor* EffectCauser, const FGameplayCueTag& CueTag, AActor* Target = nullptr, AActor* Instigator = nullptr);
 };
