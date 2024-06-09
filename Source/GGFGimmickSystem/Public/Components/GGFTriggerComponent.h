@@ -16,7 +16,7 @@ class GGFGIMMICKSYSTEM_API UGGFTriggerComponent : public UGGFActorComponent
     GENERATED_BODY()
 
 public:
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Reference")
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Reference", meta = (MustImplement = "GGFActivationInterface"))
     TArray<TObjectPtr<AActor>> Targets;
 
     // 비활성화된 상태에서만 활성화가 가능해지는 옵션입니다.
