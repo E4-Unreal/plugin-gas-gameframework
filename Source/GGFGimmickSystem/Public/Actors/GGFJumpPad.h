@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayCueInterface.h"
 #include "GGFTriggerBox.h"
 #include "GGFJumpPad.generated.h"
 
@@ -27,6 +28,10 @@ protected:
     // 발사 속력
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config", meta = (ClampMin = 0))
     float LaunchPower = 2000;
+
+    // 점프 이펙트
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config")
+    FGameplayCueTag LaunchCueTag;
 
 public:
     AGGFJumpPad();

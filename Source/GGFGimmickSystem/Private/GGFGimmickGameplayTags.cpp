@@ -22,5 +22,11 @@ namespace GGFGameplayTags
                 UE_DEFINE_GAMEPLAY_TAG_COMMENT(Default, "GameplayCue.Teleport.Out.Default", "기본 순간이동 퇴장 효과")
             }
         }
+
+        namespace Launch
+        {
+            UE_DEFINE_GAMEPLAY_TAG_COMMENT(Root, "GameplayCue.Launch", "점프대 전용 게임플레이 큐")
+            UE_DEFINE_GAMEPLAY_TAG_COMMENT(Default, "GameplayCue.Launch.Default", "기본 점프대 게임플레이 큐")
+        }
     }
 }

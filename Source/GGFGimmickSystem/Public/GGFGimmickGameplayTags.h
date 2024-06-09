@@ -24,6 +24,12 @@ namespace GGFGameplayTags
                 GGFGIMMICKSYSTEM_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Default)
             }
         }
+
+        namespace Launch
+        {
+            GGFGIMMICKSYSTEM_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Root)
+            GGFGIMMICKSYSTEM_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Default)
+        }
     }
 }
 

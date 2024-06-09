@@ -2,8 +2,10 @@
 
 #include "Actors/GGFJumpPad.h"
 
+#include "GEBlueprintFunctionLibrary.h"
 #include "Components/ArrowComponent.h"
 #include "GameFramework/Character.h"
+#include "GGFGimmickGameplayTags.h"
 
 AGGFJumpPad::AGGFJumpPad()
 {
@@ -14,6 +16,7 @@ AGGFJumpPad::AGGFJumpPad()
 
     /* 기본 설정 */
     ActorClassToLaunch = AActor::StaticClass();
+    LaunchCueTag.GameplayCueTag = GameplayCue::Launch::Default;
 }
 
 void AGGFJumpPad::OnTriggerBoxBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
@@ -40,4 +43,6 @@ void AGGFJumpPad::Launch_Implementation(AActor* Target)
     {
         PrimitiveComponent->SetPhysicsLinearVelocity(LaunchVelocity);
     }
+
+    UGEBlueprintFunctionLibrary::LocalHandleGameplayCue(this, LaunchCueTag);
 }
