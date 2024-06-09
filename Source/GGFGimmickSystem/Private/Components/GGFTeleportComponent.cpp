@@ -3,7 +3,7 @@
 #include "Components/GGFTeleportComponent.h"
 
 #include "AbilitySystemGlobals.h"
-#include "GameplayCueManager.h"
+#include "GEBlueprintFunctionLibrary.h"
 #include "GameFramework/PawnMovementComponent.h"
 #include "GGFGimmickGameplayTags.h"
 
@@ -49,18 +49,6 @@ void UGGFTeleportComponent::Teleport(AActor* ActorToTeleport, AActor* TargetToTe
     ActorToTeleport->TeleportTo(DestLocation, DestRotation);
 
     // 기존 위치와 목표 위치에 순간이동 이펙트 재생
-    HandleGameplayCue(ActorToTeleport, GetOwner(), TeleportInCueTag); // 기존
-    HandleGameplayCue(ActorToTeleport, ActorToTeleport, TeleportOutCueTag); // 목표
-}
-
-void UGGFTeleportComponent::HandleGameplayCue(AActor* ActorToTeleport, AActor* TargetToHandle, const FGameplayCueTag CueTag)
-{
-    // 순간이동 이펙트
-    FGameplayCueParameters GameplayCueParameters;
-    GameplayCueParameters.EffectCauser = GetOwner();
-    GameplayCueParameters.Instigator = GetOwner()->GetInstigator();
-    GameplayCueParameters.Location = TargetToHandle->GetActorLocation();
-    GameplayCueParameters.TargetAttachComponent = TargetToHandle->GetRootComponent();
-
-    UAbilitySystemGlobals::Get().GetGameplayCueManager()->HandleGameplayCue(TargetToHandle, CueTag.GameplayCueTag, EGameplayCueEvent::Executed, GameplayCueParameters);
+    UGEBlueprintFunctionLibrary::LocalHandleGameplayCue(GetOwner(), TeleportInCueTag); // 기존
+    UGEBlueprintFunctionLibrary::LocalHandleGameplayCue(GetOwner(), TeleportOutCueTag, ActorToTeleport); // 목표
 }

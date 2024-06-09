@@ -45,11 +45,4 @@ public:
     // Source를 Target으로 순간이동
     UFUNCTION(BlueprintCallable)
     virtual void Teleport(AActor* ActorToTeleport, AActor* TargetToTeleport = nullptr);
-
-protected:
-    /* 메서드 */
-
-    // InTarget에 CueTag 스폰
-    UFUNCTION(BlueprintCallable)
-    virtual void HandleGameplayCue(AActor* ActorToTeleport, AActor* TargetToHandle, const FGameplayCueTag CueTag);
 };
