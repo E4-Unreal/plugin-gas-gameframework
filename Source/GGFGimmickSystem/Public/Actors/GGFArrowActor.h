@@ -16,6 +16,8 @@ class GGFGIMMICKSYSTEM_API AGGFArrowActor : public AActor
 {
     GENERATED_BODY()
 
+    /* 컴포넌트 */
+
     UPROPERTY(VisibleAnywhere, BlueprintGetter = GetArrowComponent, Category = "Component")
     TObjectPtr<UArrowComponent> ArrowComponent;
 
