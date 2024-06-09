@@ -12,7 +12,6 @@ AGGFTriggerPad::AGGFTriggerPad()
     TriggerComponent = CreateDefaultSubobject<UGGFTriggerComponent>(TEXT("TriggerComponent"));
 
     /* 기본 설정 */
-    bServerOnly = false;
     TriggerConditionMap.Emplace(ACharacter::StaticClass(), 1);
 }
 

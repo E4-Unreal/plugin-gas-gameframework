@@ -31,7 +31,7 @@ class GGFGIMMICKSYSTEM_API AGGFTriggerBox : public AActor
 protected:
     // true로 설정된 경우 서버에서만 트리거 이벤트가 호출됩니다.
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config")
-    bool bServerOnly = true;
+    bool bServerOnly;
 
 public:
     AGGFTriggerBox();
