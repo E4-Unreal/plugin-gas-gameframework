@@ -7,4 +7,5 @@
 AGGFArrowActor::AGGFArrowActor()
 {
     ArrowComponent = CreateDefaultSubobject<UArrowComponent>(TEXT("ArrowComponent"));
+    SetRootComponent(ArrowComponent);
 }
