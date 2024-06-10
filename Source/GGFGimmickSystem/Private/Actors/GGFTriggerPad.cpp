@@ -2,9 +2,11 @@
 
 #include "Actors/GGFTriggerPad.h"
 
+#include "GEBlueprintFunctionLibrary.h"
 #include "Components/BoxComponent.h"
 #include "Components/GGFTriggerComponent.h"
 #include "GameFramework/Character.h"
+#include "GGFGimmickGameplayTags.h"
 
 AGGFTriggerPad::AGGFTriggerPad()
 {
@@ -13,6 +15,8 @@ AGGFTriggerPad::AGGFTriggerPad()
 
     /* 기본 설정 */
     TriggerConditionMap.Emplace(ACharacter::StaticClass(), 1);
+    ActivateCueTag.GameplayCueTag = GameplayCue::Button::Activate;
+    DeactivateCueTag.GameplayCueTag = GameplayCue::Button::Deactivate;
 }
 
 void AGGFTriggerPad::OnTriggerBoxBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
@@ -69,10 +73,12 @@ bool AGGFTriggerPad::IsTriggerConditionSatisfied() const
 
 bool AGGFTriggerPad::Activate_Implementation(AActor* InstigatorActor)
 {
+    UGEBlueprintFunctionLibrary::LocalHandleGameplayCue(this, ActivateCueTag);
     return true;
 }
 
 bool AGGFTriggerPad::Deactivate_Implementation(AActor* InstigatorActor)
 {
+    UGEBlueprintFunctionLibrary::LocalHandleGameplayCue(this, DeactivateCueTag);
     return true;
 }

@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayCueInterface.h"
 #include "GGFTriggerBox.h"
 #include "Interfaces/GGFActivationInterface.h"
 #include "GGFTriggerPad.generated.h"
@@ -28,6 +29,12 @@ protected:
     // 트리거 조건을 한 번 만족하고 나면 비활성화됩니다.
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config")
     bool bTriggerOnce;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config")
+    FGameplayCueTag ActivateCueTag;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config")
+    FGameplayCueTag DeactivateCueTag;
 
 public:
     AGGFTriggerPad();
