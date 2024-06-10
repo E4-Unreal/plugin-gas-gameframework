@@ -9,6 +9,8 @@ FName AGGFInteractableActor::InteractableComponentName(TEXT("InteractableCompone
 
 AGGFInteractableActor::AGGFInteractableActor()
 {
+    bReplicates = true;
+
     /* Interactable Component */
     InteractableComponent = CreateDefaultSubobject<UGGFInteractableComponent>(TEXT("InteractableComponent"));
     InteractableComponent->SetupAttachment(GetTriggerBox());
