@@ -41,7 +41,7 @@ bool UGEGameplayAbility::CanActivateAbility(const FGameplayAbilitySpecHandle Han
         auto AbilitySpec = ActorInfo->AbilitySystemComponent->FindAbilitySpecFromHandle(Handle);
         auto AbilityInstance = CastChecked<UGEGameplayAbility>(AbilitySpec->GetPrimaryInstance());
 
-        return Super::CanActivateAbility(Handle, ActorInfo, SourceTags, TargetTags, OptionalRelevantTags) && AbilityInstance->CanActivate();
+        return Super::CanActivateAbility(Handle, ActorInfo, SourceTags, TargetTags, OptionalRelevantTags) && AbilityInstance->bValid && AbilityInstance->InternalCanActivate();
     }
 
     return Super::CanActivateAbility(Handle, ActorInfo, SourceTags, TargetTags, OptionalRelevantTags);
@@ -52,6 +52,7 @@ void UGEGameplayAbility::InputPressed(const FGameplayAbilitySpecHandle Handle,
 {
     Super::InputPressed(Handle, ActorInfo, ActivationInfo);
 
+    // TODO 의도한대로 동작하지 않습니다. 아직은 크게 중요하지 않은 사항이기 때문에 나중에 수정할 예정입니다.
     // 어빌리티 입력이 활성화되었지만 어빌리티가 활성화되지 않은 경우 실패한 것으로 간주하여 어빌리티 입력을 초기화합니다.
     GetCurrentAbilitySpec()->InputPressed = GetCurrentAbilitySpec()->IsActive();
 }

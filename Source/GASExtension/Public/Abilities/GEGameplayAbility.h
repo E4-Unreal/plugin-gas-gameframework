@@ -21,7 +21,7 @@ protected:
     FGameplayTag InputTag;
 
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "State", Transient)
-    bool bCanActivate = true;
+    bool bValid = true;
 
 public:
     UGEGameplayAbility();
@@ -36,13 +36,14 @@ public:
 
     virtual FORCEINLINE FGameplayTag GetAbilityInputTag_Implementation() const override { return InputTag; }
 
-    /* API */
-
-    UFUNCTION(BlueprintPure)
-    FORCEINLINE bool CanActivate() const { return bCanActivate; }
-
 protected:
     /* GameplayAbility */
 
     virtual void EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled) override;
+
+    /* 메서드 */
+
+    // 인스턴싱 정책이 InstancedPerActor로 설정된 경우 CanActivateAbility에서 사용됩니다.
+    UFUNCTION(BlueprintPure)
+    virtual bool InternalCanActivate() const { return true; }
 };
