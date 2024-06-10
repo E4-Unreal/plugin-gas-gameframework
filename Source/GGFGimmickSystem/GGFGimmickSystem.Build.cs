@@ -18,7 +18,8 @@ public class GGFGimmickSystem : ModuleRules
 
                 // GASGameFramework
                 "GGFCore",
-                "GASExtension"
+                "GASExtension",
+                "GGFInteractionSystem"
             }
         );
 

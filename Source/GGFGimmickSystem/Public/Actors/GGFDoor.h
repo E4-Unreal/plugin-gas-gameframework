@@ -31,11 +31,11 @@ class GGFGIMMICKSYSTEM_API AGGFDoor : public AGGFTimelineActor, public IGGFActiv
     UPROPERTY(VisibleAnywhere, BlueprintGetter = GetDefaultSceneComponent, Category = "Component")
     TObjectPtr<USceneComponent> DefaultSceneComponent;
 
-    UPROPERTY(VisibleAnywhere, BlueprintGetter = GetDoorMesh, Category = "Component")
-    TObjectPtr<UStaticMeshComponent> DoorMesh;
-
     UPROPERTY(VisibleAnywhere, BlueprintGetter = GetDoorFrameMesh, Category = "Component")
     TObjectPtr<UStaticMeshComponent> DoorFrameMesh;
+
+    UPROPERTY(VisibleAnywhere, BlueprintGetter = GetDoorMesh, Category = "Component")
+    TObjectPtr<UStaticMeshComponent> DoorMesh;
 
 protected:
     // 문이 열리는 방식
@@ -55,18 +55,23 @@ protected:
     int32 TriggerCount = 1;
 
     // 현재 발생한 트리거 횟수
-    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State", Transient)
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State|Door", Transient)
     int32 TriggerStack;
 
     // 처음 설정된 DoorMesh 오프셋
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State|Door", Transient)
     FTransform TransformOffset;
 
+    // 활성화 상태
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State|Door", Transient, ReplicatedUsing = OnRep_Open)
+    bool bOpen;
+
 public:
     AGGFDoor();
 
     /* Actor */
 
+    virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
     virtual void PostInitializeComponents() override;
 
     /* ActivationInterface */
@@ -79,6 +84,11 @@ protected:
 
     virtual void OnTimelineActivated_Implementation(float Value) override;
 
+    /* OnRep */
+
+    UFUNCTION()
+    virtual void OnRep_Open(bool bOldOpen);
+
     /* 메서드 */
 
     UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
@@ -87,6 +97,9 @@ protected:
     UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
     void Close();
 
+    UFUNCTION(BlueprintCallable)
+    void Toggle();
+
 public:
     /* Getter */
 
@@ -94,8 +107,8 @@ public:
     FORCEINLINE USceneComponent* GetDefaultSceneComponent() const { return DefaultSceneComponent; }
 
     UFUNCTION(BlueprintGetter)
-    FORCEINLINE UStaticMeshComponent* GetDoorMesh() const { return DoorMesh; }
+    FORCEINLINE UStaticMeshComponent* GetDoorFrameMesh() const { return DoorFrameMesh; }
 
     UFUNCTION(BlueprintGetter)
-    FORCEINLINE UStaticMeshComponent* GetDoorFrameMesh() const { return DoorFrameMesh; }
+    FORCEINLINE UStaticMeshComponent* GetDoorMesh() const { return DoorMesh; }
 };
