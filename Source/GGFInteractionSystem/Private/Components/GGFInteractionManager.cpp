@@ -8,7 +8,7 @@ void UGGFInteractionManager::Interact()
 {
     if(CanInteract())
     {
-        InteractableComponent->TryInteract(GetOwner());
+        InteractableComponent->TryInteract(CastChecked<APawn>(GetOwner()));
     }
     else
     {

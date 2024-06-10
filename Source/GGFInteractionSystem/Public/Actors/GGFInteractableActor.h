@@ -3,11 +3,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GGFInteractableActorBase.h"
+#include "Actors/GGFTriggerBox.h"
 #include "GGFInteractableActor.generated.h"
 
-class UBoxComponent;
-class UWidgetComponent;
+class UGGFInteractableComponent;
 
 /**
  * InteractableArea 범위 안에 들어온 모든 플레이어 폰에 Interactable 상태 태그를 부여합니다.
@@ -16,42 +15,21 @@ class UWidgetComponent;
  * 수집할 수 있는 아이템이나 버튼처럼 단순한 상호작용 오브젝트에 적합합니다.
  */
 UCLASS()
-class GGFINTERACTIONSYSTEM_API AGGFInteractableActor : public AGGFInteractableActorBase
+class GGFINTERACTIONSYSTEM_API AGGFInteractableActor : public AGGFTriggerBox
 {
     GENERATED_BODY()
 
 public:
     /* 서브 오브젝트 이름 */
 
-    static FName InteractionWidgetName;
+    static FName InteractableComponentName;
 
 private:
     /* 컴포넌트 */
 
-    // 상호작용 가능한 범위
-    UPROPERTY(VisibleAnywhere, BlueprintGetter = "GetInteractableArea", Category = "Component")
-    TObjectPtr<UBoxComponent> InteractableArea;
-
-    // 플레이어가 오브젝트를 인식하기 위한 메시
-    UPROPERTY(VisibleAnywhere, BlueprintGetter = "GetDisplayMesh", Category = "Component")
-    TObjectPtr<UStaticMeshComponent> DisplayMesh;
-
     // 상호작용 안내를 위한 UI
-    UPROPERTY(VisibleAnywhere, BlueprintGetter = "GetInteractionWidget", Category = "Component")
-    TObjectPtr<UWidgetComponent> InteractionWidget;
-
-protected:
-    // 상호작용 가능한 범위 확장을 위한 추가 설정
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config")
-    FVector InteractableAreaMargin;
-
-    // UI에 표시할 오브젝트 이름
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|UI")
-    FName DisplayName = "Interactable Object";
-
-    // UI에 표시할 상호작용에 대한 설명
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|UI")
-    FString InteractionInfo = "Interact";
+    UPROPERTY(VisibleAnywhere, BlueprintGetter = "GetInteractableComponent", Category = "Component")
+    TObjectPtr<UGGFInteractableComponent> InteractableComponent;
 
 public:
     AGGFInteractableActor();
@@ -61,66 +39,29 @@ public:
     virtual void PostInitializeComponents() override;
 
 protected:
-    /* InteractableActorBase */
+    /* 이벤트 */
 
-    // 상호작용 안내를 위한 UI 표시
-    virtual void OnLocalPlayerPawnActivate_Implementation(APawn* LocalPlayerPawn) override;
+    UFUNCTION(BlueprintNativeEvent)
+    void OnPawnInteract(APawn* OtherPawn);
 
-    // 상호작용 안내를 위한 UI 숨기기
-    virtual void OnLocalPlayerPawnDeactivate_Implementation(APawn* LocalPlayerPawn) override;
+    UFUNCTION(BlueprintNativeEvent)
+    void OnLocalPawnInteract(APawn* OtherLocalPawn);
 
-    /* 이벤트 메서드 */
+    UFUNCTION(BlueprintNativeEvent)
+    void OnPawnBeginOverlap(APawn* OtherPawn);
 
-    // InteractableArea::OnComponentBeginOverlap
-    UFUNCTION()
-    virtual void OnInteractableAreaBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+    UFUNCTION(BlueprintNativeEvent)
+    void OnPawnEndOverlap(APawn* OtherPawn);
 
-    // InteractableArea::OnComponentEndOverlap
-    UFUNCTION()
-    virtual void OnInteractableAreaEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+    UFUNCTION(BlueprintNativeEvent)
+    void OnLocalPawnBeginOverlap(APawn* OtherLocalPawn);
 
-    /* 메서드 */
-
-    // 플레이어 폰이 상호작용 가능 범위에 들어온 경우
-    UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-    void OnPlayerPawnBeginOverlap(APawn* PlayerPawn);
-
-    // 플레이어 폰이 상호작용 가능 범위에서 벗어난 경우
-    UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-    void OnPlayerPawnEndOverlap(APawn* PlayerPawn);
-
-    // 로컬 플레이어 폰이 상호작용 가능 범위에 들어온 경우
-    UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-    void OnLocalPlayerPawnBeginOverlap(APawn* LocalPlayerPawn);
-
-    // 로컬 플레이어 폰이 상호작용 가능 범위에서 벗어난 경우
-    UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-    void OnLocalPlayerPawnEndOverlap(APawn* LocalPlayerPawn);
-
-    // 외곽선 활성화
-    UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-    void EnableOutline(bool bEnable);
-
-    // UI 표시
-    UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-    void ActivateInteractionWidget(bool bActivate);
-
-    // DisplayMesh에 따라 다른 컴포넌트들의 위치 및 크기 자동 조정
-    UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-    void AdjustToDisplayMesh();
-
-    UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-    void InitWidget(UUserWidget* InteractionInfoWidget);
+    UFUNCTION(BlueprintNativeEvent)
+    void OnLocalPawnEndOverlap(APawn* OtherLocalPawn);
 
 protected:
     /* Getter */
 
     UFUNCTION(BlueprintGetter)
-    FORCEINLINE UBoxComponent* GetInteractableArea() const { return InteractableArea; }
-
-    UFUNCTION(BlueprintGetter)
-    FORCEINLINE UWidgetComponent* GetInteractionWidget() const { return InteractionWidget; }
-
-    UFUNCTION(BlueprintGetter)
-    FORCEINLINE UStaticMeshComponent* GetDisplayMesh() const { return DisplayMesh; }
+    FORCEINLINE UGGFInteractableComponent* GetInteractableComponent() const { return InteractableComponent; }
 };

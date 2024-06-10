@@ -6,7 +6,8 @@
 #include "Components/WidgetComponent.h"
 #include "GGFInteractableComponent.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnInteractSignature, AActor*, OtherActor);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPawnInteractSignature, APawn*, OtherPawn);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnLocalPawnInteractSignature, APawn*, OtherLocalPawn);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPawnBeginOverlapSignature, APawn*, OtherPawn);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPawnEndOverlapSignature, APawn*, OtherPawn);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnLocalPawnBeginOverlapSignature, APawn*, OtherLocalPawn);
@@ -23,7 +24,10 @@ class GGFINTERACTIONSYSTEM_API UGGFInteractableComponent : public UWidgetCompone
 
 public:
     UPROPERTY(BlueprintAssignable)
-    FOnInteractSignature OnInteract;
+    FOnPawnInteractSignature OnPawnInteract;
+
+    UPROPERTY(BlueprintAssignable)
+    FOnLocalPawnInteractSignature OnLocalPawnInteract;
 
     UPROPERTY(BlueprintAssignable)
     FOnPawnBeginOverlapSignature OnPawnBeginOverlap;
@@ -84,10 +88,10 @@ public:
     virtual void Init(UShapeComponent* InInteractableArea, UMeshComponent* InOutlineTarget);
 
     UFUNCTION(BlueprintCallable)
-    virtual void TryInteract(AActor* InstigatorActor);
+    virtual void TryInteract(APawn* OtherPawn);
 
     UFUNCTION(BlueprintPure)
-    virtual FORCEINLINE bool CanInteract(AActor* InstigatorActor) const { return true; }
+    virtual FORCEINLINE bool CanInteract(AActor* OtherPawn) const { return true; }
 
 protected:
     /* 이벤트 */

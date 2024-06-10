@@ -2,6 +2,7 @@
 
 #include "Components/GGFInteractableComponent.h"
 
+#include "Logging.h"
 #include "KismetTraceUtils.h"
 #include "Components/GGFInteractionManager.h"
 #include "Components/ShapeComponent.h"
@@ -96,9 +97,23 @@ void UGGFInteractableComponent::Init(UShapeComponent* InInteractableArea, UMeshC
     OutlineTargets.Shrink();
 }
 
-void UGGFInteractableComponent::TryInteract(AActor* InstigatorActor)
+void UGGFInteractableComponent::TryInteract(APawn* OtherPawn)
 {
-    if(CanInteract(InstigatorActor)) OnInteract.Broadcast(InstigatorActor);
+    if(OtherPawn == nullptr) return;
+
+#if WITH_EDITOR
+    LOG_ACTOR_COMPONENT_DETAIL(Log, TEXT("%s TryInteract"), *OtherPawn->GetName())
+#endif
+
+    if(CanInteract(OtherPawn))
+    {
+        OnPawnInteract.Broadcast(OtherPawn);
+
+        if(OtherPawn->IsPlayerControlled() && OtherPawn->IsLocallyControlled())
+        {
+            OnLocalPawnInteract.Broadcast(OtherPawn);
+        }
+    }
 }
 
 void UGGFInteractableComponent::OnInteractableAreaBeginOverlap(UPrimitiveComponent* OverlappedComponent,
@@ -156,7 +171,11 @@ void UGGFInteractableComponent::AddOverlappedPawn(APawn* NewPawn)
 
 void UGGFInteractableComponent::RemoveOverlappedPawn(APawn* OldPawn)
 {
+    // 입력 유효성 검사
     if(OldPawn == nullptr) return;
+
+    // 오버랩된 폰 목록에 존재하는지 확인
+    if(!OverlappedPawns.Contains(OldPawn)) return;
 
     // 오버랩된 폰 목록에서 제거
     OverlappedPawns.RemoveSwap(OldPawn);

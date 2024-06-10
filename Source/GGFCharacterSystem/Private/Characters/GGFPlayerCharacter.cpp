@@ -9,12 +9,14 @@
 #include "Components/GGFCharacterSkinManager.h"
 #include "Components/GGFCharacterStateMachine.h"
 #include "Components/GGFEquipmentManager.h"
+#include "Components/GGFInteractionManager.h"
 #include "Input/GGFInputManager.h"
 #include "Net/UnrealNetwork.h"
 
 FName AGGFPlayerCharacter::EquipmentManagerName(TEXT("EquipmentManager"));
 FName AGGFPlayerCharacter::CharacterManagerName(TEXT("CharacterManager"));
 FName AGGFPlayerCharacter::SkinManagerName(TEXT("SkinManager"));
+FName AGGFPlayerCharacter::InteractionManagerName(TEXT("InteractionManager"));
 
 AGGFPlayerCharacter::AGGFPlayerCharacter(const FObjectInitializer& ObjectInitializer)
 : Super(ObjectInitializer
@@ -33,6 +35,9 @@ AGGFPlayerCharacter::AGGFPlayerCharacter(const FObjectInitializer& ObjectInitial
     /* SkinManager */
     SkinManager = CreateDefaultSubobject<UGGFCharacterSkinManager>(SkinManagerName);
     SkinManager->SetCharacterMesh(GetMesh());
+
+    /* InteractionManager */
+    InteractionManager = CreateDefaultSubobject<UGGFInteractionManager>(InteractionManagerName);
 }
 
 void AGGFPlayerCharacter::PreReplication(IRepChangedPropertyTracker& ChangedPropertyTracker)
