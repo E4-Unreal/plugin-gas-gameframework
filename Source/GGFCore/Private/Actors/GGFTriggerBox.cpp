@@ -18,6 +18,10 @@ AGGFTriggerBox::AGGFTriggerBox()
     // 서브 오브젝트 생성
     TriggerBox = CreateDefaultSubobject<UBoxComponent>(TEXT("TriggerBox"));
     TriggerBox->SetupAttachment(RootComponent);
+    TriggerBox->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+    TriggerBox->SetCollisionResponseToAllChannels(ECR_Overlap);
+    TriggerBox->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
+    TriggerBox->SetCollisionResponseToChannel(ECC_Visibility, ECR_Ignore);
 
     // 기본 설정
     TriggerBox->InitBoxExtent(FVector(100, 100, 100));
