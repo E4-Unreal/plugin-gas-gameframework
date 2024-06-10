@@ -18,8 +18,10 @@ enum class EGGFDoorType : uint8
     SlideUp
 };
 
+class USoundCue;
+
 /**
- * 여닫이 문
+ * 문
  */
 UCLASS()
 class GGFGIMMICKSYSTEM_API AGGFDoor : public AGGFTimelineActor, public IGGFActivationInterface
@@ -37,7 +39,16 @@ class GGFGIMMICKSYSTEM_API AGGFDoor : public AGGFTimelineActor, public IGGFActiv
     UPROPERTY(VisibleAnywhere, BlueprintGetter = GetDoorMesh, Category = "Component")
     TObjectPtr<UStaticMeshComponent> DoorMesh;
 
+    UPROPERTY(VisibleAnywhere, BlueprintGetter = GetAudioComponent, Category = "Component")
+    TObjectPtr<UAudioComponent> AudioComponent;
+
 protected:
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|Door")
+    TObjectPtr<USoundCue> OpenSound;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|Door")
+    TObjectPtr<USoundCue> CloseSound;
+
     // 문이 열리는 방식
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|Door")
     EGGFDoorType DoorType = EGGFDoorType::Swing;
@@ -51,7 +62,7 @@ protected:
     float MaxDistance = 100;
 
     // 문이 열리기 위해 필요한 트리거 횟수
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config", meta = (ClampMin = 1))
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|Door", meta = (ClampMin = 1))
     int32 TriggerCount = 1;
 
     // 현재 발생한 트리거 횟수
@@ -100,6 +111,9 @@ protected:
     UFUNCTION(BlueprintCallable)
     void Toggle();
 
+    UFUNCTION(BlueprintCallable)
+    virtual void PlaySound(USoundCue* Sound);
+
 public:
     /* Getter */
 
@@ -111,4 +125,7 @@ public:
 
     UFUNCTION(BlueprintGetter)
     FORCEINLINE UStaticMeshComponent* GetDoorMesh() const { return DoorMesh; }
+
+    UFUNCTION(BlueprintGetter)
+    FORCEINLINE UAudioComponent* GetAudioComponent() const { return AudioComponent; }
 };

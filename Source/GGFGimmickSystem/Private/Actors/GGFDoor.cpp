@@ -2,7 +2,9 @@
 
 #include "Actors/GGFDoor.h"
 
+#include "Components/AudioComponent.h"
 #include "Net/UnrealNetwork.h"
+#include "Sound/SoundCue.h"
 
 AGGFDoor::AGGFDoor()
 {
@@ -17,6 +19,9 @@ AGGFDoor::AGGFDoor()
     /* Door Mesh */
     DoorMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("DoorMesh"));
     DoorMesh->SetupAttachment(GetDoorFrameMesh());
+
+    /* Audio Component */
+    AudioComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("AudioComponent"));
 
     /* 기본 설정 */
     bReplicates = true;
@@ -33,6 +38,18 @@ AGGFDoor::AGGFDoor()
     {
         GetDoorMesh()->SetStaticMesh(DoorMeshFinder.Object);
         GetDoorMesh()->SetRelativeLocation(FVector(0, 45, 0));
+    }
+
+    static ConstructorHelpers::FObjectFinder<USoundCue> OpenSoundFinder(TEXT("/LyraContent/Custom/SoundCues/Effects/SC_Button_01"));
+    if (OpenSoundFinder.Succeeded())
+    {
+        OpenSound = OpenSoundFinder.Object;
+    }
+
+    static ConstructorHelpers::FObjectFinder<USoundCue> CloseSoundFinder(TEXT("/LyraContent/Custom/SoundCues/Effects/SC_Button_01"));
+    if (CloseSoundFinder.Succeeded())
+    {
+        CloseSound = CloseSoundFinder.Object;
     }
 }
 
@@ -99,16 +116,33 @@ void AGGFDoor::Toggle()
     }
 }
 
+void AGGFDoor::PlaySound(USoundCue* Sound)
+{
+    // 기존 소리 재생 중지
+    auto LocalAudioComponent = GetAudioComponent();
+    LocalAudioComponent->Stop();
+
+    // 유효성 검사
+    if(Sound == nullptr) return;
+
+    LocalAudioComponent->SetSound(Sound);
+    float PlayRate = bUseCustomDuration ? Sound->MaxDistance / Duration : 1;
+    LocalAudioComponent->SetPitchMultiplier(PlayRate);
+    LocalAudioComponent->Play();
+}
+
 void AGGFDoor::Open_Implementation()
 {
     bOpen = true;
     PlayTimeline();
+    PlaySound(OpenSound);
 }
 
 void AGGFDoor::Close_Implementation()
 {
     bOpen = false;
     PlayTimeline(true);
+    PlaySound(CloseSound);
 }
 
 void AGGFDoor::OnRep_Open(bool bOldOpen)
