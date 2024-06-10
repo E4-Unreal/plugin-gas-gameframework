@@ -12,7 +12,7 @@ class USplineComponent;
  * 레벨 디자인 시 경로를 표시하기 위해 스플라인 컴포넌트가 포함된 기본 액터입니다.
  */
 UCLASS(ComponentWrapperClass)
-class GGFGIMMICKSYSTEM_API AGGFSplineActor : public AActor
+class GGFCORE_API AGGFSplineActor : public AActor
 {
     GENERATED_BODY()
 

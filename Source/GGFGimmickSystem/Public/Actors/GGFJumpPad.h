@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameplayCueInterface.h"
-#include "GGFTriggerBox.h"
+#include "Actors/GGFTriggerBox.h"
 #include "GGFJumpPad.generated.h"
 
 class UArrowComponent;

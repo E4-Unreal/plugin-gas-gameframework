@@ -11,7 +11,7 @@
  * 타임라인 기능이 포함된 기본 액터 클래스입니다.
  */
 UCLASS()
-class GGFGIMMICKSYSTEM_API AGGFTimelineActor : public AActor
+class GGFCORE_API AGGFTimelineActor : public AActor
 {
     GENERATED_BODY()
 

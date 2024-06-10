@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GGFTriggerBox.h"
+#include "Actors/GGFTriggerBox.h"
 #include "GGFAutoTeleporter.generated.h"
 
 class UGGFTeleportComponent;

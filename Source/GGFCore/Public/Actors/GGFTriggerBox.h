@@ -12,7 +12,7 @@ class UBoxComponent;
  * 기본적인 박스 오버랩 이벤트가 바인딩된 범용 액터 클래스입니다.
  */
 UCLASS()
-class GGFGIMMICKSYSTEM_API AGGFTriggerBox : public AActor
+class GGFCORE_API AGGFTriggerBox : public AActor
 {
     GENERATED_BODY()
 

@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GGFTimelineActor.h"
+#include "Actors/GGFTimelineActor.h"
 #include "Interfaces/GGFActivationInterface.h"
 #include "GGFDoor.generated.h"
 

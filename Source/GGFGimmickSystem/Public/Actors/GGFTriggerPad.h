@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameplayCueInterface.h"
-#include "GGFTriggerBox.h"
+#include "Actors/GGFTriggerBox.h"
 #include "Interfaces/GGFActivationInterface.h"
 #include "GGFTriggerPad.generated.h"
 
