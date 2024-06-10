@@ -11,7 +11,7 @@ AGGFInteractableActor::AGGFInteractableActor()
 {
     /* Interactable Component */
     InteractableComponent = CreateDefaultSubobject<UGGFInteractableComponent>(TEXT("InteractableComponent"));
-    InteractableComponent->SetupAttachment(RootComponent);
+    InteractableComponent->SetupAttachment(GetTriggerBox());
 
     /* 블루프린트 에셋 기본 할당 */
     // LevelPrototyping 플러그인

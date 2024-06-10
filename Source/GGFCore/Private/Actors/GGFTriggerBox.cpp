@@ -18,6 +18,8 @@ AGGFTriggerBox::AGGFTriggerBox()
     // 서브 오브젝트 생성
     TriggerBox = CreateDefaultSubobject<UBoxComponent>(TEXT("TriggerBox"));
     TriggerBox->SetupAttachment(RootComponent);
+
+    // 충돌 설정
     TriggerBox->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
     TriggerBox->SetCollisionResponseToAllChannels(ECR_Overlap);
     TriggerBox->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
@@ -29,6 +31,11 @@ AGGFTriggerBox::AGGFTriggerBox()
     /* DisplayMesh */
     DisplayMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("DisplayMesh"));
     DisplayMesh->SetupAttachment(RootComponent);
+
+    // 충돌 설정
+    DisplayMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+    DisplayMesh->SetCollisionResponseToAllChannels(ECR_Block);
+    DisplayMesh->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
 }
 
 void AGGFTriggerBox::PostInitializeComponents()
