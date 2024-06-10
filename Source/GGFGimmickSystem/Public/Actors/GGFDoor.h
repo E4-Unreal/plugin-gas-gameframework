@@ -38,6 +38,7 @@ class GGFGIMMICKSYSTEM_API AGGFDoor : public AGGFTimelineActor, public IGGFActiv
     TObjectPtr<UStaticMeshComponent> DoorFrameMesh;
 
 protected:
+    // 문이 열리는 방식
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|Door")
     EGGFDoorType DoorType = EGGFDoorType::Swing;
 
@@ -48,6 +49,14 @@ protected:
     // 문이 움직이는 최대 거리
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|Door", meta = (ClampMin = 0))
     float MaxDistance = 100;
+
+    // 문이 열리기 위해 필요한 트리거 횟수
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config", meta = (ClampMin = 1))
+    int32 TriggerCount = 1;
+
+    // 현재 발생한 트리거 횟수
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State", Transient)
+    int32 TriggerStack;
 
     // 처음 설정된 DoorMesh 오프셋
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State|Door", Transient)

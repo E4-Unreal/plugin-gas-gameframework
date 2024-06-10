@@ -26,14 +26,19 @@ void AGGFDoor::PostInitializeComponents()
 
 bool AGGFDoor::Activate_Implementation(AActor* InstigatorActor)
 {
-    Open();
+    ++TriggerStack;
+
+    if(TriggerStack == TriggerCount) Open();
 
     return true;
 }
 
 bool AGGFDoor::Deactivate_Implementation(AActor* InstigatorActor)
 {
-    Close();
+    --TriggerStack;
+
+    // TODO 리팩토링
+    if(TriggerStack + 1 == TriggerCount) Close();
 
     return true;
 }
