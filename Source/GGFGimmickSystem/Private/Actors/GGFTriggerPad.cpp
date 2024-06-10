@@ -65,7 +65,7 @@ bool AGGFTriggerPad::IsTriggerConditionSatisfied() const
         TArray<AActor*> OverlappingActors;
         GetTriggerBox()->GetOverlappingActors(OverlappingActors, ActorClass);
 
-        if(OverlappingActors.Num() != Num) return false;
+        if(OverlappingActors.Num() <= Num) return false;
     }
 
     return true;
