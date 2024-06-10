@@ -33,6 +33,11 @@ protected:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config")
     bool bServerOnly;
 
+#if WITH_EDITORONLY_DATA
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|Debug")
+    bool bEnableDebug;
+#endif
+
 public:
     AGGFTriggerBox();
 

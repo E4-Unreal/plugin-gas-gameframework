@@ -17,7 +17,7 @@ class GGFGIMMICKSYSTEM_API UGGFTeleportComponent : public UActorComponent
 
 protected:
     // 순간이동 목표
-    UPROPERTY(EditInstanceOnly, BlueprintReadOnly, Category = "Config")
+    UPROPERTY(EditInstanceOnly, BlueprintReadOnly, Category = "Reference")
     TObjectPtr<AActor> Target;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config")

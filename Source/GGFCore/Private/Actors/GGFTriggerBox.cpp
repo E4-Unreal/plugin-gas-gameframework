@@ -72,7 +72,8 @@ void AGGFTriggerBox::OnTriggerBoxBeginOverlap(UPrimitiveComponent* OverlappedCom
                                               UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 #if WITH_EDITOR
-    LOG_ACTOR_DETAIL(Log, TEXT("OtherActor: %s"), *OtherActor->GetName())
+    if(bEnableDebug)
+        LOG_ACTOR_DETAIL(Log, TEXT("OtherActor: %s"), *OtherActor->GetName())
 #endif
 
     if(APawn* OtherPawn = Cast<APawn>(OtherActor))
@@ -85,7 +86,8 @@ void AGGFTriggerBox::OnTriggerBoxEndOverlap(UPrimitiveComponent* OverlappedCompo
     UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
 #if WITH_EDITOR
-    LOG_ACTOR_DETAIL(Log, TEXT("OtherActor: %s"), *OtherActor->GetName())
+    if(bEnableDebug)
+        LOG_ACTOR_DETAIL(Log, TEXT("OtherActor: %s"), *OtherActor->GetName())
 #endif
 
     if(APawn* OtherPawn = Cast<APawn>(OtherActor))
@@ -99,7 +101,8 @@ void AGGFTriggerBox::OnTriggerBoxBeginOverlapPawn_Implementation(UPrimitiveCompo
     const FHitResult& SweepResult)
 {
 #if WITH_EDITOR
-    LOG_ACTOR_DETAIL(Log, TEXT("OtherPawn: %s"), *OtherPawn->GetName())
+    if(bEnableDebug)
+        LOG_ACTOR_DETAIL(Log, TEXT("OtherPawn: %s"), *OtherPawn->GetName())
 #endif
 }
 
@@ -107,6 +110,7 @@ void AGGFTriggerBox::OnTriggerBoxEndOverlapPawn_Implementation(UPrimitiveCompone
     APawn* OtherPawn, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
 #if WITH_EDITOR
-    LOG_ACTOR_DETAIL(Log, TEXT("OtherPawn: %s"), *OtherPawn->GetName())
+    if(bEnableDebug)
+        LOG_ACTOR_DETAIL(Log, TEXT("OtherPawn: %s"), *OtherPawn->GetName())
 #endif
 }
