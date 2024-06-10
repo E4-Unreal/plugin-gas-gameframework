@@ -48,7 +48,7 @@ void UGGFExplosiveComponent::Explode()
     }
 
     // 폭발 효과
-    LocalHandleExplosionGameplayCue();
+    UGEBlueprintFunctionLibrary::LocalHandleGameplayCue(GetOwner(), ExplosionCueTag);
 
     // 파괴
     if(bAutoDestroy) GetOwner()->Destroy();
@@ -183,16 +183,6 @@ void UGGFExplosiveComponent::GetLocationsForExplosionDetection(AActor* Target, T
     TargetLocations.Add(BottomLocation);
     TargetLocations.Add(LeftLocation);
     TargetLocations.Add(RightLocation);
-}
-
-void UGGFExplosiveComponent::LocalHandleExplosionGameplayCue()
-{
-    AActor* ExplosiveActor = GetOwner();
-    FGameplayCueParameters GameplayCueParameters;
-    GameplayCueParameters.Location = ExplosiveActor->GetActorLocation();
-    GameplayCueParameters.Normal = ExplosiveActor->GetActorRotation().Vector();
-
-    UAbilitySystemGlobals::Get().GetGameplayCueManager()->HandleGameplayCue(ExplosiveActor, ExplosionCueTag.GameplayCueTag, EGameplayCueEvent::Executed, GameplayCueParameters);
 }
 
 void UGGFExplosiveComponent::ApplyEffects(AActor* Target)
