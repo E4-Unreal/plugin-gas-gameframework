@@ -40,8 +40,7 @@ public:
 
     UPROPERTY(BlueprintAssignable)
     FOnLocalPawnEndOverlapSignature OnLocalPawnEndOverlap;
-
-protected:
+    
     // UI에 표시할 오브젝트 이름
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|UI")
     FName DisplayName = "Interactable Object";
