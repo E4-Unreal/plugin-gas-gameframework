@@ -5,6 +5,18 @@
 #include "Interfaces/GGFActivationInterface.h"
 #include "Logging.h"
 
+void UGGFTriggerComponent::ToggleActivateTargets()
+{
+    if(IsActivated())
+    {
+        DeactivateTargets();
+    }
+    else
+    {
+        ActivateTargets();
+    }
+}
+
 void UGGFTriggerComponent::ActivateTargets()
 {
     if(bShouldToggle && bActivated) return;

@@ -29,13 +29,16 @@ public:
 public:
     /* API */
 
-    UFUNCTION(BlueprintCallable)
+    UFUNCTION(BlueprintCallable, Category = "TriggerComponent")
+    virtual void ToggleActivateTargets();
+
+    UFUNCTION(BlueprintCallable, Category = "TriggerComponent")
     virtual void ActivateTargets();
 
-    UFUNCTION(BlueprintCallable)
+    UFUNCTION(BlueprintCallable, Category = "TriggerComponent")
     virtual void DeactivateTargets();
 
-    UFUNCTION(BlueprintPure)
+    UFUNCTION(BlueprintPure, Category = "TriggerComponent")
     FORCEINLINE bool IsActivated() const { return bActivated; }
 
 protected:
