@@ -35,8 +35,16 @@ bool UGGFActivatableComponent::TryActivate(AActor* NewActivator, bool bForce)
     // 이벤트 호출
     OnBeginActivate.Broadcast(Activator);
 
-    // 타이머 설정
-    GetOwner()->GetWorldTimerManager().SetTimer(ActivationTimerHandle, this, &ThisClass::InternalOnEndActivate, ActivationDuration);
+    if(FMath::IsNearlyZero(ActivationDuration))
+    {
+        // 즉시 활성화 종료
+        InternalOnEndActivate();
+    }
+    else
+    {
+        // 활성화 종료 타이머 설정
+        GetOwner()->GetWorldTimerManager().SetTimer(ActivationTimerHandle, this, &ThisClass::InternalOnEndActivate, ActivationDuration);
+    }
 
     return true;
 }
@@ -61,8 +69,16 @@ bool UGGFActivatableComponent::TryDeactivate(AActor* NewActivator, bool bForce)
     // 이벤트 호출
     OnBeginDeactivate.Broadcast(Activator);
 
-    // 타이머 설정
-    GetOwner()->GetWorldTimerManager().SetTimer(DeactivationTimerHandle, this, &ThisClass::InternalOnEndDeactivate, DeactivationDuration);
+    if(FMath::IsNearlyZero(DeactivationDuration))
+    {
+        // 즉시 활성화 종료
+        InternalOnEndDeactivate();
+    }
+    else
+    {
+        // 타이머 설정
+        GetOwner()->GetWorldTimerManager().SetTimer(DeactivationTimerHandle, this, &ThisClass::InternalOnEndDeactivate, DeactivationDuration);
+    }
 
     return false;
 }
