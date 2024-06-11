@@ -84,10 +84,6 @@ protected:
     // 폭발 피격 판정을 위한 위치 계산
     static void GetLocationsForExplosionDetection(AActor* Target, TArray<FVector>& TargetLocations);
 
-    // 폭발 효과 스폰
-    UFUNCTION(BlueprintCallable)
-    virtual void LocalHandleExplosionGameplayCue();
-
     // 폭발 피격 대상에게 데미지 및 추가 효과 적용
     UFUNCTION(BlueprintCallable)
     virtual void ApplyEffects(AActor* Target);

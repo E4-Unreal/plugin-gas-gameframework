@@ -32,11 +32,8 @@ public:
 
     /* InteractableActorBase */
 
-    // 로컬 플레이어에게 위젯 표시
-    virtual void OnLocalPlayerPawnStartInteraction_Implementation(APawn* LocalPlayerPawn) override;
-
-    // 로컬 플레이어에게 위젯 숨기기
-    virtual void OnLocalPlayerPawnDeactivate_Implementation(APawn* LocalPlayerPawn) override;
+    virtual void OnLocalPawnInteract_Implementation(APawn* OtherLocalPawn) override;
+    virtual void OnLocalPawnEndOverlap_Implementation(APawn* OtherLocalPawn) override;
 
 protected:
     // 상호작용 시작 시 위젯을 생성합니다.

@@ -6,10 +6,6 @@
 
 AGGFInteractableMenuActor::AGGFInteractableMenuActor()
 {
-    /* 초기화 */
-    DisplayName = "Interactable Menu Object";
-    InteractionInfo = "Show Menu";
-
     /* 블루프린트 에셋 기본 할당 */
     // LevelPrototyping 플러그인
     GetDisplayMesh()->SetRelativeLocation(FVector(0, 0, 100));
@@ -23,20 +19,20 @@ AGGFInteractableMenuActor::AGGFInteractableMenuActor()
     }
 }
 
-void AGGFInteractableMenuActor::OnLocalPlayerPawnStartInteraction_Implementation(APawn* LocalPlayerPawn)
+void AGGFInteractableMenuActor::OnLocalPawnInteract_Implementation(APawn* OtherLocalPawn)
 {
-    Super::OnLocalPlayerPawnStartInteraction_Implementation(LocalPlayerPawn);
+    Super::OnLocalPawnInteract_Implementation(OtherLocalPawn);
 
     // 위젯 생성
-    CreateLocalPlayerWidget(LocalPlayerPawn);
-\
+    CreateLocalPlayerWidget(OtherLocalPawn);
+
     // 위젯 표시
     if(MenuWidget) MenuWidget->AddToViewport();
 }
 
-void AGGFInteractableMenuActor::OnLocalPlayerPawnDeactivate_Implementation(APawn* LocalPlayerPawn)
+void AGGFInteractableMenuActor::OnLocalPawnEndOverlap_Implementation(APawn* OtherLocalPawn)
 {
-    Super::OnLocalPlayerPawnDeactivate_Implementation(LocalPlayerPawn);
+    Super::OnLocalPawnEndOverlap_Implementation(OtherLocalPawn);
 
     // 위젯 숨기기
     if(MenuWidget) MenuWidget->RemoveFromParent();

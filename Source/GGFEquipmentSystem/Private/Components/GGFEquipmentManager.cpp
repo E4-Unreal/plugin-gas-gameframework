@@ -9,6 +9,13 @@
 
 const FEquipmentSlot FEquipmentSlot::EmptySlot;
 
+void UGGFEquipmentManager::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+    Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+    DOREPLIFETIME(ThisClass, SelectedEquipment);
+}
+
 void UGGFEquipmentManager::InitializeComponent()
 {
     Super::InitializeComponent();
@@ -20,11 +27,33 @@ void UGGFEquipmentManager::InitializeComponent()
     AddDefaultEquipments();
 }
 
-void UGGFEquipmentManager::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+void UGGFEquipmentManager::Activate(bool bReset)
 {
-    Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+    Super::Activate(bReset);
 
-    DOREPLIFETIME(ThisClass, SelectedEquipment);
+    // 모든 장비 숨김 해제
+    HideEquipments(false);
+}
+
+void UGGFEquipmentManager::Deactivate()
+{
+    Super::Deactivate();
+
+    // 모든 장비 숨기기
+    HideEquipments(true);
+}
+
+void UGGFEquipmentManager::OnComponentDestroyed(bool bDestroyingHierarchy)
+{
+    Super::OnComponentDestroyed(bDestroyingHierarchy);
+
+    // TODO 옵션을 통해 파괴 대신 아이템 드랍으로 변경할 수 있는 기능 구현 필요
+    // 모든 장비 파괴
+    for (const auto& [EquipmentSlot, Equipment] : EquipmentSlots)
+    {
+        if(Equipment == nullptr) continue;
+        Equipment->Destroy();
+    }
 }
 
 bool UGGFEquipmentManager::AddEquipment(TSubclassOf<AActor> EquipmentClass)
@@ -208,6 +237,17 @@ void UGGFEquipmentManager::OnTargetMeshChanged()
 
     // 선택 장비를 새로운 메시의 손 소켓에 부착
     AttachEquipment(SelectedEquipment, HandSocketName);
+}
+
+void UGGFEquipmentManager::HideEquipments(bool bHidden)
+{
+    // TODO 이미 숨겨진 장비들에 대한 플래그 설정 필요
+    // 모든 장비 숨기기
+    for (const auto& [EquipmentSlot, Equipment] : EquipmentSlots)
+    {
+        if(Equipment == nullptr) continue;
+        Equipment->SetActorHiddenInGame(bHidden);
+    }
 }
 
 void UGGFEquipmentManager::CreateEquipmentSlots()

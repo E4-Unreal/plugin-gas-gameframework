@@ -45,7 +45,9 @@ public class GASGameFramework : ModuleRules
                 "ModularGameplay",
 
                 // 하위 모듈
+                "GGFCore",
                 "GASExtension",
+                "GGFDataSystem",
                 "GGFEquipmentSystem",
                 "GGFInteractionSystem",
                 "GGFShooterCore",

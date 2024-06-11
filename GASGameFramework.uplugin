@@ -20,17 +20,27 @@
 			"LoadingPhase": "Default"
 		},
 		{
+			"Name": "GGFCore",
+			"Type": "Runtime",
+			"LoadingPhase": "PreDefault"
+		},
+		{
+			"Name": "GASExtension",
+			"Type": "Runtime",
+			"LoadingPhase": "PreDefault"
+		},
+		{
+			"Name": "GGFDataSystem",
+			"Type": "Runtime",
+			"LoadingPhase": "PreDefault"
+		},
+		{
 			"Name": "GGFItemSystem",
 			"Type": "Runtime",
 			"LoadingPhase": "PreDefault"
 		},
 		{
 			"Name": "GGFInventorySystem",
-			"Type": "Runtime",
-			"LoadingPhase": "PreDefault"
-		},
-		{
-			"Name": "GASExtension",
 			"Type": "Runtime",
 			"LoadingPhase": "PreDefault"
 		},
@@ -60,12 +70,12 @@
 			"LoadingPhase": "PreDefault"
 		},
 		{
-			"Name": "GGFDataSystem",
+			"Name": "GGFCombatCore",
 			"Type": "Runtime",
 			"LoadingPhase": "PreDefault"
 		},
 		{
-			"Name": "GGFCombatCore",
+			"Name": "GGFGimmickSystem",
 			"Type": "Runtime",
 			"LoadingPhase": "PreDefault"
 		}

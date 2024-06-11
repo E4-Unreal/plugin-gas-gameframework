@@ -64,6 +64,9 @@ bool FGameplayCueNotify_CascadeInfo::PlayParticleEffect(AActor* Target, const FG
         TargetComponent = Parameters.TargetAttachComponent.IsValid() ? Parameters.TargetAttachComponent.Get() : Target ? Target->GetDefaultAttachComponent() : nullptr;
     }
 
+    // 옵션 확인
+    if(bIgnoreRotation) SpawnRotation = FRotator::ZeroRotator;
+
     // Attach
     if (bAttach && TargetComponent)
     {

@@ -23,6 +23,7 @@ struct FGGFCharacterConfig
     TArray<int32> SkinIDList;
 };
 
+class UGGFInteractionManager;
 class UGGFCharacterManager;
 class UGGFCharacterSkinManager;
 struct FInputActionValue;
@@ -45,6 +46,7 @@ public:
     static FName EquipmentManagerName;
     static FName CharacterManagerName;
     static FName SkinManagerName;
+    static FName InteractionManagerName;
 
 private:
     /* 컴포넌트 */
@@ -60,6 +62,10 @@ private:
     // 캐릭터 스킨을 관리하기 위한 컴포넌트입니다.
     UPROPERTY(VisibleAnywhere, BlueprintGetter = GetSkinManager, Category = "Component")
     TObjectPtr<UGGFCharacterSkinManager> SkinManager;
+
+    // 상호작용을 관리하기 위한 컴포넌트
+    UPROPERTY(VisibleAnywhere, BlueprintGetter = GetInteractionManager, Category = "Component")
+    TObjectPtr<UGGFInteractionManager> InteractionManager;
 
 protected:
     /* GGFCharacterAnimationInterface */
@@ -86,6 +92,8 @@ public:
 
     virtual void PreReplication(IRepChangedPropertyTracker& ChangedPropertyTracker) override;
     virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
+    virtual void SetActorHiddenInGame(bool bNewHidden) override;
 
     /* Character */
 
@@ -139,7 +147,7 @@ protected:
     UFUNCTION()
     virtual void OnRep_CharacterConfig(const FGGFCharacterConfig& OldCharacterConfig);
 
-protected:
+public:
     /* Getter */
 
     UFUNCTION(BlueprintGetter)
@@ -150,4 +158,7 @@ protected:
 
     UFUNCTION(BlueprintGetter)
     FORCEINLINE UGGFCharacterSkinManager* GetSkinManager() const { return SkinManager; }
+
+    UFUNCTION(BlueprintGetter)
+    FORCEINLINE UGGFInteractionManager* GetInteractionManager() const { return InteractionManager; }
 };
