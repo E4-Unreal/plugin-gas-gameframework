@@ -58,14 +58,15 @@ void AGGFTriggerPad::CheckTriggerCondition()
     }
 }
 
-bool AGGFTriggerPad::IsTriggerConditionSatisfied() const
+bool AGGFTriggerPad::IsTriggerConditionSatisfied()
 {
     for (const auto& [ActorClass, Num] : TriggerConditionMap)
     {
         TArray<AActor*> OverlappingActors;
         GetTriggerBox()->GetOverlappingActors(OverlappingActors, ActorClass);
+        OverlappingActors.RemoveSwap(this);
 
-        if(OverlappingActors.Num() <= Num) return false;
+        if(OverlappingActors.Num() < Num) return false;
     }
 
     return true;

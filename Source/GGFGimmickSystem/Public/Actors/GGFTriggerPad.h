@@ -30,9 +30,11 @@ protected:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config")
     bool bTriggerOnce;
 
+    // 활성화 게임플레이 큐 태그
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config")
     FGameplayCueTag ActivateCueTag;
 
+    // 비활성화 게임플레이 큐 태그
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config")
     FGameplayCueTag DeactivateCueTag;
 
@@ -58,7 +60,7 @@ protected:
 
     // 트리거 조건 확인
     UFUNCTION(BlueprintPure)
-    virtual bool IsTriggerConditionSatisfied() const;
+    virtual bool IsTriggerConditionSatisfied();
 
 public:
     /* Getter */

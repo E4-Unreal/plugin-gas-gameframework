@@ -22,6 +22,7 @@ AGGFDoor::AGGFDoor()
 
     /* Audio Component */
     AudioComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("AudioComponent"));
+    AudioComponent->SetupAttachment(RootComponent);
 
     /* 기본 설정 */
     bReplicates = true;
@@ -38,6 +39,7 @@ AGGFDoor::AGGFDoor()
     {
         GetDoorMesh()->SetStaticMesh(DoorMeshFinder.Object);
         GetDoorMesh()->SetRelativeLocation(FVector(0, 45, 0));
+        GetAudioComponent()->SetRelativeLocation(FVector(0, -40, 90));
     }
 
     static ConstructorHelpers::FObjectFinder<USoundCue> OpenSoundFinder(TEXT("/LyraContent/Custom/SoundCues/Effects/SC_Button_01"));
