@@ -93,8 +93,8 @@ void AGGFEquipment::Deactivate_Implementation()
     // 액티브 게임플레이 이펙트 제거
     RemoveEffectsFromOwner(ActiveEffectSpecHandles);
 
-    // 액티브 어빌리티 제거
-    ClearAbilitiesFromOwner(ActiveAbilitySpecHandles);
+    /*// 액티브 어빌리티 제거
+    ClearAbilitiesFromOwner(ActiveAbilitySpecHandles);*/
 }
 
 void AGGFEquipment::OnEquip_Implementation()

@@ -32,7 +32,7 @@ void UGGFGA_Interact::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
     }
 }
 
-bool UGGFGA_Interact::InternalCanActivate() const
+bool UGGFGA_Interact::InternalCanActivate()
 {
     if(InteractionManager.IsValid())
     {

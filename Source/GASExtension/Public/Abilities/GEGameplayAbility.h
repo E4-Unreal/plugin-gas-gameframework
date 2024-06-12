@@ -45,5 +45,5 @@ protected:
 
     // 인스턴싱 정책이 InstancedPerActor로 설정된 경우 CanActivateAbility에서 사용됩니다.
     UFUNCTION(BlueprintPure)
-    virtual bool InternalCanActivate() const { return true; }
+    virtual bool InternalCanActivate() { return true; }
 };
