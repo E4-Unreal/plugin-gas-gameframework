@@ -8,6 +8,7 @@
 #include "GEBlueprintFunctionLibrary.h"
 #include "GGFEquipmentGameplayTags.h"
 #include "Components/GGFEquipmentDataManager.h"
+#include "Data/GGFEquipmentDefinition.h"
 #include "Interfaces/GGFWeaponAbilityInterface.h"
 
 AGGFEquipment::AGGFEquipment()
@@ -17,13 +18,24 @@ AGGFEquipment::AGGFEquipment()
     // 리플리케이트 설정
     bReplicates = true;
 
-    // 기본값 설정
-    using namespace GGFGameplayTags::Equipment;
-    EquipmentType = Root;
-    EquipmentSlot = Slot::Root;
-
     /* DataManager */
     DataManager = CreateDefaultSubobject<UGGFEquipmentDataManager>(TEXT("DataManager"));
+}
+
+void AGGFEquipment::OnConstruction(const FTransform& Transform)
+{
+    Super::OnConstruction(Transform);
+
+    // 초기화
+    OnIDUpdated(GetDataManager()->GetID());
+}
+
+void AGGFEquipment::PreInitializeComponents()
+{
+    Super::PreInitializeComponents();
+
+    // DataManager 이벤트 바인딩
+    GetDataManager()->OnIDUpdated.AddDynamic(this, &ThisClass::OnIDUpdated);
 }
 
 void AGGFEquipment::PostInitializeComponents()
@@ -105,6 +117,21 @@ void AGGFEquipment::Deactivate_Implementation()
 
     // 액티브 어빌리티 제거
     ClearAbilitiesFromOwner(ActiveAbilitySpecHandles);
+}
+
+const FGameplayTag AGGFEquipment::GetEquipmentSlot_Implementation() const
+{
+    return GetDataManager()->GetData().EquipmentSlot;
+}
+
+const FGameplayTag AGGFEquipment::GetEquipmentType_Implementation() const
+{
+    return GetDataManager()->GetData().EquipmentType;
+}
+
+void AGGFEquipment::OnIDUpdated(int32 NewID)
+{
+
 }
 
 void AGGFEquipment::OnEquip_Implementation()

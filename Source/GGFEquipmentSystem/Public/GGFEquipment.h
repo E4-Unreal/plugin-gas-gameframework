@@ -31,12 +31,6 @@ class GGFEQUIPMENTSYSTEM_API AGGFEquipment : public AActor, public IGGFEquipment
     TObjectPtr<UAbilitySystemComponent> OwnerAbilitySystem;
 
 protected:
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Config|Equipment", meta = (Categories = "Equipment"))
-    FGameplayTag EquipmentType;
-
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Config|Equipment", meta = (Categories = "Equipment.Slot"))
-    FGameplayTag EquipmentSlot;
-
     /* Passive Effect */
 
     // 장비가 장착되는 즉시 소유자에게 적용될 게임플레이 이펙트 목록입니다.
@@ -86,6 +80,8 @@ public:
 
     /* Actor */
 
+    virtual void OnConstruction(const FTransform& Transform) override;
+    virtual void PreInitializeComponents() override;
     virtual void PostInitializeComponents() override;
 
     virtual void SetOwner(AActor* NewOwner) override;
@@ -97,10 +93,15 @@ public:
     virtual void UnEquip_Implementation() override;
     virtual void Activate_Implementation() override;
     virtual void Deactivate_Implementation() override;
-    FORCEINLINE virtual const FGameplayTag GetEquipmentSlot_Implementation() const override { return EquipmentSlot; }
-    FORCEINLINE virtual const FGameplayTag GetEquipmentType_Implementation() const override { return EquipmentType; }
+    virtual const FGameplayTag GetEquipmentSlot_Implementation() const override;
+    virtual const FGameplayTag GetEquipmentType_Implementation() const override;
 
 protected:
+    /* 이벤트 */
+
+    UFUNCTION(BlueprintCallable)
+    virtual void OnIDUpdated(int32 NewID);
+
     /* 메서드 */
 
     UFUNCTION(BlueprintNativeEvent, Category = "Equipment")

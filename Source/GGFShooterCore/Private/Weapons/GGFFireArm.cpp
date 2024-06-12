@@ -2,6 +2,8 @@
 
 #include "Weapons/GGFFireArm.h"
 
+#include "Components/GGFEquipmentDataManager.h"
+#include "Data/GGFEquipmentDefinition.h"
 #include "Kismet/GameplayStatics.h"
 #include "Net/UnrealNetwork.h"
 #include "Sound/SoundCue.h"
@@ -203,6 +205,14 @@ void AGGFFireArm::Deactivate_Implementation()
         /*if(UAnimInstance* LocalFirstPersonAnimInstance = GetFirstPersonAnimInstance())
             LocalFirstPersonAnimInstance->OnPlayMontageNotifyBegin.RemoveDynamic(this, &ThisClass::OnPlayMontageNotifyBegin_Event);*/
     }
+}
+
+void AGGFFireArm::OnIDUpdated(int32 NewID)
+{
+    Super::OnIDUpdated(NewID);
+
+    const auto& Data = GetDataManager()->GetData();
+    GetSkeletalMesh()->SetSkeletalMesh(Data.SkeletalMesh);
 }
 
 void AGGFFireArm::PlayAnimation(UAnimMontage* Animation) const

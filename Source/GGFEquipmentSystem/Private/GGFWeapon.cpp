@@ -2,14 +2,12 @@
 
 #include "GGFWeapon.h"
 
-#include "AbilitySystemComponent.h"
-#include "GGFEquipmentGameplayTags.h"
 #include "Interfaces/GGFCharacterAnimationInterface.h"
 
 AGGFWeapon::AGGFWeapon()
     : bOwnerCharacterValid(false)
 {
-    EquipmentType = GGFGameplayTags::Equipment::Weapon::Root;
+
 }
 
 void AGGFWeapon::PlayCharacterMontage(UAnimMontage* MontageToPlay)
