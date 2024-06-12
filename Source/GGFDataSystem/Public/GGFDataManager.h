@@ -37,7 +37,7 @@ protected:
     /* Static */
 
     template<class T>
-    static T* GetDataSubsystem()
+    T* GetDataSubsystem() const
     {
         if(auto GameInstance = GetOwner()->GetGameInstance())
         {

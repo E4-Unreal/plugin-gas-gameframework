@@ -1,19 +1,19 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
-#include "Components/GGFItemDataManager.h"
+#include "Components/GGFEquipmentDataManager.h"
 
-#include "Data/GGFItemDataSubsystem.h"
-#include "Data/GGFItemDefinition.h"
+#include "Data/GGFEquipmentDataSubsystem.h"
+#include "Data/GGFEquipmentDefinition.h"
 #include "Logging.h"
 
-void UGGFItemDataManager::InitializeComponent()
+void UGGFEquipmentDataManager::InitializeComponent()
 {
     Super::InitializeComponent();
 
     bValid = Definition != nullptr;
 }
 
-FGGFItemData UGGFItemDataManager::GetData() const
+FGGFEquipmentData UGGFEquipmentDataManager::GetData() const
 {
     if(Definition)
     {
@@ -21,8 +21,8 @@ FGGFItemData UGGFItemDataManager::GetData() const
     }
     else
     {
-        FGGFItemData UncachedData;
-        bool bFound = UGGFItemDataSubsystem::GetData(ID, UncachedData);
+        FGGFEquipmentData UncachedData;
+        bool bFound = UGGFEquipmentDataSubsystem::GetData(ID, UncachedData);
 
 #if WITH_EDITOR
         if(!bFound)
@@ -35,12 +35,12 @@ FGGFItemData UGGFItemDataManager::GetData() const
     }
 }
 
-void UGGFItemDataManager::SetID(int32 NewID)
+void UGGFEquipmentDataManager::SetID(int32 NewID)
 {
     Definition = nullptr;
-    if(auto ItemDataSubsystem = GetDataSubsystem<UGGFItemDataSubsystem>())
+    if(auto EquipmentDataSubsystem = GetDataSubsystem<UGGFEquipmentDataSubsystem>())
     {
-        Definition = ItemDataSubsystem->GetDefinition(ID);
+        Definition = EquipmentDataSubsystem->GetDefinition(ID);
     }
 
     Super::SetID(NewID);
