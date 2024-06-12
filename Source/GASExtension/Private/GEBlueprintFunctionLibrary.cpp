@@ -294,3 +294,23 @@ void UGEBlueprintFunctionLibrary::LocalHandleGameplayCue(AActor* EffectCauser, c
 
     UAbilitySystemGlobals::Get().GetGameplayCueManager()->HandleGameplayCue(Target, CueTag.GameplayCueTag, EGameplayCueEvent::Executed, GameplayCueParameters);
 }
+
+void UGEBlueprintFunctionLibrary::LocalHandleGameplayCueWithTransform(AActor* EffectCauser,
+    const FGameplayCueTag& CueTag, const FTransform& Transform, AActor* Target, AActor* Instigator)
+{
+    // 유효성 검사
+    if(EffectCauser == nullptr || !CueTag.IsValid()) return;
+
+    // 기본값 설정
+    Target = Target ? Target : EffectCauser;
+    Instigator = Instigator ? Instigator : EffectCauser->GetInstigator();
+
+    // 파라미터 설정
+    FGameplayCueParameters GameplayCueParameters;
+    GameplayCueParameters.EffectCauser = EffectCauser;
+    GameplayCueParameters.Instigator = Instigator;
+    GameplayCueParameters.Location = Transform.GetLocation();
+    GameplayCueParameters.Normal = Transform.GetRotation().ToRotationVector();
+
+    UAbilitySystemGlobals::Get().GetGameplayCueManager()->HandleGameplayCue(Target, CueTag.GameplayCueTag, EGameplayCueEvent::Executed, GameplayCueParameters);
+}

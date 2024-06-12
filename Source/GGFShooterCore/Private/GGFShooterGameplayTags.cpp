@@ -2,6 +2,18 @@
 
 namespace GGFGameplayTags
 {
+    /* 게임플레이 큐 */
+    namespace GameplayCue
+    {
+        namespace FireArm
+        {
+            namespace Muzzle
+            {
+                UE_DEFINE_GAMEPLAY_TAG_COMMENT(Default, "GameplayCue.FireArm.Muzzle.Default", "기본 총구 이펙트")
+            }
+        }
+    }
+
     /* 상태 */
     namespace State
     {

@@ -93,4 +93,7 @@ public:
 
     UFUNCTION(BlueprintCallable, Category = "GEBlueprintFunctionLibrary|GameplayCue")
     static void LocalHandleGameplayCue(AActor* EffectCauser, const FGameplayCueTag& CueTag, AActor* Target = nullptr, AActor* Instigator = nullptr);
+
+    UFUNCTION(BlueprintCallable, Category = "GEBlueprintFunctionLibrary|GameplayCue")
+    static void LocalHandleGameplayCueWithTransform(AActor* EffectCauser, const FGameplayCueTag& CueTag, const FTransform& Transform, AActor* Target = nullptr, AActor* Instigator = nullptr);
 };

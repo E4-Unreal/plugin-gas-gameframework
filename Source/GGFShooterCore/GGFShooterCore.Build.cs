@@ -20,10 +20,9 @@ public class GGFShooterCore : ModuleRules
                 "GameplayTags",
                 "GameplayTasks",
 
-                // GASExtension
-                "GASExtension",
-
                 // GASGameFramework
+                "GGFCore",
+                "GASExtension",
                 "GGFEquipmentSystem",
                 "GGFCombatCore"
             }

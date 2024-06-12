@@ -25,6 +25,9 @@ public:
     TObjectPtr<UParticleSystem> ParticleSystem;
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = GameplayCueNotify)
+    FName AttachSocketName;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = GameplayCueNotify)
     FVector Scale = FVector::OneVector;
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = GameplayCueNotify)

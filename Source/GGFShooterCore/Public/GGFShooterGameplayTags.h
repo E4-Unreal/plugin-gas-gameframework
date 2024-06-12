@@ -4,6 +4,18 @@
 
 namespace GGFGameplayTags
 {
+    /* 게임플레이 큐 */
+    namespace GameplayCue
+    {
+        namespace FireArm
+        {
+            namespace Muzzle
+            {
+                GGFSHOOTERCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Default);
+            }
+        }
+    }
+
     /* 상태 */
     namespace State
     {
@@ -51,3 +63,5 @@ namespace GGFGameplayTags
         }
     }
 }
+
+using namespace GGFGameplayTags;
