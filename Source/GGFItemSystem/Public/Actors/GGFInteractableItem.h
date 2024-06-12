@@ -20,12 +20,18 @@ class GGFITEMSYSTEM_API AGGFInteractableItem : public AGGFInteractableActor
     UPROPERTY(VisibleAnywhere, BlueprintGetter = GetItemDataManager, Category = "Component")
     TObjectPtr<UGGFItemDataManager> ItemDataManager;
 
+protected:
+    // 보유 아이템 수량
+    UPROPERTY(VisibleAnywhere, BlueprintGetter = GetAmount, BlueprintSetter = SetAmount, Category = "State", Transient, ReplicatedUsing = OnRep_Amount)
+    int32 Amount;
+
 public:
     AGGFInteractableItem();
 
     /* AActor */
 
-    virtual void PostInitializeComponents() override;
+    virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+    virtual void PreInitializeComponents() override;
     virtual void OnConstruction(const FTransform& Transform) override;
 
 protected:
@@ -34,9 +40,26 @@ protected:
     UFUNCTION(BlueprintCallable)
     virtual void OnIDUpdated(int32 NewID);
 
+    UFUNCTION(BlueprintCallable)
+    virtual void UpdateDisplayName();
+
+protected:
+    /* 리플리케이트 */
+
+    UFUNCTION()
+    virtual void OnRep_Amount(int32 OldAmount);
+
 public:
     /* Getter */
 
     UFUNCTION(BlueprintGetter)
     FORCEINLINE UGGFItemDataManager* GetItemDataManager() const { return ItemDataManager; }
+
+    UFUNCTION(BlueprintGetter)
+    FORCEINLINE int32 GetAmount() const { return Amount; }
+
+    /* Setter */
+
+    UFUNCTION(BlueprintSetter)
+    virtual void SetAmount(int32 NewAmount);
 };

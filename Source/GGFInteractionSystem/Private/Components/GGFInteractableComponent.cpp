@@ -62,11 +62,7 @@ void UGGFInteractableComponent::InitWidget()
 {
     Super::InitWidget();
 
-    if(GetWidget()->Implements<UGGFInteractionInfoWidgetInterface>())
-    {
-        IGGFInteractionInfoWidgetInterface::Execute_SetDisplayName(GetWidget(), FText::FromName(DisplayName));
-        IGGFInteractionInfoWidgetInterface::Execute_SetInteractionInfo(GetWidget(), FText::FromString(InteractionInfo));
-    }
+    RefreshWidget();
 }
 
 void UGGFInteractableComponent::Init(UShapeComponent* InInteractableArea, UMeshComponent* InOutlineTarget)
@@ -113,6 +109,15 @@ void UGGFInteractableComponent::TryInteract(APawn* OtherPawn)
         {
             OnLocalPawnInteract.Broadcast(OtherPawn);
         }
+    }
+}
+
+void UGGFInteractableComponent::RefreshWidget()
+{
+    if(GetWidget() && GetWidget()->Implements<UGGFInteractionInfoWidgetInterface>())
+    {
+        IGGFInteractionInfoWidgetInterface::Execute_SetDisplayName(GetWidget(), FText::FromName(DisplayName));
+        IGGFInteractionInfoWidgetInterface::Execute_SetInteractionInfo(GetWidget(), FText::FromString(InteractionInfo));
     }
 }
 

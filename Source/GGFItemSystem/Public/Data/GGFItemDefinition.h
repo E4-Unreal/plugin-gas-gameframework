@@ -22,6 +22,14 @@ struct GGFITEMSYSTEM_API FGGFItemData : public FGGFDataTableRowBase
     // 기본 스태틱 메시
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     TObjectPtr<UStaticMesh> DisplayMesh;
+
+    // 하나의 아이템이 가질 수 있는 최대 수량
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (ClampMin = 1))
+    int32 MaxStack = 1;
+
+    // 기본 아이템 수량
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (ClampMin = 1))
+    int32 Amount = 1;
 };
 
 /**
