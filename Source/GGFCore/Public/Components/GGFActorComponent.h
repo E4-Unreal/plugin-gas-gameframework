@@ -14,6 +14,10 @@ class GGFCORE_API UGGFActorComponent : public UActorComponent
 {
     GENERATED_BODY()
 
+protected:
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State", Transient)
+    bool bValid = true;
+
 public:
     UGGFActorComponent();
 
@@ -21,7 +25,7 @@ public:
 
 protected:
     UFUNCTION(BlueprintPure)
-    virtual FORCEINLINE bool IsValid() const { return true; }
+    virtual FORCEINLINE bool IsValid() const { return bValid; }
 
     UFUNCTION(BlueprintPure)
     FORCEINLINE bool IsNotValid() const { return !IsValid(); }
