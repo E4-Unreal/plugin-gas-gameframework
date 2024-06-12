@@ -10,8 +10,6 @@ void UGGFItemDataManager::InitializeComponent()
 {
     Super::InitializeComponent();
 
-    SetID(ID);
-
     bValid = Definition != nullptr;
 }
 
@@ -39,9 +37,7 @@ FGGFItemData UGGFItemDataManager::GetData() const
 
 void UGGFItemDataManager::SetID(int32 NewID)
 {
-    ID = NewID;
     Definition = nullptr;
-
     if(UGameInstance* GameInstance = GetOwner()->GetGameInstance())
     {
         if(UGGFItemDataSubsystem* ItemDataSubsystem = GameInstance->GetSubsystem<UGGFItemDataSubsystem>())
@@ -50,5 +46,5 @@ void UGGFItemDataManager::SetID(int32 NewID)
         }
     }
 
-    OnIDUpdated.Broadcast(NewID);
+    Super::SetID(NewID);
 }
