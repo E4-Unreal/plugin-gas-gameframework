@@ -1,0 +1,4 @@
+RowName,DisplayName,bForbidden,bDeprecated,Icon,SkeletalMesh,EquipmentType,EquipmentSlot,Attack,Defense,MoveSpeed,AttackSpeed,AbilityHaste
+0,Rifle,false,false,/LyraContent/UI/T_Icon_Rifle,/LyraContent/Weapons/Rifle/Mesh/SK_Rifle,Equipment.Weapon.FireArm,Equipment.Slot.Primary,20,0,0,0,0
+1,Shotgun,false,false,/LyraContent/UI/T_Icon_Shotgun,/LyraContent/Weapons/Shotgun/Mesh/SKM_Shotgun,Equipment.Weapon.FireArm,Equipment.Slot.Primary,200,0,0,0,0
+2,Pistol,false,false,/LyraContent/UI/T_Icon_Pistol,/LyraContent/Weapons/Pistol/Mesh/SK_Pistol,Equipment.Weapon.FireArm,Equipment.Slot.Secondary,10,0,0,0,0
