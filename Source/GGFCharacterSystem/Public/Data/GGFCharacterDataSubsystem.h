@@ -62,17 +62,19 @@ public:
 
     /* API */
 
+    // 데이터 테이블로부터 직접 데이터를 읽어오는 메서드로 런타임이 아닌 상황에서 사용합니다.
     UFUNCTION(BlueprintPure, Category = "Character")
     static FORCEINLINE bool GetData(int32 ID, FGGFCharacterData& Data);
 
-    // 캐릭터 ID에 대응하는 캐릭터 정의 데이터 에셋 가져오기
-    UFUNCTION(BlueprintPure, Category = "Character")
-    FORCEINLINE UGGFCharacterDefinition* GetDefinition(int32 ID) const { return CharacterMap.Contains(ID) ? CharacterMap[ID] : nullptr; }
-
-    // 모든 캐릭터 정의 데이터 에셋 가져오기
+    // 모든 데이터 에셋 가져오기
     UFUNCTION(BlueprintPure, Category = "Character")
     const FORCEINLINE TArray<UGGFCharacterDefinition*>& GetAllDefinitions() const { return CharacterList; }
 
+    // ID에 대응하는 데이터 에셋 가져오기
+    UFUNCTION(BlueprintPure, Category = "Character")
+    FORCEINLINE UGGFCharacterDefinition* GetDefinition(int32 ID) const { return CharacterMap.Contains(ID) ? CharacterMap[ID] : nullptr; }
+
+    // 데이터 테이블로부터 직접 데이터를 읽어오는 메서드로 런타임이 아닌 상황에서 사용합니다.
     UFUNCTION(BlueprintPure, Category = "Skin")
     static FORCEINLINE bool GetSkinData(int32 ID, FGGFCharacterSkinData& Data);
 
@@ -80,7 +82,7 @@ public:
     UFUNCTION(BlueprintPure, Category = "Skin")
     FORCEINLINE UGGFCharacterSkinDefinition* GetSkinDefinition(int32 ID) const { return SkinMap.Contains(ID) ? SkinMap[ID] : nullptr; }
 
-    // 모든 캐릭터 스킨 데이터 에셋 가져오기
+    // 모든 데이터 에셋 가져오기
     UFUNCTION(BlueprintPure, Category = "Skin")
     const FORCEINLINE TArray<UGGFCharacterSkinDefinition*>& GetAllSkinDefinitions() const { return SkinList; }
 
