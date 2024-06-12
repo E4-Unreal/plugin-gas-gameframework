@@ -1,11 +1,12 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
-#include "Data/GGFCharacterDefinition.h"
 
-bool UGGFCharacterDefinition::InitFromDataTableRowBase(FGGFDataTableRowBase* NewDataTableRowBase)
+#include "Data/GGFEquipmentDefinition.h"
+
+bool UGGFEquipmentDefinition::InitFromDataTableRowBase(FGGFDataTableRowBase* NewDataTableRowBase)
 {
     // 구조체 캐스팅
-    if(auto NewData = static_cast<FGGFCharacterData*>(NewDataTableRowBase))
+    if(auto NewData = static_cast<FGGFEquipmentData*>(NewDataTableRowBase))
     {
         // 데이터 설정
         Data = *NewData;

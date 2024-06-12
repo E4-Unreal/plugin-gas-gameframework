@@ -5,7 +5,7 @@
 bool UGGFItemDefinition::InitFromDataTableRowBase(FGGFDataTableRowBase* NewDataTableRowBase)
 {
     // 구조체 캐스팅
-    if(FGGFItemData* NewData = static_cast<FGGFItemData*>(NewDataTableRowBase))
+    if(auto NewData = static_cast<FGGFItemData*>(NewDataTableRowBase))
     {
         // 데이터 설정
         Data = *NewData;
