@@ -6,9 +6,9 @@
 #include "Data/GGFItemDefinition.h"
 #include "Logging.h"
 
-void UGGFItemDataManager::InitializeComponent()
+void UGGFItemDataManager::PostInitProperties()
 {
-    Super::InitializeComponent();
+    Super::PostInitProperties();
 
     bValid = Definition != nullptr;
 }

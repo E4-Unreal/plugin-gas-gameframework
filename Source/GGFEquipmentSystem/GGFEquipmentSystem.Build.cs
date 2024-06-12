@@ -18,7 +18,8 @@ public class GGFEquipmentSystem : ModuleRules
 
                 // GASGameFramework
                 "GGFCore",
-                "GGFDataSystem"
+                "GGFDataSystem",
+                "GASExtension"
             }
         );
 

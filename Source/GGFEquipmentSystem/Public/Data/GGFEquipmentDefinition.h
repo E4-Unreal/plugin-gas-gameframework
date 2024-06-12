@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayEffect.h"
 #include "GameplayTagContainer.h"
 #include "GGFDefinitionBase.h"
 #include "GGFEquipmentDefinition.generated.h"
@@ -68,6 +69,17 @@ protected:
     UPROPERTY(EditDefaultsOnly, BlueprintGetter = GetData, Category = "Config")
     FGGFEquipmentData Data;
 
+    // 장비 스탯 전용 게임플레이 이펙트
+    UPROPERTY(EditAnywhere, BlueprintGetter = GetStats, Category = "Config")
+    TObjectPtr<UGameplayEffect> Stats;
+
+protected:
+    // 스탯 전용 게임플레이 이펙트 생성
+    virtual UGameplayEffect* CreateStatsEffect();
+
+    // 스탯 전용 게임플레이 이펙트에 추가할 Modifier
+    virtual FGameplayModifierInfo CreateModifier(const FGameplayAttribute& Attribute, float Value, EGameplayModOp::Type ModOp = EGameplayModOp::Additive);
+
 public:
     /* GGFDefinitionBase */
 
@@ -77,4 +89,7 @@ public:
 
     UFUNCTION(BlueprintGetter)
     const FGGFEquipmentData& GetData() const { return Data; }
+
+    UFUNCTION(BlueprintGetter)
+    UGameplayEffect* GetStats() const { return Stats; }
 };

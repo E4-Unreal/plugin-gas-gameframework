@@ -2,13 +2,15 @@
 
 #include "Components/GGFEquipmentDataManager.h"
 
+#include "AbilitySystemComponent.h"
+#include "AbilitySystemGlobals.h"
 #include "Data/GGFEquipmentDataSubsystem.h"
 #include "Data/GGFEquipmentDefinition.h"
 #include "Logging.h"
 
-void UGGFEquipmentDataManager::InitializeComponent()
+void UGGFEquipmentDataManager::PostInitProperties()
 {
-    Super::InitializeComponent();
+    Super::PostInitProperties();
 
     bValid = Definition != nullptr;
 }
@@ -33,6 +35,36 @@ FGGFEquipmentData UGGFEquipmentDataManager::GetData() const
 
         return UncachedData;
     }
+}
+
+void UGGFEquipmentDataManager::ApplyStatsEffectToTarget(AActor* Target)
+{
+    if(auto TargetSystem = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(Target))
+    {
+        if(GetDefinition())
+        {
+            ActiveStatsEffectHandle = TargetSystem->ApplyGameplayEffectToSelf(
+                    GetDefinition()->GetStats(),
+                    UGameplayEffect::INVALID_LEVEL,
+                    TargetSystem->MakeEffectContext()
+                    );
+        }
+    }
+}
+
+void UGGFEquipmentDataManager::RemoveStatsEffectFromTarget(AActor* Target)
+{
+    if(auto TargetSystem = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(Target))
+    {
+        TargetSystem->RemoveActiveGameplayEffect(ActiveStatsEffectHandle);
+        ActiveStatsEffectHandle.Invalidate();
+    }
+}
+
+UGGFEquipmentDefinition* UGGFEquipmentDataManager::GetDefinition()
+{
+    if(Definition == nullptr) SetID(ID);
+    return Definition;
 }
 
 void UGGFEquipmentDataManager::SetID(int32 NewID)

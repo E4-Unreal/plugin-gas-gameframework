@@ -31,7 +31,7 @@ protected:
 public:
     /* ActorComponent */
 
-    virtual void InitializeComponent() override;
+    virtual void PostInitProperties() override;
 
 protected:
     /* Static */
@@ -39,7 +39,9 @@ protected:
     template<class T>
     T* GetDataSubsystem() const
     {
-        if(auto GameInstance = GetOwner()->GetGameInstance())
+        if(GetWorld() == nullptr) return nullptr;
+
+        if(auto GameInstance = GetWorld()->GetGameInstance())
         {
             return GameInstance->GetSubsystem<T>();
         }

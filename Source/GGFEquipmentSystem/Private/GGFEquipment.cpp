@@ -7,6 +7,7 @@
 #include "GameplayEffect.h"
 #include "GEBlueprintFunctionLibrary.h"
 #include "GGFEquipmentGameplayTags.h"
+#include "Components/GGFEquipmentDataManager.h"
 #include "Interfaces/GGFWeaponAbilityInterface.h"
 
 AGGFEquipment::AGGFEquipment()
@@ -14,12 +15,15 @@ AGGFEquipment::AGGFEquipment()
     /* 초기화 */
 
     // 리플리케이트 설정
-    SetReplicates(true);
+    bReplicates = true;
 
     // 기본값 설정
     using namespace GGFGameplayTags::Equipment;
     EquipmentType = Root;
     EquipmentSlot = Slot::Root;
+
+    /* DataManager */
+    DataManager = CreateDefaultSubobject<UGGFEquipmentDataManager>(TEXT("DataManager"));
 }
 
 void AGGFEquipment::PostInitializeComponents()
@@ -81,6 +85,9 @@ void AGGFEquipment::UnEquip_Implementation()
 
 void AGGFEquipment::Activate_Implementation()
 {
+    // 장비 스탯 적용
+    GetDataManager()->ApplyStatsEffectToTarget(GetOwner());
+
     // 액티브 게임플레이 이펙트 적용
     ApplyEffectsToOwner(ActiveEffects, ActiveEffectSpecHandles);
 
@@ -90,11 +97,14 @@ void AGGFEquipment::Activate_Implementation()
 
 void AGGFEquipment::Deactivate_Implementation()
 {
+    // 장비 스탯 제거
+    GetDataManager()->RemoveStatsEffectFromTarget(GetOwner());
+
     // 액티브 게임플레이 이펙트 제거
     RemoveEffectsFromOwner(ActiveEffectSpecHandles);
 
-    /*// 액티브 어빌리티 제거
-    ClearAbilitiesFromOwner(ActiveAbilitySpecHandles);*/
+    // 액티브 어빌리티 제거
+    ClearAbilitiesFromOwner(ActiveAbilitySpecHandles);
 }
 
 void AGGFEquipment::OnEquip_Implementation()

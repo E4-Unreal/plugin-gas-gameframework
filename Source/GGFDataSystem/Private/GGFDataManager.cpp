@@ -2,9 +2,9 @@
 
 #include "GGFDataManager.h"
 
-void UGGFDataManager::InitializeComponent()
+void UGGFDataManager::PostInitProperties()
 {
-    Super::InitializeComponent();
+    Super::PostInitProperties();
 
     SetID(ID);
 }

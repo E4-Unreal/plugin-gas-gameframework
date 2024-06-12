@@ -10,6 +10,7 @@
 #include "Interfaces/GGFEquipmentInterface.h"
 #include "GGFEquipment.generated.h"
 
+class UGGFEquipmentDataManager;
 class UGameplayEffect;
 
 /**
@@ -19,6 +20,10 @@ UCLASS(Abstract, Blueprintable, BlueprintType)
 class GGFEQUIPMENTSYSTEM_API AGGFEquipment : public AActor, public IGGFEquipmentInterface
 {
     GENERATED_BODY()
+
+    // 데이터 관리 전용 컴포넌트
+    UPROPERTY(VisibleAnywhere, BlueprintGetter = GetDataManager, Category = "Component")
+    TObjectPtr<UGGFEquipmentDataManager> DataManager;
 
     /* 레퍼런스 */
 
@@ -125,4 +130,7 @@ protected:
 
     UFUNCTION(BlueprintGetter)
     FORCEINLINE UAbilitySystemComponent* GetOwnerAbilitySystem() const { return OwnerAbilitySystem; }
+
+    UFUNCTION(BlueprintGetter)
+    FORCEINLINE UGGFEquipmentDataManager* GetDataManager() const { return DataManager; }
 };

@@ -25,7 +25,7 @@ protected:
 public:
     /* ActorComponent */
 
-    virtual void InitializeComponent() override;
+    virtual void PostInitProperties() override;
 
     /* API */
 
