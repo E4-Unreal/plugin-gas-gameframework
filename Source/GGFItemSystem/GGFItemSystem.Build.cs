@@ -12,7 +12,9 @@ public class GGFItemSystem : ModuleRules
                 "Core",
 
                 // GASGameFramework
-                "GGFDataSystem"
+                "GGFCore",
+                "GGFDataSystem",
+                "GGFInteractionSystem"
             }
         );
 
