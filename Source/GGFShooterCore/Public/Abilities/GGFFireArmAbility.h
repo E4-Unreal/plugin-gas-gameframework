@@ -4,27 +4,28 @@
 
 #include "CoreMinimal.h"
 #include "Abilities/GGFWeaponAbility.h"
+#include "Weapons/GGFFireArm.h"
 #include "GGFFireArmAbility.generated.h"
 
 class AGGFFireArm;
+
 /**
  * 총기 전용 어빌리티 클래스
  */
 UCLASS()
-class GGFSHOOTERCORE_API UGGFFireArmAbility : public UGGFWeaponAbility
+class GGFSHOOTERCORE_API UGGFFireArmAbility : public UGGFEquipmentAbility
 {
     GENERATED_BODY()
 
-    TWeakObjectPtr<AGGFFireArm> FireArm;
+protected:
 
-public:
-    virtual bool CanActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayTagContainer* SourceTags, const FGameplayTagContainer* TargetTags, FGameplayTagContainer* OptionalRelevantTags) const override;
+    /* GEGameplayAbility */
+
+    virtual bool InternalCanActivate() override;
 
 protected:
-    /* GGFWeaponAbility */
-    virtual void OnRep_Weapon() override;
-
     /* Getter */
-    UFUNCTION(BlueprintCallable)
-    FORCEINLINE AGGFFireArm* GetFireArm() const { return FireArm.Get(); }
+
+    UFUNCTION(BlueprintPure)
+    FORCEINLINE AGGFFireArm* GetFireArm() const { return Cast<AGGFFireArm>(GetEquipment()); }
 };

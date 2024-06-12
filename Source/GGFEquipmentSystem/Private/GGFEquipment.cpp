@@ -126,29 +126,6 @@ void AGGFEquipment::GiveAbilitiesToOwner(const TArray<TSubclassOf<UGameplayAbili
 
     // 어빌리티 부여
     AbilitySpecHandles = UGEBlueprintFunctionLibrary::GiveAbilitiesToSystem(AbilitiesToGive, GetOwnerAbilitySystem());
-
-    // 부여된 무기 어빌리티에 무기 레퍼런스 추가
-    for (const auto& AbilitySpecHandle : AbilitySpecHandles)
-    {
-        // 유효성 검사
-        FGameplayAbilitySpec* AbilitySpec = GetOwnerAbilitySystem()->FindAbilitySpecFromHandle(AbilitySpecHandle);
-        if(AbilitySpec == nullptr || AbilitySpec->Ability == nullptr) continue;
-
-        // 인스턴싱 정책 확인
-        if(AbilitySpec->Ability->GetInstancingPolicy() != EGameplayAbilityInstancingPolicy::InstancedPerActor) continue;
-
-        // 단일 어빌리티 인스턴스 가져오기
-        const TArray<UGameplayAbility*>& AbilityInstances = AbilitySpec->GetAbilityInstances();
-        UGameplayAbility* AbilityInstance = AbilityInstances[0];
-
-        // ShowDebug AbilitySystem에서 확인하기 위해 CDO를 어빌리티 인스턴스로 교체
-        AbilitySpec->Ability = AbilityInstance;
-
-        // TODO 장비 어빌리티 인터페이스로 변경
-        // 무기 레퍼런스 주입
-        if(!AbilityInstance->GetClass()->ImplementsInterface(UGGFWeaponAbilityInterface::StaticClass())) continue;
-        IGGFWeaponAbilityInterface::Execute_SetWeapon(AbilityInstance, this);
-    }
 }
 
 void AGGFEquipment::ClearAbilitiesFromOwner(TArray<FGameplayAbilitySpecHandle>& AbilitySpecHandles)
