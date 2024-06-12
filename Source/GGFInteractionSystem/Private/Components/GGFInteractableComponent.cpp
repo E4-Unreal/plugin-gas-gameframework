@@ -219,13 +219,12 @@ bool UGGFInteractableComponent::TracePawnCamera(APawn* Target, float DeltaTime)
     float Offset = (Target->GetActorLocation() - ViewInfo.Location).Size();
     const FVector TraceStart = ViewInfo.Location + Offset * ViewInfo.Rotation.Vector();
     const FVector TraceEnd = TraceStart + MaxDistance * ViewInfo.Rotation.Vector();
-    FCollisionObjectQueryParams CollisionObjectQueryParams(FCollisionObjectQueryParams::AllObjects);
     TArray<FHitResult> OutHits;
     FCollisionQueryParams CollisionQueryParams;
     CollisionQueryParams.AddIgnoredActor(Target);
 
     // 멀티 라인 트레이스
-    GetWorld()->SweepMultiByObjectType(OutHits, TraceStart, TraceEnd, FQuat::Identity, CollisionObjectQueryParams, FCollisionShape::MakeSphere(SphereRadius), CollisionQueryParams);
+    GetWorld()->SweepMultiByChannel(OutHits, TraceStart, TraceEnd, FQuat::Identity, ECC_Visibility, FCollisionShape::MakeSphere(SphereRadius), CollisionQueryParams);
 
 #if WITH_EDITOR
     // 디버그 시각화
@@ -239,9 +238,6 @@ bool UGGFInteractableComponent::TracePawnCamera(APawn* Target, float DeltaTime)
     // 상호작용 가능한 오브젝트 탐색
     for (const FHitResult& OutHit : OutHits)
     {
-        // Visibility 채널을 무시하는 경우 추가 검사 진행
-        if(OutHit.GetComponent()->GetCollisionResponseToChannel(ECC_Visibility) == ECR_Ignore) continue;
-
         // Owner와 관련된 액터인 경우 추가 검사 진행
         // 무기나 장비 등으로 인해 시야를 가리는 형상 방지
         if(OutHit.GetActor()->GetOwner() == Target) continue;
