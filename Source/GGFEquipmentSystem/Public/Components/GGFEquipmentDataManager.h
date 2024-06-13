@@ -11,7 +11,7 @@ struct FGGFEquipmentData;
 class UGGFEquipmentDefinition;
 
 /**
- * 장비 서브 시스템을 사용하기 위한 전용 컴포넌트입니다.
+ * 장비 데이터 관리를 위한 컴포넌트
  */
 UCLASS(meta=(BlueprintSpawnableComponent))
 class GGFEQUIPMENTSYSTEM_API UGGFEquipmentDataManager : public UGGFDataManager
@@ -19,7 +19,7 @@ class GGFEQUIPMENTSYSTEM_API UGGFEquipmentDataManager : public UGGFDataManager
     GENERATED_BODY()
 
 protected:
-    // 아이템 ID에 대응하는 데이터 에셋
+    // 장비 데이터 에셋
     UPROPERTY(VisibleAnywhere, BlueprintGetter = GetEquipmentDefinition, Category = "State", Transient)
     TObjectPtr<UGGFEquipmentDefinition> EquipmentDefinition;
 

@@ -4,6 +4,7 @@
 
 #include "GGFDataSubsystem.h"
 #include "Data/GGFEquipmentDefinition.h"
+#include "Data/GGFWeaponDefinition.h"
 
 void UGGFEquipmentDataSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
@@ -16,9 +17,14 @@ void UGGFEquipmentDataSubsystem::Initialize(FSubsystemCollectionBase& Collection
     FetchDataSubsystem();
 }
 
-bool UGGFEquipmentDataSubsystem::GetData(int32 ID, FGGFEquipmentData& Data)
+bool UGGFEquipmentDataSubsystem::GetEquipmentData(int32 ID, FGGFEquipmentData& Data)
 {
     return UGGFDataSubsystem::GetData(UGGFEquipmentDefinition::StaticClass(), ID, Data);
+}
+
+bool UGGFEquipmentDataSubsystem::GetWeaponData(int32 ID, FGGFWeaponData& Data)
+{
+    return UGGFDataSubsystem::GetData(UGGFWeaponDefinition::StaticClass(), ID, Data);
 }
 
 void UGGFEquipmentDataSubsystem::FetchDataSubsystem()
@@ -28,6 +34,7 @@ void UGGFEquipmentDataSubsystem::FetchDataSubsystem()
         if(UGGFDataSubsystem* DataSubsystem = GameInstance->GetSubsystem<UGGFDataSubsystem>())
         {
             DataSubsystem->GetCastedDefinitionListAndMap(UGGFEquipmentDefinition::StaticClass(), EquipmentList, EquipmentMap);
+            DataSubsystem->GetCastedDefinitionListAndMap(UGGFWeaponDefinition::StaticClass(), WeaponList, WeaponMap);
         }
     }
 }

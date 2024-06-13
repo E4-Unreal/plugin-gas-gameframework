@@ -2,9 +2,11 @@
 
 #include "GGFWeapon.h"
 
+#include "Components/GGFWeaponDataManager.h"
 #include "Interfaces/GGFCharacterAnimationInterface.h"
 
-AGGFWeapon::AGGFWeapon(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
+AGGFWeapon::AGGFWeapon(const FObjectInitializer& ObjectInitializer)
+    : Super(ObjectInitializer.SetDefaultSubobjectClass<UGGFWeaponDataManager>(DataManagerName))
 {
 
 }

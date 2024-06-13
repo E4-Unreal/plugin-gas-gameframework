@@ -24,7 +24,7 @@ FGGFEquipmentData UGGFEquipmentDataManager::GetEquipmentData() const
     else
     {
         FGGFEquipmentData UncachedData;
-        bool bFound = UGGFEquipmentDataSubsystem::GetData(ID, UncachedData);
+        bool bFound = UGGFEquipmentDataSubsystem::GetEquipmentData(ID, UncachedData);
 
 #if WITH_EDITOR
         if(!bFound)
@@ -69,7 +69,7 @@ void UGGFEquipmentDataManager::SetID(int32 NewID)
     // 데이터 가져오기
     if(auto EquipmentDataSubsystem = GetDataSubsystem<UGGFEquipmentDataSubsystem>())
     {
-        EquipmentDefinition = EquipmentDataSubsystem->GetDefinition(ID);
+        EquipmentDefinition = EquipmentDataSubsystem->GetEquipmentDefinition(ID);
     }
 
     Super::SetID(NewID);
