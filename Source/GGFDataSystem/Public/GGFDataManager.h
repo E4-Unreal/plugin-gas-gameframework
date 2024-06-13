@@ -25,12 +25,15 @@ public:
 
 protected:
     // 데이터 ID
-    UPROPERTY(EditAnywhere, BlueprintGetter = GetID, BlueprintSetter = SetID, Category = "Config")
+    UPROPERTY(EditAnywhere, BlueprintGetter = GetID, BlueprintSetter = SetID, Category = "Config", ReplicatedUsing = OnRep_ID)
     int32 ID;
 
 public:
+    UGGFDataManager();
+
     /* ActorComponent */
 
+    virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
     virtual void InitializeComponent() override;
 
 protected:
@@ -48,6 +51,11 @@ protected:
 
         return nullptr;
     }
+
+    /* 리플리케이트 */
+
+    UFUNCTION()
+    virtual void OnRep_ID(int32 OldID);
 
 public:
     /* Getter */
