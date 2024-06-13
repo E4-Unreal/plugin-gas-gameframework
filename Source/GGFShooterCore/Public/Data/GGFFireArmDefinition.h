@@ -42,6 +42,10 @@ struct GGFSHOOTERCORE_API FGGFFireArmData : public FGGFDataTableRowBase
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Spec")
     TSubclassOf<AGGFProjectile> DefaultProjectile;
 
+    // 재장전 시간
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Spec")
+    float ReloadDuration = 2.5f;
+
     // 총기 발사음
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "FX")
     TObjectPtr<USoundCue> FireSound;
