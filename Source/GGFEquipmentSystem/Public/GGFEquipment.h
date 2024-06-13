@@ -21,6 +21,14 @@ class GGFEQUIPMENTSYSTEM_API AGGFEquipment : public AActor, public IGGFEquipment
 {
     GENERATED_BODY()
 
+public:
+    /* 서브 오브젝트 */
+
+    static FName DataManagerName;
+
+private:
+    /* 컴포넌트 */
+
     // 데이터 관리 전용 컴포넌트
     UPROPERTY(VisibleAnywhere, BlueprintGetter = GetDataManager, Category = "Component")
     TObjectPtr<UGGFEquipmentDataManager> DataManager;
@@ -76,7 +84,7 @@ protected:
     TArray<FGameplayAbilitySpecHandle> ActiveAbilitySpecHandles;
 
 public:
-    AGGFEquipment();
+    AGGFEquipment(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
     /* Actor */
 

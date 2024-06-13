@@ -20,8 +20,8 @@ class GGFEQUIPMENTSYSTEM_API UGGFEquipmentDataManager : public UGGFDataManager
 
 protected:
     // 아이템 ID에 대응하는 데이터 에셋
-    UPROPERTY(VisibleAnywhere, BlueprintGetter = GetDefinition, Category = "State", Transient)
-    TObjectPtr<UGGFEquipmentDefinition> Definition;
+    UPROPERTY(VisibleAnywhere, BlueprintGetter = GetEquipmentDefinition, Category = "State", Transient)
+    TObjectPtr<UGGFEquipmentDefinition> EquipmentDefinition;
 
     // 부여된 장비 스탯 게임플레이 이펙트 핸들
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State", Transient)
@@ -49,7 +49,7 @@ public:
     /* Getter */
 
     UFUNCTION(BlueprintGetter)
-    UGGFEquipmentDefinition* GetDefinition();
+    FORCEINLINE UGGFEquipmentDefinition* GetEquipmentDefinition() const { return EquipmentDefinition; }
 
     /* Setter */
 

@@ -12,14 +12,14 @@ void UGGFEquipmentDataManager::PostInitProperties()
 {
     Super::PostInitProperties();
 
-    bValid = Definition != nullptr;
+    bValid = EquipmentDefinition != nullptr;
 }
 
 FGGFEquipmentData UGGFEquipmentDataManager::GetData() const
 {
-    if(Definition)
+    if(EquipmentDefinition)
     {
-        return Definition->GetData();
+        return EquipmentDefinition->GetData();
     }
     else
     {
@@ -41,10 +41,10 @@ void UGGFEquipmentDataManager::ApplyStatsEffectToTarget(AActor* Target)
 {
     if(auto TargetSystem = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(Target))
     {
-        if(GetDefinition())
+        if(GetEquipmentDefinition())
         {
             ActiveStatsEffectHandle = TargetSystem->ApplyGameplayEffectToSelf(
-                    GetDefinition()->GetStats(),
+                    GetEquipmentDefinition()->GetStats(),
                     UGameplayEffect::INVALID_LEVEL,
                     TargetSystem->MakeEffectContext()
                     );
@@ -61,18 +61,12 @@ void UGGFEquipmentDataManager::RemoveStatsEffectFromTarget(AActor* Target)
     }
 }
 
-UGGFEquipmentDefinition* UGGFEquipmentDataManager::GetDefinition()
-{
-    if(Definition == nullptr) SetID(ID);
-    return Definition;
-}
-
 void UGGFEquipmentDataManager::SetID(int32 NewID)
 {
-    Definition = nullptr;
+    EquipmentDefinition = nullptr;
     if(auto EquipmentDataSubsystem = GetDataSubsystem<UGGFEquipmentDataSubsystem>())
     {
-        Definition = EquipmentDataSubsystem->GetDefinition(ID);
+        EquipmentDefinition = EquipmentDataSubsystem->GetDefinition(ID);
     }
 
     Super::SetID(NewID);

@@ -6,12 +6,12 @@
 #include "AbilitySystemGlobals.h"
 #include "GameplayEffect.h"
 #include "GEBlueprintFunctionLibrary.h"
-#include "GGFEquipmentGameplayTags.h"
 #include "Components/GGFEquipmentDataManager.h"
 #include "Data/GGFEquipmentDefinition.h"
-#include "Interfaces/GGFWeaponAbilityInterface.h"
 
-AGGFEquipment::AGGFEquipment()
+FName AGGFEquipment::DataManagerName(TEXT("DataManager"));
+
+AGGFEquipment::AGGFEquipment(const FObjectInitializer& ObjectInitializer)
 {
     /* 초기화 */
 
@@ -19,7 +19,7 @@ AGGFEquipment::AGGFEquipment()
     bReplicates = true;
 
     /* DataManager */
-    DataManager = CreateDefaultSubobject<UGGFEquipmentDataManager>(TEXT("DataManager"));
+    DataManager = CreateDefaultSubobject<UGGFEquipmentDataManager>(DataManagerName);
 }
 
 void AGGFEquipment::OnConstruction(const FTransform& Transform)
