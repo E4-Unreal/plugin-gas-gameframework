@@ -9,6 +9,7 @@
 #include "Components/GGFEquipmentDataManager.h"
 #include "Data/GGFEquipmentDefinition.h"
 
+FName AGGFEquipment::SkeletalMeshName(TEXT("SkeletalMesh"));
 FName AGGFEquipment::DataManagerName(TEXT("DataManager"));
 
 AGGFEquipment::AGGFEquipment(const FObjectInitializer& ObjectInitializer)
@@ -17,6 +18,10 @@ AGGFEquipment::AGGFEquipment(const FObjectInitializer& ObjectInitializer)
 
     // 리플리케이트 설정
     bReplicates = true;
+
+    /* SkeletalMesh */
+    SkeletalMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletalMesh"));
+    SetRootComponent(SkeletalMesh);
 
     /* DataManager */
     DataManager = CreateDefaultSubobject<UGGFEquipmentDataManager>(DataManagerName);
@@ -131,7 +136,9 @@ const FGameplayTag AGGFEquipment::GetEquipmentType_Implementation() const
 
 void AGGFEquipment::OnIDUpdated(int32 NewID)
 {
-
+    // 장비 설정
+    const auto& EquipmentData = GetDataManager()->GetEquipmentData();
+    GetSkeletalMesh()->SetSkeletalMesh(EquipmentData.SkeletalMesh);
 }
 
 void AGGFEquipment::OnEquip_Implementation()

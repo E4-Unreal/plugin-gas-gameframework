@@ -20,11 +20,6 @@ class GGFSHOOTERCORE_API AGGFFireArm : public AGGFWeapon
 {
     GENERATED_BODY()
 
-    /* 컴포넌트 */
-
-    UPROPERTY(VisibleAnywhere, BlueprintGetter = GetSkeletalMesh, Category = "Component")
-    TObjectPtr<USkeletalMeshComponent> SkeletalMesh;
-
     /* 이벤트 */
     UPROPERTY(BlueprintAssignable)
     FOnAmmoValueChangedSiganature OnCurrentAmmoValueChanged;
@@ -190,8 +185,6 @@ protected:
 
 public:
     /* Getter */
-    UFUNCTION(BlueprintGetter)
-    FORCEINLINE USkeletalMeshComponent* GetSkeletalMesh() const { return SkeletalMesh; }
 
     UFUNCTION(BlueprintGetter)
     FORCEINLINE float GetFireInterval() const { return FireInterval; }

@@ -12,7 +12,7 @@
 AGGFFireArm::AGGFFireArm(const FObjectInitializer& ObjectInitializer)
     : Super(ObjectInitializer.SetDefaultSubobjectClass<UGGFFireArmDataManager>(DataManagerName))
 {
-    SkeletalMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletalMesh"));
+
 }
 
 void AGGFFireArm::PostInitializeComponents()
@@ -71,7 +71,7 @@ void AGGFFireArm::MulticastFire_Implementation()
     // 파티클 시스템 스폰
     UGameplayStatics::SpawnEmitterAttached(
             MuzzleFlash,
-            SkeletalMesh,
+            GetSkeletalMesh(),
             MuzzleSocketName,
             MuzzleFlashTransform.GetLocation(),
             MuzzleFlashTransform.GetRotation().Rotator(),
@@ -213,14 +213,13 @@ void AGGFFireArm::OnIDUpdated(int32 NewID)
 {
     Super::OnIDUpdated(NewID);
 
-    const auto& Data = GetDataManager()->GetEquipmentData();
-    GetSkeletalMesh()->SetSkeletalMesh(Data.SkeletalMesh);
+    const auto& FireArmData = CastChecked<UGGFFireArmDataManager>(GetDataManager());
 }
 
 void AGGFFireArm::PlayAnimation(UAnimMontage* Animation) const
 {
-    if(SkeletalMesh && Animation)
-        SkeletalMesh->PlayAnimation(Animation, false);
+    if(GetSkeletalMesh() && Animation)
+        GetSkeletalMesh()->PlayAnimation(Animation, false);
 }
 
 bool AGGFFireArm::CanFire_Implementation()
@@ -264,7 +263,7 @@ float AGGFFireArm::GetCurrentTime() const
 
 FVector AGGFFireArm::GetMuzzleLocation() const
 {
-    return SkeletalMesh == nullptr ? GetActorLocation() : SkeletalMesh->GetSocketLocation(MuzzleSocketName);
+    return GetSkeletalMesh() == nullptr ? GetActorLocation() : GetSkeletalMesh()->GetSocketLocation(MuzzleSocketName);
 }
 
 void AGGFFireArm::OnPlayMontageNotifyBegin_Event(FName NotifyName,

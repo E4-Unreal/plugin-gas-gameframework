@@ -24,10 +24,15 @@ class GGFEQUIPMENTSYSTEM_API AGGFEquipment : public AActor, public IGGFEquipment
 public:
     /* 서브 오브젝트 */
 
+    static FName SkeletalMeshName;
     static FName DataManagerName;
 
 private:
     /* 컴포넌트 */
+
+    // 스켈레탈 메시
+    UPROPERTY(VisibleAnywhere, BlueprintGetter = GetSkeletalMesh, Category = "Component")
+    TObjectPtr<USkeletalMeshComponent> SkeletalMesh;
 
     // 데이터 관리 전용 컴포넌트
     UPROPERTY(VisibleAnywhere, BlueprintGetter = GetDataManager, Category = "Component")
@@ -138,8 +143,11 @@ protected:
     /* Getter */
 
     UFUNCTION(BlueprintGetter)
-    FORCEINLINE UAbilitySystemComponent* GetOwnerAbilitySystem() const { return OwnerAbilitySystem; }
+    FORCEINLINE USkeletalMeshComponent* GetSkeletalMesh() const { return SkeletalMesh; }
 
     UFUNCTION(BlueprintGetter)
     FORCEINLINE UGGFEquipmentDataManager* GetDataManager() const { return DataManager; }
+
+    UFUNCTION(BlueprintGetter)
+    FORCEINLINE UAbilitySystemComponent* GetOwnerAbilitySystem() const { return OwnerAbilitySystem; }
 };
