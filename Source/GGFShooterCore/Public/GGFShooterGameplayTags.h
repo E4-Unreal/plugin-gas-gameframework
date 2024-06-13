@@ -40,7 +40,43 @@ namespace GGFGameplayTags
             /* 화기 */
             namespace FireArm
             {
-                GGFSHOOTERCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Root) // 루트
+                GGFSHOOTERCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Root)
+
+                namespace AR
+                {
+                    GGFSHOOTERCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Root)
+                    GGFSHOOTERCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Default)
+                }
+
+                namespace SR
+                {
+                    GGFSHOOTERCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Root)
+                    GGFSHOOTERCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Default)
+                }
+
+                namespace SMG
+                {
+                    GGFSHOOTERCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Root)
+                    GGFSHOOTERCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Default)
+                }
+
+                namespace MG
+                {
+                    GGFSHOOTERCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Root)
+                    GGFSHOOTERCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Default)
+                }
+
+                namespace Pistol
+                {
+                    GGFSHOOTERCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Root)
+                    GGFSHOOTERCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Default)
+                }
+
+                namespace Launcher
+                {
+                    GGFSHOOTERCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Root)
+                    GGFSHOOTERCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Default)
+                }
             }
         }
     }
