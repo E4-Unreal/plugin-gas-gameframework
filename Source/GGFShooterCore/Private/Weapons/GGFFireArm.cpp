@@ -2,17 +2,33 @@
 
 #include "Weapons/GGFFireArm.h"
 
+#include "NiagaraComponent.h"
+#include "Components/AudioComponent.h"
 #include "Components/GGFEquipmentDataManager.h"
 #include "Components/GGFFireArmDataManager.h"
 #include "Interfaces/GGFCharacterAnimationInterface.h"
 #include "Kismet/GameplayStatics.h"
 #include "Net/UnrealNetwork.h"
+#include "Particles/ParticleSystemComponent.h"
 #include "Sound/SoundCue.h"
 
 AGGFFireArm::AGGFFireArm(const FObjectInitializer& ObjectInitializer)
     : Super(ObjectInitializer.SetDefaultSubobjectClass<UGGFFireArmDataManager>(DataManagerName))
 {
+    /* AudioComponent */
+    AudioComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("AudioComponent"));
+    AudioComponent->SetupAttachment(GetSkeletalMesh(), MuzzleSocketName);
+    AudioComponent->bAutoActivate = false;
 
+    /* ParticleSystem */
+    ParticleSystem = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("ParticleSystem"));
+    ParticleSystem->SetupAttachment(GetSkeletalMesh(), MuzzleSocketName);
+    ParticleSystem->bAutoActivate = false;
+
+    /* NiagaraSystem */
+    NiagaraSystem = CreateDefaultSubobject<UNiagaraComponent>(TEXT("NiagaraSystem"));
+    NiagaraSystem->SetupAttachment(GetSkeletalMesh(), MuzzleSocketName);
+    NiagaraSystem->bAutoActivate = false;
 }
 
 void AGGFFireArm::PostInitializeComponents()
@@ -72,23 +88,35 @@ void AGGFFireArm::MulticastFire_Implementation()
     // 발사 몽타주 재생
     PlayFireAnimMontage();
 
-    // 파티클 시스템 스폰
-    UGameplayStatics::SpawnEmitterAttached(
-            FireArmData.MuzzleParticle,
-            GetSkeletalMesh(),
-            MuzzleSocketName,
-            FVector::ZeroVector,
-            FRotator::ZeroRotator,
-            FVector::OneVector
-            );
+    // 발사 VFX
+    if(GetNiagaraSystem()->GetAsset())
+    {
+        GetNiagaraSystem()->Activate(true);
+    }
+    else
+    {
+        GetParticleSystem()->Activate(true);
+    }
 
-    // 소리 재생
-    UGameplayStatics::PlaySoundAtLocation(
-        this,
-        FireArmData.FireSound,
-        GetMuzzleLocation(),
-        FRotator::ZeroRotator
-        );
+    // 발사 SFX
+    if(GetAudioComponent()->IsPlaying())
+    {
+        /*
+         * 단일 오디오 컴포넌트로 높은 RPM의 소리 재생 시 버벅입니다.
+         * 여러 오디오 컴포넌트를 부착하고 번갈아가며 재생하는 방법도 있지만,
+         * 그것보다는 루프 버전 소리를 재생하거나 스폰하는 것이 더 나을 것 같아 이렇게 작성하였습니다.
+         */
+        UGameplayStatics::PlaySoundAtLocation(
+            this,
+            FireArmData.FireSound,
+            GetMuzzleLocation(),
+            FRotator::ZeroRotator
+            );
+    }
+    else
+    {
+        GetAudioComponent()->Play();
+    }
 }
 
 void AGGFFireArm::OnFire_Implementation()
@@ -157,7 +185,21 @@ void AGGFFireArm::OnIDUpdated(int32 NewID)
 {
     Super::OnIDUpdated(NewID);
 
-    const auto& FireArmData = CastChecked<UGGFFireArmDataManager>(GetDataManager());
+    // 변수 선언
+    const auto& FireArmData = GetFireArmData();
+    FAttachmentTransformRules AttachmentTransformRules = FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true);
+
+    // AudioComponent
+    GetAudioComponent()->AttachToComponent(GetSkeletalMesh(), AttachmentTransformRules, MuzzleSocketName);
+    GetAudioComponent()->SetSound(FireArmData.FireSound);
+
+    // ParticleSystem
+    GetParticleSystem()->AttachToComponent(GetSkeletalMesh(), AttachmentTransformRules, MuzzleSocketName);
+    GetParticleSystem()->SetTemplate(FireArmData.MuzzleParticle);
+
+    // NiagaraSystem
+    GetNiagaraSystem()->AttachToComponent(GetSkeletalMesh(), AttachmentTransformRules, MuzzleSocketName);
+    GetNiagaraSystem()->SetAsset(FireArmData.MuzzleSystem);
 }
 
 bool AGGFFireArm::CanFire_Implementation()

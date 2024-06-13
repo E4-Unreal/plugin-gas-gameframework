@@ -43,12 +43,12 @@ void AGGFWeapon::Deactivate_Implementation()
 
 void AGGFWeapon::OnIDUpdated(int32 NewID)
 {
+    Super::OnIDUpdated(NewID);
+
     // 무기 데이터
     auto WeaponDataManager = CastChecked<UGGFWeaponDataManager>(GetDataManager());
     const auto& Data = WeaponDataManager->GetWeaponData();
     GetSkeletalMesh()->SetAnimClass(Data.WeaponAnimClass);
-
-    Super::OnIDUpdated(NewID);
 }
 
 void AGGFWeapon::PlayAnimMontage(UAnimMontage* AnimMontage, float Duration) const

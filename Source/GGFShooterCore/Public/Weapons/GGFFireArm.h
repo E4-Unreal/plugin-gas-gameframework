@@ -9,6 +9,7 @@
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAmmoValueChangedSiganature, int32, Ammo);
 
+class UNiagaraComponent;
 class USoundCue;
 
 // TODO 리팩토링
@@ -22,14 +23,25 @@ class GGFSHOOTERCORE_API AGGFFireArm : public AGGFWeapon
 {
     GENERATED_BODY()
 
-    /* 이벤트 */
+    UPROPERTY(VisibleAnywhere, BlueprintGetter = GetAudioComponent, Category = "Component")
+    TObjectPtr<UAudioComponent> AudioComponent;
+
+    UPROPERTY(VisibleAnywhere, BlueprintGetter = GetParticleSystem, Category = "Component")
+    TObjectPtr<UParticleSystemComponent> ParticleSystem;
+
+    UPROPERTY(VisibleAnywhere, BlueprintGetter = GetNiagaraSystem, Category = "Component")
+    TObjectPtr<UNiagaraComponent> NiagaraSystem;
+
+public:
+    /* 델리게이트 */
+
     UPROPERTY(BlueprintAssignable)
     FOnAmmoValueChangedSiganature OnCurrentAmmoValueChanged;
 
 protected:
 
     // 총구 소켓 이름
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|FireArm", meta = (AllowPrivateAccess = true))
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|FireArm")
     FName MuzzleSocketName = "Muzzle";
 
     // 총기 현재 보유 탄약
@@ -41,11 +53,11 @@ protected:
     float FireInterval = 0;
 
     // 마지막으로 발사한 시간 (초)
-    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State|FireArm", meta = (AllowPrivateAccess = true), Transient)
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State|FireArm", Transient)
     float LastFiredTime = 0;
 
     // Reload 호출 시 true로 설정되며 FinishReloading 호출 시 false로 설정됩니다.
-    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State|FireArm", meta = (AllowPrivateAccess = true), Transient)
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State|FireArm", Transient)
     bool bReloading = false;
 
 public:
@@ -131,6 +143,15 @@ protected:
 
 public:
     /* Getter */
+
+    UFUNCTION(BlueprintGetter)
+    FORCEINLINE UAudioComponent* GetAudioComponent() const { return AudioComponent; }
+
+    UFUNCTION(BlueprintGetter)
+    FORCEINLINE UParticleSystemComponent* GetParticleSystem() const { return ParticleSystem; }
+
+    UFUNCTION(BlueprintGetter)
+    FORCEINLINE UNiagaraComponent* GetNiagaraSystem() const { return NiagaraSystem; }
 
     UFUNCTION(BlueprintGetter)
     FORCEINLINE float GetFireInterval() const { return FireInterval; }
