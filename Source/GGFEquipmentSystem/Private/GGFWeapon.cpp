@@ -23,6 +23,17 @@ void AGGFWeapon::Activate_Implementation()
     // 캐릭터 애니메이션 클래스 변경
     SetCharacterAnimClass(Data.CharacterAnimClass);
 
+    // 장비 장착 타이머 초기화
+    auto& WorldTimerManager = GetWorldTimerManager();
+    if(WorldTimerManager.IsTimerActive(EquipTimerHandle))
+    {
+        WorldTimerManager.ClearTimer(EquipTimerHandle);
+    }
+
+    // 장비 장착 타이머 설정
+    bEquipping = true;
+    WorldTimerManager.SetTimer(EquipTimerHandle, this, &ThisClass::FinishEquipping, Data.EquipDuration);
+
     // 장비 장착 몽타주 재생
     PlayCharacterAnimMontage(Data.EquipMontage, Data.EquipDuration);
 }
@@ -49,6 +60,11 @@ void AGGFWeapon::OnIDUpdated(int32 NewID)
     auto WeaponDataManager = CastChecked<UGGFWeaponDataManager>(GetDataManager());
     const auto& Data = WeaponDataManager->GetWeaponData();
     GetSkeletalMesh()->SetAnimClass(Data.WeaponAnimClass);
+}
+
+void AGGFWeapon::FinishEquipping()
+{
+    bEquipping = false;
 }
 
 void AGGFWeapon::PlayAnimMontage(UAnimMontage* AnimMontage, float Duration) const

@@ -119,11 +119,10 @@ void AGGFFireArm::MulticastFire_Implementation()
          * 여러 오디오 컴포넌트를 부착하고 번갈아가며 재생하는 방법도 있지만,
          * 그것보다는 루프 버전 소리를 재생하거나 스폰하는 것이 더 나을 것 같아 이렇게 작성하였습니다.
          */
-        UGameplayStatics::PlaySoundAtLocation(
-            this,
+        UGameplayStatics::SpawnSoundAttached(
             FireArmData.FireSound,
-            GetMuzzleLocation(),
-            FRotator::ZeroRotator
+            GetSkeletalMesh(),
+            MuzzleSocketName
             );
     }
     else
@@ -215,6 +214,9 @@ void AGGFFireArm::OnIDUpdated(int32 NewID)
 
 bool AGGFFireArm::CanFire_Implementation()
 {
+    // 장비 장착 중에는 불가
+    if(bEquipping) return false;
+
     // 재장전 중에는 불가
     if(bReloading) return false;
 
@@ -233,6 +235,9 @@ bool AGGFFireArm::CanFire_Implementation()
 
 bool AGGFFireArm::CanReload_Implementation()
 {
+    // 장비 장착 중에는 불가
+    if(bEquipping) return false;
+
     // 이미 재장전중인 상태입니다.
     if(bReloading) return false;
 

@@ -47,19 +47,19 @@ struct GGFSHOOTERCORE_API FGGFFireArmData : public FGGFDataTableRowBase
     float ReloadDuration = 2.5f;
 
     // 총기 발사음
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "FX")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SFX")
     TObjectPtr<USoundCue> FireSound;
 
     // 총기 발사음 (소음기)
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "FX")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SFX")
     TObjectPtr<USoundCue> SilencerFireSound;
 
     // 총구 이펙트 (캐스케이드)
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "FX")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "VFX")
     TObjectPtr<UParticleSystem> MuzzleParticle;
 
     // 총구 이펙트 (나이아가라)
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "FX")
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "VFX")
     TObjectPtr<UNiagaraSystem> MuzzleSystem;
 
     // 총기 발사 애니메이션 (총기)

@@ -19,6 +19,13 @@ public:
     AGGFWeapon(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
 protected:
+    // 장착 중인 상태
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State", Transient)
+    bool bEquipping = false;
+
+    FTimerHandle EquipTimerHandle;
+
+protected:
     /* Equipment */
 
     virtual void Activate_Implementation() override;
@@ -26,6 +33,9 @@ protected:
     virtual void OnIDUpdated(int32 NewID) override;
 
     /* 메서드 */
+
+    UFUNCTION()
+    virtual void FinishEquipping();
 
     // 무기 애님 몽타주 재생
     UFUNCTION(BlueprintCallable, Category = "Weapon")
