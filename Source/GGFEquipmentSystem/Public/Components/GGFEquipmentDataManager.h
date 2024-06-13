@@ -30,7 +30,7 @@ protected:
 public:
     /* ActorComponent */
 
-    virtual void PostInitProperties() override;
+    virtual void InitializeComponent() override;
 
     /* API */
 

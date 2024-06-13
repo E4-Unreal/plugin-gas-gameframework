@@ -8,9 +8,9 @@
 #include "Data/GGFEquipmentDefinition.h"
 #include "Logging.h"
 
-void UGGFEquipmentDataManager::PostInitProperties()
+void UGGFEquipmentDataManager::InitializeComponent()
 {
-    Super::PostInitProperties();
+    Super::InitializeComponent();
 
     bValid = EquipmentDefinition != nullptr;
 }
@@ -63,7 +63,10 @@ void UGGFEquipmentDataManager::RemoveStatsEffectFromTarget(AActor* Target)
 
 void UGGFEquipmentDataManager::SetID(int32 NewID)
 {
-    EquipmentDefinition = nullptr;
+    // 중복 호출 방지
+    if(EquipmentDefinition && EquipmentDefinition->GetID() == NewID) return;
+
+    // 데이터 가져오기
     if(auto EquipmentDataSubsystem = GetDataSubsystem<UGGFEquipmentDataSubsystem>())
     {
         EquipmentDefinition = EquipmentDataSubsystem->GetDefinition(ID);
