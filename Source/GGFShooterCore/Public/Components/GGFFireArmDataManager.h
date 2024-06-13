@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Components/GGFEquipmentDataManager.h"
+#include "Components/GGFWeaponDataManager.h"
 #include "Data/GGFFireArmDefinition.h"
 #include "GGFFireArmDataManager.generated.h"
 
@@ -13,7 +13,7 @@ class UGGFFireArmDefinition;
  * 총기 데이터 관리를 위한 컴포넌트
  */
 UCLASS(meta=(BlueprintSpawnableComponent))
-class GGFSHOOTERCORE_API UGGFFireArmDataManager : public UGGFEquipmentDataManager
+class GGFSHOOTERCORE_API UGGFFireArmDataManager : public UGGFWeaponDataManager
 {
     GENERATED_BODY()
 

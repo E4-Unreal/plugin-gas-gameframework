@@ -128,28 +128,26 @@ void AGGFPlayerCharacter::ToggleCrouch()
         Crouch();
 }
 
-void AGGFPlayerCharacter::NetMulticast_PlayMontage_Implementation(UAnimMontage* MontageToPlay)
-{
-    GetMesh()->GetAnimInstance()->Montage_Play(MontageToPlay);
-}
-
 /* GGFCharacterAnimationInterface */
 
-void AGGFPlayerCharacter::PlayMontage_Implementation(UAnimMontage* MontageToPlay)
+void AGGFPlayerCharacter::SetAnimInstanceClass_Implementation(TSubclassOf<UAnimInstance> NewAnimInstanceClass)
 {
-    NetMulticast_PlayMontage(MontageToPlay);
+    // 유효성 검사
+    if(NewAnimInstanceClass == nullptr) return;
+
+    // 애님 인스턴스 클래스 변경
+    GetMesh()->SetAnimInstanceClass(NewAnimInstanceClass);
 }
 
-void AGGFPlayerCharacter::ChangeAnimInstance_Implementation(FGameplayTag EquipmentTag)
+void AGGFPlayerCharacter::PlayAnimMontage_Implementation(UAnimMontage* NewAnimMontage, float PlayRate)
 {
-    if(AnimInstanceMap.Contains(EquipmentTag))
-    {
-        GetMesh()->SetAnimInstanceClass(AnimInstanceMap[EquipmentTag]);
+    // 유효성 검사
+    if(NewAnimMontage == nullptr || FMath::IsNearlyZero(PlayRate)) return;
 
-        if(EquipMontageMap.Contains(EquipmentTag))
-        {
-            GetMesh()->GetAnimInstance()->Montage_Play(EquipMontageMap[EquipmentTag]);
-        }
+    // 멀티캐스트 애님 몽타주 재생
+    if(HasAuthority())
+    {
+        NetMulticastPlayMontage(NewAnimMontage, PlayRate);
     }
 }
 
@@ -183,6 +181,14 @@ void AGGFPlayerCharacter::OnRep_CharacterConfig(const FGGFCharacterConfig& OldCh
 
         // 파라곤처럼 불필요한 스켈레톤 숨기기
         HideBones();
+    }
+}
+
+void AGGFPlayerCharacter::NetMulticastPlayMontage_Implementation(UAnimMontage* NewMontage, float PlayRate)
+{
+    if(auto AnimInstance = GetMesh()->GetAnimInstance())
+    {
+        AnimInstance->Montage_Play(NewMontage, PlayRate);
     }
 }
 

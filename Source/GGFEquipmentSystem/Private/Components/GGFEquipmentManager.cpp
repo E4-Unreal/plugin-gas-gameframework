@@ -22,6 +22,11 @@ void UGGFEquipmentManager::InitializeComponent()
 
     // AvailableSlots로부터 EquipmentSlots를 생성합니다.
     CreateEquipmentSlots();
+}
+
+void UGGFEquipmentManager::BeginPlay()
+{
+    Super::BeginPlay();
 
     // 기본 장비를 추가합니다.
     AddDefaultEquipments();
@@ -116,10 +121,6 @@ void UGGFEquipmentManager::Server_SelectEquipment_Implementation(FGameplayTag Sl
 
     // 선택 장비를 활성화합니다.
     IGGFEquipmentInterface::Execute_Activate(SelectedEquipment);
-
-    // 장비에 대응하는 캐릭터 애님 클래스로 변경 요청
-    const FGameplayTag EquipmentType = IGGFEquipmentInterface::Execute_GetEquipmentType(SelectedEquipment);
-    IGGFCharacterAnimationInterface::Execute_ChangeAnimInstance(GetOwner(), EquipmentType);
 }
 
 bool UGGFEquipmentManager::IsEquipmentExist(FGameplayTag Slot, int32 Index) const
@@ -161,9 +162,6 @@ void UGGFEquipmentManager::Deselect()
     // 선택 슬롯을 비웁니다.
     SelectedSlot = FEquipmentSlot::EmptySlot;
     SelectedEquipment = nullptr;
-
-    // 기본 캐릭터 애님 클래스로 변경 요청
-    IGGFCharacterAnimationInterface::Execute_ChangeAnimInstance(GetOwner(), FGameplayTag::EmptyTag);
 }
 
 bool UGGFEquipmentManager::AttachEquipment(AActor* Equipment, FName SocketName)
@@ -284,7 +282,18 @@ void UGGFEquipmentManager::AddDefaultEquipments()
 
 void UGGFEquipmentManager::OnRep_SelectedEquipment(AActor* OldEquipment)
 {
-    // 장비에 대응하는 캐릭터 애님 클래스로 변경 요청
-    const FGameplayTag EquipmentType = SelectedEquipment ? IGGFEquipmentInterface::Execute_GetEquipmentType(SelectedEquipment) : FGameplayTag::EmptyTag;
-    IGGFCharacterAnimationInterface::Execute_ChangeAnimInstance(GetOwner(), EquipmentType);
+    // 중복 호출 검사
+    if(SelectedEquipment == OldEquipment) return;
+
+    // 기존 무기 비활성화
+    if(OldEquipment && OldEquipment->Implements<UGGFEquipmentInterface>())
+    {
+        IGGFEquipmentInterface::Execute_Deactivate(OldEquipment);
+    }
+
+    // 새로운 무기 활성화
+    if(SelectedEquipment && SelectedEquipment->Implements<UGGFEquipmentInterface>())
+    {
+        IGGFEquipmentInterface::Execute_Activate(SelectedEquipment);
+    }
 }

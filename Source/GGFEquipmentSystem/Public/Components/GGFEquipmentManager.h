@@ -119,6 +119,7 @@ public:
     virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
     virtual void InitializeComponent() override;
+    virtual void BeginPlay() override;
     virtual void Activate(bool bReset) override;
     virtual void Deactivate() override;
     virtual void OnComponentDestroyed(bool bDestroyingHierarchy) override;

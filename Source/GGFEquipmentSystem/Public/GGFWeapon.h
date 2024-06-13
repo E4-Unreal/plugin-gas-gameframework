@@ -15,23 +15,19 @@ class GGFEQUIPMENTSYSTEM_API AGGFWeapon : public AGGFEquipment
 {
     GENERATED_BODY()
 
-protected:
-    // OwnerCharacter 유효성 검사
-    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State", Transient)
-    bool bOwnerCharacterValid = false;
-
 public:
     AGGFWeapon(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
 protected:
-    /* GSFEquipmentBase */
+    /* Equipment */
 
-    virtual void OnEquip_Implementation() override;
-    virtual void OnUnEquip_Implementation() override;
+    virtual void Activate_Implementation() override;
+    virtual void Deactivate_Implementation() override;
+    virtual void OnIDUpdated(int32 NewID) override;
 
     /* 메서드 */
 
     // 캐릭터 애니메이션 재생
     UFUNCTION(BlueprintCallable)
-    virtual void PlayCharacterMontage(UAnimMontage* MontageToPlay);
+    virtual void PlayCharacterMontage(UAnimMontage* MontageToPlay, float Duration = 1);
 };

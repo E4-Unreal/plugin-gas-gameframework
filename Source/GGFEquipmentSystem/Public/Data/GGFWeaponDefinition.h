@@ -6,6 +6,7 @@
 #include "GGFDefinitionBase.h"
 #include "GGFWeaponDefinition.generated.h"
 
+// TODO 1인칭 추가
 /**
  * 무기 데이터 테이블 구조체
  */
@@ -14,17 +15,27 @@ struct GGFEQUIPMENTSYSTEM_API FGGFWeaponData : public FGGFDataTableRowBase
 {
     GENERATED_BODY()
 
-    // 무기 전용 캐릭터 애니메이션 클래스
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Spec")
+    float EquipDuration = 1.5f;
+
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Spec")
+    float UnequipDuration = 1.5f;
+
+    // 무기 애니메이션 클래스
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Animation|Character")
+    TSubclassOf<UAnimInstance> WeaponAnimClass;
+
+    // 캐릭터 애니메이션 클래스
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Animation|Character")
     TSubclassOf<UAnimInstance> CharacterAnimClass;
 
     // 무기 장착 애니메이션
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Animation|Character")
-    TSubclassOf<UAnimMontage> EquipMontage;
+    TObjectPtr<UAnimMontage> EquipMontage;
 
     // 무기 장착 해제 애니메이션
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Animation|Character")
-    TSubclassOf<UAnimMontage> UnEquipMontage;
+    TObjectPtr<UAnimMontage> UnequipMontage;
 };
 
 /**
