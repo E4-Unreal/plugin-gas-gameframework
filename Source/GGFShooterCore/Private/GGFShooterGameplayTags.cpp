@@ -21,6 +21,12 @@ namespace GGFGameplayTags
         UE_DEFINE_GAMEPLAY_TAG_COMMENT(Combat, "State.Combat", "전투 중인 상태")
     }
 
+    /* 행동 */
+    namespace Action
+    {
+        UE_DEFINE_GAMEPLAY_TAG_COMMENT(Reload, "Action.Reload", "재장전")
+    }
+
     /* 입력 */
     namespace Input
     {

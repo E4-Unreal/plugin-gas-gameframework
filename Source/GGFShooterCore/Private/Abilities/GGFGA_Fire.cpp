@@ -1,36 +1,26 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
-
-#include "Abilities/GGFWA_Fire.h"
+#include "Abilities/GGFGA_Fire.h"
 
 #include "Abilities/Tasks/AbilityTask_WaitInputRelease.h"
-#include "Components/GGFEquipmentManager.h"
 #include "GEGameplayTags.h"
 #include "GGFShooterGameplayTags.h"
 #include "Weapons/GGFFireArm.h"
 
-UGGFWA_Fire::UGGFWA_Fire()
+UGGFGA_Fire::UGGFGA_Fire()
 {
     // AFireArm::Fire는 RPC로 구현되어 있기 때문에 LocalOnly 정책을 사용합니다.
     NetExecutionPolicy = EGameplayAbilityNetExecutionPolicy::LocalOnly;
 
-    /* 태그 설정 */
-
     // 입력 태그
-    InputTag = GGFGameplayTags::Input::Fire;
+    InputTag = Input::Fire;
 
+    // 태그 설정
     AbilityTags.AddLeafTag(GEGameplayTags::Action::Attack);
     ActivationOwnedTags.AddLeafTag(GEGameplayTags::Action::Attack);
 }
 
-bool UGGFWA_Fire::CanActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
-    const FGameplayTagContainer* SourceTags, const FGameplayTagContainer* TargetTags,
-    FGameplayTagContainer* OptionalRelevantTags) const
-{
-    return Super::CanActivateAbility(Handle, ActorInfo, SourceTags, TargetTags, OptionalRelevantTags) && GetFireArm()->CanFire();
-}
-
-void UGGFWA_Fire::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
+void UGGFGA_Fire::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
                                  const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
 {
     Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
@@ -56,7 +46,7 @@ void UGGFWA_Fire::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const
     }
 }
 
-void UGGFWA_Fire::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
+void UGGFGA_Fire::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
     const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled)
 {
     Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
@@ -65,7 +55,12 @@ void UGGFWA_Fire::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGam
     StopFire();
 }
 
-void UGGFWA_Fire::StopFire()
+bool UGGFGA_Fire::InternalCanActivate()
+{
+    return Super::InternalCanActivate() && GetFireArm()->CanFire();
+}
+
+void UGGFGA_Fire::StopFire()
 {
     if(!FireTimer.IsValid()) return;
 

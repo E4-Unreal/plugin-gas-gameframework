@@ -7,6 +7,7 @@
 #include "Data/GGFFireArmDefinition.h"
 #include "GGFFireArm.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnReloadFinishedSignature);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAmmoValueChangedSiganature, int32, Ammo);
 
 class UNiagaraComponent;
@@ -36,6 +37,9 @@ public:
     /* 델리게이트 */
 
     UPROPERTY(BlueprintAssignable)
+    FOnReloadFinishedSignature OnReloadFinished;
+
+    UPROPERTY(BlueprintAssignable)
     FOnAmmoValueChangedSiganature OnCurrentAmmoValueChanged;
 
 protected:
@@ -60,6 +64,8 @@ protected:
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State|FireArm", Transient)
     bool bReloading = false;
 
+    FTimerHandle ReloadTimerHandle;
+
 public:
     AGGFFireArm(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
@@ -69,22 +75,22 @@ public:
     virtual void PostInitializeComponents() override;
     virtual void BeginPlay() override;
 
-    UFUNCTION(BlueprintNativeEvent, Category = "FireArm")
+    UFUNCTION(BlueprintNativeEvent, Category = "Fire")
     bool CanFire();
 
-    UFUNCTION(BlueprintNativeEvent, Category = "FireArm")
-    bool CanReload();
-
-    UFUNCTION(BlueprintCallable, Category = "FireArm")
+    UFUNCTION(BlueprintCallable, Category = "Fire")
     void Fire();
 
-    UFUNCTION(BlueprintCallable, Category = "FireArm")
+    UFUNCTION(BlueprintNativeEvent, Category = "Reload")
+    bool CanReload();
+
+    UFUNCTION(BlueprintCallable, Category = "Reload")
     void Reload();
 
-    UFUNCTION(BlueprintCallable, Category = "FireArm")
+    UFUNCTION(BlueprintCallable, Category = "Reload")
     void FinishReloading();
 
-    UFUNCTION(BlueprintSetter, Category = "FireArm")
+    UFUNCTION(BlueprintSetter, Category = "Reload")
     void SetCurrentAmmo(int32 Value);
 
 protected:
@@ -94,21 +100,21 @@ protected:
 
     /* 메서드 */
 
-    UFUNCTION(Server, Reliable)
+    UFUNCTION(Server, Reliable, Category = "Fire")
     void ServerFire();
 
     // 라인 트레이스, 총알 스폰 등의 발사 로직을 작성하는 곳으로 ServerFire에서 호출됩니다.
-    UFUNCTION(BlueprintNativeEvent, Category = "FireArm")
+    UFUNCTION(BlueprintNativeEvent, Category = "Fire")
     void OnFire();
 
     // 발사 애니메이션 재생 등 리플리케이트되지 않는 동작 정의
-    UFUNCTION(NetMulticast, Reliable)
+    UFUNCTION(NetMulticast, Reliable, Category = "Fire")
     virtual void MulticastFire();
 
-    UFUNCTION(Server, Reliable)
+    UFUNCTION(Server, Reliable, Category = "Reload")
     void ServerReload();
 
-    UFUNCTION(NetMulticast, Reliable)
+    UFUNCTION(NetMulticast, Reliable, Category = "Reload")
     void MulticastReload();
 
     // 총기 발사 애니메이션 재생
@@ -120,20 +126,20 @@ protected:
     virtual void PlayReloadAnimMontage() const;
 
     // CurrentAmmo에서 AmmoToSpend를 뺍니다.
-    UFUNCTION(BlueprintCallable, Category = "FireArm")
+    UFUNCTION(BlueprintCallable, Category = "Fire")
     void SpendAmmo();
 
     // RPM으로부터 발사 간격(초)을 계산합니다.
-    UFUNCTION(BlueprintCallable, Category = "FireArm")
+    UFUNCTION(BlueprintCallable, Category = "Fire")
     FORCEINLINE void CalculateFireInterval() { FireInterval = 60.f / GetFireArmData().RPM; }
 
     // 현재 시간(초)을 반환합니다.
-    UFUNCTION(BlueprintPure, Category = "FireArm")
+    UFUNCTION(BlueprintPure, Category = "Fire")
     float GetCurrentTime() const;
 
     // 총구 소켓의 위치를 반환합니다.
     // 총구 소켓을 찾지 못한 경우에는 액터 위치를 대신 반환합니다.
-    UFUNCTION(BlueprintPure, Category = "FireArm")
+    UFUNCTION(BlueprintPure, Category = "Fire")
     FVector GetMuzzleLocation() const;
 
     /* 리플리케이트 */

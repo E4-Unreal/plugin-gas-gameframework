@@ -3,6 +3,8 @@
 #include "Weapons/GGFFireArm.h"
 
 #include "NiagaraComponent.h"
+#include "Abilities/GGFGA_Fire.h"
+#include "Abilities/GGFGA_Reload.h"
 #include "Components/AudioComponent.h"
 #include "Components/GGFEquipmentDataManager.h"
 #include "Components/GGFFireArmDataManager.h"
@@ -29,6 +31,12 @@ AGGFFireArm::AGGFFireArm(const FObjectInitializer& ObjectInitializer)
     NiagaraSystem = CreateDefaultSubobject<UNiagaraComponent>(TEXT("NiagaraSystem"));
     NiagaraSystem->SetupAttachment(GetSkeletalMesh(), MuzzleSocketName);
     NiagaraSystem->bAutoActivate = false;
+
+    /* 기본 설정 */
+
+    // 어빌리티
+    ActiveAbilities.Emplace(UGGFGA_Fire::StaticClass());
+    ActiveAbilities.Emplace(UGGFGA_Reload::StaticClass());
 }
 
 void AGGFFireArm::PostInitializeComponents()
@@ -81,6 +89,11 @@ void AGGFFireArm::ServerFire_Implementation()
     MulticastFire();
 }
 
+void AGGFFireArm::OnFire_Implementation()
+{
+    // TODO 자손 클래스에서 발사 로직 작성 (히트 스캔, 발사체)
+}
+
 void AGGFFireArm::MulticastFire_Implementation()
 {
     const auto& FireArmData = GetFireArmData();
@@ -119,11 +132,6 @@ void AGGFFireArm::MulticastFire_Implementation()
     }
 }
 
-void AGGFFireArm::OnFire_Implementation()
-{
-    // TODO 자손 클래스에서 발사 로직 작성 (히트 스캔, 발사체)
-}
-
 void AGGFFireArm::Reload()
 {
     // 장전 가능 여부 확인
@@ -139,11 +147,11 @@ void AGGFFireArm::ServerReload_Implementation()
     if(!CanReload()) return;
     bReloading = true;
 
-    if(GetOwner()->Implements<UGGFCharacterAnimationInterface>())
-    {
-        const auto& FireArmData = GetFireArmData();
-        IGGFCharacterAnimationInterface::Execute_PlayAnimMontage(GetOwner(), FireArmData.CharacterReloadMontage, FireArmData.ReloadDuration);
-    }
+    // 데이터 가져오기
+    const auto& FireArmData = GetFireArmData();
+
+    // 재장전 타이머 설정
+    GetWorldTimerManager().SetTimer(ReloadTimerHandle, this, &ThisClass::FinishReloading, FireArmData.ReloadDuration);
 
     // 멀티캐스트
     MulticastReload();
@@ -157,17 +165,20 @@ void AGGFFireArm::MulticastReload_Implementation()
 
 void AGGFFireArm::FinishReloading()
 {
+    // 타이머 핸들 초기화
+    ReloadTimerHandle.Invalidate();
+
     // ServerReload가 먼저 호출되어야 합니다.
     if(!bReloading) return;
-
-    // 서버에서만 호출 가능합니다.
-    if(!HasAuthority()) return;
 
     // 총알을 채웁니다
     SetCurrentAmmo(GetMaxAmmo());
 
     // 재장전 상태 해제
     bReloading = false;
+
+    // 델리게이트 호출
+    OnReloadFinished.Broadcast();
 }
 
 void AGGFFireArm::SetCurrentAmmo(int32 Value)
@@ -204,6 +215,9 @@ void AGGFFireArm::OnIDUpdated(int32 NewID)
 
 bool AGGFFireArm::CanFire_Implementation()
 {
+    // 재장전 중에는 불가
+    if(bReloading) return false;
+
     // 탄약 확인
     if(CurrentAmmo < GetFireArmData().AmmoToSpend) return false;
 
@@ -239,7 +253,7 @@ void AGGFFireArm::PlayReloadAnimMontage() const
     const auto& FireArmData = GetFireArmData();
 
     PlayAnimMontage(FireArmData.ReloadMontage, FireArmData.ReloadDuration);
-    PlayCharacterAnimMontage(FireArmData.CharacterFireMontage, FireArmData.ReloadDuration);
+    PlayCharacterAnimMontage(FireArmData.CharacterReloadMontage, FireArmData.ReloadDuration);
 }
 
 void AGGFFireArm::SpendAmmo()

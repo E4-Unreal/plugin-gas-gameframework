@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GGFFireArmAbility.h"
-#include "GGFWA_Fire.generated.h"
+#include "GGFGA_Fire.generated.h"
 
 class AGGFFireArm;
 class UAnimMontage;
@@ -13,7 +13,7 @@ class UAnimMontage;
  * 총기 발사 전용 어빌리티
  */
 UCLASS()
-class GGFSHOOTERCORE_API UGGFWA_Fire : public UGGFFireArmAbility
+class GGFSHOOTERCORE_API UGGFGA_Fire : public UGGFFireArmAbility
 {
     GENERATED_BODY()
 
@@ -21,14 +21,19 @@ protected:
     FTimerHandle FireTimer;
 
 public:
-    UGGFWA_Fire();
+    UGGFGA_Fire();
 
-protected:
     /* GameplayAbility */
-    virtual bool CanActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayTagContainer* SourceTags, const FGameplayTagContainer* TargetTags, FGameplayTagContainer* OptionalRelevantTags) const override;
+
     virtual void ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData) override;
     virtual void EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled) override;
 
+protected:
+    /* GEGameplayAbility */
+
+    virtual bool InternalCanActivate() override;
+
     /* 메서드 */
+
     virtual void StopFire();
 };

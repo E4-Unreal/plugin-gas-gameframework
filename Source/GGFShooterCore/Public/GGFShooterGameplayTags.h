@@ -23,6 +23,12 @@ namespace GGFGameplayTags
         GGFSHOOTERCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Combat) // 전투 중인 상태
     }
 
+    /* 행동 */
+    namespace Action
+    {
+        GGFSHOOTERCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Reload)
+    }
+
     /* 입력 */
     namespace Input
     {
