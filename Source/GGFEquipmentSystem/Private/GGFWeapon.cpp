@@ -16,46 +16,29 @@ void AGGFWeapon::Activate_Implementation()
 {
     Super::Activate_Implementation();
 
-    // 인터페이스 검사
-    if(!GetOwner()->Implements<UGGFCharacterAnimationInterface>()) return;
-
     // 무기 데이터
     auto WeaponDataManager = CastChecked<UGGFWeaponDataManager>(GetDataManager());
     const auto& Data = WeaponDataManager->GetWeaponData();
 
     // 캐릭터 애니메이션 클래스 변경
-    IGGFCharacterAnimationInterface::Execute_SetAnimInstanceClass(GetOwner(), Data.CharacterAnimClass);
+    SetCharacterAnimClass(Data.CharacterAnimClass);
 
     // 장비 장착 몽타주 재생
-    PlayCharacterMontage(Data.EquipMontage, Data.EquipDuration);
+    PlayCharacterAnimMontage(Data.EquipMontage, Data.EquipDuration);
 }
 
 void AGGFWeapon::Deactivate_Implementation()
 {
     Super::Deactivate_Implementation();
 
-    // 인터페이스 검사
-    if(!GetOwner()->Implements<UGGFCharacterAnimationInterface>()) return;
-
     // 무기 데이터
     auto WeaponDataManager = CastChecked<UGGFWeaponDataManager>(GetDataManager());
     const auto& Data = WeaponDataManager->GetWeaponData();
 
+    // 현재 선택된 무기가 없으면 캐릭터에서 자체적으로 기본 애님 클래스로 변경
+
     // 장비 장착 해제 몽타주 재생
-    PlayCharacterMontage(Data.UnequipMontage, Data.UnequipDuration);
-}
-
-void AGGFWeapon::PlayCharacterMontage(UAnimMontage* MontageToPlay, float Duration)
-{
-    // 유효성 검사
-    if(MontageToPlay == nullptr || FMath::IsNearlyZero(Duration)) return;
-
-    // 인터페이스 검사
-    if(!GetOwner()->Implements<UGGFCharacterAnimationInterface>()) return;
-
-    // 몽타주 재생
-    float PlayRate = MontageToPlay->GetPlayLength() / Duration;
-    IGGFCharacterAnimationInterface::Execute_PlayAnimMontage(GetOwner(), MontageToPlay, PlayRate);
+    PlayCharacterAnimMontage(Data.UnequipMontage, Data.UnequipDuration);
 }
 
 void AGGFWeapon::OnIDUpdated(int32 NewID)
@@ -66,4 +49,41 @@ void AGGFWeapon::OnIDUpdated(int32 NewID)
     GetSkeletalMesh()->SetAnimClass(Data.WeaponAnimClass);
 
     Super::OnIDUpdated(NewID);
+}
+
+void AGGFWeapon::PlayAnimMontage(UAnimMontage* AnimMontage, float Duration) const
+{
+    // 유효성 검사
+    if(AnimMontage == nullptr) return;
+
+    // 무기 애님 몽타주 재생
+    if(auto AnimInstance = GetSkeletalMesh()->GetAnimInstance())
+    {
+        float PlayRate = FMath::IsNearlyZero(Duration) ? 1 : AnimMontage->GetPlayLength() / Duration;
+        AnimInstance->Montage_Play(AnimMontage, PlayRate);
+    }
+}
+
+void AGGFWeapon::SetCharacterAnimClass(TSubclassOf<UAnimInstance> NewAnimClass) const
+{
+    // 유효성 검사
+    if(NewAnimClass == nullptr) return;
+
+    // 캐릭터 애니메이션 클래스 변경
+    if(GetOwner()->Implements<UGGFCharacterAnimationInterface>())
+    {
+        IGGFCharacterAnimationInterface::Execute_SetAnimInstanceClass(GetOwner(), NewAnimClass);
+    }
+}
+
+void AGGFWeapon::PlayCharacterAnimMontage(UAnimMontage* AnimMontage, float Duration) const
+{
+    // 유효성 검사
+    if(AnimMontage == nullptr || FMath::IsNearlyZero(Duration)) return;
+
+    // 캐릭터 애님 몽타주 재생
+    if(GetOwner()->Implements<UGGFCharacterAnimationInterface>())
+    {
+        IGGFCharacterAnimationInterface::Execute_PlayAnimMontage(GetOwner(), AnimMontage, Duration);
+    }
 }

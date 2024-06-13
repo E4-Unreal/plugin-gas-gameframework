@@ -30,5 +30,5 @@ public:
 
     // 애님 몽타주 재생 (멀티캐스트)
     UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-    void PlayAnimMontage(UAnimMontage* NewAnimMontage, float PlayRate = 1);
+    void PlayAnimMontage(UAnimMontage* NewAnimMontage, float Duration = 0);
 };

@@ -27,7 +27,15 @@ protected:
 
     /* 메서드 */
 
-    // 캐릭터 애니메이션 재생
-    UFUNCTION(BlueprintCallable)
-    virtual void PlayCharacterMontage(UAnimMontage* MontageToPlay, float Duration = 1);
+    // 무기 애님 몽타주 재생
+    UFUNCTION(BlueprintCallable, Category = "Weapon")
+    virtual void PlayAnimMontage(UAnimMontage* NewAnimMontage, float Duration = 0) const;
+
+    // 캐릭터 애님 클래스 변경
+    UFUNCTION(BlueprintCallable, Category = "Character")
+    virtual void SetCharacterAnimClass(TSubclassOf<UAnimInstance> NewAnimClass) const;
+
+    // 캐릭터 애님 몽타주 재생
+    UFUNCTION(BlueprintCallable, Category = "Character")
+    virtual void PlayCharacterAnimMontage(UAnimMontage* NewAnimMontage, float Duration = 0) const;
 };

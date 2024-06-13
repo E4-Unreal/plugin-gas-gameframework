@@ -135,19 +135,24 @@ void AGGFPlayerCharacter::SetAnimInstanceClass_Implementation(TSubclassOf<UAnimI
     // 유효성 검사
     if(NewAnimInstanceClass == nullptr) return;
 
+    // TODO 애님 인스턴스 클래스의 스켈레톤을 분석하여 1인칭, 3인칭 구분
+
     // 애님 인스턴스 클래스 변경
     GetMesh()->SetAnimInstanceClass(NewAnimInstanceClass);
 }
 
-void AGGFPlayerCharacter::PlayAnimMontage_Implementation(UAnimMontage* NewAnimMontage, float PlayRate)
+void AGGFPlayerCharacter::PlayAnimMontage_Implementation(UAnimMontage* NewAnimMontage, float Duration)
 {
     // 유효성 검사
-    if(NewAnimMontage == nullptr || FMath::IsNearlyZero(PlayRate)) return;
+    if(NewAnimMontage == nullptr) return;
 
-    // 멀티캐스트 애님 몽타주 재생
-    if(HasAuthority())
+    // TODO 애님 몽타주의 스켈레톤을 분석하여 1인칭, 3인칭 구분
+
+    // 애님 몽타주 재생
+    if(auto AnimInstance = GetMesh()->GetAnimInstance())
     {
-        NetMulticastPlayMontage(NewAnimMontage, PlayRate);
+        float PlayRate = FMath::IsNearlyZero(Duration) ? 1 : NewAnimMontage->GetPlayLength() / Duration;
+        AnimInstance->Montage_Play(NewAnimMontage, PlayRate);
     }
 }
 
@@ -181,14 +186,6 @@ void AGGFPlayerCharacter::OnRep_CharacterConfig(const FGGFCharacterConfig& OldCh
 
         // 파라곤처럼 불필요한 스켈레톤 숨기기
         HideBones();
-    }
-}
-
-void AGGFPlayerCharacter::NetMulticastPlayMontage_Implementation(UAnimMontage* NewMontage, float PlayRate)
-{
-    if(auto AnimInstance = GetMesh()->GetAnimInstance())
-    {
-        AnimInstance->Montage_Play(NewMontage, PlayRate);
     }
 }
 

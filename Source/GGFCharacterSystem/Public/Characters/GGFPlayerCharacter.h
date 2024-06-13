@@ -107,7 +107,7 @@ public:
     /* GGFCharacterAnimationInterface */
 
     virtual void SetAnimInstanceClass_Implementation(TSubclassOf<UAnimInstance> NewAnimInstanceClass) override;
-    virtual void PlayAnimMontage_Implementation(UAnimMontage* NewAnimMontage, float PlayRate) override;
+    virtual void PlayAnimMontage_Implementation(UAnimMontage* NewAnimMontage, float Duration) override;
 
     // TODO ServerInitialized 어빌리티
     /* GGFCharacterInterface */
@@ -132,11 +132,6 @@ protected:
 
     UFUNCTION()
     virtual void OnRep_CharacterConfig(const FGGFCharacterConfig& OldCharacterConfig);
-
-    /* 메서드 */
-
-    UFUNCTION(BlueprintCallable, NetMulticast, Unreliable)
-    virtual void NetMulticastPlayMontage(UAnimMontage* NewMontage, float PlayRate = 1);
 
 public:
     /* Getter */
