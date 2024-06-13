@@ -121,12 +121,12 @@ void AGGFEquipment::Deactivate_Implementation()
 
 const FGameplayTag AGGFEquipment::GetEquipmentSlot_Implementation() const
 {
-    return GetDataManager()->GetData().EquipmentSlot;
+    return GetDataManager()->GetEquipmentData().EquipmentSlot;
 }
 
 const FGameplayTag AGGFEquipment::GetEquipmentType_Implementation() const
 {
-    return GetDataManager()->GetData().EquipmentType;
+    return GetDataManager()->GetEquipmentData().EquipmentType;
 }
 
 void AGGFEquipment::OnIDUpdated(int32 NewID)

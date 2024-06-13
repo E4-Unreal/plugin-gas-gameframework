@@ -18,10 +18,10 @@ class GGFEQUIPMENTSYSTEM_API AGGFWeapon : public AGGFEquipment
 protected:
     // OwnerCharacter 유효성 검사
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State", Transient)
-    bool bOwnerCharacterValid;
+    bool bOwnerCharacterValid = false;
 
 public:
-    AGGFWeapon();
+    AGGFWeapon(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
 protected:
     /* GSFEquipmentBase */

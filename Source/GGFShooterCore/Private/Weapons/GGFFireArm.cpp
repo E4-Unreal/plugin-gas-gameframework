@@ -3,12 +3,14 @@
 #include "Weapons/GGFFireArm.h"
 
 #include "Components/GGFEquipmentDataManager.h"
+#include "Components/GGFFireArmDataManager.h"
 #include "Data/GGFEquipmentDefinition.h"
 #include "Kismet/GameplayStatics.h"
 #include "Net/UnrealNetwork.h"
 #include "Sound/SoundCue.h"
 
-AGGFFireArm::AGGFFireArm()
+AGGFFireArm::AGGFFireArm(const FObjectInitializer& ObjectInitializer)
+    : Super(ObjectInitializer.SetDefaultSubobjectClass<UGGFFireArmDataManager>(DataManagerName))
 {
     SkeletalMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletalMesh"));
 }
@@ -211,7 +213,7 @@ void AGGFFireArm::OnIDUpdated(int32 NewID)
 {
     Super::OnIDUpdated(NewID);
 
-    const auto& Data = GetDataManager()->GetData();
+    const auto& Data = GetDataManager()->GetEquipmentData();
     GetSkeletalMesh()->SetSkeletalMesh(Data.SkeletalMesh);
 }
 

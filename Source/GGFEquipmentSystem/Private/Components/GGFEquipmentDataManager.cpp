@@ -12,10 +12,10 @@ void UGGFEquipmentDataManager::InitializeComponent()
 {
     Super::InitializeComponent();
 
-    bValid = EquipmentDefinition != nullptr;
+    bValid = bValid && EquipmentDefinition != nullptr;
 }
 
-FGGFEquipmentData UGGFEquipmentDataManager::GetData() const
+FGGFEquipmentData UGGFEquipmentDataManager::GetEquipmentData() const
 {
     if(EquipmentDefinition)
     {

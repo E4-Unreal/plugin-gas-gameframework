@@ -4,8 +4,7 @@
 
 #include "Interfaces/GGFCharacterAnimationInterface.h"
 
-AGGFWeapon::AGGFWeapon()
-    : bOwnerCharacterValid(false)
+AGGFWeapon::AGGFWeapon(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
 {
 
 }

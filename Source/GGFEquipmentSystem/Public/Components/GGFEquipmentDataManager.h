@@ -35,7 +35,7 @@ public:
     /* API */
 
     UFUNCTION(BlueprintPure)
-    FGGFEquipmentData GetData() const;
+    FGGFEquipmentData GetEquipmentData() const;
 
     // 대상에게 장비 스탯 게임플레이 이펙트 적용
     UFUNCTION(BlueprintCallable)

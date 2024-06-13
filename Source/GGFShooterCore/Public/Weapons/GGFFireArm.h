@@ -101,7 +101,7 @@ protected:
     FTransform MuzzleFlashTransform;
 
 public:
-    AGGFFireArm();
+    AGGFFireArm(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
     virtual void PostInitializeComponents() override;
     virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
