@@ -57,6 +57,22 @@ struct GGFSHOOTERCORE_API FGGFFireArmData : public FGGFDataTableRowBase
     // 총구 이펙트 (나이아가라)
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "FX")
     TObjectPtr<UNiagaraSystem> MuzzleSystem;
+
+    // 총기 발사 애니메이션 (총기)
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Animation|FireArm")
+    TObjectPtr<UAnimMontage> FireMontage;
+
+    // 총기 재장전 애니메이션 (총기)
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Animation|FireArm")
+    TObjectPtr<UAnimMontage> ReloadMontage;
+
+    // 총기 발사 애니메이션 (캐릭터)
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Animation|Character")
+    TObjectPtr<UAnimMontage> CharacterFireMontage;
+
+    // 총기 재장전 애니메이션 (캐릭터)
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Animation|Character")
+    TObjectPtr<UAnimMontage> CharacterReloadMontage;
 };
 
 /**
