@@ -27,6 +27,10 @@ public:
     virtual void ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData) override;
     virtual void EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled) override;
 
+    /* GEGameplayAbility */
+
+    virtual bool InternalCanActivate() override;
+
 protected:
     UFUNCTION(BlueprintCallable)
     UGGFCameraComponent* GetCameraComponent() const { return CameraComponent.Get(); }

@@ -25,6 +25,12 @@ protected:
 
     FTimerHandle EquipTimerHandle;
 
+public:
+    /* API */
+
+    UFUNCTION(BlueprintPure)
+    bool IsEquipping() const { return bEquipping; }
+
 protected:
     /* Equipment */
 

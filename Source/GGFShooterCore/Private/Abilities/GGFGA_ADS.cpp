@@ -41,3 +41,8 @@ void UGGFGA_ADS::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGame
 
     Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
 }
+
+bool UGGFGA_ADS::InternalCanActivate()
+{
+    return Super::InternalCanActivate() && !GetFireArm()->IsEquipping();
+}
