@@ -145,11 +145,14 @@ protected:
     UFUNCTION(BlueprintCallable, Category = "Equipment|Effects")
     virtual void RemoveEffectsFromOwner(TArray<FActiveGameplayEffectHandle>& EffectSpecHandles);
 
-protected:
+public:
     /* Getter */
 
     UFUNCTION(BlueprintGetter)
     FORCEINLINE USkeletalMeshComponent* GetSkeletalMesh() const { return SkeletalMesh; }
+
+protected:
+    /* Getter */
 
     UFUNCTION(BlueprintGetter)
     FORCEINLINE UGGFEquipmentDataManager* GetDataManager() const { return DataManager; }

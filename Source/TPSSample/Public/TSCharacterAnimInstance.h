@@ -21,9 +21,17 @@ protected:
     bool bShouldMove;
     float YawOffset;
     float PitchOffset;
+    FTransform LeftHandTransform;
+    bool bCanUseLeftHandTransform;
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Config")
     float InterpSpeed = 15;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Config")
+    FName LeftHandSocketName = "hand_l";
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config")
+    FName DisableLeftHandIKCurveName = "DisableLeftHandIK";
 
 public:
     /* AnimInstance */
@@ -50,4 +58,10 @@ protected:
 
     UFUNCTION(BlueprintPure, Category = "Character", meta = (BlueprintThreadSafe))
     FORCEINLINE float GetPitchOffset() const { return PitchOffset; }
+
+    UFUNCTION(BlueprintPure, Category = "Character", meta = (BlueprintThreadSafe))
+    FORCEINLINE FTransform GetLeftHandTransform() const { return LeftHandTransform; }
+
+    UFUNCTION(BlueprintPure, Category = "Character", meta = (BlueprintThreadSafe))
+    FORCEINLINE bool CanUseLeftHandTransform() const { return bCanUseLeftHandTransform; }
 };
