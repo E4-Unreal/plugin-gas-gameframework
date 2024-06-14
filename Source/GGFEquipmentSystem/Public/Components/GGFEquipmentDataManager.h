@@ -45,13 +45,14 @@ public:
     UFUNCTION(BlueprintCallable)
     virtual void RemoveStatsEffectFromTarget(AActor* Target);
 
+protected:
+    /* DataManager */
+
+    virtual void FetchData() override;
+
 public:
     /* Getter */
 
     UFUNCTION(BlueprintGetter)
     FORCEINLINE UGGFEquipmentDefinition* GetEquipmentDefinition() const { return EquipmentDefinition; }
-
-    /* Setter */
-
-    virtual void SetID(int32 NewID) override;
 };

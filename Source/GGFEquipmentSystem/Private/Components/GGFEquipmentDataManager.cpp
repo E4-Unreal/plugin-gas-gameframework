@@ -61,16 +61,19 @@ void UGGFEquipmentDataManager::RemoveStatsEffectFromTarget(AActor* Target)
     }
 }
 
-void UGGFEquipmentDataManager::SetID(int32 NewID)
+void UGGFEquipmentDataManager::FetchData()
 {
+    Super::FetchData();
+
     // 중복 호출 방지
-    if(EquipmentDefinition && EquipmentDefinition->GetID() == NewID) return;
+    if(EquipmentDefinition && EquipmentDefinition->GetID() == ID) return;
+
+    // 초기화
+    EquipmentDefinition = nullptr;
 
     // 데이터 가져오기
     if(auto EquipmentDataSubsystem = GetDataSubsystem<UGGFEquipmentDataSubsystem>())
     {
         EquipmentDefinition = EquipmentDataSubsystem->GetEquipmentDefinition(ID);
     }
-
-    Super::SetID(NewID);
 }

@@ -34,16 +34,19 @@ FGGFFireArmData UGGFFireArmDataManager::GetFireArmData() const
     }
 }
 
-void UGGFFireArmDataManager::SetID(int32 NewID)
+void UGGFFireArmDataManager::FetchData()
 {
+    Super::FetchData();
+
     // 중복 호출 방지
-    if(FireArmDefinition && FireArmDefinition->GetID() == NewID) return;
+    if(FireArmDefinition && FireArmDefinition->GetID() == ID) return;
+
+    // 초기화
+    FireArmDefinition = nullptr;
 
     // 데이터 가져오기
     if(auto DataSubsystem = GetDataSubsystem<UGGFFireArmDataSubsystem>())
     {
         FireArmDefinition = DataSubsystem->GetDefinition(ID);
     }
-
-    Super::SetID(NewID);
 }

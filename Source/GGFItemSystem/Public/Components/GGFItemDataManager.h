@@ -32,13 +32,14 @@ public:
     UFUNCTION(BlueprintPure)
     FGGFItemData GetData() const;
 
+protected:
+    /* DataManager */
+
+    virtual void FetchData() override;
+
 public:
     /* Getter */
 
     UFUNCTION(BlueprintGetter)
     FORCEINLINE UGGFItemDefinition* GetDefinition() const { return Definition; }
-
-    /* Setter */
-
-    virtual void SetID(int32 NewID) override;
 };

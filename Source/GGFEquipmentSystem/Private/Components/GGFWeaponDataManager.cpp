@@ -35,16 +35,19 @@ FGGFWeaponData UGGFWeaponDataManager::GetWeaponData() const
     }
 }
 
-void UGGFWeaponDataManager::SetID(int32 NewID)
+void UGGFWeaponDataManager::FetchData()
 {
+    Super::FetchData();
+
     // 중복 호출 방지
-    if(WeaponDefinition && WeaponDefinition->GetID() == NewID) return;
+    if(WeaponDefinition && WeaponDefinition->GetID() == ID) return;
+
+    // 초기화
+    WeaponDefinition = nullptr;
 
     // 데이터 가져오기
     if(auto DataSubsystem = GetDataSubsystem<UGGFEquipmentDataSubsystem>())
     {
         WeaponDefinition = DataSubsystem->GetWeaponDefinition(ID);
     }
-
-    Super::SetID(NewID);
 }

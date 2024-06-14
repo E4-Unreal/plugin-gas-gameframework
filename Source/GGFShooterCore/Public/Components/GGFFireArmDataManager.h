@@ -32,13 +32,14 @@ public:
     UFUNCTION(BlueprintPure)
     FGGFFireArmData GetFireArmData() const;
 
+protected:
+    /* DataManager */
+
+    virtual void FetchData() override;
+
 public:
     /* Getter */
 
     UFUNCTION(BlueprintGetter)
     FORCEINLINE UGGFFireArmDefinition* GetFireArmDefinition() const { return FireArmDefinition; }
-
-    /* Setter */
-
-    virtual void SetID(int32 NewID) override;
 };

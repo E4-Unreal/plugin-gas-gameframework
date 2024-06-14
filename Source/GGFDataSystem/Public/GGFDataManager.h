@@ -52,6 +52,11 @@ protected:
         return nullptr;
     }
 
+    /* 메서드 */
+
+    // ID에 대응하는 데이터 가져오기
+    virtual void FetchData();
+
     /* 리플리케이트 */
 
     UFUNCTION()
@@ -66,5 +71,5 @@ public:
     /* Setter */
 
     UFUNCTION(BlueprintSetter)
-    virtual void SetID(int32 NewID);
+    void SetID(int32 NewID);
 };

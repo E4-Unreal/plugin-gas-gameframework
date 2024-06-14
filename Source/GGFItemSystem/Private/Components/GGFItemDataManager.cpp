@@ -35,13 +35,19 @@ FGGFItemData UGGFItemDataManager::GetData() const
     }
 }
 
-void UGGFItemDataManager::SetID(int32 NewID)
+void UGGFItemDataManager::FetchData()
 {
+    Super::FetchData();
+
+    // 중복 호출 방지
+    if(Definition && Definition->GetID() == ID) return;
+
+    // 초기화
     Definition = nullptr;
+
+    // 데이터 가져오기
     if(auto ItemDataSubsystem = GetDataSubsystem<UGGFItemDataSubsystem>())
     {
         Definition = ItemDataSubsystem->GetDefinition(ID);
     }
-
-    Super::SetID(NewID);
 }

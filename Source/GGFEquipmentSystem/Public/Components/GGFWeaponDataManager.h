@@ -32,13 +32,14 @@ public:
     UFUNCTION(BlueprintPure)
     FGGFWeaponData GetWeaponData() const;
 
+protected:
+    /* DataManager */
+
+    virtual void FetchData() override;
+
 public:
     /* Getter */
 
     UFUNCTION(BlueprintGetter)
     FORCEINLINE UGGFWeaponDefinition* GetWeaponDefinition() const { return WeaponDefinition; }
-
-    /* Setter */
-
-    virtual void SetID(int32 NewID) override;
 };

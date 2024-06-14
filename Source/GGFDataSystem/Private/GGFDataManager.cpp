@@ -27,7 +27,14 @@ void UGGFDataManager::SetID(int32 NewID)
 {
     ID = NewID;
 
+    FetchData();
+
     OnIDUpdated.Broadcast(NewID);
+}
+
+void UGGFDataManager::FetchData()
+{
+    // TODO ID에 대응하는 데이터 가져오기
 }
 
 void UGGFDataManager::OnRep_ID(int32 OldID)
