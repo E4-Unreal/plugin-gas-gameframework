@@ -5,11 +5,30 @@
 #include "GameplayTagContainer.h"
 #include "Net/UnrealNetwork.h"
 #include "GGFWeapon.h"
-#include "Components/GGFEquipmentDataManager.h"
 #include "Data/GGFEquipmentDataSubsystem.h"
 #include "Data/GGFEquipmentDefinition.h"
+#include "GGFEquipmentGameplayTags.h"
 
 const FEquipmentSlot FEquipmentSlot::EmptySlot;
+
+UGGFEquipmentManager::UGGFEquipmentManager()
+{
+    FEquipmentSlotConfig PrimarySlotConfig;
+    PrimarySlotConfig.SlotTag = Equipment::Slot::Primary;
+    PrimarySlotConfig.SocketNames.Emplace("weapon_waist");
+
+    FEquipmentSlotConfig SecondarySlotConfig;
+    SecondarySlotConfig.SlotTag = Equipment::Slot::Secondary;
+    SecondarySlotConfig.SocketNames.Emplace("weapon_thigh_r");
+
+    FEquipmentSlotConfig SpecialSlotConfig;
+    SpecialSlotConfig.SlotTag = Equipment::Slot::Special;
+    SecondarySlotConfig.SocketNames.Emplace(NAME_None);
+
+    EquipmentSlotConfigs.Emplace(PrimarySlotConfig);
+    EquipmentSlotConfigs.Emplace(SecondarySlotConfig);
+    EquipmentSlotConfigs.Emplace(SpecialSlotConfig);
+}
 
 void UGGFEquipmentManager::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {

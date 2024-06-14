@@ -83,6 +83,9 @@ struct FEquipmentSlot
     }
 };
 
+/**
+ * 캐릭터 장비를 관리하기 위한 컴포넌트
+ */
 UCLASS(meta=(BlueprintSpawnableComponent))
 class GGFEQUIPMENTSYSTEM_API UGGFEquipmentManager : public UGGFEquipmentManagerBase
 {
@@ -90,7 +93,7 @@ class GGFEQUIPMENTSYSTEM_API UGGFEquipmentManager : public UGGFEquipmentManagerB
 
 protected:
     // 기본적으로 추가될 장비 ID 목록
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config")
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|Default")
     TArray<int32> EquipmentIDList;
 
     // 기본적으로 추가될 장비 클래스 목록
@@ -117,6 +120,7 @@ protected:
     TObjectPtr<AActor> SelectedEquipment;
 
 public:
+    UGGFEquipmentManager();
 
     /* ActorComponent */
 
