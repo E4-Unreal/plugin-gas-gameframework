@@ -90,6 +90,8 @@ void AGGFEquipment::OnRep_Owner()
     OwnerAbilitySystem = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(GetOwner());
 }
 
+/* Equipment Interface */
+
 void AGGFEquipment::Equip_Implementation(AActor* NewOwner)
 {
     SetOwner(NewOwner);
@@ -132,6 +134,18 @@ const FGameplayTag AGGFEquipment::GetEquipmentSlot_Implementation() const
 const FGameplayTag AGGFEquipment::GetEquipmentType_Implementation() const
 {
     return GetDataManager()->GetEquipmentData().EquipmentType;
+}
+
+/* Data Interface */
+
+int32 AGGFEquipment::GetID_Implementation()
+{
+    return GetDataManager()->GetID();
+}
+
+void AGGFEquipment::SetID_Implementation(int32 NewID)
+{
+    GetDataManager()->SetID(NewID);
 }
 
 void AGGFEquipment::OnIDUpdated(int32 NewID)

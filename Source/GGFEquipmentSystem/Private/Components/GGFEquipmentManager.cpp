@@ -5,7 +5,9 @@
 #include "GameplayTagContainer.h"
 #include "Net/UnrealNetwork.h"
 #include "GGFWeapon.h"
-#include "Interfaces/GGFCharacterAnimationInterface.h"
+#include "Components/GGFEquipmentDataManager.h"
+#include "Data/GGFEquipmentDataSubsystem.h"
+#include "Data/GGFEquipmentDefinition.h"
 
 const FEquipmentSlot FEquipmentSlot::EmptySlot;
 
@@ -61,19 +63,52 @@ void UGGFEquipmentManager::OnComponentDestroyed(bool bDestroyingHierarchy)
     }
 }
 
-bool UGGFEquipmentManager::AddEquipment(TSubclassOf<AActor> EquipmentClass)
+bool UGGFEquipmentManager::AddEquipmentByID(int32 EquipmentID)
 {
-    // 무기를 추가할 수 있는지 확인
+    if(auto GaminInstance = GetOwner()->GetGameInstance())
+    {
+        if(auto DataSubsystem = GaminInstance->GetSubsystem<UGGFEquipmentDataSubsystem>())
+        {
+            if(auto EquipmentDefinition = DataSubsystem->GetEquipmentDefinition(EquipmentID))
+            {
+                // 장비 데이터 가져오기
+                const auto EquipmentData = EquipmentDefinition->GetData();
+
+                // 장비를 추가할 수 있는지 확인
+                if(!CanAddEquipment(EquipmentData.EquipmentClass)) return false;
+
+                // 장비 스폰
+                if(auto SpawnedEquipment = SpawnEquipment(EquipmentData.EquipmentClass))
+                {
+                    IGGFDataInterface::Execute_SetID(SpawnedEquipment, EquipmentID);
+
+                    return AddEquipmentByActor(SpawnedEquipment);
+                }
+            }
+        }
+    }
+
+    return false;
+}
+
+bool UGGFEquipmentManager::AddEquipmentByClass(TSubclassOf<AActor> EquipmentClass)
+{
+    // 장비를 추가할 수 있는지 확인
     if(!CanAddEquipment(EquipmentClass)) return false;
 
-    // 무기 스폰
-    AActor* SpawnedEquipment = SpawnEquipment(EquipmentClass);
-    if(SpawnedEquipment == nullptr) return false;
+    // 장비 스폰 후 추가
+    return AddEquipmentByActor(SpawnEquipment(EquipmentClass));
+}
+
+bool UGGFEquipmentManager::AddEquipmentByActor(AActor* EquipmentActor)
+{
+    // 입력 유효성 검사
+    if(EquipmentActor == nullptr) return false;
 
     // 슬롯에 무기 추가
-    const FGameplayTag& SlotTag = IGGFEquipmentInterface::Execute_GetEquipmentSlot(SpawnedEquipment);
+    const FGameplayTag& SlotTag = IGGFEquipmentInterface::Execute_GetEquipmentSlot(EquipmentActor);
     const FEquipmentSlot& EquipmentSlot = GetAvailableSlot(SlotTag);
-    EquipmentSlots.Emplace(EquipmentSlot, SpawnedEquipment);
+    EquipmentSlots.Emplace(EquipmentSlot, EquipmentActor);
 
     if(!IsSelectedEquipmentExist())
     {
@@ -83,7 +118,7 @@ bool UGGFEquipmentManager::AddEquipment(TSubclassOf<AActor> EquipmentClass)
     else
     {
         // 선택 무기가 비어 있지 않은 경우 몸에 부착합니다.
-        AttachEquipment(SpawnedEquipment, EquipmentSlot.SocketName);
+        AttachEquipment(EquipmentActor, EquipmentSlot.SocketName);
     }
 
     return true;
@@ -274,9 +309,14 @@ void UGGFEquipmentManager::CreateEquipmentSlots()
 
 void UGGFEquipmentManager::AddDefaultEquipments()
 {
-    for (const auto& DefaultEquipment : DefaultEquipments)
+    for(auto EquipmentID : EquipmentIDList)
     {
-        AddEquipment(DefaultEquipment);
+        AddEquipmentByID(EquipmentID);
+    }
+
+    for (auto EquipmentClass : EquipmentClassList)
+    {
+        AddEquipmentByClass(EquipmentClass);
     }
 }
 

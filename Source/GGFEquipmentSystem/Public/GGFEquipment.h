@@ -7,6 +7,7 @@
 #include "GameplayEffectTypes.h"
 #include "GameplayTagContainer.h"
 #include "GameFramework/Actor.h"
+#include "Interfaces/GGFDataInterface.h"
 #include "Interfaces/GGFEquipmentInterface.h"
 #include "GGFEquipment.generated.h"
 
@@ -17,7 +18,7 @@ class UGameplayEffect;
  * GSFEquipmentComponent에서 사용하기 위한 장비 클래스입니다.
  */
 UCLASS(Abstract, Blueprintable, BlueprintType)
-class GGFEQUIPMENTSYSTEM_API AGGFEquipment : public AActor, public IGGFEquipmentInterface
+class GGFEQUIPMENTSYSTEM_API AGGFEquipment : public AActor, public IGGFEquipmentInterface, public IGGFDataInterface
 {
     GENERATED_BODY()
 
@@ -100,7 +101,7 @@ public:
     virtual void SetOwner(AActor* NewOwner) override;
     virtual void OnRep_Owner() override;
 
-    /* EquipmentInterface */
+    /* Equipment Interface */
 
     virtual void Equip_Implementation(AActor* NewOwner) override;
     virtual void UnEquip_Implementation() override;
@@ -108,6 +109,11 @@ public:
     virtual void Deactivate_Implementation() override;
     virtual const FGameplayTag GetEquipmentSlot_Implementation() const override;
     virtual const FGameplayTag GetEquipmentType_Implementation() const override;
+
+    /* Data Interface */
+
+    virtual int32 GetID_Implementation() override;
+    virtual void SetID_Implementation(int32 NewID) override;
 
 protected:
     /* 이벤트 */

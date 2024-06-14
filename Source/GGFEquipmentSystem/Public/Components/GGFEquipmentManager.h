@@ -89,9 +89,13 @@ class GGFEQUIPMENTSYSTEM_API UGGFEquipmentManager : public UGGFEquipmentManagerB
     GENERATED_BODY()
 
 protected:
-    // 기본적으로 추가될 장비 목록입니다.
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config", meta = (AllowPrivateAccess = true, MustImplement = "GGFEquipmentInterface"))
-    TArray<TSubclassOf<AActor>> DefaultEquipments;
+    // 기본적으로 추가될 장비 ID 목록
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config")
+    TArray<int32> EquipmentIDList;
+
+    // 기본적으로 추가될 장비 클래스 목록
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|Default", meta = (AllowPrivateAccess = true, MustImplement = "GGFEquipmentInterface"))
+    TArray<TSubclassOf<AActor>> EquipmentClassList;
 
     // 선택 장비를 부착할 소켓 이름입니다. 선택 장비는 손에 쥐고 있을 잘비를 의미합니다.
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config")
@@ -126,8 +130,16 @@ public:
 
     /* API */
 
+    // ID에 대응하는 장비를 추가합니다.
     UFUNCTION(BlueprintCallable)
-    bool AddEquipment(TSubclassOf<AActor> EquipmentClass);
+    virtual bool AddEquipmentByID(int32 EquipmentID);
+
+    // 장비 클래스에 대응하는 장비를 추가합니다.
+    UFUNCTION(BlueprintCallable)
+    virtual bool AddEquipmentByClass(TSubclassOf<AActor> EquipmentClass);
+
+    UFUNCTION(BlueprintCallable)
+    virtual bool AddEquipmentByActor(AActor* EquipmentActor);
 
     UFUNCTION(BlueprintCallable)
     void RemoveEquipment(FGameplayTag Slot, int32 Index);
