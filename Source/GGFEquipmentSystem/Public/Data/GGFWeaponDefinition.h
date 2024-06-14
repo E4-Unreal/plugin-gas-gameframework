@@ -15,9 +15,11 @@ struct GGFEQUIPMENTSYSTEM_API FGGFWeaponData : public FGGFDataTableRowBase
 {
     GENERATED_BODY()
 
+    // 무기 장착 시간
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Spec")
     float EquipDuration = 1.5f;
 
+    // 무기 장착 해제 시간
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Spec")
     float UnequipDuration = 1.5f;
 

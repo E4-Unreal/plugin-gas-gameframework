@@ -18,6 +18,10 @@ struct GGFSHOOTERCORE_API FGGFFireArmData : public FGGFDataTableRowBase
 {
     GENERATED_BODY()
 
+    // 총기 발사 방식
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Spec")
+    bool bUseHitScan = false;
+
     // 분당 발사 횟수
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Spec", meta = (ClampMin = 1))
     int32 RPM = 600;
@@ -29,6 +33,10 @@ struct GGFSHOOTERCORE_API FGGFFireArmData : public FGGFDataTableRowBase
     // 1회 발사 시 소모 탄약 수
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Spec", meta = (ClampMin = 1))
     int32 AmmoToSpend = 1;
+
+    // 1회 발사 시 발사되는 펠릿 수 (주로 샷건에서 사용)
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Spec", meta = (ClampMin = 1))
+    int32 PelletNum = 1;
 
     // 총기 반동 (수평, 수직)
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Spec")
@@ -45,6 +53,10 @@ struct GGFSHOOTERCORE_API FGGFFireArmData : public FGGFDataTableRowBase
     // 재장전 시간
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Spec")
     float ReloadDuration = 2.5f;
+
+    // 조준 확대 (비율)
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Spec")
+    float FOV = 1.5f;
 
     // 총기 발사음
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SFX")

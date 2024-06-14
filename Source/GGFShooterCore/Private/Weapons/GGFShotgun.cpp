@@ -7,6 +7,14 @@
 #include "Projectiles/GGFDamageableProjectile.h"
 #include "Projectiles/GGFProjectile.h"
 
+void AGGFShotgun::OnIDUpdated(int32 NewID)
+{
+    Super::OnIDUpdated(NewID);
+
+    const auto& FireArmData = GetFireArmData();
+    ProjectileNum = FireArmData.PelletNum;
+}
+
 void AGGFShotgun::OnFire_Implementation()
 {
     // 유효성 검사

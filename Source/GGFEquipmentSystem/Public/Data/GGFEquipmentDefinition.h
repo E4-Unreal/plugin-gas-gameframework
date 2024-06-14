@@ -8,6 +8,7 @@
 #include "GGFDefinitionBase.h"
 #include "GGFEquipmentDefinition.generated.h"
 
+class AGGFEquipment;
 class UGameplayEffect;
 class UGameplayAbility;
 
@@ -34,6 +35,10 @@ struct GGFEQUIPMENTSYSTEM_API FGGFEquipmentData : public FGGFDataTableRowBase
     // 장비 슬롯
     UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (Categories = "Equipment.Slot"))
     FGameplayTag EquipmentSlot;
+
+    // 장비 클래스
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Spec")
+    TSubclassOf<AGGFEquipment> EquipmentClass;
 
     // 공격력
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Stats")
