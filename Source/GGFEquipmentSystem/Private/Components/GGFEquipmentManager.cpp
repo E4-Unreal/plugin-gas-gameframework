@@ -93,13 +93,17 @@ bool UGGFEquipmentManager::AddEquipmentByID(int32 EquipmentID)
                 // 장비 데이터 가져오기
                 const auto EquipmentData = EquipmentDefinition->GetData();
 
-                // 장비를 추가할 수 있는지 확인
-                if(!CanAddEquipment(EquipmentData.EquipmentClass)) return false;
-
                 // 장비 스폰
                 if(auto SpawnedEquipment = SpawnEquipment(EquipmentData.EquipmentClass))
                 {
                     IGGFDataInterface::Execute_SetID(SpawnedEquipment, EquipmentID);
+
+                    // 장비를 추가할 수 있는지 확인
+                    if(!CanAddEquipment(SpawnedEquipment))
+                    {
+                        SpawnedEquipment->Destroy();
+                        return false;
+                    }
 
                     return AddEquipmentByActor(SpawnedEquipment);
                 }
@@ -113,7 +117,7 @@ bool UGGFEquipmentManager::AddEquipmentByID(int32 EquipmentID)
 bool UGGFEquipmentManager::AddEquipmentByClass(TSubclassOf<AActor> EquipmentClass)
 {
     // 장비를 추가할 수 있는지 확인
-    if(!CanAddEquipment(EquipmentClass)) return false;
+    if(!CanAddEquipment(EquipmentClass->GetDefaultObject<AActor>())) return false;
 
     // 장비 스폰 후 추가
     return AddEquipmentByActor(SpawnEquipment(EquipmentClass));
@@ -236,10 +240,13 @@ bool UGGFEquipmentManager::AttachEquipment(AActor* Equipment, FName SocketName)
     }
 }
 
-bool UGGFEquipmentManager::CanAddEquipment(TSubclassOf<AActor> EquipmentClass) const
+bool UGGFEquipmentManager::CanAddEquipment(AActor* NewEquipment) const
 {
+    // 입력 유효성 검사
+    if(NewEquipment == nullptr) return false;
+
     // 무기 슬롯이 비어있는지 확인
-    const FGameplayTag& EquipmentSlot = GetEquipmentSlot(EquipmentClass);
+    const FGameplayTag& EquipmentSlot = IGGFEquipmentInterface::Execute_GetEquipmentSlot(NewEquipment);
     return GetOwner()->HasAuthority() && IsSlotAvailable(EquipmentSlot);
 }
 

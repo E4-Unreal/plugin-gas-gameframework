@@ -179,7 +179,7 @@ public:
     /* Query */
 
     UFUNCTION(BlueprintCallable)
-    bool CanAddEquipment(TSubclassOf<AActor> EquipmentClass) const;
+    bool CanAddEquipment(AActor* NewEquipment) const;
 
     UFUNCTION(BlueprintCallable)
     bool IsSlotAvailable(const FGameplayTag& InEquipmentSlot) const;
