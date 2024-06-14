@@ -75,6 +75,8 @@ public:
     virtual void PostInitializeComponents() override;
     virtual void BeginPlay() override;
 
+    /* API */
+
     UFUNCTION(BlueprintNativeEvent, Category = "Fire")
     bool CanFire();
 
@@ -92,6 +94,9 @@ public:
 
     UFUNCTION(BlueprintSetter, Category = "Reload")
     void SetCurrentAmmo(int32 Value);
+
+    UFUNCTION(BlueprintPure, Category = "Reload")
+    bool IsOutOfAmmo() const { return CurrentAmmo < GetFireArmData().AmmoToSpend; }
 
 protected:
     /* Equipment */

@@ -25,12 +25,6 @@ public:
     UFUNCTION(BlueprintCallable, Category = "GGFAbilitySystemBase")
     void ReleaseInputTag(FGameplayTag InputTag);
 
-    // 마지막으로 추가된 Ability만 Press합니다.
-    virtual void AbilityLocalInputPressed(int32 InputID) override;
-
-    // 마지막으로 추가된 Ability만 Release합니다.
-    virtual void AbilityLocalInputReleased(int32 InputID) override;
-
 protected:
     // Ability InputTag가 설정된 Ability의 경우 InputID를 설정합니다.
     virtual void OnGiveAbility(FGameplayAbilitySpec& AbilitySpec) override;

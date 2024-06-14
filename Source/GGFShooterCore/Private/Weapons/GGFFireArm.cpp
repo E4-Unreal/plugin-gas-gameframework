@@ -4,6 +4,7 @@
 
 #include "NiagaraComponent.h"
 #include "Abilities/GGFGA_ADS.h"
+#include "Abilities/GGFGA_AutoReload.h"
 #include "Abilities/GGFGA_Fire.h"
 #include "Abilities/GGFGA_Reload.h"
 #include "Components/AudioComponent.h"
@@ -38,6 +39,7 @@ AGGFFireArm::AGGFFireArm(const FObjectInitializer& ObjectInitializer)
     ActiveAbilities.Emplace(UGGFGA_Fire::StaticClass());
     ActiveAbilities.Emplace(UGGFGA_Reload::StaticClass());
     ActiveAbilities.Emplace(UGGFGA_ADS::StaticClass());
+    ActiveAbilities.Emplace(UGGFGA_AutoReload::StaticClass());
 }
 
 void AGGFFireArm::PostInitializeComponents()
@@ -222,7 +224,7 @@ bool AGGFFireArm::CanFire_Implementation()
     if(bReloading) return false;
 
     // 탄약 확인
-    if(CurrentAmmo < GetFireArmData().AmmoToSpend) return false;
+    if(IsOutOfAmmo()) return false;
 
     // 아직 한 번도 발사하지 않은 경우
     if(LastFiredTime == 0) return true;
