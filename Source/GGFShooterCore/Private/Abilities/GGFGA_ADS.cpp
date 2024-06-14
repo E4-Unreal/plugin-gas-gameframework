@@ -7,10 +7,6 @@
 
 UGGFGA_ADS::UGGFGA_ADS()
 {
-    // TODO 관전 모드 고려 필요
-    // 로컬 플레이어에게만 적용됩니다.
-    NetExecutionPolicy = EGameplayAbilityNetExecutionPolicy::LocalOnly;
-
     // 입력 태그 설정
     InputTag = Input::ADS;
 
