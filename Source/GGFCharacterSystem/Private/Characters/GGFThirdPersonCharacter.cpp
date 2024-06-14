@@ -3,9 +3,9 @@
 #include "Characters/GGFThirdPersonCharacter.h"
 
 #include "Logging.h"
-#include "Camera/CameraComponent.h"
 #include "Components/GGFSpringArmComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Components/GGFCameraComponent.h"
 
 FName AGGFThirdPersonCharacter::CameraBoomName(TEXT("CameraBoom"));
 FName AGGFThirdPersonCharacter::FollowCameraName(TEXT("FollowCamera"));
@@ -35,7 +35,7 @@ AGGFThirdPersonCharacter::AGGFThirdPersonCharacter(const FObjectInitializer& Obj
     CameraBoom->bUsePawnControlRotation = true;
 
     /* Follow Camera */
-    FollowCamera = CreateDefaultSubobject<UCameraComponent>(FollowCameraName);
+    FollowCamera = CreateDefaultSubobject<UGGFCameraComponent>(FollowCameraName);
     FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
     FollowCamera->bUsePawnControlRotation = false;
 
