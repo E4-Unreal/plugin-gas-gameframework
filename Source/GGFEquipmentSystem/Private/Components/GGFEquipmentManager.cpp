@@ -23,7 +23,7 @@ UGGFEquipmentManager::UGGFEquipmentManager()
 
     FEquipmentSlotConfig SpecialSlotConfig;
     SpecialSlotConfig.SlotTag = Equipment::Slot::Special;
-    SecondarySlotConfig.SocketNames.Emplace(NAME_None);
+    SpecialSlotConfig.SocketNames.Emplace(NAME_None);
 
     EquipmentSlotConfigs.Emplace(PrimarySlotConfig);
     EquipmentSlotConfigs.Emplace(SecondarySlotConfig);

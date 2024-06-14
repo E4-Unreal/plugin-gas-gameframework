@@ -81,6 +81,12 @@ namespace GGFGameplayTags
                     UE_DEFINE_GAMEPLAY_TAG_COMMENT(Root, "Equipment.Weapon.FireArm.Launcher", "런처")
                     UE_DEFINE_GAMEPLAY_TAG_COMMENT(Default, "Equipment.Weapon.FireArm.Launcher.Default", "기본 런처")
                 }
+
+                namespace Shotgun
+                {
+                    UE_DEFINE_GAMEPLAY_TAG_COMMENT(Root, "Equipment.Weapon.FireArm.Shotgun", "샷건")
+                    UE_DEFINE_GAMEPLAY_TAG_COMMENT(Default, "Equipment.Weapon.FireArm.Shotgun.Default", "기본 샷건")
+                }
             }
         }
     }

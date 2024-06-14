@@ -83,6 +83,12 @@ namespace GGFGameplayTags
                     GGFSHOOTERCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Root)
                     GGFSHOOTERCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Default)
                 }
+
+                namespace Shotgun
+                {
+                    GGFSHOOTERCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Root)
+                    GGFSHOOTERCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Default)
+                }
             }
         }
     }
