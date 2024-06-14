@@ -168,6 +168,9 @@ public:
     UFUNCTION(BlueprintPure)
     FORCEINLINE int32 GetMaxAmmo() const { return GetFireArmData().MaxAmmo; }
 
+    UFUNCTION(BlueprintPure)
+    FORCEINLINE float GetCameraMultiplier() const { return GetFireArmData().CameraMultiplier; }
+
 protected:
     /* Getter */
 

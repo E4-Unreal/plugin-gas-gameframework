@@ -54,9 +54,9 @@ struct GGFSHOOTERCORE_API FGGFFireArmData : public FGGFDataTableRowBase
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Spec")
     float ReloadDuration = 2.5f;
 
-    // 조준 확대 (비율)
+    // 카메라 확대 배율
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Spec")
-    float FOV = 1.5f;
+    float CameraMultiplier = 1.5f;
 
     // 총기 발사음
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "SFX")

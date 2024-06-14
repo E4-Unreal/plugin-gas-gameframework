@@ -3,12 +3,12 @@
 #include "Weapons/GGFFireArm.h"
 
 #include "NiagaraComponent.h"
+#include "Abilities/GGFGA_ADS.h"
 #include "Abilities/GGFGA_Fire.h"
 #include "Abilities/GGFGA_Reload.h"
 #include "Components/AudioComponent.h"
 #include "Components/GGFEquipmentDataManager.h"
 #include "Components/GGFFireArmDataManager.h"
-#include "Interfaces/GGFCharacterAnimationInterface.h"
 #include "Kismet/GameplayStatics.h"
 #include "Net/UnrealNetwork.h"
 #include "Particles/ParticleSystemComponent.h"
@@ -37,6 +37,7 @@ AGGFFireArm::AGGFFireArm(const FObjectInitializer& ObjectInitializer)
     // 어빌리티
     ActiveAbilities.Emplace(UGGFGA_Fire::StaticClass());
     ActiveAbilities.Emplace(UGGFGA_Reload::StaticClass());
+    ActiveAbilities.Emplace(UGGFGA_ADS::StaticClass());
 }
 
 void AGGFFireArm::PostInitializeComponents()

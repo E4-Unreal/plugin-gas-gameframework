@@ -32,7 +32,7 @@ protected:
     bool bInterpolatingFOV = false;
 
     // 기본 FOV
-    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State", Transient)
+    UPROPERTY(VisibleAnywhere, BlueprintGetter = GetDefaultFOV, Category = "State", Transient)
     float DefaultFOV;
 
     // 목표 FOV
@@ -55,4 +55,9 @@ public:
 
     UFUNCTION(BlueprintPure)
     bool IsInterpolatingFOV() const { return bInterpolatingFOV; }
+
+    /* Getter */
+
+    UFUNCTION(BlueprintGetter)
+    FORCEINLINE float GetDefaultFOV() const { return DefaultFOV; }
 };
