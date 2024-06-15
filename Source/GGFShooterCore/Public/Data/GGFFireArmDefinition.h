@@ -20,9 +20,13 @@ struct GGFSHOOTERCORE_API FGGFFireArmData : public FGGFDataTableRowBase
 
     static const FGGFFireArmData EmptyFireArmData;
 
-    // 총기 발사 방식
+    // 총기 발사 방식 (히트 스캔)
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Spec")
     bool bUseHitScan = false;
+
+    // 총기 발사 방식 (연사)
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Spec")
+    bool bAutomatic = true;
 
     // 분당 발사 횟수
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Spec", meta = (ClampMin = 1))

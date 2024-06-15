@@ -30,17 +30,18 @@ void UGGFGA_Fire::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const
 
     // 총기 레퍼런스 가져오기
     AGGFFireArm* CachedFireArm = GetFireArm();
+    const auto& FireArmData = CachedFireArm->GetFireArmData();
 
     // 즉시 발사
     CachedFireArm->Fire();
 
-    // TODO 발사 모드 확인을 위한 변수가 필요
-    // 연사
-    if(const UWorld* World = CachedFireArm->GetWorld())
+    // 연사 모드 확인
+    if(FireArmData.bAutomatic)
     {
-        World->GetTimerManager().SetTimer(
+        CachedFireArm->GetWorldTimerManager().SetTimer(
             FireTimer,
-            FTimerDelegate::CreateUObject(CachedFireArm, &AGGFFireArm::Fire),
+            this,
+            &ThisClass::OnFire,
             CachedFireArm->GetFireInterval(),
             true);
     }
@@ -49,10 +50,10 @@ void UGGFGA_Fire::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const
 void UGGFGA_Fire::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
     const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled)
 {
-    Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
-
     // 발사 중지
     StopFire();
+
+    Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
 }
 
 bool UGGFGA_Fire::InternalCanActivate()
@@ -60,13 +61,24 @@ bool UGGFGA_Fire::InternalCanActivate()
     return Super::InternalCanActivate() && GetFireArm()->CanFire();
 }
 
+void UGGFGA_Fire::OnFire()
+{
+    auto CachedFireArm = GetFireArm();
+    if(CachedFireArm->CanFire())
+    {
+        CachedFireArm->Fire();
+    }
+    else
+    {
+        EndAbility(GetCurrentAbilitySpecHandle(), GetCurrentActorInfo(), GetCurrentActivationInfo(), true, false);
+    }
+}
+
 void UGGFGA_Fire::StopFire()
 {
-    if(!FireTimer.IsValid()) return;
-
-    if(const UWorld* World = GetWorld())
+    auto& WorldTimeManager = GetFireArm()->GetWorldTimerManager();
+    if(WorldTimeManager.IsTimerActive(FireTimer))
     {
-        World->GetTimerManager().ClearTimer(FireTimer);
-        FireTimer.Invalidate();
+        WorldTimeManager.ClearTimer(FireTimer);
     }
 }

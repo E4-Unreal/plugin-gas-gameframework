@@ -35,5 +35,8 @@ protected:
 
     /* 메서드 */
 
+    UFUNCTION()
+    virtual void OnFire();
+
     virtual void StopFire();
 };
