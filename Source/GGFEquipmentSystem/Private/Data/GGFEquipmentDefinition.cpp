@@ -9,6 +9,8 @@
 #include "Stats/GEDefenseStats.h"
 #include "Stats/GEMoveSpeedStats.h"
 
+const FGGFEquipmentData FGGFEquipmentData::EmptyEquipmentData;
+
 UGameplayEffect* UGGFEquipmentDefinition::CreateStatsEffect()
 {
     // 빈 게임플레이 이펙트 생성

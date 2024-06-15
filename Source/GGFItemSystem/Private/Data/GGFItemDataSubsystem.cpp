@@ -16,9 +16,14 @@ void UGGFItemDataSubsystem::Initialize(FSubsystemCollectionBase& Collection)
     FetchDataSubsystem();
 }
 
-bool UGGFItemDataSubsystem::GetData(int32 ID, FGGFItemData& Data)
+const FGGFItemData& UGGFItemDataSubsystem::GetData(int32 ID)
 {
-    return UGGFDataSubsystem::GetData(UGGFItemDefinition::StaticClass(), ID, Data);
+    if(auto Data = UGGFDataSubsystem::GetData<FGGFItemData>(UGGFItemDefinition::StaticClass(), ID))
+    {
+        return *Data;
+    }
+
+    return FGGFItemData::EmptyItemData;
 }
 
 void UGGFItemDataSubsystem::FetchDataSubsystem()

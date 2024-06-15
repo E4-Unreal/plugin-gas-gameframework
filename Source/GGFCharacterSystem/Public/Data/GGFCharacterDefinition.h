@@ -14,6 +14,8 @@ struct FGGFCharacterData : public FGGFDataTableRowBase
 {
     GENERATED_BODY()
 
+    static const FGGFCharacterData EmptyCharacterData;
+
     // 캐릭터 썸네일
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     TObjectPtr<UTexture2D> Thumbnail;
@@ -25,6 +27,9 @@ struct FGGFCharacterData : public FGGFDataTableRowBase
     // 기본 애니메이션
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     TSubclassOf<UAnimInstance> AnimInstanceClass;
+
+    // 기본 생성자
+    FGGFCharacterData() { }
 };
 
 /**

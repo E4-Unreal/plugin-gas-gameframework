@@ -13,26 +13,9 @@ void UGGFWeaponDataManager::InitializeComponent()
     bValid = bValid && WeaponDefinition != nullptr;
 }
 
-FGGFWeaponData UGGFWeaponDataManager::GetWeaponData() const
+const FGGFWeaponData& UGGFWeaponDataManager::GetWeaponData() const
 {
-    if(WeaponDefinition)
-    {
-        return WeaponDefinition->GetData();
-    }
-    else
-    {
-        FGGFWeaponData UncachedData;
-        bool bFound = UGGFEquipmentDataSubsystem::GetWeaponData(ID, UncachedData);
-
-#if WITH_EDITOR
-        if(!bFound)
-        {
-            LOG_ACTOR_COMPONENT_DETAIL(Error, TEXT("해당 ID(%d)에 대응하는 데이터를 찾을 수 없습니다."), ID)
-        }
-#endif
-
-        return UncachedData;
-    }
+    return WeaponDefinition ? WeaponDefinition->GetData() : UGGFEquipmentDataSubsystem::GetWeaponData(ID);
 }
 
 void UGGFWeaponDataManager::FetchData()

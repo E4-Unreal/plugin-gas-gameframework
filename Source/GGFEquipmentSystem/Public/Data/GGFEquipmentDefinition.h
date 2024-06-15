@@ -20,6 +20,8 @@ struct GGFEQUIPMENTSYSTEM_API FGGFEquipmentData : public FGGFDataTableRowBase
 {
     GENERATED_BODY()
 
+    static const FGGFEquipmentData EmptyEquipmentData;
+
     // 장비 슬롯 아이콘
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     TObjectPtr<UTexture2D> Icon;
@@ -59,6 +61,9 @@ struct GGFEQUIPMENTSYSTEM_API FGGFEquipmentData : public FGGFDataTableRowBase
     // 스킬 쿨감
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Stats")
     float AbilityHaste;
+
+    // 기본 생성자
+    FGGFEquipmentData() { }
 };
 
 /**

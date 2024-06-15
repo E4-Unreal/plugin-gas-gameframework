@@ -17,14 +17,24 @@ void UGGFEquipmentDataSubsystem::Initialize(FSubsystemCollectionBase& Collection
     FetchDataSubsystem();
 }
 
-bool UGGFEquipmentDataSubsystem::GetEquipmentData(int32 ID, FGGFEquipmentData& Data)
+const FGGFEquipmentData& UGGFEquipmentDataSubsystem::GetEquipmentData(int32 ID)
 {
-    return UGGFDataSubsystem::GetData(UGGFEquipmentDefinition::StaticClass(), ID, Data);
+    if(auto Data = UGGFDataSubsystem::GetData<FGGFEquipmentData>(UGGFEquipmentDefinition::StaticClass(), ID))
+    {
+        return *Data;
+    }
+
+    return FGGFEquipmentData::EmptyEquipmentData;
 }
 
-bool UGGFEquipmentDataSubsystem::GetWeaponData(int32 ID, FGGFWeaponData& Data)
+const FGGFWeaponData& UGGFEquipmentDataSubsystem::GetWeaponData(int32 ID)
 {
-    return UGGFDataSubsystem::GetData(UGGFWeaponDefinition::StaticClass(), ID, Data);
+    if(auto Data = UGGFDataSubsystem::GetData<FGGFWeaponData>(UGGFWeaponDefinition::StaticClass(), ID))
+    {
+        return *Data;
+    }
+
+    return FGGFWeaponData::EmptyWeaponData;
 }
 
 void UGGFEquipmentDataSubsystem::FetchDataSubsystem()

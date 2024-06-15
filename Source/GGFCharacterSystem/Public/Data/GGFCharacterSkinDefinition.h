@@ -30,6 +30,8 @@ struct FGGFCharacterSkinData : public FGGFDataTableRowBase
 {
     GENERATED_BODY()
 
+    static const FGGFCharacterSkinData EmptyCharacterSkinData;
+
     // 스킨 타입
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     EGGFCharacterSkinType SkinType;
@@ -47,6 +49,9 @@ struct FGGFCharacterSkinData : public FGGFDataTableRowBase
     // 비어있는 경우 모든 캐릭터에서 사용 가능한 것으로 취급됩니다.
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     TArray<int32> ForbiddenCharacterIDList;
+
+    // 기본 생성자
+    FGGFCharacterSkinData() { }
 };
 
 /**

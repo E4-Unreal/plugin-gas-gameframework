@@ -12,6 +12,11 @@ AGGFWeapon::AGGFWeapon(const FObjectInitializer& ObjectInitializer)
 
 }
 
+const FGGFWeaponData& AGGFWeapon::GetWeaponData() const
+{
+    return CastChecked<UGGFWeaponDataManager>(GetDataManager())->GetWeaponData();
+}
+
 void AGGFWeapon::Activate_Implementation()
 {
     Super::Activate_Implementation();

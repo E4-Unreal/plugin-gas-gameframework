@@ -16,9 +16,14 @@ void UGGFFireArmDataSubsystem::Initialize(FSubsystemCollectionBase& Collection)
     FetchDataSubsystem();
 }
 
-bool UGGFFireArmDataSubsystem::GetData(int32 ID, FGGFFireArmData& Data)
+const FGGFFireArmData& UGGFFireArmDataSubsystem::GetData(int32 ID)
 {
-    return UGGFDataSubsystem::GetData(UGGFFireArmDefinition::StaticClass(), ID, Data);
+    if(auto Data = UGGFDataSubsystem::GetData<FGGFFireArmData>(UGGFFireArmDefinition::StaticClass(), ID))
+    {
+        return *Data;
+    }
+
+    return FGGFFireArmData::EmptyFireArmData;
 }
 
 void UGGFFireArmDataSubsystem::FetchDataSubsystem()

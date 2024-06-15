@@ -12,26 +12,9 @@ void UGGFFireArmDataManager::InitializeComponent()
     bValid = bValid && FireArmDefinition != nullptr;
 }
 
-FGGFFireArmData UGGFFireArmDataManager::GetFireArmData() const
+const FGGFFireArmData& UGGFFireArmDataManager::GetFireArmData() const
 {
-    if(FireArmDefinition)
-    {
-        return FireArmDefinition->GetData();
-    }
-    else
-    {
-        FGGFFireArmData UncachedData;
-        bool bFound = UGGFFireArmDataSubsystem::GetData(ID, UncachedData);
-
-#if WITH_EDITOR
-        if(!bFound)
-        {
-            LOG_ACTOR_COMPONENT_DETAIL(Error, TEXT("해당 ID(%d)에 대응하는 데이터를 찾을 수 없습니다."), ID)
-        }
-#endif
-
-        return UncachedData;
-    }
+    return FireArmDefinition ? FireArmDefinition->GetData() : UGGFFireArmDataSubsystem::GetData(ID);
 }
 
 void UGGFFireArmDataManager::FetchData()

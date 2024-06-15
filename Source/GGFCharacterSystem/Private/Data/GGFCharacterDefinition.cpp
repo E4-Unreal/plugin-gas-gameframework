@@ -2,6 +2,8 @@
 
 #include "Data/GGFCharacterDefinition.h"
 
+const FGGFCharacterData FGGFCharacterData::EmptyCharacterData;
+
 bool UGGFCharacterDefinition::InitFromDataTableRowBase(FGGFDataTableRowBase* NewDataTableRowBase)
 {
     // 구조체 캐스팅

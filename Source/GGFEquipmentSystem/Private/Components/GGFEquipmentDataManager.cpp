@@ -15,26 +15,9 @@ void UGGFEquipmentDataManager::InitializeComponent()
     bValid = bValid && EquipmentDefinition != nullptr;
 }
 
-FGGFEquipmentData UGGFEquipmentDataManager::GetEquipmentData() const
+const FGGFEquipmentData& UGGFEquipmentDataManager::GetEquipmentData() const
 {
-    if(EquipmentDefinition)
-    {
-        return EquipmentDefinition->GetData();
-    }
-    else
-    {
-        FGGFEquipmentData UncachedData;
-        bool bFound = UGGFEquipmentDataSubsystem::GetEquipmentData(ID, UncachedData);
-
-#if WITH_EDITOR
-        if(!bFound)
-        {
-            LOG_ACTOR_COMPONENT_DETAIL(Error, TEXT("해당 ID(%d)에 대응하는 데이터를 찾을 수 없습니다."), ID)
-        }
-#endif
-
-        return UncachedData;
-    }
+    return EquipmentDefinition ? EquipmentDefinition->GetData() : UGGFEquipmentDataSubsystem::GetEquipmentData(ID);
 }
 
 void UGGFEquipmentDataManager::ApplyStatsEffectToTarget(AActor* Target)

@@ -30,7 +30,7 @@ public:
     /* API */
 
     UFUNCTION(BlueprintPure)
-    FGGFWeaponData GetWeaponData() const;
+    const FGGFWeaponData& GetWeaponData() const;
 
 protected:
     /* DataManager */

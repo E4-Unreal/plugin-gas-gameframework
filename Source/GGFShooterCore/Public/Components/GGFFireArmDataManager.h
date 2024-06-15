@@ -30,7 +30,7 @@ public:
     /* API */
 
     UFUNCTION(BlueprintPure)
-    FGGFFireArmData GetFireArmData() const;
+    const FGGFFireArmData& GetFireArmData() const;
 
 protected:
     /* DataManager */

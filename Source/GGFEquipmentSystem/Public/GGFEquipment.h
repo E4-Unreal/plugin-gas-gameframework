@@ -6,11 +6,13 @@
 #include "GameplayAbilitySpecHandle.h"
 #include "GameplayEffectTypes.h"
 #include "GameplayTagContainer.h"
+#include "Components/GGFEquipmentDataManager.h"
 #include "GameFramework/Actor.h"
 #include "Interfaces/GGFDataInterface.h"
 #include "Interfaces/GGFEquipmentInterface.h"
 #include "GGFEquipment.generated.h"
 
+struct FGGFEquipmentData;
 class UGGFEquipmentDataManager;
 class UGameplayEffect;
 
@@ -114,6 +116,11 @@ public:
 
     virtual int32 GetID_Implementation() override;
     virtual void SetID_Implementation(int32 NewID) override;
+
+    /* API */
+
+    UFUNCTION(BlueprintPure)
+    const FGGFEquipmentData& GetEquipmentData() const;
 
 protected:
     /* 이벤트 */

@@ -30,6 +30,11 @@ struct GGFITEMSYSTEM_API FGGFItemData : public FGGFDataTableRowBase
     // 기본 아이템 수량
     UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (ClampMin = 1))
     int32 Amount = 1;
+
+    // 생성자
+    FGGFItemData() { }
+
+    static const FGGFItemData EmptyItemData;
 };
 
 /**

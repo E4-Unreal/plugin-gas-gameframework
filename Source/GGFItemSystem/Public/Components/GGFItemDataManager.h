@@ -30,7 +30,7 @@ public:
     /* API */
 
     UFUNCTION(BlueprintPure)
-    FGGFItemData GetData() const;
+    const FGGFItemData& GetData() const;
 
 protected:
     /* DataManager */

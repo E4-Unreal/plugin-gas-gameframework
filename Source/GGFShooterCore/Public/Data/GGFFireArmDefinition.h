@@ -18,6 +18,8 @@ struct GGFSHOOTERCORE_API FGGFFireArmData : public FGGFDataTableRowBase
 {
     GENERATED_BODY()
 
+    static const FGGFFireArmData EmptyFireArmData;
+
     // 총기 발사 방식
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Spec")
     bool bUseHitScan = false;
@@ -89,6 +91,9 @@ struct GGFSHOOTERCORE_API FGGFFireArmData : public FGGFDataTableRowBase
     // 총기 재장전 애니메이션 (캐릭터)
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Animation|Character")
     TObjectPtr<UAnimMontage> CharacterReloadMontage;
+
+    // 기본 생성자
+    FGGFFireArmData() { }
 };
 
 /**

@@ -2,6 +2,8 @@
 
 #include "Data/GGFWeaponDefinition.h"
 
+const FGGFWeaponData FGGFWeaponData::EmptyWeaponData;
+
 bool UGGFWeaponDefinition::InitFromDataTableRowBase(FGGFDataTableRowBase* NewDataTableRowBase)
 {
     // 구조체 캐스팅

@@ -2,6 +2,8 @@
 
 #include "Data/GGFItemDefinition.h"
 
+const FGGFItemData FGGFItemData::EmptyItemData;
+
 bool UGGFItemDefinition::InitFromDataTableRowBase(FGGFDataTableRowBase* NewDataTableRowBase)
 {
     // 구조체 캐스팅

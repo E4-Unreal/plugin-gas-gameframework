@@ -98,6 +98,9 @@ public:
     UFUNCTION(BlueprintPure, Category = "Reload")
     bool IsOutOfAmmo() const { return CurrentAmmo < GetFireArmData().AmmoToSpend; }
 
+    UFUNCTION(BlueprintPure)
+    const FGGFFireArmData& GetFireArmData() const;
+
 protected:
     /* Equipment */
 
@@ -178,10 +181,4 @@ public:
 
     UFUNCTION(BlueprintPure)
     FORCEINLINE float GetCameraMultiplier() const { return GetFireArmData().CameraMultiplier; }
-
-protected:
-    /* Getter */
-
-    UFUNCTION(BlueprintPure)
-    FGGFFireArmData GetFireArmData() const;
 };

@@ -148,6 +148,11 @@ void AGGFEquipment::SetID_Implementation(int32 NewID)
     GetDataManager()->SetID(NewID);
 }
 
+const FGGFEquipmentData& AGGFEquipment::GetEquipmentData() const
+{
+    return GetDataManager()->GetEquipmentData();
+}
+
 void AGGFEquipment::OnIDUpdated(int32 NewID)
 {
     // 장비 설정

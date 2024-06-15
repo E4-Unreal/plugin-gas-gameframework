@@ -3,6 +3,8 @@
 
 #include "Data/GGFFireArmDefinition.h"
 
+const FGGFFireArmData FGGFFireArmData::EmptyFireArmData;
+
 bool UGGFFireArmDefinition::InitFromDataTableRowBase(FGGFDataTableRowBase* NewDataTableRowBase)
 {
     // 구조체 캐스팅

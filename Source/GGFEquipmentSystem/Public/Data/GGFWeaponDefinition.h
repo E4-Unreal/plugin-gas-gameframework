@@ -15,6 +15,8 @@ struct GGFEQUIPMENTSYSTEM_API FGGFWeaponData : public FGGFDataTableRowBase
 {
     GENERATED_BODY()
 
+    static const FGGFWeaponData EmptyWeaponData;
+
     // 무기 장착 시간
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Spec")
     float EquipDuration = 1.5f;
@@ -38,6 +40,9 @@ struct GGFEQUIPMENTSYSTEM_API FGGFWeaponData : public FGGFDataTableRowBase
     // 무기 장착 해제 애니메이션
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Animation|Character")
     TObjectPtr<UAnimMontage> UnequipMontage;
+
+    // 기본 생성자
+    FGGFWeaponData() { }
 };
 
 /**

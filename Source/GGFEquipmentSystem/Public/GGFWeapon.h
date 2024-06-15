@@ -6,6 +6,7 @@
 #include "GGFEquipment.h"
 #include "GGFWeapon.generated.h"
 
+struct FGGFWeaponData;
 struct FGameplayAbilitySpecHandle;
 class UGameplayAbility;
 class UAbilitySystemComponent;
@@ -30,6 +31,9 @@ public:
 
     UFUNCTION(BlueprintPure)
     bool IsEquipping() const { return bEquipping; }
+
+    UFUNCTION(BlueprintPure)
+    const FGGFWeaponData& GetWeaponData() const;
 
 protected:
     /* Equipment */

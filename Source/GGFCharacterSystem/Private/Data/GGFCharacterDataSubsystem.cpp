@@ -95,12 +95,22 @@ void UGGFCharacterDataSubsystem::MappingAvailableSkin()
     }
 }
 
-bool UGGFCharacterDataSubsystem::GetData(int32 ID, FGGFCharacterData& Data)
+const FGGFCharacterData& UGGFCharacterDataSubsystem::GetData(int32 ID)
 {
-    return UGGFDataSubsystem::GetData(UGGFCharacterDefinition::StaticClass(), ID, Data);
+    if(auto Data = UGGFDataSubsystem::GetData<FGGFCharacterData>(UGGFCharacterDefinition::StaticClass(), ID))
+    {
+        return *Data;
+    }
+
+    return FGGFCharacterData::EmptyCharacterData;
 }
 
-bool UGGFCharacterDataSubsystem::GetSkinData(int32 ID, FGGFCharacterSkinData& Data)
+const FGGFCharacterSkinData& UGGFCharacterDataSubsystem::GetSkinData(int32 ID)
 {
-    return UGGFDataSubsystem::GetData(UGGFCharacterSkinDefinition::StaticClass(), ID, Data);
+    if(auto Data = UGGFDataSubsystem::GetData<FGGFCharacterSkinData>(UGGFCharacterDefinition::StaticClass(), ID))
+    {
+        return *Data;
+    }
+
+    return FGGFCharacterSkinData::EmptyCharacterSkinData;
 }

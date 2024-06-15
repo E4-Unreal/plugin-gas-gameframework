@@ -298,8 +298,7 @@ void AGGFFireArm::OnRep_Reloading(bool OldReloading)
     }
 }
 
-FGGFFireArmData AGGFFireArm::GetFireArmData() const
+const FGGFFireArmData& AGGFFireArm::GetFireArmData() const
 {
-    auto FireArmDataManager = CastChecked<UGGFFireArmDataManager>(GetDataManager());
-    return FireArmDataManager->GetFireArmData();
+    return CastChecked<UGGFFireArmDataManager>(GetDataManager())->GetFireArmData();
 }

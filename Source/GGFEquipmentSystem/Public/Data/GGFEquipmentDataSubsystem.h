@@ -45,7 +45,7 @@ public:
 
     // 데이터 테이블로부터 직접 데이터를 읽어오는 메서드로 런타임이 아닌 상황에서 사용합니다.
     UFUNCTION(BlueprintPure, Category = "Equipment")
-    static bool GetEquipmentData(int32 ID, FGGFEquipmentData& Data);
+    static const FGGFEquipmentData& GetEquipmentData(int32 ID);
 
     // 모든 데이터 에셋 가져오기
     UFUNCTION(BlueprintPure, Category = "Equipment")
@@ -57,7 +57,7 @@ public:
 
     // 데이터 테이블로부터 직접 데이터를 읽어오는 메서드로 런타임이 아닌 상황에서 사용합니다.
     UFUNCTION(BlueprintPure, Category = "Weapon")
-    static bool GetWeaponData(int32 ID, FGGFWeaponData& Data);
+    static const FGGFWeaponData& GetWeaponData(int32 ID);
 
     // 모든 데이터 에셋 가져오기
     UFUNCTION(BlueprintPure, Category = "Weapon")
