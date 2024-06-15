@@ -227,7 +227,7 @@ void AGGFFireArm::Activate_Implementation()
 void AGGFFireArm::Deactivate_Implementation()
 {
     ShowCrosshair(false);
-    
+
     Super::Deactivate_Implementation();
 }
 
@@ -241,7 +241,7 @@ void AGGFFireArm::ShowCrosshair(bool bShow)
             {
                 if(CrosshairWidget == nullptr)
                 {
-                    CrosshairWidget = CreateWidget(OwnerPawn->Controller, GetFireArmData().CrosshairWidget);
+                    CrosshairWidget = CreateWidget(CastChecked<APlayerController>(OwnerPawn->Controller), GetFireArmData().CrosshairWidget);
                 }
 
                 CrosshairWidget->AddToViewport();

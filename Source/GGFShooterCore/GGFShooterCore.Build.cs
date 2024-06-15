@@ -11,6 +11,9 @@ public class GGFShooterCore : ModuleRules
             {
                 "Core",
 
+                // UI
+                "UMG",
+
                 // 이펙트
                 "Niagara",
                 "PhysicsCore",

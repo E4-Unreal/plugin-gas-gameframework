@@ -3,6 +3,7 @@
 #include "Characters/GGFPlayerCharacter.h"
 
 #include "EnhancedInputSubsystems.h"
+#include "GGFWeapon.h"
 #include "AbilitySystem/GGFPlayerAbilitySystem.h"
 #include "Components/GGFCharacterManager.h"
 #include "Components/GGFCharacterMovement.h"
@@ -65,6 +66,21 @@ void AGGFPlayerCharacter::SetActorHiddenInGame(bool bNewHidden)
     else
     {
         EquipmentManager->Activate(false);
+    }
+}
+
+void AGGFPlayerCharacter::Restart()
+{
+    Super::Restart();
+
+    // TODO EquipmentManager->Activate로 대체
+    if(auto SelectedEquipment = GetEquipmentManager()->GetSelectedEquipment())
+    {
+        if(SelectedEquipment->Implements<UGGFEquipmentInterface>())
+        {
+            IGGFEquipmentInterface::Execute_Deactivate(SelectedEquipment);
+            IGGFEquipmentInterface::Execute_Activate(SelectedEquipment);
+        }
     }
 }
 

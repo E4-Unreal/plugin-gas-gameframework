@@ -84,6 +84,10 @@ public:
 
     virtual void SetActorHiddenInGame(bool bNewHidden) override;
 
+    /* Pawn */
+
+    virtual void Restart() override;
+
     /* Character */
 
     // 앉은 상태에서 점프가 가능하도록 설정
