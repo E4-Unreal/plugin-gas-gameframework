@@ -4,6 +4,7 @@
 
 #include "GGFShooterGameplayTags.h"
 #include "Components/GGFCameraComponent.h"
+#include "Weapons/GGFSniper.h"
 
 UGGFGA_ADS::UGGFGA_ADS()
 {
@@ -31,11 +32,23 @@ void UGGFGA_ADS::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const 
     // 무기 FOV로 설정
     float WeaponFOV = GetCameraComponent()->GetDefaultFOV() / GetFireArm()->GetCameraMultiplier();
     GetCameraComponent()->SetFieldOfView(WeaponFOV);
+
+    // 저격총의 경우 스코프 UI 표시
+    if(auto Sniper = Cast<AGGFSniper>(GetFireArm()))
+    {
+        Sniper->ShowScopeWidget(true);
+    }
 }
 
 void UGGFGA_ADS::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
     const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled)
 {
+    // 저격총의 경우 스코프 UI 숨기기
+    if(auto Sniper = Cast<AGGFSniper>(GetFireArm()))
+    {
+        Sniper->ShowScopeWidget(false);
+    }
+
     // 기본 FOV로 복원
     GetCameraComponent()->SetFieldOfView(-1);
 

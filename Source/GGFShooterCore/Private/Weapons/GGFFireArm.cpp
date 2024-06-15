@@ -233,6 +233,10 @@ void AGGFFireArm::Deactivate_Implementation()
 
 void AGGFFireArm::ShowCrosshair(bool bShow)
 {
+    // 유효성 검사
+    if(GetFireArmData().CrosshairWidget == nullptr) return;
+
+    // 로컬 플레이어 UI 표시
     if(APawn* OwnerPawn = Cast<APawn>(GetOwner()))
     {
         if(OwnerPawn->IsPlayerControlled() && OwnerPawn->IsLocallyControlled())
