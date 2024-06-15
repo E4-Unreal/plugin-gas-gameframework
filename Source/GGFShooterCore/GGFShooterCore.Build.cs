@@ -28,7 +28,8 @@ public class GGFShooterCore : ModuleRules
                 "GGFDataSystem",
                 "GASExtension",
                 "GGFEquipmentSystem",
-                "GGFCombatCore"
+                "GGFCombatCore",
+                "GGFInteractionSystem"
             }
         );
 
