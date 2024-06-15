@@ -62,6 +62,7 @@ void AGGFFireArm::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifet
     Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
     DOREPLIFETIME(ThisClass, CurrentAmmo);
+    DOREPLIFETIME(ThisClass, bReloading);
 }
 
 
@@ -287,6 +288,14 @@ FVector AGGFFireArm::GetMuzzleLocation() const
 void AGGFFireArm::OnRep_CurrentAmmo(int32 OldCurrentAmmo)
 {
     OnCurrentAmmoValueChanged.Broadcast(CurrentAmmo);
+}
+
+void AGGFFireArm::OnRep_Reloading(bool OldReloading)
+{
+    if(bReloading)
+    {
+        OnReloadFinished.Broadcast();
+    }
 }
 
 FGGFFireArmData AGGFFireArm::GetFireArmData() const

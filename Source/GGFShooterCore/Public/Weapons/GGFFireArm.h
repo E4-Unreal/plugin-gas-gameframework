@@ -61,7 +61,7 @@ protected:
     float LastFiredTime = 0;
 
     // Reload 호출 시 true로 설정되며 FinishReloading 호출 시 false로 설정됩니다.
-    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State|FireArm", Transient)
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State|FireArm", Transient, ReplicatedUsing = OnRep_Reloading)
     bool bReloading = false;
 
     FTimerHandle ReloadTimerHandle;
@@ -151,6 +151,9 @@ protected:
 
     UFUNCTION()
     virtual void OnRep_CurrentAmmo(int32 OldCurrentAmmo);
+
+    UFUNCTION()
+    virtual void OnRep_Reloading(bool OldReloading);
 
 public:
     /* Getter */
