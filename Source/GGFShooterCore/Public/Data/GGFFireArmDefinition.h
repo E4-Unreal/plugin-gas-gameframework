@@ -96,6 +96,10 @@ struct GGFSHOOTERCORE_API FGGFFireArmData : public FGGFDataTableRowBase
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Animation|Character")
     TObjectPtr<UAnimMontage> CharacterReloadMontage;
 
+    // 크로스헤어
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "UI")
+    TSubclassOf<UUserWidget> CrosshairWidget;
+
     // 기본 생성자
     FGGFFireArmData() { }
 };

@@ -7,6 +7,7 @@
 #include "Abilities/GGFGA_AutoReload.h"
 #include "Abilities/GGFGA_Fire.h"
 #include "Abilities/GGFGA_Reload.h"
+#include "Blueprint/UserWidget.h"
 #include "Components/AudioComponent.h"
 #include "Components/GGFEquipmentDataManager.h"
 #include "Components/GGFFireArmDataManager.h"
@@ -214,6 +215,43 @@ void AGGFFireArm::OnIDUpdated(int32 NewID)
     // NiagaraSystem
     GetNiagaraSystem()->AttachToComponent(GetSkeletalMesh(), AttachmentTransformRules, MuzzleSocketName);
     GetNiagaraSystem()->SetAsset(FireArmData.MuzzleSystem);
+}
+
+void AGGFFireArm::Activate_Implementation()
+{
+    Super::Activate_Implementation();
+
+    ShowCrosshair(true);
+}
+
+void AGGFFireArm::Deactivate_Implementation()
+{
+    ShowCrosshair(false);
+    
+    Super::Deactivate_Implementation();
+}
+
+void AGGFFireArm::ShowCrosshair(bool bShow)
+{
+    if(APawn* OwnerPawn = Cast<APawn>(GetOwner()))
+    {
+        if(OwnerPawn->IsPlayerControlled() && OwnerPawn->IsLocallyControlled())
+        {
+            if(bShow)
+            {
+                if(CrosshairWidget == nullptr)
+                {
+                    CrosshairWidget = CreateWidget(OwnerPawn->Controller, GetFireArmData().CrosshairWidget);
+                }
+
+                CrosshairWidget->AddToViewport();
+            }
+            else if(CrosshairWidget)
+            {
+                CrosshairWidget->RemoveFromParent();
+            }
+        }
+    }
 }
 
 bool AGGFFireArm::CanFire_Implementation()

@@ -66,6 +66,10 @@ protected:
 
     FTimerHandle ReloadTimerHandle;
 
+    // 크로스헤어 위젯 인스턴스
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State", Transient)
+    TObjectPtr<UUserWidget> CrosshairWidget;
+
 public:
     AGGFFireArm(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
@@ -105,8 +109,14 @@ protected:
     /* Equipment */
 
     virtual void OnIDUpdated(int32 NewID) override;
+    virtual void Activate_Implementation() override;
+    virtual void Deactivate_Implementation() override;
 
     /* 메서드 */
+
+    // 크로스 헤어 UI 표시 및 숨기기
+    UFUNCTION(BlueprintCallable)
+    virtual void ShowCrosshair(bool bShow);
 
     UFUNCTION(Server, Reliable, Category = "Fire")
     void ServerFire();
