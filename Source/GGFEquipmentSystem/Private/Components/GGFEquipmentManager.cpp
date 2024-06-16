@@ -5,9 +5,30 @@
 #include "GameplayTagContainer.h"
 #include "Net/UnrealNetwork.h"
 #include "GGFWeapon.h"
-#include "Interfaces/GGFCharacterAnimationInterface.h"
+#include "Data/GGFEquipmentDataSubsystem.h"
+#include "Data/GGFEquipmentDefinition.h"
+#include "GGFEquipmentGameplayTags.h"
 
 const FEquipmentSlot FEquipmentSlot::EmptySlot;
+
+UGGFEquipmentManager::UGGFEquipmentManager()
+{
+    FEquipmentSlotConfig PrimarySlotConfig;
+    PrimarySlotConfig.SlotTag = Equipment::Slot::Primary;
+    PrimarySlotConfig.SocketNames.Emplace("weapon_waist");
+
+    FEquipmentSlotConfig SecondarySlotConfig;
+    SecondarySlotConfig.SlotTag = Equipment::Slot::Secondary;
+    SecondarySlotConfig.SocketNames.Emplace("weapon_thigh_r");
+
+    FEquipmentSlotConfig SpecialSlotConfig;
+    SpecialSlotConfig.SlotTag = Equipment::Slot::Special;
+    SpecialSlotConfig.SocketNames.Emplace(NAME_None);
+
+    EquipmentSlotConfigs.Emplace(PrimarySlotConfig);
+    EquipmentSlotConfigs.Emplace(SecondarySlotConfig);
+    EquipmentSlotConfigs.Emplace(SpecialSlotConfig);
+}
 
 void UGGFEquipmentManager::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
@@ -22,6 +43,11 @@ void UGGFEquipmentManager::InitializeComponent()
 
     // AvailableSlots로부터 EquipmentSlots를 생성합니다.
     CreateEquipmentSlots();
+}
+
+void UGGFEquipmentManager::BeginPlay()
+{
+    Super::BeginPlay();
 
     // 기본 장비를 추가합니다.
     AddDefaultEquipments();
@@ -56,19 +82,56 @@ void UGGFEquipmentManager::OnComponentDestroyed(bool bDestroyingHierarchy)
     }
 }
 
-bool UGGFEquipmentManager::AddEquipment(TSubclassOf<AActor> EquipmentClass)
+bool UGGFEquipmentManager::AddEquipmentByID(int32 EquipmentID)
 {
-    // 무기를 추가할 수 있는지 확인
-    if(!CanAddEquipment(EquipmentClass)) return false;
+    if(auto GaminInstance = GetOwner()->GetGameInstance())
+    {
+        if(auto DataSubsystem = GaminInstance->GetSubsystem<UGGFEquipmentDataSubsystem>())
+        {
+            if(auto EquipmentDefinition = DataSubsystem->GetEquipmentDefinition(EquipmentID))
+            {
+                // 장비 데이터 가져오기
+                const auto EquipmentData = EquipmentDefinition->GetData();
 
-    // 무기 스폰
-    AActor* SpawnedEquipment = SpawnEquipment(EquipmentClass);
-    if(SpawnedEquipment == nullptr) return false;
+                // 장비 스폰
+                if(auto SpawnedEquipment = SpawnEquipment(EquipmentData.EquipmentClass))
+                {
+                    IGGFDataInterface::Execute_SetID(SpawnedEquipment, EquipmentID);
+
+                    // 장비를 추가할 수 있는지 확인
+                    if(!CanAddEquipment(SpawnedEquipment))
+                    {
+                        SpawnedEquipment->Destroy();
+                        return false;
+                    }
+
+                    return AddEquipmentByActor(SpawnedEquipment);
+                }
+            }
+        }
+    }
+
+    return false;
+}
+
+bool UGGFEquipmentManager::AddEquipmentByClass(TSubclassOf<AActor> EquipmentClass)
+{
+    // 장비를 추가할 수 있는지 확인
+    if(!CanAddEquipment(EquipmentClass->GetDefaultObject<AActor>())) return false;
+
+    // 장비 스폰 후 추가
+    return AddEquipmentByActor(SpawnEquipment(EquipmentClass));
+}
+
+bool UGGFEquipmentManager::AddEquipmentByActor(AActor* EquipmentActor)
+{
+    // 입력 유효성 검사
+    if(EquipmentActor == nullptr) return false;
 
     // 슬롯에 무기 추가
-    const FGameplayTag& SlotTag = IGGFEquipmentInterface::Execute_GetEquipmentSlot(SpawnedEquipment);
+    const FGameplayTag& SlotTag = IGGFEquipmentInterface::Execute_GetEquipmentSlot(EquipmentActor);
     const FEquipmentSlot& EquipmentSlot = GetAvailableSlot(SlotTag);
-    EquipmentSlots.Emplace(EquipmentSlot, SpawnedEquipment);
+    EquipmentSlots.Emplace(EquipmentSlot, EquipmentActor);
 
     if(!IsSelectedEquipmentExist())
     {
@@ -78,7 +141,7 @@ bool UGGFEquipmentManager::AddEquipment(TSubclassOf<AActor> EquipmentClass)
     else
     {
         // 선택 무기가 비어 있지 않은 경우 몸에 부착합니다.
-        AttachEquipment(SpawnedEquipment, EquipmentSlot.SocketName);
+        AttachEquipment(EquipmentActor, EquipmentSlot.SocketName);
     }
 
     return true;
@@ -116,10 +179,6 @@ void UGGFEquipmentManager::Server_SelectEquipment_Implementation(FGameplayTag Sl
 
     // 선택 장비를 활성화합니다.
     IGGFEquipmentInterface::Execute_Activate(SelectedEquipment);
-
-    // 장비에 대응하는 캐릭터 애님 클래스로 변경 요청
-    const FGameplayTag EquipmentType = IGGFEquipmentInterface::Execute_GetEquipmentType(SelectedEquipment);
-    IGGFCharacterAnimationInterface::Execute_ChangeAnimInstance(GetOwner(), EquipmentType);
 }
 
 bool UGGFEquipmentManager::IsEquipmentExist(FGameplayTag Slot, int32 Index) const
@@ -161,9 +220,6 @@ void UGGFEquipmentManager::Deselect()
     // 선택 슬롯을 비웁니다.
     SelectedSlot = FEquipmentSlot::EmptySlot;
     SelectedEquipment = nullptr;
-
-    // 기본 캐릭터 애님 클래스로 변경 요청
-    IGGFCharacterAnimationInterface::Execute_ChangeAnimInstance(GetOwner(), FGameplayTag::EmptyTag);
 }
 
 bool UGGFEquipmentManager::AttachEquipment(AActor* Equipment, FName SocketName)
@@ -184,10 +240,13 @@ bool UGGFEquipmentManager::AttachEquipment(AActor* Equipment, FName SocketName)
     }
 }
 
-bool UGGFEquipmentManager::CanAddEquipment(TSubclassOf<AActor> EquipmentClass) const
+bool UGGFEquipmentManager::CanAddEquipment(AActor* NewEquipment) const
 {
+    // 입력 유효성 검사
+    if(NewEquipment == nullptr) return false;
+
     // 무기 슬롯이 비어있는지 확인
-    const FGameplayTag& EquipmentSlot = GetEquipmentSlot(EquipmentClass);
+    const FGameplayTag& EquipmentSlot = IGGFEquipmentInterface::Execute_GetEquipmentSlot(NewEquipment);
     return GetOwner()->HasAuthority() && IsSlotAvailable(EquipmentSlot);
 }
 
@@ -276,15 +335,31 @@ void UGGFEquipmentManager::CreateEquipmentSlots()
 
 void UGGFEquipmentManager::AddDefaultEquipments()
 {
-    for (const auto& DefaultEquipment : DefaultEquipments)
+    for(auto EquipmentID : EquipmentIDList)
     {
-        AddEquipment(DefaultEquipment);
+        AddEquipmentByID(EquipmentID);
+    }
+
+    for (auto EquipmentClass : EquipmentClassList)
+    {
+        AddEquipmentByClass(EquipmentClass);
     }
 }
 
 void UGGFEquipmentManager::OnRep_SelectedEquipment(AActor* OldEquipment)
 {
-    // 장비에 대응하는 캐릭터 애님 클래스로 변경 요청
-    const FGameplayTag EquipmentType = SelectedEquipment ? IGGFEquipmentInterface::Execute_GetEquipmentType(SelectedEquipment) : FGameplayTag::EmptyTag;
-    IGGFCharacterAnimationInterface::Execute_ChangeAnimInstance(GetOwner(), EquipmentType);
+    // 중복 호출 검사
+    if(SelectedEquipment == OldEquipment) return;
+
+    // 기존 무기 비활성화
+    if(OldEquipment && OldEquipment->Implements<UGGFEquipmentInterface>())
+    {
+        IGGFEquipmentInterface::Execute_Deactivate(OldEquipment);
+    }
+
+    // 새로운 무기 활성화
+    if(SelectedEquipment && SelectedEquipment->Implements<UGGFEquipmentInterface>())
+    {
+        IGGFEquipmentInterface::Execute_Activate(SelectedEquipment);
+    }
 }

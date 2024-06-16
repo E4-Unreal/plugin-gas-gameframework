@@ -3,6 +3,7 @@
 #include "Characters/GGFPlayerCharacter.h"
 
 #include "EnhancedInputSubsystems.h"
+#include "GGFWeapon.h"
 #include "AbilitySystem/GGFPlayerAbilitySystem.h"
 #include "Components/GGFCharacterManager.h"
 #include "Components/GGFCharacterMovement.h"
@@ -68,6 +69,21 @@ void AGGFPlayerCharacter::SetActorHiddenInGame(bool bNewHidden)
     }
 }
 
+void AGGFPlayerCharacter::Restart()
+{
+    Super::Restart();
+
+    // TODO EquipmentManager->Activate로 대체
+    if(auto SelectedEquipment = GetEquipmentManager()->GetSelectedEquipment())
+    {
+        if(SelectedEquipment->Implements<UGGFEquipmentInterface>())
+        {
+            IGGFEquipmentInterface::Execute_Deactivate(SelectedEquipment);
+            IGGFEquipmentInterface::Execute_Activate(SelectedEquipment);
+        }
+    }
+}
+
 bool AGGFPlayerCharacter::CanJumpInternal_Implementation() const
 {
     // 앉은 상태에서도 점프가 가능합니다.
@@ -128,28 +144,31 @@ void AGGFPlayerCharacter::ToggleCrouch()
         Crouch();
 }
 
-void AGGFPlayerCharacter::NetMulticast_PlayMontage_Implementation(UAnimMontage* MontageToPlay)
-{
-    GetMesh()->GetAnimInstance()->Montage_Play(MontageToPlay);
-}
-
 /* GGFCharacterAnimationInterface */
 
-void AGGFPlayerCharacter::PlayMontage_Implementation(UAnimMontage* MontageToPlay)
+void AGGFPlayerCharacter::SetAnimInstanceClass_Implementation(TSubclassOf<UAnimInstance> NewAnimInstanceClass)
 {
-    NetMulticast_PlayMontage(MontageToPlay);
+    // 유효성 검사
+    if(NewAnimInstanceClass == nullptr) return;
+
+    // TODO 애님 인스턴스 클래스의 스켈레톤을 분석하여 1인칭, 3인칭 구분
+
+    // 애님 인스턴스 클래스 변경
+    GetMesh()->SetAnimInstanceClass(NewAnimInstanceClass);
 }
 
-void AGGFPlayerCharacter::ChangeAnimInstance_Implementation(FGameplayTag EquipmentTag)
+void AGGFPlayerCharacter::PlayAnimMontage_Implementation(UAnimMontage* NewAnimMontage, float Duration)
 {
-    if(AnimInstanceMap.Contains(EquipmentTag))
-    {
-        GetMesh()->SetAnimInstanceClass(AnimInstanceMap[EquipmentTag]);
+    // 유효성 검사
+    if(NewAnimMontage == nullptr) return;
 
-        if(EquipMontageMap.Contains(EquipmentTag))
-        {
-            GetMesh()->GetAnimInstance()->Montage_Play(EquipMontageMap[EquipmentTag]);
-        }
+    // TODO 애님 몽타주의 스켈레톤을 분석하여 1인칭, 3인칭 구분
+
+    // 애님 몽타주 재생
+    if(auto AnimInstance = GetMesh()->GetAnimInstance())
+    {
+        float PlayRate = FMath::IsNearlyZero(Duration) ? 1 : NewAnimMontage->GetPlayLength() / Duration;
+        AnimInstance->Montage_Play(NewAnimMontage, PlayRate);
     }
 }
 

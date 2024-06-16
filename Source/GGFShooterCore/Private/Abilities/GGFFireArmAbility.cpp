@@ -4,18 +4,7 @@
 
 #include "Weapons/GGFFireArm.h"
 
-bool UGGFFireArmAbility::CanActivateAbility(const FGameplayAbilitySpecHandle Handle,
-                                            const FGameplayAbilityActorInfo* ActorInfo, const FGameplayTagContainer* SourceTags,
-                                            const FGameplayTagContainer* TargetTags, FGameplayTagContainer* OptionalRelevantTags) const
+bool UGGFFireArmAbility::InternalCanActivate()
 {
-    return Super::CanActivateAbility(Handle, ActorInfo, SourceTags, TargetTags, OptionalRelevantTags) && FireArm.IsValid();
-}
-
-void UGGFFireArmAbility::OnRep_Weapon()
-{
-    Super::OnRep_Weapon();
-
-    // 총기 레퍼런스 캐싱
-    AActor* CachedWeapon = GetWeapon();
-    FireArm = CachedWeapon == nullptr ? nullptr : Cast<AGGFFireArm>(CachedWeapon);
+    return Super::InternalCanActivate() && GetFireArm();
 }

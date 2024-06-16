@@ -14,7 +14,12 @@ public class GGFEquipmentSystem : ModuleRules
                 // GAS
                 "GameplayTags",
                 "GameplayTasks",
-                "GameplayAbilities"
+                "GameplayAbilities",
+
+                // GASGameFramework
+                "GGFCore",
+                "GGFDataSystem",
+                "GASExtension"
             }
         );
 

@@ -78,12 +78,3 @@ bool UGGFEquipmentManagerBase::AttachEquipment(AActor* Equipment, FName SocketNa
 
     return true;
 }
-
-const FGameplayTag UGGFEquipmentManagerBase::GetEquipmentSlot(TSubclassOf<AActor> EquipmentClass)
-{
-    // 유효성 검사
-    if(EquipmentClass == nullptr || !EquipmentClass->ClassDefaultObject->Implements<UGGFEquipmentInterface>()) return FGameplayTag::EmptyTag;
-
-    // 장비 슬롯 태그 반환
-    return IGGFEquipmentInterface::Execute_GetEquipmentSlot(EquipmentClass->ClassDefaultObject);
-}

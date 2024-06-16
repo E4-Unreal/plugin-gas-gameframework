@@ -2,10 +2,12 @@
 
 #include "Data/GGFCharacterDefinition.h"
 
+const FGGFCharacterData FGGFCharacterData::EmptyCharacterData;
+
 bool UGGFCharacterDefinition::InitFromDataTableRowBase(FGGFDataTableRowBase* NewDataTableRowBase)
 {
     // 구조체 캐스팅
-    if(FGGFCharacterData* NewData = static_cast<FGGFCharacterData*>(NewDataTableRowBase))
+    if(auto NewData = static_cast<FGGFCharacterData*>(NewDataTableRowBase))
     {
         // 데이터 설정
         Data = *NewData;

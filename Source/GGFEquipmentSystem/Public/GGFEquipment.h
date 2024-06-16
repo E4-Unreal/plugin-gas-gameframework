@@ -6,19 +6,40 @@
 #include "GameplayAbilitySpecHandle.h"
 #include "GameplayEffectTypes.h"
 #include "GameplayTagContainer.h"
+#include "Components/GGFEquipmentDataManager.h"
 #include "GameFramework/Actor.h"
+#include "Interfaces/GGFDataInterface.h"
 #include "Interfaces/GGFEquipmentInterface.h"
 #include "GGFEquipment.generated.h"
 
+struct FGGFEquipmentData;
+class UGGFEquipmentDataManager;
 class UGameplayEffect;
 
 /**
  * GSFEquipmentComponent에서 사용하기 위한 장비 클래스입니다.
  */
 UCLASS(Abstract, Blueprintable, BlueprintType)
-class GGFEQUIPMENTSYSTEM_API AGGFEquipment : public AActor, public IGGFEquipmentInterface
+class GGFEQUIPMENTSYSTEM_API AGGFEquipment : public AActor, public IGGFEquipmentInterface, public IGGFDataInterface
 {
     GENERATED_BODY()
+
+public:
+    /* 서브 오브젝트 */
+
+    static FName SkeletalMeshName;
+    static FName DataManagerName;
+
+private:
+    /* 컴포넌트 */
+
+    // 스켈레탈 메시
+    UPROPERTY(VisibleAnywhere, BlueprintGetter = GetSkeletalMesh, Category = "Component")
+    TObjectPtr<USkeletalMeshComponent> SkeletalMesh;
+
+    // 데이터 관리 전용 컴포넌트
+    UPROPERTY(VisibleAnywhere, BlueprintGetter = GetDataManager, Category = "Component")
+    TObjectPtr<UGGFEquipmentDataManager> DataManager;
 
     /* 레퍼런스 */
 
@@ -26,12 +47,6 @@ class GGFEQUIPMENTSYSTEM_API AGGFEquipment : public AActor, public IGGFEquipment
     TObjectPtr<UAbilitySystemComponent> OwnerAbilitySystem;
 
 protected:
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Config|Equipment", meta = (Categories = "Equipment"))
-    FGameplayTag EquipmentType;
-
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Config|Equipment", meta = (Categories = "Equipment.Slot"))
-    FGameplayTag EquipmentSlot;
-
     /* Passive Effect */
 
     // 장비가 장착되는 즉시 소유자에게 적용될 게임플레이 이펙트 목록입니다.
@@ -77,25 +92,42 @@ protected:
     TArray<FGameplayAbilitySpecHandle> ActiveAbilitySpecHandles;
 
 public:
-    AGGFEquipment();
+    AGGFEquipment(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
     /* Actor */
 
+    virtual void OnConstruction(const FTransform& Transform) override;
+    virtual void PreInitializeComponents() override;
     virtual void PostInitializeComponents() override;
 
     virtual void SetOwner(AActor* NewOwner) override;
     virtual void OnRep_Owner() override;
 
-    /* EquipmentInterface */
+    /* Equipment Interface */
 
     virtual void Equip_Implementation(AActor* NewOwner) override;
     virtual void UnEquip_Implementation() override;
     virtual void Activate_Implementation() override;
     virtual void Deactivate_Implementation() override;
-    FORCEINLINE virtual const FGameplayTag GetEquipmentSlot_Implementation() const override { return EquipmentSlot; }
-    FORCEINLINE virtual const FGameplayTag GetEquipmentType_Implementation() const override { return EquipmentType; }
+    virtual const FGameplayTag GetEquipmentSlot_Implementation() const override;
+    virtual const FGameplayTag GetEquipmentType_Implementation() const override;
+
+    /* Data Interface */
+
+    virtual int32 GetID_Implementation() override;
+    virtual void SetID_Implementation(int32 NewID) override;
+
+    /* API */
+
+    UFUNCTION(BlueprintPure)
+    const FGGFEquipmentData& GetEquipmentData() const;
 
 protected:
+    /* 이벤트 */
+
+    UFUNCTION(BlueprintCallable)
+    virtual void OnIDUpdated(int32 NewID);
+
     /* 메서드 */
 
     UFUNCTION(BlueprintNativeEvent, Category = "Equipment")
@@ -120,8 +152,17 @@ protected:
     UFUNCTION(BlueprintCallable, Category = "Equipment|Effects")
     virtual void RemoveEffectsFromOwner(TArray<FActiveGameplayEffectHandle>& EffectSpecHandles);
 
+public:
+    /* Getter */
+
+    UFUNCTION(BlueprintGetter)
+    FORCEINLINE USkeletalMeshComponent* GetSkeletalMesh() const { return SkeletalMesh; }
+
 protected:
     /* Getter */
+
+    UFUNCTION(BlueprintGetter)
+    FORCEINLINE UGGFEquipmentDataManager* GetDataManager() const { return DataManager; }
 
     UFUNCTION(BlueprintGetter)
     FORCEINLINE UAbilitySystemComponent* GetOwnerAbilitySystem() const { return OwnerAbilitySystem; }

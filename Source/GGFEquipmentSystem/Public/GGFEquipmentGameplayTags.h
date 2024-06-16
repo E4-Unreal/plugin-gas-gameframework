@@ -37,3 +37,5 @@ namespace GGFGameplayTags
         }
     }
 }
+
+using namespace GGFGameplayTags;

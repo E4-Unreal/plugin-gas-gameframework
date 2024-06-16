@@ -72,7 +72,7 @@ bool FGameplayCueNotify_CascadeInfo::PlayParticleEffect(AActor* Target, const FG
     {
         const EAttachLocation::Type AttachLocationType = GetAttachLocationTypeFromRule(EAttachmentRule::KeepWorld);
 
-        SpawnedFXSC = UGameplayStatics::SpawnEmitterAttached(ParticleSystem, TargetComponent, NAME_None,
+        SpawnedFXSC = UGameplayStatics::SpawnEmitterAttached(ParticleSystem, TargetComponent, AttachSocketName,
             SpawnLocation, SpawnRotation, SpawnScale, AttachLocationType, bAutoDestroy, EPSCPoolMethod::AutoRelease, bAutoActivate);
     }
     else // Location

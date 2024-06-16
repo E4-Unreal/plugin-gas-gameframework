@@ -2,7 +2,9 @@
 
 #include "TSCharacterAnimInstance.h"
 
+#include "GGFEquipment.h"
 #include "KismetAnimationLibrary.h"
+#include "Components/GGFEquipmentManager.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
@@ -32,4 +34,20 @@ void UTSCharacterAnimInstance::NativeThreadSafeUpdateAnimation(float DeltaSecond
     PitchOffset = FMath::Clamp(DesiredRotator.Pitch, -90.f, 90.f);
     YawOffset = FMath::Clamp(DesiredRotator.Yaw, -90.f, 90.f);
     YawOffset += YawOffset - DesiredRotator.Yaw; // 초과한 각도만큼 다시 원복함으로써 -180 에서 180 으로 한 번에 넘어가는 것을 방지
+
+    // LeftHand IK
+
+    bCanUseLeftHandTransform = false;
+    if(auto EquipmentManager = GetOwningActor()->GetComponentByClass<UGGFEquipmentManager>())
+    {
+        if(auto SelectedEquipment = Cast<AGGFEquipment>(EquipmentManager->GetSelectedEquipment()))
+        {
+            if(SelectedEquipment->GetSkeletalMesh()->DoesSocketExist(LeftHandSocketName))
+            {
+                LeftHandTransform = SelectedEquipment->GetSkeletalMesh()->GetSocketTransform(LeftHandSocketName, RTS_ParentBoneSpace);
+                bCanUseLeftHandTransform = true;
+            }
+        }
+    }
+    bCanUseLeftHandTransform = bCanUseLeftHandTransform && FMath::IsNearlyZero(GetCurveValue(DisableLeftHandIKCurveName));
 }

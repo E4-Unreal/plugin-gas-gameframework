@@ -26,6 +26,10 @@ protected:
     int32 ConeHalfAngle = 10;
 
 protected:
+    /* Equipment */
+
+    virtual void OnIDUpdated(int32 NewID) override;
+
     /* FireArm */
 
     virtual void OnFire_Implementation() override;

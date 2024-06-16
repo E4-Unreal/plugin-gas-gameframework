@@ -40,7 +40,7 @@ public:
 
     UPROPERTY(BlueprintAssignable)
     FOnLocalPawnEndOverlapSignature OnLocalPawnEndOverlap;
-    
+
     // UI에 표시할 오브젝트 이름
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|UI")
     FName DisplayName = "Interactable Object";
@@ -91,6 +91,10 @@ public:
 
     UFUNCTION(BlueprintPure)
     virtual FORCEINLINE bool CanInteract(AActor* OtherPawn) const { return true; }
+
+    // 위젯 정보 갱신
+    UFUNCTION(BlueprintCallable)
+    virtual void RefreshWidget();
 
 protected:
     /* 이벤트 */

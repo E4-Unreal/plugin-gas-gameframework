@@ -10,6 +10,11 @@ public class GGFItemSystem : ModuleRules
             new string[]
             {
                 "Core",
+
+                // GASGameFramework
+                "GGFCore",
+                "GGFDataSystem",
+                "GGFInteractionSystem"
             }
         );
 

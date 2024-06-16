@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GGFDefinitionBase.h"
 #include "Subsystems/GameInstanceSubsystem.h"
+#include "Logging.h"
 #include "GGFDataSubsystem.generated.h"
 
 /**
@@ -55,20 +56,20 @@ public:
      * @return 데이터 테이블로부터 ID에 해당하는 데이터를 가져옵니다.
      */
     template <typename T>
-    FORCEINLINE static bool GetData(TSubclassOf<UGGFDefinitionBase> DefinitionClass, int32 ID, T& Data)
+    FORCEINLINE static T* GetData(TSubclassOf<UGGFDefinitionBase> DefinitionClass, int32 ID)
     {
+        check(DefinitionClass);
         static_assert(std::is_base_of_v<FGGFDataTableRowBase, T>, "type parameter of this class must derive from BaseClass");
 
         if(UDataTable* DataTable = GetDataTable(DefinitionClass))
         {
             if(T* DataPtr = DataTable->FindRow<T>(FName(FString::FromInt(ID)), ""))
             {
-                Data = *DataPtr;
-                return true;
+                return DataPtr;
             }
         }
 
-        return false;
+        return nullptr;
     }
 
     /**

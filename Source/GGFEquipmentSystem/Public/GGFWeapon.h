@@ -6,6 +6,7 @@
 #include "GGFEquipment.h"
 #include "GGFWeapon.generated.h"
 
+struct FGGFWeaponData;
 struct FGameplayAbilitySpecHandle;
 class UGameplayAbility;
 class UAbilitySystemComponent;
@@ -15,23 +16,46 @@ class GGFEQUIPMENTSYSTEM_API AGGFWeapon : public AGGFEquipment
 {
     GENERATED_BODY()
 
+public:
+    AGGFWeapon(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
+
 protected:
-    // OwnerCharacter 유효성 검사
+    // 장착 중인 상태
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State", Transient)
-    bool bOwnerCharacterValid;
+    bool bEquipping = false;
+
+    FTimerHandle EquipTimerHandle;
 
 public:
-    AGGFWeapon();
+    /* API */
+
+    UFUNCTION(BlueprintPure)
+    bool IsEquipping() const { return bEquipping; }
+
+    UFUNCTION(BlueprintPure)
+    const FGGFWeaponData& GetWeaponData() const;
 
 protected:
-    /* GSFEquipmentBase */
+    /* Equipment */
 
-    virtual void OnEquip_Implementation() override;
-    virtual void OnUnEquip_Implementation() override;
+    virtual void Activate_Implementation() override;
+    virtual void Deactivate_Implementation() override;
+    virtual void OnIDUpdated(int32 NewID) override;
 
     /* 메서드 */
 
-    // 캐릭터 애니메이션 재생
-    UFUNCTION(BlueprintCallable)
-    virtual void PlayCharacterMontage(UAnimMontage* MontageToPlay);
+    UFUNCTION()
+    virtual void FinishEquipping();
+
+    // 무기 애님 몽타주 재생
+    UFUNCTION(BlueprintCallable, Category = "Weapon")
+    virtual void PlayAnimMontage(UAnimMontage* NewAnimMontage, float Duration = 0) const;
+
+    // 캐릭터 애님 클래스 변경
+    UFUNCTION(BlueprintCallable, Category = "Character")
+    virtual void SetCharacterAnimClass(TSubclassOf<UAnimInstance> NewAnimClass) const;
+
+    // 캐릭터 애님 몽타주 재생
+    UFUNCTION(BlueprintCallable, Category = "Character")
+    virtual void PlayCharacterAnimMontage(UAnimMontage* NewAnimMontage, float Duration = 0) const;
 };

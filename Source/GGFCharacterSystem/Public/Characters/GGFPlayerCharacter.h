@@ -68,17 +68,6 @@ private:
     TObjectPtr<UGGFInteractionManager> InteractionManager;
 
 protected:
-    /* GGFCharacterAnimationInterface */
-
-    // TODO FEquipmentTag? 구조체로 합치기?
-    // 장착 장비에 따른 애님 클래스 맵
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|GGFCharacterAnimationInterface", meta = (Categories = "Equipment"))
-    TMap<FGameplayTag, TSubclassOf<UAnimInstance>> AnimInstanceMap;
-
-    // 장비 장착 애님 몽타주
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|GGFCharacterAnimationInterface", meta = (Categories = "Equipment"))
-    TMap<FGameplayTag, TObjectPtr<UAnimMontage>> EquipMontageMap;
-
     /* CharacterManager & SkinManager */
 
     // CharacterManager 및 SkinManager를 위한 리플리케이트된 변수
@@ -94,6 +83,10 @@ public:
     virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
     virtual void SetActorHiddenInGame(bool bNewHidden) override;
+
+    /* Pawn */
+
+    virtual void Restart() override;
 
     /* Character */
 
@@ -117,8 +110,8 @@ public:
 
     /* GGFCharacterAnimationInterface */
 
-    virtual void PlayMontage_Implementation(UAnimMontage* MontageToPlay) override;
-    virtual void ChangeAnimInstance_Implementation(FGameplayTag EquipmentTag) override;
+    virtual void SetAnimInstanceClass_Implementation(TSubclassOf<UAnimInstance> NewAnimInstanceClass) override;
+    virtual void PlayAnimMontage_Implementation(UAnimMontage* NewAnimMontage, float Duration) override;
 
     // TODO ServerInitialized 어빌리티
     /* GGFCharacterInterface */
@@ -135,9 +128,6 @@ public:
     void ServerSetCharacterSkin(int32 NewSkinID);
 
 protected:
-    UFUNCTION(NetMulticast, Unreliable)
-    virtual void NetMulticast_PlayMontage(UAnimMontage* MontageToPlay);
-
     /* 리플리케이트 */
 
     // 서버 캐릭터의 CharacterConfig 값 업데이트

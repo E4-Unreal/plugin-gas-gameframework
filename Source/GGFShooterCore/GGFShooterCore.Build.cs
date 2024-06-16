@@ -11,6 +11,9 @@ public class GGFShooterCore : ModuleRules
             {
                 "Core",
 
+                // UI
+                "UMG",
+
                 // 이펙트
                 "Niagara",
                 "PhysicsCore",
@@ -20,12 +23,13 @@ public class GGFShooterCore : ModuleRules
                 "GameplayTags",
                 "GameplayTasks",
 
-                // GASExtension
-                "GASExtension",
-
                 // GASGameFramework
+                "GGFCore",
+                "GGFDataSystem",
+                "GASExtension",
                 "GGFEquipmentSystem",
-                "GGFCombatCore"
+                "GGFCombatCore",
+                "GGFInteractionSystem"
             }
         );
 

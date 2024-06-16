@@ -28,5 +28,5 @@ public:
 
     /* GEGameplayAbility */
 
-    virtual bool InternalCanActivate() const override;
+    virtual bool InternalCanActivate() override;
 };

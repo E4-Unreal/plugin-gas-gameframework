@@ -23,7 +23,7 @@ void UGEInputConfig_Ability::OnBindEnhancedInput(UEnhancedInputComponent* Enhanc
         // PressInputTag 바인딩
         EnhancedInputComponent->BindAction(
             InputAction,
-            ETriggerEvent::Started,
+            ETriggerEvent::Triggered,
             AbilitySystem,
             &UGEPlayerAbilitySystem::PressInputTag,
             InputTag

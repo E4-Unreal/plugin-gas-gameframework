@@ -2,37 +2,109 @@
 
 #include "GGFWeapon.h"
 
-#include "AbilitySystemComponent.h"
-#include "GGFEquipmentGameplayTags.h"
+#include "Components/GGFWeaponDataManager.h"
+#include "Data/GGFWeaponDefinition.h"
 #include "Interfaces/GGFCharacterAnimationInterface.h"
 
-AGGFWeapon::AGGFWeapon()
-    : bOwnerCharacterValid(false)
+AGGFWeapon::AGGFWeapon(const FObjectInitializer& ObjectInitializer)
+    : Super(ObjectInitializer.SetDefaultSubobjectClass<UGGFWeaponDataManager>(DataManagerName))
 {
-    EquipmentType = GGFGameplayTags::Equipment::Weapon::Root;
+
 }
 
-void AGGFWeapon::PlayCharacterMontage(UAnimMontage* MontageToPlay)
+const FGGFWeaponData& AGGFWeapon::GetWeaponData() const
 {
-    // OwnerCharacter 유효성 검사
-    if(!bOwnerCharacterValid) return;
-
-    // 캐릭터 애니메이션 재생
-    IGGFCharacterAnimationInterface::Execute_PlayMontage(Owner, MontageToPlay);
+    return CastChecked<UGGFWeaponDataManager>(GetDataManager())->GetWeaponData();
 }
 
-void AGGFWeapon::OnEquip_Implementation()
+void AGGFWeapon::Activate_Implementation()
 {
-    Super::OnEquip_Implementation();
+    Super::Activate_Implementation();
 
-    // OwnerCharacter 유효성 검사
-    bOwnerCharacterValid = Owner->Implements<UGGFCharacterAnimationInterface>();
+    // 무기 데이터
+    auto WeaponDataManager = CastChecked<UGGFWeaponDataManager>(GetDataManager());
+    const auto& Data = WeaponDataManager->GetWeaponData();
+
+    // 캐릭터 애니메이션 클래스 변경
+    SetCharacterAnimClass(Data.CharacterAnimClass);
+
+    // 장비 장착 타이머 초기화
+    auto& WorldTimerManager = GetWorldTimerManager();
+    if(WorldTimerManager.IsTimerActive(EquipTimerHandle))
+    {
+        WorldTimerManager.ClearTimer(EquipTimerHandle);
+    }
+
+    // 장비 장착 타이머 설정
+    bEquipping = true;
+    WorldTimerManager.SetTimer(EquipTimerHandle, this, &ThisClass::FinishEquipping, Data.EquipDuration);
+
+    // 장비 장착 몽타주 재생
+    PlayCharacterAnimMontage(Data.EquipMontage, Data.EquipDuration);
 }
 
-void AGGFWeapon::OnUnEquip_Implementation()
+void AGGFWeapon::Deactivate_Implementation()
 {
-    Super::OnUnEquip_Implementation();
+    Super::Deactivate_Implementation();
 
-    // OwnerCharacter 유효성 초기화
-    bOwnerCharacterValid = false;
+    // 무기 데이터
+    auto WeaponDataManager = CastChecked<UGGFWeaponDataManager>(GetDataManager());
+    const auto& Data = WeaponDataManager->GetWeaponData();
+
+    // 현재 선택된 무기가 없으면 캐릭터에서 자체적으로 기본 애님 클래스로 변경
+
+    // 장비 장착 해제 몽타주 재생
+    PlayCharacterAnimMontage(Data.UnequipMontage, Data.UnequipDuration);
+}
+
+void AGGFWeapon::OnIDUpdated(int32 NewID)
+{
+    Super::OnIDUpdated(NewID);
+
+    // 무기 데이터
+    auto WeaponDataManager = CastChecked<UGGFWeaponDataManager>(GetDataManager());
+    const auto& Data = WeaponDataManager->GetWeaponData();
+    GetSkeletalMesh()->SetAnimClass(Data.WeaponAnimClass);
+}
+
+void AGGFWeapon::FinishEquipping()
+{
+    bEquipping = false;
+}
+
+void AGGFWeapon::PlayAnimMontage(UAnimMontage* AnimMontage, float Duration) const
+{
+    // 유효성 검사
+    if(AnimMontage == nullptr) return;
+
+    // 무기 애님 몽타주 재생
+    if(auto AnimInstance = GetSkeletalMesh()->GetAnimInstance())
+    {
+        float PlayRate = FMath::IsNearlyZero(Duration) ? 1 : AnimMontage->GetPlayLength() / Duration;
+        AnimInstance->Montage_Play(AnimMontage, PlayRate);
+    }
+}
+
+void AGGFWeapon::SetCharacterAnimClass(TSubclassOf<UAnimInstance> NewAnimClass) const
+{
+    // 유효성 검사
+    if(NewAnimClass == nullptr) return;
+
+    // 캐릭터 애니메이션 클래스 변경
+    if(GetOwner()->Implements<UGGFCharacterAnimationInterface>())
+    {
+        IGGFCharacterAnimationInterface::Execute_SetAnimInstanceClass(GetOwner(), NewAnimClass);
+    }
+}
+
+void AGGFWeapon::PlayCharacterAnimMontage(UAnimMontage* AnimMontage, float Duration) const
+{
+    // 유효성 검사
+    if(AnimMontage == nullptr || FMath::IsNearlyZero(Duration)) return;
+
+    // 캐릭터 애님 몽타주 재생
+    if(GetOwner()->Implements<UGGFCharacterAnimationInterface>())
+    {
+        IGGFCharacterAnimationInterface::Execute_PlayAnimMontage(GetOwner(), AnimMontage, Duration);
+    }
 }

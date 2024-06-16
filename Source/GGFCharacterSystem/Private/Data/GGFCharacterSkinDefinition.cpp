@@ -3,6 +3,8 @@
 
 #include "Data/GGFCharacterSkinDefinition.h"
 
+const FGGFCharacterSkinData FGGFCharacterSkinData::EmptyCharacterSkinData;
+
 bool UGGFCharacterSkinDefinition::InitFromDataTableRowBase(FGGFDataTableRowBase* NewDataTableRowBase)
 {
     // 구조체 캐스팅

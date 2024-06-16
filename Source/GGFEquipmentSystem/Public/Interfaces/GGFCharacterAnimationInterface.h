@@ -14,6 +14,7 @@ class GGFEQUIPMENTSYSTEM_API UGGFCharacterAnimationInterface : public UInterface
     GENERATED_BODY()
 };
 
+// TODO 몽타주 섹션 처리
 // TODO 다른 모듈로 이전
 /**
  * 캐릭터 애니메이션 제어를 위한 인터페이스
@@ -23,12 +24,11 @@ class GGFEQUIPMENTSYSTEM_API IGGFCharacterAnimationInterface
     GENERATED_BODY()
 
 public:
-    // 캐릭터 애니메이션 재생을 위한 메서드
+    // 애님 인스턴스 클래스 설정
     UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-    void PlayMontage(UAnimMontage* MontageToPlay);
+    void SetAnimInstanceClass(TSubclassOf<UAnimInstance> NewAnimInstanceClass);
 
-    // 장비 태그에 대응하는 애님 인스턴스 클래스로 변경하기 위한 메서드
-    // 장비 장착 애님 몽타주 재생 포함
+    // 애님 몽타주 재생 (멀티캐스트)
     UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-    void ChangeAnimInstance(FGameplayTag EquipmentTag);
+    void PlayAnimMontage(UAnimMontage* NewAnimMontage, float Duration = 0);
 };

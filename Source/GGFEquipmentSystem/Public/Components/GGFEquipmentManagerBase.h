@@ -48,9 +48,6 @@ protected:
     UFUNCTION(BlueprintCallable)
     virtual bool AttachEquipment(AActor* Equipment, FName SocketName);
 
-    UFUNCTION(BlueprintCallable)
-    static const FGameplayTag GetEquipmentSlot(TSubclassOf<AActor> EquipmentClass);
-
 protected:
     /* Getter */
 

@@ -2,13 +2,45 @@
 
 #include "Weapons/GGFFireArm.h"
 
+#include "NiagaraComponent.h"
+#include "Abilities/GGFGA_ADS.h"
+#include "Abilities/GGFGA_AutoReload.h"
+#include "Abilities/GGFGA_Fire.h"
+#include "Abilities/GGFGA_Reload.h"
+#include "Blueprint/UserWidget.h"
+#include "Components/AudioComponent.h"
+#include "Components/GGFEquipmentDataManager.h"
+#include "Components/GGFFireArmDataManager.h"
 #include "Kismet/GameplayStatics.h"
 #include "Net/UnrealNetwork.h"
+#include "Particles/ParticleSystemComponent.h"
 #include "Sound/SoundCue.h"
 
-AGGFFireArm::AGGFFireArm()
+AGGFFireArm::AGGFFireArm(const FObjectInitializer& ObjectInitializer)
+    : Super(ObjectInitializer.SetDefaultSubobjectClass<UGGFFireArmDataManager>(DataManagerName))
 {
-    SkeletalMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletalMesh"));
+    /* AudioComponent */
+    AudioComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("AudioComponent"));
+    AudioComponent->SetupAttachment(GetSkeletalMesh(), MuzzleSocketName);
+    AudioComponent->bAutoActivate = false;
+
+    /* ParticleSystem */
+    ParticleSystem = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("ParticleSystem"));
+    ParticleSystem->SetupAttachment(GetSkeletalMesh(), MuzzleSocketName);
+    ParticleSystem->bAutoActivate = false;
+
+    /* NiagaraSystem */
+    NiagaraSystem = CreateDefaultSubobject<UNiagaraComponent>(TEXT("NiagaraSystem"));
+    NiagaraSystem->SetupAttachment(GetSkeletalMesh(), MuzzleSocketName);
+    NiagaraSystem->bAutoActivate = false;
+
+    /* 기본 설정 */
+
+    // 어빌리티
+    ActiveAbilities.Emplace(UGGFGA_Fire::StaticClass());
+    ActiveAbilities.Emplace(UGGFGA_Reload::StaticClass());
+    ActiveAbilities.Emplace(UGGFGA_ADS::StaticClass());
+    ActiveAbilities.Emplace(UGGFGA_AutoReload::StaticClass());
 }
 
 void AGGFFireArm::PostInitializeComponents()
@@ -19,12 +51,19 @@ void AGGFFireArm::PostInitializeComponents()
     CalculateFireInterval();
 }
 
+void AGGFFireArm::BeginPlay()
+{
+    Super::BeginPlay();
+
+    SetCurrentAmmo(GetMaxAmmo());
+}
+
 void AGGFFireArm::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
     Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
-    DOREPLIFETIME(ThisClass, MaxAmmo);
     DOREPLIFETIME(ThisClass, CurrentAmmo);
+    DOREPLIFETIME(ThisClass, bReloading);
 }
 
 
@@ -55,37 +94,46 @@ void AGGFFireArm::ServerFire_Implementation()
     MulticastFire();
 }
 
-void AGGFFireArm::MulticastFire_Implementation()
-{
-    // 무기 애니메이션 재생
-    PlayAnimation(FireAnimation);
-
-    // TODO 삼인칭 애니메이션
-    // 캐릭터 애니메이션 재생
-    PlayCharacterMontage(CharacterFireAnimation);
-
-    // 파티클 시스템 스폰
-    UGameplayStatics::SpawnEmitterAttached(
-            MuzzleFlash,
-            SkeletalMesh,
-            MuzzleSocketName,
-            MuzzleFlashTransform.GetLocation(),
-            MuzzleFlashTransform.GetRotation().Rotator(),
-            MuzzleFlashTransform.GetScale3D()
-            );
-
-    // 소리 재생
-    UGameplayStatics::PlaySoundAtLocation(
-        this,
-        FireSound,
-        GetMuzzleLocation(),
-        FRotator::ZeroRotator
-        );
-}
-
 void AGGFFireArm::OnFire_Implementation()
 {
     // TODO 자손 클래스에서 발사 로직 작성 (히트 스캔, 발사체)
+}
+
+void AGGFFireArm::MulticastFire_Implementation()
+{
+    const auto& FireArmData = GetFireArmData();
+
+    // 발사 몽타주 재생
+    PlayFireAnimMontage();
+
+    // 발사 VFX
+    if(GetNiagaraSystem()->GetAsset())
+    {
+        GetNiagaraSystem()->Activate(true);
+    }
+    else
+    {
+        GetParticleSystem()->Activate(true);
+    }
+
+    // 발사 SFX
+    if(GetAudioComponent()->IsPlaying())
+    {
+        /*
+         * 단일 오디오 컴포넌트로 높은 RPM의 소리 재생 시 버벅입니다.
+         * 여러 오디오 컴포넌트를 부착하고 번갈아가며 재생하는 방법도 있지만,
+         * 그것보다는 루프 버전 소리를 재생하거나 스폰하는 것이 더 나을 것 같아 이렇게 작성하였습니다.
+         */
+        UGameplayStatics::SpawnSoundAttached(
+            FireArmData.FireSound,
+            GetSkeletalMesh(),
+            MuzzleSocketName
+            );
+    }
+    else
+    {
+        GetAudioComponent()->Play();
+    }
 }
 
 void AGGFFireArm::Reload()
@@ -103,31 +151,11 @@ void AGGFFireArm::ServerReload_Implementation()
     if(!CanReload()) return;
     bReloading = true;
 
-    // TODO 리팩토링
-    // 재장전 애니메이션이 설정되지 않았거나 노티파이가 설정되지 않은 경우에는 즉시 재장전을 실행합니다.
-    if(CharacterReloadAnimation == nullptr)
-    {
-        FinishReloading();
-    }
-    else
-    {
-        bool bReloadNotifyExist = false;
-        const TArray<FAnimNotifyEvent>& Notifies = CharacterReloadAnimation->Notifies;
-        for (const FAnimNotifyEvent& Notify : Notifies)
-        {
-            // null 검사
-            if(Notify.Notify == nullptr) continue;
+    // 데이터 가져오기
+    const auto& FireArmData = GetFireArmData();
 
-            // 노티파이 이름 검사
-            if(FName(*Notify.Notify->GetNotifyName()).IsEqual(ReloadNotifyName))
-            {
-                bReloadNotifyExist = true;
-                break;
-            }
-        }
-
-        if(!bReloadNotifyExist) FinishReloading();
-    }
+    // 재장전 타이머 설정
+    GetWorldTimerManager().SetTimer(ReloadTimerHandle, this, &ThisClass::FinishReloading, FireArmData.ReloadDuration);
 
     // 멀티캐스트
     MulticastReload();
@@ -135,37 +163,26 @@ void AGGFFireArm::ServerReload_Implementation()
 
 void AGGFFireArm::MulticastReload_Implementation()
 {
-    PlayAnimation(ReloadAnimation);
-
-    // TODO 삼인칭 애니메이션
-    // 캐릭터 애니메이션 재생
-    PlayCharacterMontage(CharacterReloadAnimation);
+    // 재장전 몽타주 재생
+    PlayReloadAnimMontage();
 }
 
 void AGGFFireArm::FinishReloading()
 {
+    // 타이머 핸들 초기화
+    ReloadTimerHandle.Invalidate();
+
     // ServerReload가 먼저 호출되어야 합니다.
     if(!bReloading) return;
 
-    // 서버에서만 호출 가능합니다.
-    if(!HasAuthority()) return;
-
     // 총알을 채웁니다
-    SetCurrentAmmo(MaxAmmo);
+    SetCurrentAmmo(GetMaxAmmo());
 
     // 재장전 상태 해제
     bReloading = false;
-}
 
-void AGGFFireArm::SetMaxAmmo(int32 Value)
-{
-    // 서버에서만 호출 가능합니다.
-    if(!HasAuthority()) return;
-
-    // MaxAmmo 설정
-    const int32 OldMaxAmmo = MaxAmmo;
-    MaxAmmo = FMathf::Max(Value, 0);
-    OnRep_MaxAmmo(OldMaxAmmo);
+    // 델리게이트 호출
+    OnReloadFinished.Broadcast();
 }
 
 void AGGFFireArm::SetCurrentAmmo(int32 Value)
@@ -175,46 +192,82 @@ void AGGFFireArm::SetCurrentAmmo(int32 Value)
 
     // CurrentAmmo 설정
     const int32 OldCurrentAmmo = CurrentAmmo;
-    CurrentAmmo = FMath::Clamp(Value, 0, MaxAmmo);
+    CurrentAmmo = FMath::Clamp(Value, 0, GetMaxAmmo());
     OnRep_CurrentAmmo(OldCurrentAmmo);
+}
+
+void AGGFFireArm::OnIDUpdated(int32 NewID)
+{
+    Super::OnIDUpdated(NewID);
+
+    // 변수 선언
+    const auto& FireArmData = GetFireArmData();
+    FAttachmentTransformRules AttachmentTransformRules = FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true);
+
+    // AudioComponent
+    GetAudioComponent()->AttachToComponent(GetSkeletalMesh(), AttachmentTransformRules, MuzzleSocketName);
+    GetAudioComponent()->SetSound(FireArmData.FireSound);
+
+    // ParticleSystem
+    GetParticleSystem()->AttachToComponent(GetSkeletalMesh(), AttachmentTransformRules, MuzzleSocketName);
+    GetParticleSystem()->SetTemplate(FireArmData.MuzzleParticle);
+
+    // NiagaraSystem
+    GetNiagaraSystem()->AttachToComponent(GetSkeletalMesh(), AttachmentTransformRules, MuzzleSocketName);
+    GetNiagaraSystem()->SetAsset(FireArmData.MuzzleSystem);
 }
 
 void AGGFFireArm::Activate_Implementation()
 {
     Super::Activate_Implementation();
 
-    // 서버에서만 재장전 가능
-    if(HasAuthority())
-    {
-        // TODO 재장전 애님 노티파이 이벤트 바인딩
-        /*if(UAnimInstance* LocalFirstPersonAnimInstance = GetFirstPersonAnimInstance())
-            LocalFirstPersonAnimInstance->OnPlayMontageNotifyBegin.AddDynamic(this, &ThisClass::OnPlayMontageNotifyBegin_Event);*/
-    }
+    ShowCrosshair(true);
 }
 
 void AGGFFireArm::Deactivate_Implementation()
 {
-    Super::Deactivate_Implementation();
+    ShowCrosshair(false);
 
-    // 서버에서만 재장전 가능
-    if(HasAuthority())
-    {
-        // TODO 재장전 애님 노티파이 이벤트 언바인딩
-        /*if(UAnimInstance* LocalFirstPersonAnimInstance = GetFirstPersonAnimInstance())
-            LocalFirstPersonAnimInstance->OnPlayMontageNotifyBegin.RemoveDynamic(this, &ThisClass::OnPlayMontageNotifyBegin_Event);*/
-    }
+    Super::Deactivate_Implementation();
 }
 
-void AGGFFireArm::PlayAnimation(UAnimMontage* Animation) const
+void AGGFFireArm::ShowCrosshair(bool bShow)
 {
-    if(SkeletalMesh && Animation)
-        SkeletalMesh->PlayAnimation(Animation, false);
+    // 유효성 검사
+    if(GetFireArmData().CrosshairWidget == nullptr) return;
+
+    // 로컬 플레이어 UI 표시
+    if(APawn* OwnerPawn = Cast<APawn>(GetOwner()))
+    {
+        if(OwnerPawn->IsPlayerControlled() && OwnerPawn->IsLocallyControlled())
+        {
+            if(bShow)
+            {
+                if(CrosshairWidget == nullptr)
+                {
+                    CrosshairWidget = CreateWidget(CastChecked<APlayerController>(OwnerPawn->Controller), GetFireArmData().CrosshairWidget);
+                }
+
+                CrosshairWidget->AddToViewport();
+            }
+            else if(CrosshairWidget)
+            {
+                CrosshairWidget->RemoveFromParent();
+            }
+        }
+    }
 }
 
 bool AGGFFireArm::CanFire_Implementation()
 {
+    // 장비 장착 중에는 불가
+    if(bEquipping) return false;
+
+    // 재장전 중에는 불가
+    if(bReloading) return false;
+
     // 탄약 확인
-    if(CurrentAmmo < AmmoToSpend) return false;
+    if(IsOutOfAmmo()) return false;
 
     // 아직 한 번도 발사하지 않은 경우
     if(LastFiredTime == 0) return true;
@@ -222,22 +275,41 @@ bool AGGFFireArm::CanFire_Implementation()
     // 마지막 발사 시점으로부터 경과한 시간
     const float DeltaTime = GetCurrentTime() - LastFiredTime;
 
-    // 발사 간격 확인
-    return DeltaTime > FireInterval || FMath::IsNearlyEqual(DeltaTime, FireInterval, 1E-04);
+    // 발사 간격 확인 (단발광클 1위 광클 속도가 0.094초라고 합니다.오차 범위를 이 수치 이하까지는 적용해도 문제없을 듯 합니다.)
+    return DeltaTime > FireInterval || FMath::IsNearlyEqual(DeltaTime, FireInterval, 0.02f);
 }
 
 bool AGGFFireArm::CanReload_Implementation()
 {
+    // 장비 장착 중에는 불가
+    if(bEquipping) return false;
+
     // 이미 재장전중인 상태입니다.
     if(bReloading) return false;
 
     // 탄약이 가득 찬 경우에는 재장전을 할 필요가 없습니다.
-    return CurrentAmmo < MaxAmmo;
+    return CurrentAmmo < GetMaxAmmo();
+}
+
+void AGGFFireArm::PlayFireAnimMontage() const
+{
+    const auto& FireArmData = GetFireArmData();
+
+    PlayAnimMontage(FireArmData.FireMontage, FireInterval);
+    PlayCharacterAnimMontage(FireArmData.CharacterFireMontage, FireInterval);
+}
+
+void AGGFFireArm::PlayReloadAnimMontage() const
+{
+    const auto& FireArmData = GetFireArmData();
+
+    PlayAnimMontage(FireArmData.ReloadMontage, FireArmData.ReloadDuration);
+    PlayCharacterAnimMontage(FireArmData.CharacterReloadMontage, FireArmData.ReloadDuration);
 }
 
 void AGGFFireArm::SpendAmmo()
 {
-    SetCurrentAmmo(CurrentAmmo - FMath::Max(AmmoToSpend, 0));
+    SetCurrentAmmo(CurrentAmmo - FMath::Max(GetFireArmData().AmmoToSpend, 0));
 }
 
 float AGGFFireArm::GetCurrentTime() const
@@ -252,25 +324,23 @@ float AGGFFireArm::GetCurrentTime() const
 
 FVector AGGFFireArm::GetMuzzleLocation() const
 {
-    return SkeletalMesh == nullptr ? GetActorLocation() : SkeletalMesh->GetSocketLocation(MuzzleSocketName);
-}
-
-void AGGFFireArm::OnPlayMontageNotifyBegin_Event(FName NotifyName,
-    const FBranchingPointNotifyPayload& BranchingPointPayload)
-{
-    // 노티파이 이름 검사
-    if(!NotifyName.IsEqual(ReloadNotifyName)) return;
-
-    // 재장전
-    FinishReloading();
-}
-
-void AGGFFireArm::OnRep_MaxAmmo(int32 OldCurrentAmmo)
-{
-    OnMaxAmmoValueChanged.Broadcast(MaxAmmo);
+    return GetSkeletalMesh() == nullptr ? GetActorLocation() : GetSkeletalMesh()->GetSocketLocation(MuzzleSocketName);
 }
 
 void AGGFFireArm::OnRep_CurrentAmmo(int32 OldCurrentAmmo)
 {
     OnCurrentAmmoValueChanged.Broadcast(CurrentAmmo);
+}
+
+void AGGFFireArm::OnRep_Reloading(bool OldReloading)
+{
+    if(bReloading)
+    {
+        OnReloadFinished.Broadcast();
+    }
+}
+
+const FGGFFireArmData& AGGFFireArm::GetFireArmData() const
+{
+    return CastChecked<UGGFFireArmDataManager>(GetDataManager())->GetFireArmData();
 }

@@ -6,20 +6,41 @@
 #include "AbilitySystemGlobals.h"
 #include "GameplayEffect.h"
 #include "GEBlueprintFunctionLibrary.h"
-#include "GGFEquipmentGameplayTags.h"
-#include "Interfaces/GGFWeaponAbilityInterface.h"
+#include "Components/GGFEquipmentDataManager.h"
+#include "Data/GGFEquipmentDefinition.h"
 
-AGGFEquipment::AGGFEquipment()
+FName AGGFEquipment::SkeletalMeshName(TEXT("SkeletalMesh"));
+FName AGGFEquipment::DataManagerName(TEXT("DataManager"));
+
+AGGFEquipment::AGGFEquipment(const FObjectInitializer& ObjectInitializer)
 {
     /* 초기화 */
 
     // 리플리케이트 설정
-    SetReplicates(true);
+    bReplicates = true;
 
-    // 기본값 설정
-    using namespace GGFGameplayTags::Equipment;
-    EquipmentType = Root;
-    EquipmentSlot = Slot::Root;
+    /* SkeletalMesh */
+    SkeletalMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletalMesh"));
+    SetRootComponent(SkeletalMesh);
+
+    /* DataManager */
+    DataManager = CreateDefaultSubobject<UGGFEquipmentDataManager>(DataManagerName);
+}
+
+void AGGFEquipment::OnConstruction(const FTransform& Transform)
+{
+    Super::OnConstruction(Transform);
+
+    // 초기화
+    OnIDUpdated(GetDataManager()->GetID());
+}
+
+void AGGFEquipment::PreInitializeComponents()
+{
+    Super::PreInitializeComponents();
+
+    // DataManager 이벤트 바인딩
+    GetDataManager()->OnIDUpdated.AddDynamic(this, &ThisClass::OnIDUpdated);
 }
 
 void AGGFEquipment::PostInitializeComponents()
@@ -69,6 +90,8 @@ void AGGFEquipment::OnRep_Owner()
     OwnerAbilitySystem = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(GetOwner());
 }
 
+/* Equipment Interface */
+
 void AGGFEquipment::Equip_Implementation(AActor* NewOwner)
 {
     SetOwner(NewOwner);
@@ -81,6 +104,9 @@ void AGGFEquipment::UnEquip_Implementation()
 
 void AGGFEquipment::Activate_Implementation()
 {
+    // 장비 스탯 적용
+    GetDataManager()->ApplyStatsEffectToTarget(GetOwner());
+
     // 액티브 게임플레이 이펙트 적용
     ApplyEffectsToOwner(ActiveEffects, ActiveEffectSpecHandles);
 
@@ -90,11 +116,48 @@ void AGGFEquipment::Activate_Implementation()
 
 void AGGFEquipment::Deactivate_Implementation()
 {
+    // 장비 스탯 제거
+    GetDataManager()->RemoveStatsEffectFromTarget(GetOwner());
+
     // 액티브 게임플레이 이펙트 제거
     RemoveEffectsFromOwner(ActiveEffectSpecHandles);
 
     // 액티브 어빌리티 제거
     ClearAbilitiesFromOwner(ActiveAbilitySpecHandles);
+}
+
+const FGameplayTag AGGFEquipment::GetEquipmentSlot_Implementation() const
+{
+    return GetDataManager()->GetEquipmentData().EquipmentSlot;
+}
+
+const FGameplayTag AGGFEquipment::GetEquipmentType_Implementation() const
+{
+    return GetDataManager()->GetEquipmentData().EquipmentType;
+}
+
+/* Data Interface */
+
+int32 AGGFEquipment::GetID_Implementation()
+{
+    return GetDataManager()->GetID();
+}
+
+void AGGFEquipment::SetID_Implementation(int32 NewID)
+{
+    GetDataManager()->SetID(NewID);
+}
+
+const FGGFEquipmentData& AGGFEquipment::GetEquipmentData() const
+{
+    return GetDataManager()->GetEquipmentData();
+}
+
+void AGGFEquipment::OnIDUpdated(int32 NewID)
+{
+    // 장비 설정
+    const auto& EquipmentData = GetDataManager()->GetEquipmentData();
+    GetSkeletalMesh()->SetSkeletalMesh(EquipmentData.SkeletalMesh);
 }
 
 void AGGFEquipment::OnEquip_Implementation()
@@ -126,29 +189,6 @@ void AGGFEquipment::GiveAbilitiesToOwner(const TArray<TSubclassOf<UGameplayAbili
 
     // 어빌리티 부여
     AbilitySpecHandles = UGEBlueprintFunctionLibrary::GiveAbilitiesToSystem(AbilitiesToGive, GetOwnerAbilitySystem());
-
-    // 부여된 무기 어빌리티에 무기 레퍼런스 추가
-    for (const auto& AbilitySpecHandle : AbilitySpecHandles)
-    {
-        // 유효성 검사
-        FGameplayAbilitySpec* AbilitySpec = GetOwnerAbilitySystem()->FindAbilitySpecFromHandle(AbilitySpecHandle);
-        if(AbilitySpec == nullptr || AbilitySpec->Ability == nullptr) continue;
-
-        // 인스턴싱 정책 확인
-        if(AbilitySpec->Ability->GetInstancingPolicy() != EGameplayAbilityInstancingPolicy::InstancedPerActor) continue;
-
-        // 단일 어빌리티 인스턴스 가져오기
-        const TArray<UGameplayAbility*>& AbilityInstances = AbilitySpec->GetAbilityInstances();
-        UGameplayAbility* AbilityInstance = AbilityInstances[0];
-
-        // ShowDebug AbilitySystem에서 확인하기 위해 CDO를 어빌리티 인스턴스로 교체
-        AbilitySpec->Ability = AbilityInstance;
-
-        // TODO 장비 어빌리티 인터페이스로 변경
-        // 무기 레퍼런스 주입
-        if(!AbilityInstance->GetClass()->ImplementsInterface(UGGFWeaponAbilityInterface::StaticClass())) continue;
-        IGGFWeaponAbilityInterface::Execute_SetWeapon(AbilityInstance, this);
-    }
 }
 
 void AGGFEquipment::ClearAbilitiesFromOwner(TArray<FGameplayAbilitySpecHandle>& AbilitySpecHandles)
