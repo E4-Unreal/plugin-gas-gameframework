@@ -20,11 +20,6 @@ void UGGFAttributesWidget::SetTargetSystem(UAbilitySystemComponent* NewTargetSys
     {
         RefreshAttributeValues();
         BindAttributeValueChangeEvents();
-        AddToViewport();
-    }
-    else
-    {
-        RemoveFromParent();
     }
 }
 
