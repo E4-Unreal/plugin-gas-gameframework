@@ -1,7 +1,7 @@
 {
 	"FileVersion": 3,
-	"Version": 8,
-	"VersionName": "0.2.3",
+	"Version": 9,
+	"VersionName": "0.2.4",
 	"FriendlyName": "GAS GameFramework",
 	"Description": "멀티플레이 게임 제작을 위한 GAS 기반 프레임워크",
 	"Category": "Gameplay",

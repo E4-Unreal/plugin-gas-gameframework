@@ -32,9 +32,10 @@ GAS를 기반으로 멀티플레이 게임 제작을 위한 프레임워크입�
 
 ## 콘텐츠 전용 플러그인 종속성
 
-- [LevelPrototyping (v1.1.0)](https://github.com/E4-Unreal/plugin-level-prototyping/releases/tag/v1.1.0)
-- [UnrealMannequins (v1.2.0)](https://github.com/E4-Unreal/plugin-unreal-mannequins/releases/tag/v1.2.0)
-- [LyraContent (v0.1.1)](https://github.com/E4-Unreal/plugin-lyra-content/releases/tag/v0.1.1)
+- [LevelPrototyping (v1.1.1)](https://github.com/E4-Unreal/plugin-level-prototyping/releases/tag/v1.1.1)
+- [UnrealMannequins (v1.3.0)](https://github.com/E4-Unreal/plugin-unreal-mannequins/releases/tag/v1.3.0)
+- [StarterContent (v1.0.1)](https://github.com/E4-Unreal/plugin-starter-content/releases/tag/v1.0.1)
+- [LyraContent (v0.2.0)](https://github.com/E4-Unreal/plugin-lyra-content/releases/tag/v0.2.0)
 - [ParagonBelica (v1.1.1)](https://github.com/E4-Unreal/plugin-paragon-belica/releases/tag/v1.1.1)
 - [ParagonWraith (v1.1.0)](https://github.com/E4-Unreal/plugin-paragon-wraith/releases/tag/v1.1.0)
 - [E4 Effects (v0.1.0)](https://github.com/E4-Unreal/plugin-e4-effects/releases/tag/v0.1.0)
