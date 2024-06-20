@@ -93,4 +93,13 @@ namespace GEGameplayTags
             GASEXTENSION_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Test) // 테스트 전용
         }
     }
+
+    namespace Skill
+    {
+        namespace Cooldown
+        {
+            GASEXTENSION_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Root)
+            GASEXTENSION_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Test)
+        }
+    }
 }

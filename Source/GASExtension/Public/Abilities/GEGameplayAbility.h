@@ -20,6 +20,15 @@ public:
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Config", meta = (Categories = "Input"))
     FGameplayTag InputTag;
 
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|Cooldown", meta = (ClampMin = 0))
+    float CooldownTime = 0;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|Cooldown", meta = (Categories = "Skill.Cooldown"))
+    FGameplayTag CooldownTag;
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State", Transient)
+    TObjectPtr<UGameplayEffect> CooldownEffectInstance;
+
 protected:
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "State", Transient)
     bool bValid = true;
@@ -33,10 +42,18 @@ public:
     virtual void ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData) override;
     virtual void InputPressed(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo) override;
     virtual void InputReleased(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo) override;
+    virtual void OnGiveAbility(const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilitySpec& Spec) override;
+
+    virtual void ApplyCooldown(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo) const override;
+    virtual UGameplayEffect* GetCooldownGameplayEffect() const override;
 
     /* GEPlayerAbilityInterface */
 
     virtual FORCEINLINE FGameplayTag GetAbilityInputTag_Implementation() const override { return InputTag; }
+
+    /* API */
+
+    virtual void CreateCooldownEffectInstance();
 
 protected:
     /* GameplayAbility */
@@ -47,5 +64,5 @@ protected:
 
     // 인스턴싱 정책이 InstancedPerActor로 설정된 경우 CanActivateAbility에서 사용됩니다.
     UFUNCTION(BlueprintPure)
-    virtual bool InternalCanActivate() { return true; }
+    virtual bool InternalCanActivate();
 };

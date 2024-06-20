@@ -91,4 +91,13 @@ namespace GEGameplayTags
             UE_DEFINE_GAMEPLAY_TAG_COMMENT(Test, "Object.Type.Test", "테스트 전용 오브젝트 타입")
         }
     }
+
+    namespace Skill
+    {
+        namespace Cooldown
+        {
+            UE_DEFINE_GAMEPLAY_TAG_COMMENT(Root, "Skill.Cooldown", "스킬 전용 입력 태그")
+            UE_DEFINE_GAMEPLAY_TAG_COMMENT(Test, "Skill.Cooldown.Test", "테스트 전용 스킬 입력 태그")
+        }
+    }
 }
