@@ -15,11 +15,12 @@ class GASEXTENSION_API UGEGameplayAbility : public UGameplayAbility, public IGEP
 {
     GENERATED_BODY()
 
-protected:
+public:
     // Ability InputID로 사용할 게임플레이 태그입니다.
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Config", meta = (Categories = "Input"))
     FGameplayTag InputTag;
 
+protected:
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "State", Transient)
     bool bValid = true;
 
