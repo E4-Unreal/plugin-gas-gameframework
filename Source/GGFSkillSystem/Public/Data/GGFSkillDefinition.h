@@ -6,6 +6,8 @@
 #include "GGFDefinitionBase.h"
 #include "GGFSkillDefinition.generated.h"
 
+class UGameplayAbility;
+
 /**
  * 스킬 정의를 위한 데이터 테이블 구조체
  */
@@ -13,6 +15,22 @@ USTRUCT()
 struct GGFSKILLSYSTEM_API FGGFSkillData : public FGGFDataTableRowBase
 {
     GENERATED_BODY()
+
+    // 설명
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spec")
+    FText Description;
+
+    // 쿨타임
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spec")
+    float CoolTime = 3;
+
+    // 어빌리티 클래스
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spec")
+    TSubclassOf<UGameplayAbility> AbilityClass;
+
+    // 썸네일
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "UI")
+    TObjectPtr<UTexture2D> Thumbnail;
 
     // 생성자
     FGGFSkillData() { }
