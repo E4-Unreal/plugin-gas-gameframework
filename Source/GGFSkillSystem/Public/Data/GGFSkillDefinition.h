@@ -55,6 +55,7 @@ public:
     /* GGFDefinitionBase */
 
     virtual bool InitFromDataTableRowBase(FGGFDataTableRowBase* NewDataTableRowBase) override;
+    virtual bool IsValid() const override;
 
     /* Getter */
 

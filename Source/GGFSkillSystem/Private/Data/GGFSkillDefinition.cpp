@@ -2,6 +2,8 @@
 
 #include "Data/GGFSkillDefinition.h"
 
+#include "Abilities/GameplayAbility.h"
+
 const FGGFSkillData FGGFSkillData::EmptyData;
 
 bool UGGFSkillDefinition::InitFromDataTableRowBase(FGGFDataTableRowBase* NewDataTableRowBase)
@@ -15,4 +17,9 @@ bool UGGFSkillDefinition::InitFromDataTableRowBase(FGGFDataTableRowBase* NewData
     }
 
     return false;
+}
+
+bool UGGFSkillDefinition::IsValid() const
+{
+    return Super::IsValid() && Data.AbilityClass;
 }
