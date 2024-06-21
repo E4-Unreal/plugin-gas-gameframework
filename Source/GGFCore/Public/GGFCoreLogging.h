@@ -5,7 +5,7 @@ DECLARE_LOG_CATEGORY_EXTERN(LogGGFCore, Log, All)
 #define CATEGORY LogGGFCore
 
 // 범용 로그
-#define LOG(Verbosity, Format, ...) UE_LOG(CATEGORY, Verbosity, TEXT("%s"), *FString::Printf(Format, ##__VA_ARGS__))
+#define LOG(Verbosity, Format, ...) UE_LOG(CATEGORY, Verbosity, TEXT("%s > %s"), *CALL_INFO, *FString::Printf(Format, ##__VA_ARGS__))
 
 // 액터 이름(Server or Client)
 #define ACTOR_INFO (GetName() + TEXT("(") + (HasAuthority() ? FString("Server") : FString("Client")) + TEXT(")"))
