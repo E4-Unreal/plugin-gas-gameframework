@@ -80,13 +80,13 @@ void UGEGameplayAbility::InputReleased(const FGameplayAbilitySpecHandle Handle,
     Super::InputReleased(Handle, ActorInfo, ActivationInfo);
 
     // 어빌리티 입력이 비활성화되면 어빌리티를 종료합니다.
-    if(GetCurrentAbilitySpec()->IsActive()) EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true, false);
+    if(bCancelableByInputRelease && GetCurrentAbilitySpec()->IsActive()) CancelAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true);
 }
 
 void UGEGameplayAbility::OnGiveAbility(const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilitySpec& Spec)
 {
     Super::OnGiveAbility(ActorInfo, Spec);
-    
+
     CreateCooldownEffectInstance();
 }
 

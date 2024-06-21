@@ -26,12 +26,16 @@ public:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|Cooldown", meta = (Categories = "Skill.Cooldown"))
     FGameplayTag CooldownTag;
 
-    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State", Transient)
-    TObjectPtr<UGameplayEffect> CooldownEffectInstance;
+    // 입력 비활성화를 통한 어빌리티 취소 가능 여부
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config")
+    bool bCancelableByInputRelease = true;
 
 protected:
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "State", Transient)
     bool bValid = true;
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State", Transient)
+    TObjectPtr<UGameplayEffect> CooldownEffectInstance;
 
 public:
     UGEGameplayAbility();
