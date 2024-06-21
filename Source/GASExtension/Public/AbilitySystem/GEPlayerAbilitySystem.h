@@ -26,6 +26,12 @@ public:
     void ReleaseInputTag(FGameplayTag InputTag);
 
 protected:
+    /* AbilitySystemComponent */
+
     // Ability InputTag가 설정된 Ability의 경우 InputID를 설정합니다.
     virtual void OnGiveAbility(FGameplayAbilitySpec& AbilitySpec) override;
+
+    /* GEAbilitySystem */
+
+    virtual void OnAbilitySpecDirtied(const FGameplayAbilitySpec& AbilitySpec) override;
 };

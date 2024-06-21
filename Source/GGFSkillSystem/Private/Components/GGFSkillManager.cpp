@@ -75,14 +75,16 @@ void UGGFSkillManager::SetSkillSlotByDefinition(const FGameplayTag& InputTag, UG
         {
             if(auto AbilityInstance = Cast<UGEGameplayAbility>(ActivatableAbilitySpec->GetPrimaryInstance()))
             {
-                // 입력 ID 설정
-                ActivatableAbilitySpec->InputID = GetTypeHash(InputTag);
+                // 입력 태그 설정
+                AbilityInstance->InputTag = InputTag;
 
                 // 쿨타임 설정
                 AbilityInstance->CooldownTime = SkillData.CoolTime;
                 AbilityInstance->CooldownTag = Slot.CooldownTag;
                 AbilityInstance->CreateCooldownEffectInstance();
             }
+
+            OwnerSystem->MarkAbilitySpecDirty(*ActivatableAbilitySpec);
         }
     }
 }

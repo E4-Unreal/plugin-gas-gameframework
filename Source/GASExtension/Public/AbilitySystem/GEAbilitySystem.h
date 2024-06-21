@@ -87,6 +87,11 @@ public:
     virtual void InitAttribute(const FGEAttributeContainer& AttributeContainer, float MaxValue, float Ratio = 1, float RegenRate = 0);
 
 protected:
+    /* 이벤트 */
+
+    UFUNCTION()
+    virtual void OnAbilitySpecDirtied(const FGameplayAbilitySpec& AbilitySpec);
+
     /* 메서드 */
 
     // 서버 전용 초기화 메서드

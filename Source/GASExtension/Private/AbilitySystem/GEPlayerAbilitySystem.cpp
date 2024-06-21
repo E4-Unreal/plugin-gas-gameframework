@@ -26,10 +26,32 @@ void UGEPlayerAbilitySystem::OnGiveAbility(FGameplayAbilitySpec& AbilitySpec)
 {
     Super::OnGiveAbility(AbilitySpec);
 
-    // InputTag의 해시 값을 사용하여 InputID 설정
+    // 서버에서만 동작
+    if(GetOwner()->HasAuthority())
+    {
+        // InputTag의 해시 값을 사용하여 InputID 설정
+        if(AbilitySpec.Ability->Implements<UGEPlayerAbilityInterface>())
+        {
+            const FGameplayTag& InputTag = IGEPlayerAbilityInterface::Execute_GetAbilityInputTag(AbilitySpec.Ability);
+            AbilitySpec.InputID = GetTypeHash(InputTag);
+        }
+    }
+}
+
+void UGEPlayerAbilitySystem::OnAbilitySpecDirtied(const FGameplayAbilitySpec& AbilitySpec)
+{
+    Super::OnAbilitySpecDirtied(AbilitySpec);
+
     if(AbilitySpec.Ability->Implements<UGEPlayerAbilityInterface>())
     {
-        const FGameplayTag& InputTag = IGEPlayerAbilityInterface::Execute_GetAbilityInputTag(AbilitySpec.Ability);
-        AbilitySpec.InputID = GetTypeHash(InputTag);
+        if(auto AbilityInstance = AbilitySpec.GetPrimaryInstance())
+        {
+            const auto AbilityInputTag = IGEPlayerAbilityInterface::Execute_GetAbilityInputTag(AbilitySpec.Ability);
+            const auto AbilityInstanceInputTag = IGEPlayerAbilityInterface::Execute_GetAbilityInputTag(AbilityInstance);
+            if(AbilityInputTag != AbilityInstanceInputTag)
+            {
+                FindAbilitySpecFromHandle(AbilitySpec.Handle)->InputID = GetTypeHash(AbilityInstanceInputTag);
+            }
+        }
     }
 }
