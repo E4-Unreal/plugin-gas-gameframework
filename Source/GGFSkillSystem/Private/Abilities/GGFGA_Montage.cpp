@@ -7,10 +7,16 @@
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Logging.h"
+#include "GGFCharacterGameplayTags.h"
+
+using namespace GGFGameplayTags;
 
 UGGFGA_Montage::UGGFGA_Montage()
 {
     bCancelableByInputRelease = false;
+
+    // 태그 설정
+    ActivationBlockedTags.AddTagFast(State::Falling);
 }
 
 void UGGFGA_Montage::ActivateAbility(const FGameplayAbilitySpecHandle Handle,

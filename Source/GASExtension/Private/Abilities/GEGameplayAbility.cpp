@@ -32,6 +32,7 @@ UGEGameplayAbility::UGEGameplayAbility()
     ActivationOwnedTags.AddTagFast(Action::Root);
 
     // ActivationBlockedTags 설정
+    ActivationBlockedTags.AddTagFast(Action::Root);
     ActivationBlockedTags.AddTagFast(State::Dead);
     ActivationBlockedTags.AddTagFast(State::Knockdown);
     ActivationBlockedTags.AddTagFast(State::Stun);
