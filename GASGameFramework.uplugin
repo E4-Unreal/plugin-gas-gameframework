@@ -83,6 +83,11 @@
 			"Name": "GGFSkillSystem",
 			"Type": "Runtime",
 			"LoadingPhase": "PreDefault"
+		},
+		{
+			"Name": "GGFAnimationSystem",
+			"Type": "Runtime",
+			"LoadingPhase": "PreDefault"
 		}
 	],
 	"Plugins": [
