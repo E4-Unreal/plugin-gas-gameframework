@@ -11,13 +11,17 @@ public class GGFAnimationSystem : ModuleRules
             {
                 "Core",
 
+                // 애니메이션
+                "AnimGraphRuntime",
+
                 // GAS
                 "GameplayTags",
                 "GameplayTasks",
                 "GameplayAbilities",
 
                 // GASGameFramework
-                "GGFCore"
+                "GGFCore",
+                "GGFEquipmentSystem"
             }
         );
 
