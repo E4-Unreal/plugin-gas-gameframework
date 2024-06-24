@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GGFTriggerBox.h"
-#include "GGFEffectTriggerBox.generated.h"
+#include "GGFEffectArea.generated.h"
 
 class UGGFEffectAreaComponent;
 
@@ -12,7 +12,7 @@ class UGGFEffectAreaComponent;
  * 주기적으로 오버랩된 액터들에게 게임플레이 이펙트를 적용하는 트리거 박스 액터입니다.
  */
 UCLASS()
-class GGFCORE_API AGGFEffectTriggerBox : public AGGFTriggerBox
+class GGFCORE_API AGGFEffectArea : public AGGFTriggerBox
 {
     GENERATED_BODY()
 
@@ -22,7 +22,7 @@ class GGFCORE_API AGGFEffectTriggerBox : public AGGFTriggerBox
     TObjectPtr<UGGFEffectAreaComponent> EffectAreaComponent;
 
 public:
-    AGGFEffectTriggerBox(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
+    AGGFEffectArea(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
     /* ActorComponent */
 

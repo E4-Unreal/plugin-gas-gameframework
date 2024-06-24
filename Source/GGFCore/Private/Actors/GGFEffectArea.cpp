@@ -1,18 +1,18 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
-#include "Actors/GGFEffectTriggerBox.h"
+#include "Actors/GGFEffectArea.h"
 
 #include "Components/BoxComponent.h"
 #include "Components/GGFEffectAreaComponent.h"
 
-AGGFEffectTriggerBox::AGGFEffectTriggerBox(const FObjectInitializer& ObjectInitializer)
+AGGFEffectArea::AGGFEffectArea(const FObjectInitializer& ObjectInitializer)
     : Super(ObjectInitializer)
 {
     /* EffectAreaComponent */
     EffectAreaComponent = CreateDefaultSubobject<UGGFEffectAreaComponent>(TEXT("EffectAreaComponent"));
 }
 
-void AGGFEffectTriggerBox::PostInitializeComponents()
+void AGGFEffectArea::PostInitializeComponents()
 {
     Super::PostInitializeComponents();
 
