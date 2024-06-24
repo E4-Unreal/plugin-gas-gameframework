@@ -1,8 +1,8 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
-#include "Stats/GEMoveSpeedStats.h"
+#include "Stats/GGFMoveSpeedStats.h"
 
-void UGEMoveSpeedStats::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+void UGGFMoveSpeedStats::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
     Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
@@ -10,7 +10,7 @@ void UGEMoveSpeedStats::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Ou
     GAMEPLAYATTRIBUTE_DOREPLIFETIME_CONDITION_NOTIFY_WITH_MAX(MoveSpeed)
 }
 
-void UGEMoveSpeedStats::ClampAttributes(const FGameplayAttribute& Attribute, float& NewValue) const
+void UGGFMoveSpeedStats::ClampAttributes(const FGameplayAttribute& Attribute, float& NewValue) const
 {
     Super::ClampAttributes(Attribute, NewValue);
 
@@ -18,7 +18,7 @@ void UGEMoveSpeedStats::ClampAttributes(const FGameplayAttribute& Attribute, flo
     CLAMP_ATTRIBUTE_AND_MAX_ATTRIBUTE(Attribute, NewValue, MoveSpeed)
 }
 
-void UGEMoveSpeedStats::AdjustAttributes(const FGameplayAttribute& Attribute, float OldValue, float NewValue)
+void UGGFMoveSpeedStats::AdjustAttributes(const FGameplayAttribute& Attribute, float OldValue, float NewValue)
 {
     Super::AdjustAttributes(Attribute, OldValue, NewValue);
 
@@ -26,12 +26,12 @@ void UGEMoveSpeedStats::AdjustAttributes(const FGameplayAttribute& Attribute, fl
     ADJUST_ATTRIBUTE_FOR_MAX_ATTRIBUTE_CHANGE(MoveSpeed)
 }
 
-void UGEMoveSpeedStats::OnRep_MoveSpeed(const FGameplayAttributeData& OldMoveSpeed)
+void UGGFMoveSpeedStats::OnRep_MoveSpeed(const FGameplayAttributeData& OldMoveSpeed)
 {
     GAMEPLAYATTRIBUTE_REPNOTIFY_SIMPLE(MoveSpeed);
 }
 
-void UGEMoveSpeedStats::OnRep_MaxMoveSpeed(const FGameplayAttributeData& OldMaxMoveSpeed)
+void UGGFMoveSpeedStats::OnRep_MaxMoveSpeed(const FGameplayAttributeData& OldMaxMoveSpeed)
 {
     GAMEPLAYATTRIBUTE_REPNOTIFY_SIMPLE(MaxMoveSpeed);
 }

@@ -3,8 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Attributes/GEAttributeSetBase.h"
-#include "GEStatsBase.generated.h"
+#include "Attributes/GGFAttributesBase.h"
+#include "GGFStatsBase.generated.h"
 
 /**
  * 일반적인 게임에서 사용되는 스탯 시스템의 기본 요소인 스탯을 정의하기 위한 AttributeSet 클래스입니다.
@@ -13,7 +13,7 @@
  * 현재는 블루프린트 설정에서 서브 클래스를 통해 구분해주기 위해 클래스를 나누었을뿐 기능적으로 다른 점은 없습니다.
  */
 UCLASS()
-class GGFCORE_API UGEStatsBase : public UGEAttributeSetBase
+class GGFCORE_API UGGFStatsBase : public UGGFAttributesBase
 {
     GENERATED_BODY()
 };

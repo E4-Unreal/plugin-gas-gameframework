@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GEStatsBase.h"
-#include "GEMoveSpeedStats.generated.h"
+#include "GGFStatsBase.h"
+#include "GGFMoveSpeedStats.generated.h"
 
 /**
  * 스탯 - 이동 속도
  */
 UCLASS()
-class GGFCORE_API UGEMoveSpeedStats : public UGEStatsBase
+class GGFCORE_API UGGFMoveSpeedStats : public UGGFStatsBase
 {
     GENERATED_BODY()
 

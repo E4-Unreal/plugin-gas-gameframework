@@ -3,7 +3,7 @@
 
 #include "Effects/GE_GGFTickDamageWithHealthRatio.h"
 
-#include "Attributes/GEHealthAttributes.h"
+#include "Attributes/GGFHealthAttributes.h"
 
 UGE_GGFTickDamageWithHealthRatio::UGE_GGFTickDamageWithHealthRatio()
 {
@@ -14,7 +14,7 @@ UGE_GGFTickDamageWithHealthRatio::UGE_GGFTickDamageWithHealthRatio()
 
     /* Modifiers 설정 */
     FGameplayEffectAttributeCaptureDefinition MaxHealthAttribute;
-    MaxHealthAttribute.AttributeToCapture = UGEHealthAttributes::GetMaxHealthAttribute();
+    MaxHealthAttribute.AttributeToCapture = UGGFHealthAttributes::GetMaxHealthAttribute();
     MaxHealthAttribute.AttributeSource = EGameplayEffectAttributeCaptureSource::Target;
 
     FAttributeBasedFloat DamageWithHealthRatio;
@@ -23,7 +23,7 @@ UGE_GGFTickDamageWithHealthRatio::UGE_GGFTickDamageWithHealthRatio()
 
     const FGameplayModifierInfo DamageModifier
     {
-        UGEHealthAttributes::GetDamageAttribute(),
+        UGGFHealthAttributes::GetDamageAttribute(),
         EGameplayModOp::Additive,
         FGameplayEffectModifierMagnitude(DamageWithHealthRatio)
     };

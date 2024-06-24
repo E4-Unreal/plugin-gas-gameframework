@@ -3,8 +3,8 @@
 
 #include "GE_TSCharacterAttributes.h"
 
-#include "Attributes/GEHealthAttributes.h"
-#include "Attributes/GEShieldAttributes.h"
+#include "Attributes/GGFHealthAttributes.h"
+#include "Attributes/GGFShieldAttributes.h"
 
 UGE_TSCharacterAttributes::UGE_TSCharacterAttributes()
 {
@@ -13,14 +13,14 @@ UGE_TSCharacterAttributes::UGE_TSCharacterAttributes()
     const float MaxHealth = 100;
     const FGameplayModifierInfo MaxHealthModifier
     {
-        UGEHealthAttributes::GetMaxHealthAttribute(),
+        UGGFHealthAttributes::GetMaxHealthAttribute(),
         EGameplayModOp::Override,
         FGameplayEffectModifierMagnitude(FScalableFloat(MaxHealth))
     };
 
     const FGameplayModifierInfo HealthModifier
     {
-        UGEHealthAttributes::GetHealthAttribute(),
+        UGGFHealthAttributes::GetHealthAttribute(),
         EGameplayModOp::Override,
         FGameplayEffectModifierMagnitude(FScalableFloat(MaxHealth))
     };
@@ -29,14 +29,14 @@ UGE_TSCharacterAttributes::UGE_TSCharacterAttributes()
     const float MaxShield = 100;
     const FGameplayModifierInfo MaxShieldModifier
     {
-        UGEShieldAttributes::GetMaxShieldAttribute(),
+        UGGFShieldAttributes::GetMaxShieldAttribute(),
         EGameplayModOp::Override,
         FGameplayEffectModifierMagnitude(FScalableFloat(MaxShield))
     };
 
     const FGameplayModifierInfo ShieldModifier
     {
-        UGEShieldAttributes::GetShieldAttribute(),
+        UGGFShieldAttributes::GetShieldAttribute(),
         EGameplayModOp::Override,
         FGameplayEffectModifierMagnitude(FScalableFloat(MaxShield))
     };

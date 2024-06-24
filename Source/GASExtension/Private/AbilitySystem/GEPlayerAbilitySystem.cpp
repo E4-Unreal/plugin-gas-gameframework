@@ -4,7 +4,7 @@
 
 #include "GEGameplayTags.h"
 #include "Abilities/GEGameplayAbility.h"
-#include "Attributes/GEHealthAttributes.h"
+#include "Attributes/GGFHealthAttributes.h"
 
 void UGEPlayerAbilitySystem::PressInputTag(FGameplayTag InputTag)
 {

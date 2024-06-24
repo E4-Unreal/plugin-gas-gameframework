@@ -4,7 +4,6 @@
 
 #include "GEBlueprintFunctionLibrary.h"
 #include "GEGameplayTags.h"
-#include "Attributes/GEAttributeSetBase.h"
 
 UGEAbilitySystem::UGEAbilitySystem()
 {

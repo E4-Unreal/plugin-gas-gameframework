@@ -1,9 +1,9 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Attributes/GEStaminaAttributes.h"
+#include "Attributes/GGFStaminaAttributes.h"
 
-void UGEStaminaAttributes::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+void UGGFStaminaAttributes::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
     Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
@@ -11,7 +11,7 @@ void UGEStaminaAttributes::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>&
     GAMEPLAYATTRIBUTE_DOREPLIFETIME_CONDITION_NOTIFY_WITH_MAX_AND_REGGFNRATE(Stamina)
 }
 
-void UGEStaminaAttributes::ClampAttributes(const FGameplayAttribute& Attribute, float& NewValue) const
+void UGGFStaminaAttributes::ClampAttributes(const FGameplayAttribute& Attribute, float& NewValue) const
 {
     Super::ClampAttributes(Attribute, NewValue);
 
@@ -19,7 +19,7 @@ void UGEStaminaAttributes::ClampAttributes(const FGameplayAttribute& Attribute, 
     CLAMP_ATTRIBUTE_AND_MAX_ATTRIBUTE(Attribute, NewValue, Stamina)
 }
 
-void UGEStaminaAttributes::AdjustAttributes(const FGameplayAttribute& Attribute, float OldValue, float NewValue)
+void UGGFStaminaAttributes::AdjustAttributes(const FGameplayAttribute& Attribute, float OldValue, float NewValue)
 {
     Super::AdjustAttributes(Attribute, OldValue, NewValue);
 
@@ -27,17 +27,17 @@ void UGEStaminaAttributes::AdjustAttributes(const FGameplayAttribute& Attribute,
     ADJUST_ATTRIBUTE_FOR_MAX_ATTRIBUTE_CHANGE(Stamina)
 }
 
-void UGEStaminaAttributes::OnRep_Stamina(const FGameplayAttributeData& OldStamina)
+void UGGFStaminaAttributes::OnRep_Stamina(const FGameplayAttributeData& OldStamina)
 {
     GAMEPLAYATTRIBUTE_REPNOTIFY_SIMPLE(Stamina);
 }
 
-void UGEStaminaAttributes::OnRep_MaxStamina(const FGameplayAttributeData& OldMaxStamina)
+void UGGFStaminaAttributes::OnRep_MaxStamina(const FGameplayAttributeData& OldMaxStamina)
 {
     GAMEPLAYATTRIBUTE_REPNOTIFY_SIMPLE(MaxStamina);
 }
 
-void UGEStaminaAttributes::OnRep_StaminaRegenRate(const FGameplayAttributeData& OldStaminaRegenRate)
+void UGGFStaminaAttributes::OnRep_StaminaRegenRate(const FGameplayAttributeData& OldStaminaRegenRate)
 {
     GAMEPLAYATTRIBUTE_REPNOTIFY_SIMPLE(StaminaRegenRate);
 }

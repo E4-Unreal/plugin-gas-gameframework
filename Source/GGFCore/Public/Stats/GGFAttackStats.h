@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GEStatsBase.h"
-#include "GEAttackStats.generated.h"
+#include "GGFStatsBase.h"
+#include "GGFAttackStats.generated.h"
 
 /**
  * 스탯 - 공격력
  */
 UCLASS()
-class GGFCORE_API UGEAttackStats : public UGEStatsBase
+class GGFCORE_API UGGFAttackStats : public UGGFStatsBase
 {
     GENERATED_BODY()
 

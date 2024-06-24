@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GEAttributeSetBase.h"
-#include "GEShieldAttributes.generated.h"
+#include "GGFAttributesBase.h"
+#include "GGFShieldAttributes.generated.h"
 
 /**
  * GGFHealthAttributes에서 방어막 어트리뷰트가 추가된 AttributeSet 클래스입니다.
  */
 UCLASS(Blueprintable, BlueprintType)
-class GGFCORE_API UGEShieldAttributes : public UGEAttributeSetBase
+class GGFCORE_API UGGFShieldAttributes : public UGGFAttributesBase
 {
     GENERATED_BODY()
 

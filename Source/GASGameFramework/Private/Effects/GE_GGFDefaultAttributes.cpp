@@ -3,10 +3,10 @@
 
 #include "Effects/GE_GGFDefaultAttributes.h"
 
-#include "Attributes/GEHealthAttributes.h"
-#include "Attributes/GEManaAttributes.h"
-#include "Attributes/GEShieldAttributes.h"
-#include "Attributes/GEStaminaAttributes.h"
+#include "Attributes/GGFHealthAttributes.h"
+#include "Attributes/GGFManaAttributes.h"
+#include "Attributes/GGFShieldAttributes.h"
+#include "Attributes/GGFStaminaAttributes.h"
 
 UGE_GGFDefaultAttributes::UGE_GGFDefaultAttributes()
 {
@@ -19,7 +19,7 @@ UGE_GGFDefaultAttributes::UGE_GGFDefaultAttributes()
     // 체력
     const FGameplayModifierInfo MaxHealthModifier
     {
-        UGEHealthAttributes::GetMaxHealthAttribute(),
+        UGGFHealthAttributes::GetMaxHealthAttribute(),
         EGameplayModOp::Override,
         FGameplayEffectModifierMagnitude(FScalableFloat(DefaultValue))
     };
@@ -27,7 +27,7 @@ UGE_GGFDefaultAttributes::UGE_GGFDefaultAttributes()
     // 실드
     const FGameplayModifierInfo MaxShieldModifier
     {
-        UGEShieldAttributes::GetMaxShieldAttribute(),
+        UGGFShieldAttributes::GetMaxShieldAttribute(),
         EGameplayModOp::Override,
         FGameplayEffectModifierMagnitude(FScalableFloat(DefaultValue))
     };
@@ -35,7 +35,7 @@ UGE_GGFDefaultAttributes::UGE_GGFDefaultAttributes()
     // 마나
     const FGameplayModifierInfo MaxManaModifier
     {
-        UGEManaAttributes::GetMaxManaAttribute(),
+        UGGFManaAttributes::GetMaxManaAttribute(),
         EGameplayModOp::Override,
         FGameplayEffectModifierMagnitude(FScalableFloat(DefaultValue))
     };
@@ -43,7 +43,7 @@ UGE_GGFDefaultAttributes::UGE_GGFDefaultAttributes()
     // 스태미나
     const FGameplayModifierInfo MaxStaminaModifier
     {
-        UGEStaminaAttributes::GetMaxStaminaAttribute(),
+        UGGFStaminaAttributes::GetMaxStaminaAttribute(),
         EGameplayModOp::Override,
         FGameplayEffectModifierMagnitude(FScalableFloat(DefaultValue))
     };

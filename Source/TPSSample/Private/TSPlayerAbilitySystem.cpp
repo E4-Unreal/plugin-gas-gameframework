@@ -4,24 +4,24 @@
 
 #include "GE_TSCharacterAttributes.h"
 #include "GE_TSCharacterStats.h"
-#include "Attributes/GEHealthAttributes.h"
-#include "Attributes/GEShieldAttributes.h"
-#include "Stats/GEAttackSpeedStats.h"
-#include "Stats/GEAttackStats.h"
-#include "Stats/GEDefenseStats.h"
-#include "Stats/GEMoveSpeedStats.h"
+#include "Attributes/GGFHealthAttributes.h"
+#include "Attributes/GGFShieldAttributes.h"
+#include "Stats/GGFAttackSpeedStats.h"
+#include "Stats/GGFAttackStats.h"
+#include "Stats/GGFDefenseStats.h"
+#include "Stats/GGFMoveSpeedStats.h"
 
 UTSPlayerAbilitySystem::UTSPlayerAbilitySystem()
 {
     /* Attributes */
-    Attributes.AddUnique(UGEHealthAttributes::StaticClass()); // 체력
-    Attributes.AddUnique(UGEShieldAttributes::StaticClass()); // 방어막
+    Attributes.AddUnique(UGGFHealthAttributes::StaticClass()); // 체력
+    Attributes.AddUnique(UGGFShieldAttributes::StaticClass()); // 방어막
 
     /* Stats */
-    Stats.AddUnique(UGEAttackStats::StaticClass()); // 공격력
-    Stats.AddUnique(UGEDefenseStats::StaticClass()); // 방어력
-    Stats.AddUnique(UGEAttackSpeedStats::StaticClass()); // 공격속도
-    Stats.AddUnique(UGEMoveSpeedStats::StaticClass()); // 이동속도
+    Stats.AddUnique(UGGFAttackStats::StaticClass()); // 공격력
+    Stats.AddUnique(UGGFDefenseStats::StaticClass()); // 방어력
+    Stats.AddUnique(UGGFAttackSpeedStats::StaticClass()); // 공격속도
+    Stats.AddUnique(UGGFMoveSpeedStats::StaticClass()); // 이동속도
 
     /* Effects */
     Effects.AddUnique(UGE_TSCharacterAttributes::StaticClass()); // 캐릭터 기본 특성 초기화

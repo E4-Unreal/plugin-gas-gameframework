@@ -4,10 +4,10 @@
 
 #include "AbilitySystemComponent.h"
 #include "GASExtensionSetting.h"
-#include "Attributes/GEHealthAttributes.h"
-#include "Attributes/GEShieldAttributes.h"
-#include "Stats/GEAttackStats.h"
-#include "Stats/GEDefenseStats.h"
+#include "Attributes/GGFHealthAttributes.h"
+#include "Attributes/GGFShieldAttributes.h"
+#include "Stats/GGFAttackStats.h"
+#include "Stats/GGFDefenseStats.h"
 #include "GEGameplayTags.h"
 #include "Logging.h"
 
@@ -34,13 +34,13 @@ void UGEDamageCalculation::Execute_Implementation(const FGameplayEffectCustomExe
     const float TotalDamage = CalculateTotalDamage(ExecutionParams, SourceSystem, TargetSystem);
 
     // Attribute 별 데미지 계산
-    float TargetShield = TargetSystem->GetNumericAttribute(UGEShieldAttributes::GetShieldAttribute());
+    float TargetShield = TargetSystem->GetNumericAttribute(UGGFShieldAttributes::GetShieldAttribute());
     float ShieldDamage = FMath::Min(TotalDamage, TargetShield);
     float HealthDamage = TotalDamage - ShieldDamage;
 
     // 데미지 반영
-    OutExecutionOutput.AddOutputModifier(FGameplayModifierEvaluatedData(UGEShieldAttributes::GetShieldAttribute(), EGameplayModOp::Additive, -ShieldDamage));
-    OutExecutionOutput.AddOutputModifier(FGameplayModifierEvaluatedData(UGEHealthAttributes::GetHealthAttribute(), EGameplayModOp::Additive, -HealthDamage));
+    OutExecutionOutput.AddOutputModifier(FGameplayModifierEvaluatedData(UGGFShieldAttributes::GetShieldAttribute(), EGameplayModOp::Additive, -ShieldDamage));
+    OutExecutionOutput.AddOutputModifier(FGameplayModifierEvaluatedData(UGGFHealthAttributes::GetHealthAttribute(), EGameplayModOp::Additive, -HealthDamage));
 }
 
 bool UGEDamageCalculation::IsValid(const FGameplayEffectCustomExecutionParameters& ExecutionParams) const
@@ -117,8 +117,8 @@ float UGEDamageCalculation::CalculateTotalDamage(const FGameplayEffectCustomExec
     if(SourceSystem != TargetSystem)
     {
         // 스탯 계산
-        const float SourceAttack = SourceSystem->GetNumericAttribute(UGEAttackStats::GetAttackAttribute());
-        const float TargetDefense = TargetSystem->GetNumericAttribute(UGEDefenseStats::GetDefenseAttribute());
+        const float SourceAttack = SourceSystem->GetNumericAttribute(UGGFAttackStats::GetAttackAttribute());
+        const float TargetDefense = TargetSystem->GetNumericAttribute(UGGFDefenseStats::GetDefenseAttribute());
         TotalDamage = FMath::Max(0, SourceAttack - TargetDefense);
     }
 

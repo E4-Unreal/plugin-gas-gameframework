@@ -4,14 +4,14 @@
 
 #include "GEGameplayTags.h"
 #include "Logging.h"
-#include "Attributes/GEHealthAttributes.h"
+#include "Attributes/GGFHealthAttributes.h"
 
 using namespace GEGameplayTags;
 
 UGEDamageableAbilitySystem::UGEDamageableAbilitySystem()
 {
     // 체력 어트리뷰트 추가
-    Attributes.AddUnique(UGEHealthAttributes::StaticClass());
+    Attributes.AddUnique(UGGFHealthAttributes::StaticClass());
 }
 
 bool UGEDamageableAbilitySystem::IsDead() const
@@ -41,9 +41,9 @@ void UGEDamageableAbilitySystem::ServerInitializeComponent_Implementation()
     // 체력 어트리뷰트 초기화
     FGEAttributeContainer HealthAttributeContainer
     {
-        UGEHealthAttributes::GetHealthAttribute(),
-        UGEHealthAttributes::GetMaxHealthAttribute(),
-        UGEHealthAttributes::GetHealthRegenRateAttribute()
+        UGGFHealthAttributes::GetHealthAttribute(),
+        UGGFHealthAttributes::GetMaxHealthAttribute(),
+        UGGFHealthAttributes::GetHealthRegenRateAttribute()
     };
 
     InitAttribute(HealthAttributeContainer, MaxHealth);
@@ -74,7 +74,7 @@ void UGEDamageableAbilitySystem::InternalOnDead_Implementation()
 
 void UGEDamageableAbilitySystem::RegisterHealthValueChangeEvent()
 {
-    FOnGameplayAttributeValueChange& Delegate = GetGameplayAttributeValueChangeDelegate(UGEHealthAttributes::GetHealthAttribute());
+    FOnGameplayAttributeValueChange& Delegate = GetGameplayAttributeValueChangeDelegate(UGGFHealthAttributes::GetHealthAttribute());
     Delegate.AddLambda([this](const FOnAttributeChangeData& OnAttributeChangeData)
     {
         // 중복 호출 방지 및 죽음 판정

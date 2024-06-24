@@ -3,7 +3,7 @@
 
 #include "Effects/GE_GGFTickDamage.h"
 
-#include "Attributes/GEHealthAttributes.h"
+#include "Attributes/GGFHealthAttributes.h"
 
 UGE_GGFTickDamage::UGE_GGFTickDamage()
 {
@@ -15,7 +15,7 @@ UGE_GGFTickDamage::UGE_GGFTickDamage()
     /* Modifiers 설정 */
     const FGameplayModifierInfo DamageModifier
     {
-        UGEHealthAttributes::GetDamageAttribute(),
+        UGGFHealthAttributes::GetDamageAttribute(),
         EGameplayModOp::Additive,
         FGameplayEffectModifierMagnitude(FScalableFloat(Damage))
     };
