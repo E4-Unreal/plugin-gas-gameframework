@@ -23,6 +23,7 @@ public class GGFCharacterSystem : ModuleRules
                 "GameplayAbilities",
 
                 // GASGameFramework
+                "GGFCore",
                 "GASExtension",
                 "GGFInteractionSystem",
                 "GGFEquipmentSystem",

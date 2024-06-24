@@ -13,6 +13,8 @@ FName AGEPawn::GameplayStateMachineName(TEXT("GameplayStateMachine"));
 
 AGEPawn::AGEPawn(const FObjectInitializer& ObjectInitializer)
 {
+    bReplicates = true;
+    
     /* AbilitySystem */
     AbilitySystem = CreateDefaultSubobject<UGEDamageableAbilitySystem>(AbilitySystemName);
 

@@ -23,6 +23,11 @@ public:
 
     virtual void BeginPlay() override;
 
+    /* API */
+
+    UFUNCTION(BlueprintCallable)
+    virtual void Reset() { }
+
 protected:
     UFUNCTION(BlueprintPure)
     virtual FORCEINLINE bool IsValid() const { return bValid; }

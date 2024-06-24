@@ -19,8 +19,7 @@ void AGGFProjectileFireArm::OnFire_Implementation()
     if(!IsValid()) return;
 
     // 발사체 스폰
-    FVector Target;
-    IGGFAimingInterface::Execute_GetTarget(GetOwner(), Target);
+    FVector Target = IGGFAimingInterface::Execute_GetTargetLocation(GetOwner());
     FVector FireDirection = (Target - GetMuzzleLocation()).GetSafeNormal();
     auto SpawnedProjectile = SpawnProjectile(FireDirection);
 }

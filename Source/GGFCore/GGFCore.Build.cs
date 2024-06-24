@@ -10,6 +10,11 @@ public class GGFCore : ModuleRules
             new string[]
             {
                 "Core",
+
+                // GAS
+                "GameplayTags",
+                "GameplayTasks",
+                "GameplayAbilities"
             }
         );
 

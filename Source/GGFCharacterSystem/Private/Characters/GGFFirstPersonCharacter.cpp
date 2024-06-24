@@ -41,10 +41,12 @@ AGGFFirstPersonCharacter::AGGFFirstPersonCharacter(const FObjectInitializer& Obj
     ThirdPersonSkeletalMesh->VisibilityBasedAnimTickOption = EVisibilityBasedAnimTickOption::AlwaysTickPoseAndRefreshBones;
 }
 
-void AGGFFirstPersonCharacter::GetTarget_Implementation(FVector& Target)
+FVector AGGFFirstPersonCharacter::GetTargetLocation(AActor* RequestedBy) const
 {
+    // TODO 카메라 컴포넌트로 대체
+
     const UWorld* World = GetWorld();
-    if(World == nullptr) return;
+    if(World == nullptr) return FVector::ZeroVector;
 
     // 카메라를 기준으로 라인 트레이스를 위한 위치 계산
     const FTransform& CameraTransform = GameViewCamera->GetComponentTransform();
@@ -65,5 +67,7 @@ void AGGFFirstPersonCharacter::GetTarget_Implementation(FVector& Target)
         CollisionQueryParams
         );
 
-    Target = HitResult.bBlockingHit ? HitResult.Location : TraceEnd;
+    FVector Target = HitResult.bBlockingHit ? HitResult.Location : TraceEnd;
+
+    return Target;
 }

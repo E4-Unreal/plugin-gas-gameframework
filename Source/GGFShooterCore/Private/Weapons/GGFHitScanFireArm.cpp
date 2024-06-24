@@ -19,8 +19,7 @@ void AGGFHitScanFireArm::OnFire_Implementation()
         const FVector& TraceStart = GetMuzzleLocation();
 
         // 발사 방향
-        FVector Target;
-        IGGFAimingInterface::Execute_GetTarget(GetOwner(), Target);
+        FVector Target = IGGFAimingInterface::Execute_GetTargetLocation(GetOwner());
         const FVector& Direction = (Target - TraceStart).GetSafeNormal();
 
         // 라인 트레이스 종료 위치

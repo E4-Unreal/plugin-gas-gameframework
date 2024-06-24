@@ -70,12 +70,22 @@
 			"LoadingPhase": "PreDefault"
 		},
 		{
-			"Name": "GGFCombatCore",
+			"Name": "GGFCombatSystem",
 			"Type": "Runtime",
 			"LoadingPhase": "PreDefault"
 		},
 		{
 			"Name": "GGFGimmickSystem",
+			"Type": "Runtime",
+			"LoadingPhase": "PreDefault"
+		},
+		{
+			"Name": "GGFSkillSystem",
+			"Type": "Runtime",
+			"LoadingPhase": "PreDefault"
+		},
+		{
+			"Name": "GGFAnimationSystem",
 			"Type": "Runtime",
 			"LoadingPhase": "PreDefault"
 		}

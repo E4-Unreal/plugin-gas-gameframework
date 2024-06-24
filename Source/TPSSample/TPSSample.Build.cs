@@ -17,7 +17,9 @@ public class TPSSample : ModuleRules
                 "GameplayAbilities",
 
                 // GAS GameFramework 플러그인
+                "GGFCore",
                 "GASExtension",
+                "GGFAnimationSystem",
                 "GASGameFramework",
                 "GGFCharacterSystem",
                 "GGFEquipmentSystem"

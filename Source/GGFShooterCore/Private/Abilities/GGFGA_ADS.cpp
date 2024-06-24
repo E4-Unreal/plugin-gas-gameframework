@@ -3,6 +3,7 @@
 #include "Abilities/GGFGA_ADS.h"
 
 #include "GGFShooterGameplayTags.h"
+#include "GEGameplayTags.h"
 #include "Components/GGFCameraComponent.h"
 #include "Weapons/GGFSniper.h"
 
@@ -14,6 +15,9 @@ UGGFGA_ADS::UGGFGA_ADS()
     // 어빌리티 태그 설정
     AbilityTags.AddLeafTag(State::ADS);
     ActivationOwnedTags.AddLeafTag(State::ADS);
+
+    ActivationBlockedTags.RemoveTag(GEGameplayTags::Action::Root);
+    ActivationOwnedTags.RemoveTag(GEGameplayTags::Action::Root);
 }
 
 void UGGFGA_ADS::OnAvatarSet(const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilitySpec& Spec)

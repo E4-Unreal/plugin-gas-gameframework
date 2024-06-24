@@ -13,15 +13,16 @@ class GGFSHOOTERCORE_API UGGFAimingInterface : public UInterface
     GENERATED_BODY()
 };
 
+// TODO 상호작용에서도 사용할 수 있습니다. 나중에 통합 예정입니다.
 /**
- * 일반적으로 무기는 캐릭터가 조준하여 사용합니다.
- * 그러나 조준 정보가 필요없는 무기도 존재할 수 있는데 캐릭터가 이를 구분하는 것은 비효율적이라고 생각하였기 때문에 작성한 인터페이스입니다.
+ * 대상이 바라보고 있는 목표 위치를 알아내기 위한 인터페이스입니다.
  */
 class GGFSHOOTERCORE_API IGGFAimingInterface
 {
     GENERATED_BODY()
 
 public:
+    // 대상이 바라보고 있는 목표 위치
     UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-    void GetTarget(FVector& Target);
+    FVector GetTargetLocation() const;
 };

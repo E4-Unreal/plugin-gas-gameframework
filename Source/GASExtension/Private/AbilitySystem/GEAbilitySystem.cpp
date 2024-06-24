@@ -48,8 +48,15 @@ void UGEAbilitySystem::InitAttribute(const FGEAttributeContainer& AttributeConta
     SetNumericAttributeBase(AttributeContainer.AttributeRegenRate, RegenRate);
 }
 
+void UGEAbilitySystem::OnAbilitySpecDirtied(const FGameplayAbilitySpec& AbilitySpec)
+{
+}
+
 void UGEAbilitySystem::ServerInitializeComponent_Implementation()
 {
+    // 이벤트 바인딩
+    AbilitySpecDirtiedCallbacks.AddUObject(this, &UGEAbilitySystem::OnAbilitySpecDirtied);
+
     // 기본 AttributeSet 생성 및 등록
     UGEBlueprintFunctionLibrary::AddAttributeSetsToSystem(Attributes, this);
 

@@ -4,6 +4,7 @@
 
 #include "AbilitySystemComponent.h"
 #include "GEGameplayTags.h"
+#include "GameplayEffectComponents/TargetTagsGameplayEffectComponent.h"
 
 UGEGameplayAbility::UGEGameplayAbility()
 {
@@ -22,11 +23,16 @@ UGEGameplayAbility::UGEGameplayAbility()
 
     using namespace GEGameplayTags;
 
+    // 입력 태그 설정
+    InputTag = Input::Test;
+    CooldownTag = Skill::Cooldown::Test;
+
     // 기본 어빌리티 태그 설정
     AbilityTags.AddTagFast(Action::Root);
     ActivationOwnedTags.AddTagFast(Action::Root);
 
     // ActivationBlockedTags 설정
+    ActivationBlockedTags.AddTagFast(Action::Root);
     ActivationBlockedTags.AddTagFast(State::Dead);
     ActivationBlockedTags.AddTagFast(State::Knockdown);
     ActivationBlockedTags.AddTagFast(State::Stun);
@@ -47,8 +53,20 @@ bool UGEGameplayAbility::CanActivateAbility(const FGameplayAbilitySpecHandle Han
     return Super::CanActivateAbility(Handle, ActorInfo, SourceTags, TargetTags, OptionalRelevantTags);
 }
 
+void UGEGameplayAbility::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
+    const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo,
+    const FGameplayEventData* TriggerEventData)
+{
+    Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
+
+     if(!CommitAbility(Handle, ActorInfo, ActivationInfo))
+    {
+        EndAbility(Handle, ActorInfo, ActivationInfo, true, true);
+    }
+}
+
 void UGEGameplayAbility::InputPressed(const FGameplayAbilitySpecHandle Handle,
-    const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo)
+                                      const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo)
 {
     Super::InputPressed(Handle, ActorInfo, ActivationInfo);
 
@@ -63,14 +81,71 @@ void UGEGameplayAbility::InputReleased(const FGameplayAbilitySpecHandle Handle,
     Super::InputReleased(Handle, ActorInfo, ActivationInfo);
 
     // 어빌리티 입력이 비활성화되면 어빌리티를 종료합니다.
-    if(GetCurrentAbilitySpec()->IsActive()) EndAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true, false);
+    if(bCancelableByInputRelease && GetCurrentAbilitySpec()->IsActive()) CancelAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true);
+}
+
+void UGEGameplayAbility::OnGiveAbility(const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilitySpec& Spec)
+{
+    Super::OnGiveAbility(ActorInfo, Spec);
+
+    CreateCooldownEffectInstance();
+}
+
+void UGEGameplayAbility::ApplyCooldown(const FGameplayAbilitySpecHandle Handle,
+    const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo) const
+{
+    if(UGameplayEffect* CooldownGE = GetCooldownGameplayEffect())
+    {
+        auto Context = ActorInfo->AbilitySystemComponent->MakeEffectContext();
+        auto NewSpec = new FGameplayEffectSpec(CooldownGE, Context, GetAbilityLevel());
+        ApplyGameplayEffectSpecToOwner(Handle, ActorInfo, ActivationInfo, FGameplayEffectSpecHandle(NewSpec));
+    }
+}
+
+UGameplayEffect* UGEGameplayAbility::GetCooldownGameplayEffect() const
+{
+    if(CooldownEffectInstance) return CooldownEffectInstance;
+
+    return Super::GetCooldownGameplayEffect();
+}
+
+void UGEGameplayAbility::CreateCooldownEffectInstance()
+{
+    // 쿨다운 시간이 설정된 경우
+    if(!FMath::IsNearlyZero(CooldownTime))
+    {
+        // 쿨다운 게임플레이 이펙트 인스턴스 생성
+        UGameplayEffect* NewCooldown = NewObject<UGameplayEffect>(this, *(GetName() + " Cooldown"));
+        NewCooldown->DurationPolicy = EGameplayEffectDurationType::HasDuration;
+        NewCooldown->DurationMagnitude = FGameplayEffectModifierMagnitude(CooldownTime);
+        TObjectPtr<UTargetTagsGameplayEffectComponent> TargetTagsComponent = &NewCooldown->AddComponent<UTargetTagsGameplayEffectComponent>();
+        FInheritedTagContainer TagContainer;
+        TagContainer.Added.AddTag(CooldownTag);
+        TargetTagsComponent->SetAndApplyTargetTagChanges(TagContainer);
+
+        CooldownEffectInstance = NewCooldown;
+    }
 }
 
 void UGEGameplayAbility::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
-    const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled)
+                                    const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled)
 {
     Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
 
     // 어빌리티가 종료되는 경우 어빌리티 입력을 초기화합니다.
     GetCurrentAbilitySpec()->InputPressed = false;
+}
+
+bool UGEGameplayAbility::InternalCanActivate()
+{
+#if WITH_EDITOR
+      // TODO 원인 분석 및 수정 필요
+    /**
+     * CanActivateAbility에 이미 포함되어 있음에도 불구하고 showdebug abilitysystem 콘솔 창에서 쿨다운으로 인한 비활성화 표시가 되지 않습니다.
+     * 일단 디버깅 편의성을 위해 임시로 이곳에 한 번 더 검사를 진행하도록 설정해두었습니다.
+     */
+    return CheckCooldown(CurrentSpecHandle, CurrentActorInfo);
+#endif
+
+    return true;
 }

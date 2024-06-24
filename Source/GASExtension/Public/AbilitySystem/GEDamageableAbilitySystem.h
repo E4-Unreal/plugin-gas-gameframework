@@ -20,7 +20,6 @@ public:
     UPROPERTY(BlueprintAssignable)
     FOnDeadSignature OnDead;
 
-protected:
     // 기본 체력
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|Default")
     float MaxHealth = 100;

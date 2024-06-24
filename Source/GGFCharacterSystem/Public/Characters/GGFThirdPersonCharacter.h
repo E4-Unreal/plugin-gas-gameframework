@@ -42,7 +42,7 @@ public:
 
     /* GGFAimingInterface */
 
-    virtual void GetTarget_Implementation(FVector& Target) override;
+    virtual FVector GetTargetLocation_Implementation() const override;
 
 public:
     /* Getter */
