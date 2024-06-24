@@ -49,4 +49,5 @@ void UGGFGA_ApplyBuffToSelf::ApplyBuffToSelf()
 
     auto AbilitySystem = GetAbilitySystemComponentFromActorInfo();
     AbilitySystem->ApplyGameplayEffectToSelf(BuffClass->GetDefaultObject<UGameplayEffect>(), GetAbilityLevel(), AbilitySystem->MakeEffectContext());
+    AbilitySystem->ExecuteGameplayCue(BuffCueTag.GameplayCueTag);
 }

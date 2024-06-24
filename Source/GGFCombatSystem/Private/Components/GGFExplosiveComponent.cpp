@@ -2,8 +2,6 @@
 
 #include "Components/GGFExplosiveComponent.h"
 
-#include "AbilitySystemGlobals.h"
-#include "GameplayCueManager.h"
 #include "GEBlueprintFunctionLibrary.h"
 #include "Logging.h"
 #include "Components/SphereComponent.h"
@@ -11,13 +9,11 @@
 #include "GEGameplayTags.h"
 #include "GGFCombatGameplayTags.h"
 
-using namespace GEGameplayTags;
-
 UGGFExplosiveComponent::UGGFExplosiveComponent()
 {
     // 기본 설정
     DamageEffect = UGEDamageBase::StaticClass();
-    DamageType = Damage::Type::Default;
+    DamageType = GEGameplayTags::Damage::Type::Default;
     ExplosionCueTag = FGameplayCueTag(GGFGameplayTags::GameplayCue::Explosion::Default);
 }
 

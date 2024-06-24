@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayCueInterface.h"
 #include "Abilities/GGFGA_Montage.h"
 #include "GGFGA_ApplyBuffToSelf.generated.h"
 
@@ -27,6 +28,9 @@ public:
     // true 인 경우 스킬 발동 즉시 버프가 적용됩니다.
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config")
     bool bApplyImmediately = false;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config")
+    FGameplayCueTag BuffCueTag;
 
 protected:
     bool bApplied = false;

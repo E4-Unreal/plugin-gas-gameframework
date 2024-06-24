@@ -27,6 +27,37 @@ namespace GGFGameplayTags
             GGFCOMBATSYSTEM_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Test) // 테스트 전용
             GGFCOMBATSYSTEM_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Default) // 기본
         }
+
+        namespace Buff
+        {
+            GGFCOMBATSYSTEM_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Root)
+            GGFCOMBATSYSTEM_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Test)
+            GGFCOMBATSYSTEM_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Default)
+
+            GGFCOMBATSYSTEM_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Invinsible)
+
+            namespace Attribute
+            {
+                GGFCOMBATSYSTEM_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Heal)
+            }
+
+            namespace Stat
+            {
+                GGFCOMBATSYSTEM_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attack)
+                GGFCOMBATSYSTEM_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Defense)
+            }
+
+            namespace Immunity
+            {
+                GGFCOMBATSYSTEM_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Root)
+                GGFCOMBATSYSTEM_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Test)
+                GGFCOMBATSYSTEM_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Physical)
+                GGFCOMBATSYSTEM_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Fire)
+                GGFCOMBATSYSTEM_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Water)
+                GGFCOMBATSYSTEM_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Electricity)
+                GGFCOMBATSYSTEM_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Ice)
+            }
+        }
     }
 
     /* 데미지 */
@@ -71,3 +102,5 @@ namespace GGFGameplayTags
         }
     }
 }
+
+using namespace GGFGameplayTags;
