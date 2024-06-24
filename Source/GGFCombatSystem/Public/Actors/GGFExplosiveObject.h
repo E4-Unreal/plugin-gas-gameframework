@@ -3,16 +3,17 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Actors/GEDamageableActor.h"
+#include "GGFDestructibleActor.h"
 #include "GGFExplosiveObject.generated.h"
 
 class UGGFExplosiveComponent;
+class USphereComponent;
 
 /**
  * 데미지를 입으면 폭발하는 오브젝트 클래스입니다.
  */
 UCLASS()
-class GGFCOMBATSYSTEM_API AGGFExplosiveObject : public AGEDamageableActor
+class GGFCOMBATSYSTEM_API AGGFExplosiveObject : public AGGFDestructibleActor
 {
     GENERATED_BODY()
 
@@ -31,12 +32,7 @@ public:
 
     virtual void Destroyed() override;
 
-protected:
-    /* DamageableActor */
-
-    virtual void OnDead_Implementation() override;
-
-protected:
+public:
     /* Getter */
 
     UFUNCTION(BlueprintGetter)

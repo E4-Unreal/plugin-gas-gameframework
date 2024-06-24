@@ -7,9 +7,6 @@
 
 AGGFExplosiveObject::AGGFExplosiveObject()
 {
-    // 리플리케이트 설정
-    SetReplicates(true);
-
     // ExplosionArea
     ExplosionArea = CreateDefaultSubobject<USphereComponent>(TEXT("ExplosionSphere"));
     ExplosionArea->SetupAttachment(RootComponent);
@@ -25,9 +22,4 @@ void AGGFExplosiveObject::Destroyed()
     ExplosiveComponent->Explode();
 
     Super::Destroyed();
-}
-
-void AGGFExplosiveObject::OnDead_Implementation()
-{
-    Destroy();
 }
