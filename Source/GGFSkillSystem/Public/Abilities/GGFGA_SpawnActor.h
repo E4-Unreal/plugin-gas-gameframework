@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "GGFGA_Montage.h"
-#include "GGFGA_SpawnEnergyShield.generated.h"
+#include "GGFGA_SpawnActor.generated.h"
 
 /**
- * 자신의 주위에 에너지 실드를 스폰하는 스킬 전용 어빌리티 클래스입니다.
+ * 자신의 위치에 특정 액터를 스폰하는 어빌리티 클래스입니다.
  */
 UCLASS()
-class GGFSKILLSYSTEM_API UGGFGA_SpawnEnergyShield : public UGGFGA_Montage
+class GGFSKILLSYSTEM_API UGGFGA_SpawnActor : public UGGFGA_Montage
 {
     GENERATED_BODY()
 
@@ -19,21 +19,20 @@ public:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|Animation")
     FName SpawnNotifyName = "Spawn";
 
+    // 스폰할 액터 클래스
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config")
-    TSubclassOf<AActor> EnergyShieldClass;
+    TSubclassOf<AActor> ActorToSpawn;
 
-    // 생성된 에너지 실드가 지속되는 시간 (초)
+    // 스폰된 액터 수명
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config")
-    float EnergyShieldLifeTime = 10;
+    float SpawnedActorLifeTime = 10;
 
 protected:
-    TWeakObjectPtr<AActor> SpawnedEnergyShield = nullptr;
+    TWeakObjectPtr<AActor> SpawnedActor = nullptr;
 
-    bool bEnergyShieldSpawned = false;
+    bool bActorSpawned = false;
 
 public:
-    UGGFGA_SpawnEnergyShield();
-
     /* GameplayAbility */
 
     virtual void PreActivate(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, FOnGameplayAbilityEnded::FDelegate* OnGameplayAbilityEndedDelegate, const FGameplayEventData* TriggerEventData) override;
