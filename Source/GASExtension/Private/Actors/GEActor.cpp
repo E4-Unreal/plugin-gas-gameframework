@@ -12,6 +12,8 @@ FName AGEActor::GameplayStateMachineName(TEXT("GameplayStateMachine"));
 
 AGEActor::AGEActor(const FObjectInitializer& ObjectInitializer)
 {
+    bReplicates = true;
+    
     /* AbilitySystem */
     AbilitySystem = CreateDefaultSubobject<UGEAbilitySystem>(AbilitySystemName);
 

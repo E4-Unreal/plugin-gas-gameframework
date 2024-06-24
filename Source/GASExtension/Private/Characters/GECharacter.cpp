@@ -13,6 +13,8 @@ FName AGECharacter::GameplayStateMachineName(TEXT("GameplayStateMachine"));
 
 AGECharacter::AGECharacter(const FObjectInitializer& ObjectInitializer)
 {
+    bReplicates = true;
+    
     /* AbilitySystem */
     AbilitySystem = CreateDefaultSubobject<UGEDamageableAbilitySystem>(AbilitySystemName);
 
