@@ -45,5 +45,5 @@ protected:
 
     /* 메서드 */
     UFUNCTION(BlueprintCallable)
-    virtual void SpawnEnergyShield();
+    virtual void SpawnActor();
 };

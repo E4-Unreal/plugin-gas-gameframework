@@ -17,7 +17,7 @@ void UGGFGA_SpawnActor::OnPlayMontageNotifyBegin_Implementation(FName NotifyName
 
     if(NotifyName == SpawnNotifyName)
     {
-        SpawnEnergyShield();
+        SpawnActor();
     }
 }
 
@@ -25,11 +25,14 @@ void UGGFGA_SpawnActor::OnMontageCompleted_Implementation()
 {
     Super::OnMontageCompleted_Implementation();
 
-    SpawnEnergyShield();
+    SpawnActor();
 }
 
-void UGGFGA_SpawnActor::SpawnEnergyShield()
+void UGGFGA_SpawnActor::SpawnActor()
 {
+    // 유효성 검사
+    if(ActorToSpawn == nullptr) return;
+
     // 서버에서만 스폰 가능
     if(!HasAuthority(&CurrentActivationInfo)) return;
 
