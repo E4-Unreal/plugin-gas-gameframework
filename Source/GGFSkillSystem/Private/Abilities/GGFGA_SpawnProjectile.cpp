@@ -1,12 +1,11 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "Abilities/GGFGA_SpawnProjectile.h"
 
 #include "Animation/SkeletalMeshActor.h"
 #include "Characters/GGFThirdPersonCharacter_Retarget.h"
-#include "Components/GGFEquipmentManager.h"
 #include "GameFramework/Character.h"
+#include "Interfaces/GGFEquipmentManagerInterface.h"
 
 void UGGFGA_SpawnProjectile::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
                                              const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo,
@@ -57,9 +56,9 @@ void UGGFGA_SpawnProjectile::HideSelectedWeapon(bool bHide)
 {
     if(bHide)
     {
-        if(auto EquipmentManager = GetAvatarCharacter()->GetComponentByClass<UGGFEquipmentManager>())
+        if(auto EquipmentManager = GetAvatarCharacter()->GetComponentsByInterface(UGGFEquipmentManagerInterface::StaticClass()).Last())
         {
-            SelectedWeapon = EquipmentManager->GetSelectedEquipment();
+            SelectedWeapon = IGGFEquipmentManagerInterface::Execute_GetSelectedEquipment(EquipmentManager);
             if(SelectedWeapon.IsValid())
             {
                 SelectedWeapon->SetActorHiddenInGame(true);

@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameplayTagContainer.h"
 #include "GGFEquipmentManagerBase.h"
+#include "Interfaces/GGFEquipmentManagerInterface.h"
 #include "GGFEquipmentManager.generated.h"
 
 USTRUCT(Atomic, BlueprintType)
@@ -87,7 +88,7 @@ struct FEquipmentSlot
  * 캐릭터 장비를 관리하기 위한 컴포넌트
  */
 UCLASS(meta=(BlueprintSpawnableComponent))
-class GGFEQUIPMENTSYSTEM_API UGGFEquipmentManager : public UGGFEquipmentManagerBase
+class GGFEQUIPMENTSYSTEM_API UGGFEquipmentManager : public UGGFEquipmentManagerBase, public IGGFEquipmentManagerInterface
 {
     GENERATED_BODY()
 
@@ -134,16 +135,22 @@ public:
 
     /* API */
 
-    // ID에 대응하는 장비를 추가합니다.
-    UFUNCTION(BlueprintCallable)
-    virtual bool AddEquipmentByID(int32 EquipmentID);
+    // 현재 손에 장착 중인 장비 가져오기
+    UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+    AActor* GetSelectedEquipment() const;
+    virtual FORCEINLINE AActor* GetSelectedEquipment_Implementation() const override { return SelectedEquipment; }
 
-    // 장비 클래스에 대응하는 장비를 추가합니다.
-    UFUNCTION(BlueprintCallable)
-    virtual bool AddEquipmentByClass(TSubclassOf<AActor> EquipmentClass);
+    // 스폰된 장비를 추가합니다.
+    UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+    bool AddEquipmentByActor(AActor* EquipmentActor);
 
-    UFUNCTION(BlueprintCallable)
-    virtual bool AddEquipmentByActor(AActor* EquipmentActor);
+    // 장비 클래스에 대응하는 장비를 스폰 후 추가합니다.
+    UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+    bool AddEquipmentByClass(TSubclassOf<AActor> EquipmentClass);
+
+    // ID에 대응하는 장비를 스폰 후 추가합니다.
+    UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+    bool AddEquipmentByID(int32 EquipmentID);
 
     UFUNCTION(BlueprintCallable)
     void RemoveEquipment(FGameplayTag Slot, int32 Index);
@@ -162,10 +169,6 @@ public:
 
     UFUNCTION(BlueprintCallable)
     void ClearEquipmentSlot(FGameplayTag Slot, int32 Index);
-
-    // 손에 쥐고 있는 장비 (SelectedEquipment) 가져오기
-    UFUNCTION(BlueprintPure)
-    FORCEINLINE AActor* GetSelectedEquipment() const { return SelectedEquipment; }
 
     // 손에 쥐고 있는 장비를 집어넣습니다. 장비를 제거하는 것이 아닙니다.
     UFUNCTION(BlueprintCallable)

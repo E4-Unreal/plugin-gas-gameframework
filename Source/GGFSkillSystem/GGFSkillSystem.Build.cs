@@ -25,7 +25,6 @@ public class GGFSkillSystem : ModuleRules
                 "GGFDataSystem",
                 "GGFCharacterSystem",
                 "GGFCombatSystem",
-                "GGFEquipmentSystem",
                 "GGFShooterCore"
             }
         );
