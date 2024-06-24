@@ -5,7 +5,8 @@
 #include "Logging.h"
 #include "Components/BoxComponent.h"
 
-AGGFTriggerBox::AGGFTriggerBox()
+AGGFTriggerBox::AGGFTriggerBox(const FObjectInitializer& ObjectInitializer)
+    : Super(ObjectInitializer)
 {
     /* Default Scene */
 

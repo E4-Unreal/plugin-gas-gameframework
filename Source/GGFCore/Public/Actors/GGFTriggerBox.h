@@ -39,7 +39,7 @@ protected:
 #endif
 
 public:
-    AGGFTriggerBox();
+    AGGFTriggerBox(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
     /* Actor */
 
