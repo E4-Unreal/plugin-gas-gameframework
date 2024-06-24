@@ -24,9 +24,10 @@ class GGFCORE_API AGGFEffectArea : public AGGFTriggerBox
 public:
     AGGFEffectArea(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
-    /* ActorComponent */
+    /* Actor */
 
     virtual void PostInitializeComponents() override;
+    virtual void BeginPlay() override;
 
 public:
     /* Getter */

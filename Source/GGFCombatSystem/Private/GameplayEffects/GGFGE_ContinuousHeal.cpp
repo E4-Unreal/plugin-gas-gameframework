@@ -8,5 +8,11 @@ UGGFGE_ContinuousHeal::UGGFGE_ContinuousHeal()
     DurationMagnitude = FGameplayEffectModifierMagnitude(3);
     Period = 1;
 
+    StackingType = EGameplayEffectStackingType::AggregateByTarget;
+    StackLimitCount = 1;
+    StackDurationRefreshPolicy = EGameplayEffectStackingDurationPolicy::RefreshOnSuccessfulApplication;
+    StackPeriodResetPolicy = EGameplayEffectStackingPeriodPolicy::NeverReset;
+    StackExpirationPolicy = EGameplayEffectStackingExpirationPolicy::ClearEntireStack;
+
     SetHealMagnitude(10);
 }
