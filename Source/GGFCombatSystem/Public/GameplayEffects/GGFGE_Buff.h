@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameplayEffect.h"
+#include "GGFGameplayEffect.h"
 #include "GGFGE_Buff.generated.h"
 
 /**
  * 일정 시간동안 특정 스탯을 올려주는 버프 전용 게임플레이 이펙트 클래스입니다.
  */
 UCLASS()
-class GGFCOMBATSYSTEM_API UGGFGE_Buff : public UGameplayEffect
+class GGFCOMBATSYSTEM_API UGGFGE_Buff : public UGGFGameplayEffect
 {
     GENERATED_BODY()
 
