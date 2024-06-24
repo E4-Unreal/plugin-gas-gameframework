@@ -1,8 +1,8 @@
 ﻿using UnrealBuildTool;
 
-public class GGFCombatCore : ModuleRules
+public class GGFCombatSystem : ModuleRules
 {
-    public GGFCombatCore(ReadOnlyTargetRules Target) : base(Target)
+    public GGFCombatSystem(ReadOnlyTargetRules Target) : base(Target)
     {
         PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
 

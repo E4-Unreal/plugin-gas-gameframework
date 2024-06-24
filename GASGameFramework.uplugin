@@ -70,7 +70,7 @@
 			"LoadingPhase": "PreDefault"
 		},
 		{
-			"Name": "GGFCombatCore",
+			"Name": "GGFCombatSystem",
 			"Type": "Runtime",
 			"LoadingPhase": "PreDefault"
 		},

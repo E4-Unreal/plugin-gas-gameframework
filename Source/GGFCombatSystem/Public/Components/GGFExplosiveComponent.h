@@ -17,7 +17,7 @@ class UGameplayEffect;
  * 폭발 피격 판정 전용 컴포넌트
  */
 UCLASS(meta=(BlueprintSpawnableComponent))
-class GGFCOMBATCORE_API UGGFExplosiveComponent : public UActorComponent
+class GGFCOMBATSYSTEM_API UGGFExplosiveComponent : public UActorComponent
 {
     GENERATED_BODY()
 
