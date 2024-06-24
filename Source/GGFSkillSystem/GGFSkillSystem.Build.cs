@@ -23,7 +23,8 @@ public class GGFSkillSystem : ModuleRules
                 "GGFCore",
                 "GASExtension",
                 "GGFDataSystem",
-                "GGFCharacterSystem"
+                "GGFCharacterSystem",
+                "GGFCombatSystem"
             }
         );
 

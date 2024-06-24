@@ -8,7 +8,7 @@ AGGFEnergyShield::AGGFEnergyShield(const FObjectInitializer& ObjectInitializer)
     : Super(ObjectInitializer)
 {
     /* DisplayMesh */
-    GetDisplayMesh()->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+    GetDisplayMesh()->SetCollisionProfileName("IgnoreOnlyPawn");
 
     /* DamageableAbilitySystem */
     if(auto CastedAbilitySystem = Cast<UGEDamageableAbilitySystem>(GetAbilitySystem()))

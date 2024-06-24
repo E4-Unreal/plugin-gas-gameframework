@@ -16,11 +16,11 @@ class GGFSKILLSYSTEM_API UGGFGA_Montage : public UGECharacterAbility
 
 public:
     // 몽타주
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config")
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|Animation")
     TObjectPtr<UAnimMontage> MontageToPlay;
 
     // 몽타주 재생 시간
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config")
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|Animation")
     float Duration = 2;
 
 public:
