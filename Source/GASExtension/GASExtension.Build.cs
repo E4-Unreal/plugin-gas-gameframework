@@ -10,17 +10,16 @@ public class GASExtension : ModuleRules
             new string[]
             {
                 "Core",
-
-                // 입력
                 "EnhancedInput",
+                "PhysicsCore",
 
                 // GAS
                 "GameplayTags",
                 "GameplayTasks",
                 "GameplayAbilities",
 
-                // 물리
-                "PhysicsCore"
+                // GASGameFramework
+                "GGFCore"
             }
         );
 

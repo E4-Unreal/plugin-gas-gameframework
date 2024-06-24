@@ -10,7 +10,7 @@
  * 스탯 - 공격력
  */
 UCLASS()
-class GASEXTENSION_API UGEAttackStats : public UGEStatsBase
+class GGFCORE_API UGEAttackStats : public UGEStatsBase
 {
     GENERATED_BODY()
 

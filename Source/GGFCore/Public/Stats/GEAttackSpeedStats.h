@@ -10,7 +10,7 @@
  * 스탯 - 공격 속도
  */
 UCLASS()
-class GASEXTENSION_API UGEAttackSpeedStats : public UGEStatsBase
+class GGFCORE_API UGEAttackSpeedStats : public UGEStatsBase
 {
     GENERATED_BODY()
 

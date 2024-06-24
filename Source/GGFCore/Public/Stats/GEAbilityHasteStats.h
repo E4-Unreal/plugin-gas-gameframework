@@ -10,7 +10,7 @@
  * 스탯 - 스킬 가속
  */
 UCLASS()
-class GASEXTENSION_API UGEAbilityHasteStats : public UGEStatsBase
+class GGFCORE_API UGEAbilityHasteStats : public UGEStatsBase
 {
     GENERATED_BODY()
 

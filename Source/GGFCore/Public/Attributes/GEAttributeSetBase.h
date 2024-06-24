@@ -102,7 +102,7 @@
  * AttributeSet 클래스에서 공용으로 사용할 헬퍼 매크로 및 함수를 포함하고 있습니다.
  */
 UCLASS()
-class GASEXTENSION_API UGEAttributeSetBase : public UAttributeSet
+class GGFCORE_API UGEAttributeSetBase : public UAttributeSet
 {
     GENERATED_BODY()
 

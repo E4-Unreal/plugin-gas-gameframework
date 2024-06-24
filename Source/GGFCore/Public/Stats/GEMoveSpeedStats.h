@@ -10,7 +10,7 @@
  * 스탯 - 이동 속도
  */
 UCLASS()
-class GASEXTENSION_API UGEMoveSpeedStats : public UGEStatsBase
+class GGFCORE_API UGEMoveSpeedStats : public UGEStatsBase
 {
     GENERATED_BODY()
 

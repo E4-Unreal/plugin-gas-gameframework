@@ -10,7 +10,7 @@
  * 스탯 - 방어력
  */
 UCLASS()
-class GASEXTENSION_API UGEDefenseStats : public UGEStatsBase
+class GGFCORE_API UGEDefenseStats : public UGEStatsBase
 {
     GENERATED_BODY()
 

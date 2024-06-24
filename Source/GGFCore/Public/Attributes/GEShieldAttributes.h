@@ -10,7 +10,7 @@
  * GGFHealthAttributes에서 방어막 어트리뷰트가 추가된 AttributeSet 클래스입니다.
  */
 UCLASS(Blueprintable, BlueprintType)
-class GASEXTENSION_API UGEShieldAttributes : public UGEAttributeSetBase
+class GGFCORE_API UGEShieldAttributes : public UGEAttributeSetBase
 {
     GENERATED_BODY()
 

@@ -10,7 +10,7 @@
  * GGFShieldAttributes에서 마나 어트리뷰트가 추가된 AttributeSet 클래스입니다.
  */
 UCLASS()
-class GASEXTENSION_API UGEManaAttributes : public UGEAttributeSetBase
+class GGFCORE_API UGEManaAttributes : public UGEAttributeSetBase
 {
     GENERATED_BODY()
 

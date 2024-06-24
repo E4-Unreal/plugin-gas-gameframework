@@ -13,7 +13,7 @@
  * 현재는 블루프린트 설정에서 서브 클래스를 통해 구분해주기 위해 클래스를 나누었을뿐 기능적으로 다른 점은 없습니다.
  */
 UCLASS()
-class GASEXTENSION_API UGEStatsBase : public UGEAttributeSetBase
+class GGFCORE_API UGEStatsBase : public UGEAttributeSetBase
 {
     GENERATED_BODY()
 };
