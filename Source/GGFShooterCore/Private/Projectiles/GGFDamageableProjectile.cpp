@@ -6,7 +6,7 @@
 #include "GameplayEffects/GEDamageBase.h"
 #include "GEGameplayTags.h"
 
-using namespace GEGameplayTags;
+
 
 AGGFDamageableProjectile::AGGFDamageableProjectile(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
 {

@@ -3,14 +3,14 @@
 #include "GameplayEffects/GGFGameplayEffect.h"
 
 #include "GameplayEffectComponents/TargetTagRequirementsGameplayEffectComponent.h"
-#include "GEGameplayTags.h"
+#include "GGFGameplayTags.h"
 
 UGGFGameplayEffect::UGGFGameplayEffect()
 {
     TargetTagRequirementsComponent = CreateDefaultSubobject<UTargetTagRequirementsGameplayEffectComponent>(TEXT("TargetTagRequirements"));
-    TargetTagRequirementsComponent->ApplicationTagRequirements.IgnoreTags.AddTagFast(GEGameplayTags::State::Dead);
-    TargetTagRequirementsComponent->OngoingTagRequirements.IgnoreTags.AddTagFast(GEGameplayTags::State::Dead);
-    TargetTagRequirementsComponent->RemovalTagRequirements.RequireTags.AddTagFast(GEGameplayTags::State::Dead);
+    TargetTagRequirementsComponent->ApplicationTagRequirements.IgnoreTags.AddTagFast(State::Dead);
+    TargetTagRequirementsComponent->OngoingTagRequirements.IgnoreTags.AddTagFast(State::Dead);
+    TargetTagRequirementsComponent->RemovalTagRequirements.RequireTags.AddTagFast(State::Dead);
 
     GEComponents.Emplace(TargetTagRequirementsComponent.Get());
 }

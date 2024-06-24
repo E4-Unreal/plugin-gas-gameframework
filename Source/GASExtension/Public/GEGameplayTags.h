@@ -1,28 +1,14 @@
 ﻿#pragma once
 
-#include "NativeGameplayTags.h"
+#include "GGFGameplayTags.h"
 
-namespace GEGameplayTags
+namespace GGFGameplayTags
 {
     /* 게임플레이 큐 */
     namespace GameplayCue
     {
         GASEXTENSION_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Root) // 루트
         GASEXTENSION_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Test) // 테스트 전용
-    }
-
-    /* 상태 */
-    namespace State
-    {
-        GASEXTENSION_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Root) // 루트
-        GASEXTENSION_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Test) // 테스트 전용
-
-        GASEXTENSION_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Dead) // 죽음
-        GASEXTENSION_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Knockdown) // 부활 전까지 행동 불가
-        GASEXTENSION_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Stun) // 일시적으로 행동 불가
-        GASEXTENSION_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Invinsible) // 무적
-        GASEXTENSION_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Reviving) // 부활
-        GASEXTENSION_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Wait) // 대기
     }
 
     /* 행동 */

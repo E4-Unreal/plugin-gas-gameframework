@@ -21,8 +21,6 @@ UGEGameplayAbility::UGEGameplayAbility()
 
     /* 태그 설정 */
 
-    using namespace GEGameplayTags;
-
     // 입력 태그 설정
     InputTag = Input::Test;
     CooldownTag = Skill::Cooldown::Test;

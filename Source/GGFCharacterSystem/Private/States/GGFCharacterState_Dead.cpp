@@ -10,7 +10,7 @@
 
 UGGFCharacterState_Dead::UGGFCharacterState_Dead()
 {
-    StateTag = GEGameplayTags::State::Dead;
+    StateTag = State::Dead;
 }
 
 void UGGFCharacterState_Dead::OnEnter_Implementation()

@@ -10,7 +10,7 @@
 #include "GEGameplayTags.h"
 #include "Logging.h"
 
-using namespace GEGameplayTags;
+
 
 class UAbilitySystemComponent;
 

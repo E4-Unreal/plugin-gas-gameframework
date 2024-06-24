@@ -6,7 +6,7 @@
 #include "Logging.h"
 #include "Attributes/GGFHealthAttributes.h"
 
-using namespace GEGameplayTags;
+
 
 UGEDamageableAbilitySystem::UGEDamageableAbilitySystem()
 {

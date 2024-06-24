@@ -17,7 +17,7 @@ void UGEGameplayEventAction::SetOwner(AActor* NewOwner)
 
 bool UGEGameplayEventAction::IsValid() const
 {
-    return bValid && EventTag.MatchesTag(GEGameplayTags::Event::Root);
+    return bValid && EventTag.MatchesTag(Event::Root);
 }
 
 void UGEGameplayEventAction::ActivateAction_Implementation()

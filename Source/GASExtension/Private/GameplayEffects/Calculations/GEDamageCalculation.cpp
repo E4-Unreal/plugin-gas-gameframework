@@ -11,7 +11,7 @@
 #include "GEGameplayTags.h"
 #include "Logging.h"
 
-using namespace GEGameplayTags;
+
 
 UGEDamageCalculation::UGEDamageCalculation()
 {

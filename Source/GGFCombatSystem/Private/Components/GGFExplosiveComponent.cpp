@@ -13,7 +13,7 @@ UGGFExplosiveComponent::UGGFExplosiveComponent()
 {
     // 기본 설정
     DamageEffect = UGEDamageBase::StaticClass();
-    DamageType = GEGameplayTags::Damage::Type::Default;
+    DamageType = Damage::Type::Default;
     ExplosionCueTag = FGameplayCueTag(GGFGameplayTags::GameplayCue::Explosion::Default);
 }
 

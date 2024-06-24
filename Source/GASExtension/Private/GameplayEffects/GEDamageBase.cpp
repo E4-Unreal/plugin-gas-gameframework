@@ -6,7 +6,7 @@
 #include "GameplayEffects/Calculations/GEDamageCalculation.h"
 #include "GameplayEffectComponents/TargetTagRequirementsGameplayEffectComponent.h"
 
-using namespace GEGameplayTags;
+
 
 FName UGEDamageBase::TargetTagRequirementsComponentName(TEXT("TargetTagRequirements"));
 

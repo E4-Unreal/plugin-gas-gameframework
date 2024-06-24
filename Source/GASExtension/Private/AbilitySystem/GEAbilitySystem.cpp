@@ -27,7 +27,7 @@ void UGEAbilitySystem::InitializeComponent()
 int32 UGEAbilitySystem::HandleGameplayEvent(FGameplayTag EventTag, const FGameplayEventData* Payload)
 {
     // 멀티캐스트 게임플레이 이벤트 사용 설정 및 서버 액터인지 확인
-    if(bUseMulticastGameplayEvent && IsOwnerActorAuthoritative() && EventTag.MatchesTag(GEGameplayTags::Event::Root))
+    if(bUseMulticastGameplayEvent && IsOwnerActorAuthoritative() && EventTag.MatchesTag(Event::Root))
     {
         NetMulticast_HandleGameplayEvent(EventTag);
     }

@@ -1,26 +1,12 @@
 ﻿#include "GEGameplayTags.h"
 
-namespace GEGameplayTags
+namespace GGFGameplayTags
 {
     /* 게임플레이 큐 */
     namespace GameplayCue
     {
         UE_DEFINE_GAMEPLAY_TAG_COMMENT(Root, "GameplayCue", "게임플레이 큐")
         UE_DEFINE_GAMEPLAY_TAG_COMMENT(Test, "GameplayCue.Test", "테스트 전용 게임플레이 큐")
-    }
-
-    /* 상태 */
-    namespace State
-    {
-        UE_DEFINE_GAMEPLAY_TAG_COMMENT(Root, "State", "상태")
-        UE_DEFINE_GAMEPLAY_TAG_COMMENT(Test, "State.Test", "테스트 전용 상태")
-
-        UE_DEFINE_GAMEPLAY_TAG_COMMENT(Dead, "State.Dead", "죽음")
-        UE_DEFINE_GAMEPLAY_TAG_COMMENT(Knockdown, "State.Knockdown", "부활 전까지 행동 불가")
-        UE_DEFINE_GAMEPLAY_TAG_COMMENT(Stun, "State.Stun", "일시적으로 행동 불가")
-        UE_DEFINE_GAMEPLAY_TAG_COMMENT(Invinsible, "State.Invinsible", "데미지가 들어가지 않는 무적 상태")
-        UE_DEFINE_GAMEPLAY_TAG_COMMENT(Reviving, "State.Reviving", "부활중")
-        UE_DEFINE_GAMEPLAY_TAG_COMMENT(Wait, "State.Wait", "조작이 불가능한 상태")
     }
 
     /* 행동 */
