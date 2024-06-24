@@ -8,12 +8,11 @@
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnSetFOVFinishedSignature);
 
-// TODO 다른 모듈로 이전
 /**
- * FOV 설정 시 부드럽게 전환되는 기능이 구현된 카메라 컴포넌트입니다.
+ * FOV 보간 기능과 카메라가 바라보고 있는 목표물을 반환하는 메서드가 구현된 카메라 컴포넌트입니다.
  */
 UCLASS()
-class GGFEQUIPMENTSYSTEM_API UGGFCameraComponent : public UCameraComponent
+class GGFCORE_API UGGFCameraComponent : public UCameraComponent
 {
     GENERATED_BODY()
 
@@ -23,10 +22,30 @@ public:
     FOnSetFOVFinishedSignature OnSetFOVFinished;
 
     // FOV 보간 속도
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config")
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|FOV")
     float InterpSpeed = 20;
 
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|Trace")
+    TEnumAsByte<ECollisionChannel> TraceChannel = ECC_Visibility;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config")
+    float TraceOffset = 100;
+
 protected:
+#if WITH_EDITORONLY_DATA
+    // 디버그 라인 표시를 위한 옵션
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|Debug")
+    bool bShowDebug = false;
+
+    // Tick마다 디버그 라인 표시
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|Debug", meta = (EditConditionHides = bShowDebug))
+    bool bUseTick = false;
+
+    // 디버그 라인 표시 시간으로 bUseTick = false 인 경우에 사용됩니다.
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config")
+    float LifeTime = 3;
+#endif
+
     // 현재 FOV가 보간중인 상태인지 나타냅니다.
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State", Transient)
     bool bInterpolatingFOV = false;
@@ -55,6 +74,10 @@ public:
 
     UFUNCTION(BlueprintPure)
     bool IsInterpolatingFOV() const { return bInterpolatingFOV; }
+
+    // 현재 카메라가 바라보고 있는 목표물 위치 반환
+    UFUNCTION(BlueprintPure)
+    virtual FVector GetTargetLocation() const;
 
     /* Getter */
 

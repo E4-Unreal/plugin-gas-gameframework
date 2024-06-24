@@ -62,9 +62,11 @@ public:
 
 public:
     /* GGFAimingInterface */
-    virtual void GetTarget_Implementation(FVector& Target) override;
+
+    virtual FVector GetTargetLocation(AActor* RequestedBy) const override;
 
     /* GGFCameraInterface */
+
     FORCEINLINE virtual float GetFieldOfView_Implementation() const override { return FOV; }
     FORCEINLINE virtual float GetInterpSpeed_Implementation() const override { return InterpSpeed; }
 };
