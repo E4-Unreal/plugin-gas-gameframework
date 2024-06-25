@@ -2,10 +2,9 @@
 
 #include "Characters/GECharacter.h"
 
-#include "GEGameplayTags.h"
 #include "AbilitySystem/GEDamageableAbilitySystem.h"
 #include "Components/GEGameplayEventManager.h"
-#include "Components/GGFGameplayStateMachine.h"
+#include "Components/GGFPawnStateMachine.h"
 
 FName AGECharacter::AbilitySystemName(TEXT("AbilitySystem"));
 FName AGECharacter::GameplayEventManagerName(TEXT("GameplayEventManager"));
@@ -14,7 +13,7 @@ FName AGECharacter::GameplayStateMachineName(TEXT("GameplayStateMachine"));
 AGECharacter::AGECharacter(const FObjectInitializer& ObjectInitializer)
 {
     bReplicates = true;
-    
+
     /* AbilitySystem */
     AbilitySystem = CreateDefaultSubobject<UGEDamageableAbilitySystem>(AbilitySystemName);
 
@@ -22,7 +21,7 @@ AGECharacter::AGECharacter(const FObjectInitializer& ObjectInitializer)
     GameplayEventManager = CreateDefaultSubobject<UGEGameplayEventManager>(GameplayEventManagerName);
 
     /* GameplayStateMachine */
-    GameplayStateMachine = CreateDefaultSubobject<UGGFGameplayStateMachine>(GameplayStateMachineName);
+    GameplayStateMachine = CreateDefaultSubobject<UGGFPawnStateMachine>(GameplayStateMachineName);
 
     /* 초기화 */
     // GECharacter
