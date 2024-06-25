@@ -23,10 +23,13 @@ public:
 
     virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
-    /* GGFTeamInterface */
+    /* API */
 
-    virtual FORCEINLINE uint8 GetTeamID_Implementation() const override { return TeamID; }
-    virtual FORCEINLINE void SetTeamID_Implementation(uint8 NewTeamID) override;
+    UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+    uint8 GetTeamID() const;
+
+    UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+    void SetTeamID(uint8 NewTeamID);
 
 protected:
     UFUNCTION()

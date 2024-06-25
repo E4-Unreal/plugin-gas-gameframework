@@ -12,6 +12,11 @@ void AGGFPlayerState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutL
     DOREPLIFETIME(ThisClass, TeamID)
 }
 
+uint8 AGGFPlayerState::GetTeamID_Implementation() const
+{
+    return TeamID;
+}
+
 void AGGFPlayerState::SetTeamID_Implementation(uint8 NewTeamID)
 {
 #if WITH_EDITOR
