@@ -43,7 +43,7 @@ void AGGFGameMode::PostLogin(APlayerController* NewPlayer)
     }
 }
 
-const TArray<APlayerController*>& AGGFGameMode::GetTeamListByPlayerController(
+TArray<APlayerController*> AGGFGameMode::GetTeamListByPlayerController_Implementation(
     APlayerController* PlayerController) const
 {
     if(PlayerController->Implements<UGGFTeamInterface>())
@@ -54,7 +54,7 @@ const TArray<APlayerController*>& AGGFGameMode::GetTeamListByPlayerController(
     return FGGFPlayerControllerList::EmptyList;
 }
 
-const TArray<APlayerController*>& AGGFGameMode::GetTeamListByTeamID(int32 TeamID) const
+TArray<APlayerController*> AGGFGameMode::GetTeamListByTeamID_Implementation(int32 TeamID) const
 {
     return TeamMap.Contains(TeamID) ? TeamMap[TeamID].List : FGGFPlayerControllerList::EmptyList;
 }

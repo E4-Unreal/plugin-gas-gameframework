@@ -25,4 +25,10 @@ public:
 
     UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
     void SetViewTargetToNextPlayer(APlayerController* PlayerController);
+
+    UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+    TArray<APlayerController*> GetTeamListByTeamID(int32 TeamID) const;
+
+    UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+    TArray<APlayerController*> GetTeamListByPlayerController(APlayerController* PlayerController) const;
 };
