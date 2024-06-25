@@ -10,6 +10,7 @@ public class GGFPlayerSystem : ModuleRules
             new string[]
             {
                 "Core",
+                "EnhancedInput",
 
                 // GASGameFramework
                 "GGFCore"

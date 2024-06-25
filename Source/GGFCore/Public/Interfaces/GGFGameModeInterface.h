@@ -21,5 +21,8 @@ class GGFCORE_API IGGFGameModeInterface
 
 public:
     UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+    void SetViewTargetToPreviousPlayer(APlayerController* PlayerController);
+
+    UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
     void SetViewTargetToNextPlayer(APlayerController* PlayerController);
 };

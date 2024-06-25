@@ -7,6 +7,17 @@
 #include "Interfaces/GGFGameModeInterface.h"
 #include "GGFGameMode.generated.h"
 
+USTRUCT(Atomic, BlueprintType)
+struct FGGFPlayerControllerList
+{
+    GENERATED_BODY()
+
+    static const TArray<APlayerController*> EmptyList;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    TArray<APlayerController*> List;
+};
+
 /**
  * GASGameFramework 플러그인 전용 게임 모드
  */
@@ -20,6 +31,9 @@ protected:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config")
     bool bAllPlayerSameTeam = false;
 
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State", Transient)
+    TMap<uint8, FGGFPlayerControllerList> TeamMap;
+
 public:
     AGGFGameMode();
 
@@ -29,7 +43,16 @@ public:
 
     /* API */
 
+    UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+    void SetViewTargetToPreviousPlayer(APlayerController* PlayerController);
+
     // 같은 팀 플레이어 화면 관전
     UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
     void SetViewTargetToNextPlayer(APlayerController* PlayerController);
+
+    UFUNCTION(BlueprintCallable)
+    const TArray<APlayerController*>& GetTeamListByTeamID(int32 TeamID) const;
+
+    UFUNCTION(BlueprintCallable)
+    const TArray<APlayerController*>& GetTeamListByPlayerController(APlayerController* PlayerController) const;
 };
