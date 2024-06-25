@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Components/GEGameplayStateMachine.h"
+#include "Components/GGFGameplayStateMachine.h"
 #include "GGFCharacterState_Dead.generated.h"
 
 /**
  * 캐릭터 죽음 상태
  */
 UCLASS()
-class GGFCHARACTERSYSTEM_API UGGFCharacterState_Dead : public UGECharacterState
+class GGFCHARACTERSYSTEM_API UGGFCharacterState_Dead : public UGGFCharacterState
 {
     GENERATED_BODY()
 

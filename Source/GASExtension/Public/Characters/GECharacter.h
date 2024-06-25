@@ -8,7 +8,7 @@
 #include "GECharacter.generated.h"
 
 class UGEGameplayEventManager;
-class UGEGameplayStateMachine;
+class UGGFGameplayStateMachine;
 
 /**
  * GAS를 사용하기 위한 기본 캐릭터 클래스
@@ -43,7 +43,7 @@ private:
 
     // 게임 플레이 태그 상태 머신 액터 컴포넌트
     UPROPERTY(VisibleAnywhere, BlueprintGetter = GetGameplayStateMachine, Category = "Component")
-    TObjectPtr<UGEGameplayStateMachine> GameplayStateMachine;
+    TObjectPtr<UGGFGameplayStateMachine> GameplayStateMachine;
 
 protected:
     // 캐릭터 메시에서 기본적으로 숨길 스켈레톤 이름
@@ -87,7 +87,7 @@ protected:
     FORCEINLINE UGEGameplayEventManager* GetGameplayEventManager() const { return GameplayEventManager; }
 
     UFUNCTION(BlueprintGetter)
-    FORCEINLINE UGEGameplayStateMachine* GetGameplayStateMachine() const { return GameplayStateMachine; }
+    FORCEINLINE UGGFGameplayStateMachine* GetGameplayStateMachine() const { return GameplayStateMachine; }
 
 public:
     /* AbilitySystemInterface */

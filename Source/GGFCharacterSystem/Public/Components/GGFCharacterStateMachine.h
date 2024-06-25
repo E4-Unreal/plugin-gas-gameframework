@@ -3,11 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Components/GEGameplayStateMachine.h"
+#include "Components/GGFGameplayStateMachine.h"
 #include "GGFCharacterStateMachine.generated.h"
 
 UCLASS(meta=(BlueprintSpawnableComponent))
-class GGFCHARACTERSYSTEM_API UGGFCharacterStateMachine : public UGEGameplayStateMachine
+class GGFCHARACTERSYSTEM_API UGGFCharacterStateMachine : public UGGFGameplayStateMachine
 {
     GENERATED_BODY()
 

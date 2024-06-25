@@ -5,14 +5,14 @@
 #include "CoreMinimal.h"
 #include "GameplayTagContainer.h"
 #include "Components/ActorComponent.h"
-#include "GEGameplayStateMachine.generated.h"
+#include "GGFGameplayStateMachine.generated.h"
 
 class UAbilitySystemComponent;
 /**
  * GameplayStateMachine에서 사용되는 상태 클래스
  */
 UCLASS(Blueprintable, BlueprintType, HideDropdown)
-class GASEXTENSION_API UGEGameplayState : public UObject
+class GGFCORE_API UGGFGameplayState : public UObject
 {
     GENERATED_BODY()
 
@@ -84,7 +84,7 @@ protected:
  * 캐릭터 전용 GameplayEventAction 클래스입니다.
  */
 UCLASS(HideDropdown)
-class GASEXTENSION_API UGECharacterState : public UGEGameplayState
+class GGFCORE_API UGGFCharacterState : public UGGFGameplayState
 {
     GENERATED_BODY()
 
@@ -103,7 +103,7 @@ protected:
  * Owner의 AbilitySystemComponent에 의존성을 가지고 있습니다.
  */
 UCLASS(meta=(BlueprintSpawnableComponent))
-class GASEXTENSION_API UGEGameplayStateMachine : public UActorComponent
+class GGFCORE_API UGGFGameplayStateMachine : public UActorComponent
 {
     GENERATED_BODY()
 
@@ -113,14 +113,14 @@ protected:
 
     // 사용할 모든 상태 클래스
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config")
-    TArray<TSubclassOf<UGEGameplayState>> StateClasses;
+    TArray<TSubclassOf<UGGFGameplayState>> StateClasses;
 
     // 생성된 모든 상태 인스턴스 목록
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State", Transient)
-    TArray<TObjectPtr<UGEGameplayState>> StateInstances;
+    TArray<TObjectPtr<UGGFGameplayState>> StateInstances;
 
 public:
-    UGEGameplayStateMachine();
+    UGGFGameplayStateMachine();
 
     /* ActorComponent */
 

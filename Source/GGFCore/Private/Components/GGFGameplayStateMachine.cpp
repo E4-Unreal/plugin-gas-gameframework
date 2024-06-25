@@ -1,13 +1,13 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
-#include "Components/GEGameplayStateMachine.h"
+#include "Components/GGFGameplayStateMachine.h"
 
 #include "AbilitySystemComponent.h"
 #include "AbilitySystemGlobals.h"
-#include "GEGameplayTags.h"
+#include "GGFGameplayTags.h"
 #include "GameFramework/Character.h"
 
-void UGEGameplayState::SetOwner(AActor* NewOwner)
+void UGGFGameplayState::SetOwner(AActor* NewOwner)
 {
     // 중복 호출 방지
     if(Owner.IsValid()) return;
@@ -22,12 +22,12 @@ void UGEGameplayState::SetOwner(AActor* NewOwner)
     bValid = true;
 }
 
-bool UGEGameplayState::IsValid() const
+bool UGGFGameplayState::IsValid() const
 {
     return bValid && StateTag.MatchesTag(State::Root);
 }
 
-void UGEGameplayState::Enter()
+void UGGFGameplayState::Enter()
 {
     // 이미 활성화된 상태인지 검사
     if(bActivated) return;
@@ -36,7 +36,7 @@ void UGEGameplayState::Enter()
     OnEnter();
 }
 
-void UGEGameplayState::Tick(float DeltaTime)
+void UGGFGameplayState::Tick(float DeltaTime)
 {
     // 활성화된 상태인지 검사
     if(!bActivated) return;
@@ -44,7 +44,7 @@ void UGEGameplayState::Tick(float DeltaTime)
     OnTick(DeltaTime);
 }
 
-void UGEGameplayState::Exit()
+void UGGFGameplayState::Exit()
 {
     // 활성화된 상태인지 검사
     if(!bActivated) return;
@@ -53,22 +53,22 @@ void UGEGameplayState::Exit()
     OnExit();
 }
 
-void UGEGameplayState::OnEnter_Implementation()
+void UGGFGameplayState::OnEnter_Implementation()
 {
 
 }
 
-void UGEGameplayState::OnTick_Implementation(float DeltaTime)
+void UGGFGameplayState::OnTick_Implementation(float DeltaTime)
 {
 
 }
 
-void UGEGameplayState::OnExit_Implementation()
+void UGGFGameplayState::OnExit_Implementation()
 {
 
 }
 
-void UGEGameplayState::OnGameplayEffectTagCountChanged(const FGameplayTag Tag, int32 Count)
+void UGGFGameplayState::OnGameplayEffectTagCountChanged(const FGameplayTag Tag, int32 Count)
 {
     // 태그 검사
     if(!StateTag.MatchesTag(Tag)) return;
@@ -79,7 +79,7 @@ void UGEGameplayState::OnGameplayEffectTagCountChanged(const FGameplayTag Tag, i
         Exit();
 }
 
-void UGECharacterState::SetOwner(AActor* NewOwner)
+void UGGFCharacterState::SetOwner(AActor* NewOwner)
 {
     Super::SetOwner(NewOwner);
 
@@ -90,13 +90,13 @@ void UGECharacterState::SetOwner(AActor* NewOwner)
     }
 }
 
-UGEGameplayStateMachine::UGEGameplayStateMachine()
+UGGFGameplayStateMachine::UGGFGameplayStateMachine()
 {
     bWantsInitializeComponent = true;
     PrimaryComponentTick.bCanEverTick = true;
 }
 
-void UGEGameplayStateMachine::InitializeComponent()
+void UGGFGameplayStateMachine::InitializeComponent()
 {
     Super::InitializeComponent();
 
@@ -109,7 +109,7 @@ void UGEGameplayStateMachine::InitializeComponent()
     }
 }
 
-void UGEGameplayStateMachine::TickComponent(float DeltaTime, ELevelTick TickType,
+void UGGFGameplayStateMachine::TickComponent(float DeltaTime, ELevelTick TickType,
     FActorComponentTickFunction* ThisTickFunction)
 {
     Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
@@ -120,17 +120,17 @@ void UGEGameplayStateMachine::TickComponent(float DeltaTime, ELevelTick TickType
     }
 }
 
-void UGEGameplayStateMachine::CreateGameplayStateInstances()
+void UGGFGameplayStateMachine::CreateGameplayStateInstances()
 {
     StateInstances.Reserve(StateClasses.Num());
-    for (TSubclassOf<UGEGameplayState> StateClass : StateClasses)
+    for (TSubclassOf<UGGFGameplayState> StateClass : StateClasses)
     {
         // 유혀성 검사
         if(StateClass)
         {
             // GameplayState 인스턴스 생성
-            UGEGameplayState* StateInstance = NewObject<UGEGameplayState>(this, StateClass);
-            StateInstance->StateTag = StateClass->GetDefaultObject<UGEGameplayState>()->StateTag;
+            UGGFGameplayState* StateInstance = NewObject<UGGFGameplayState>(this, StateClass);
+            StateInstance->StateTag = StateClass->GetDefaultObject<UGGFGameplayState>()->StateTag;
             StateInstance->SetOwner(GetOwner());
 
             // 유효성 검사 (실패 시 GC에서 생성된 인스턴스 파괴)
@@ -143,7 +143,7 @@ void UGEGameplayStateMachine::CreateGameplayStateInstances()
             UAbilitySystemComponent* AbilitySystem = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(GetOwner());
             FOnGameplayEffectTagCountChanged& OnGameplayEffectTagCountChanged =
                 AbilitySystem->RegisterGameplayTagEvent(StateInstance->StateTag, EGameplayTagEventType::NewOrRemoved);
-            OnGameplayEffectTagCountChanged.AddUObject(StateInstance, &UGEGameplayState::OnGameplayEffectTagCountChanged);
+            OnGameplayEffectTagCountChanged.AddUObject(StateInstance, &UGGFGameplayState::OnGameplayEffectTagCountChanged);
         }
     }
 }

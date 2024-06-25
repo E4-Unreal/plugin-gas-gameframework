@@ -8,7 +8,7 @@
 #include "GEActor.generated.h"
 
 class UGEGameplayEventManager;
-class UGEGameplayStateMachine;
+class UGGFGameplayStateMachine;
 
 /**
  * GAS를 사용하기 위한 기본 액터 클래스
@@ -41,7 +41,7 @@ private:
 
     // 게임 플레이 태그 상태 머신 액터 컴포넌트
     UPROPERTY(VisibleAnywhere, BlueprintGetter = GetGameplayStateMachine, Category = "Component")
-    TObjectPtr<UGEGameplayStateMachine> GameplayStateMachine;
+    TObjectPtr<UGGFGameplayStateMachine> GameplayStateMachine;
 
 public:
     AGEActor(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
@@ -72,7 +72,7 @@ protected:
     FORCEINLINE UGEGameplayEventManager* GetGameplayEventManager() const { return GameplayEventManager; }
 
     UFUNCTION(BlueprintGetter)
-    FORCEINLINE UGEGameplayStateMachine* GetGameplayStateMachine() const { return GameplayStateMachine; }
+    FORCEINLINE UGGFGameplayStateMachine* GetGameplayStateMachine() const { return GameplayStateMachine; }
 
 public:
     /* AbilitySystemInterface */
