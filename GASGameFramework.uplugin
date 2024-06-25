@@ -88,6 +88,11 @@
 			"Name": "GGFAnimationSystem",
 			"Type": "Runtime",
 			"LoadingPhase": "PreDefault"
+		},
+		{
+			"Name": "GGFPlayerSystem",
+			"Type": "Runtime",
+			"LoadingPhase": "PreDefault"
 		}
 	],
 	"Plugins": [
