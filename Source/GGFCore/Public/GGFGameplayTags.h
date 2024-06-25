@@ -44,6 +44,15 @@ namespace GGFGameplayTags
             GGFCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(AttackSpeed)
             GGFCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(AbilityHaste)
         }
+
+        namespace MaxStat
+        {
+            GGFCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attack)
+            GGFCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Defense)
+            GGFCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(MoveSpeed)
+            GGFCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(AttackSpeed)
+            GGFCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(AbilityHaste)
+        }
     }
 
     namespace State

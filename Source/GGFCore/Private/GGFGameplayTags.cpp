@@ -42,6 +42,15 @@ namespace GGFGameplayTags
             UE_DEFINE_GAMEPLAY_TAG_COMMENT(AttackSpeed, "Data.Stat.AttackSpeed", "공격 속도")
             UE_DEFINE_GAMEPLAY_TAG_COMMENT(AbilityHaste, "Data.Stat.AbilityHaste", "스킬 가속")
         }
+
+        namespace MaxStat
+        {
+            UE_DEFINE_GAMEPLAY_TAG_COMMENT(Attack, "Data.MaxStat.Attack", "최대 공격력")
+            UE_DEFINE_GAMEPLAY_TAG_COMMENT(Defense, "Data.MaxStat.Defense", "최대 방어력")
+            UE_DEFINE_GAMEPLAY_TAG_COMMENT(MoveSpeed, "Data.MaxStat.MoveSpeed", "최대 이동 속도")
+            UE_DEFINE_GAMEPLAY_TAG_COMMENT(AttackSpeed, "Data.MaxStat.AttackSpeed", "최대 공격 속도")
+            UE_DEFINE_GAMEPLAY_TAG_COMMENT(AbilityHaste, "Data.MaxStat.AbilityHaste", "최대 스킬 가속")
+        }
     }
 
     namespace State
