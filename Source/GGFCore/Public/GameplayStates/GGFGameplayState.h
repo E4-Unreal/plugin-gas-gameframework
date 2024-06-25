@@ -8,13 +8,20 @@
 #include "GGFGameplayState.generated.h"
 
 class UAbilitySystemComponent;
+
 /**
- * GameplayStateMachine에서 사용되는 상태 클래스
+ * 기본 게임플레이 스테이트 클래스
  */
 UCLASS(Blueprintable, BlueprintType, HideDropdown)
 class GGFCORE_API UGGFGameplayState : public UObject
 {
     GENERATED_BODY()
+
+    /* 레퍼런스 */
+
+    TWeakObjectPtr<AActor> Owner;
+
+    TWeakObjectPtr<UAbilitySystemComponent> OwnerAbilitySystem;
 
 public:
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Config", meta = (Categories = "State"))
@@ -27,12 +34,12 @@ protected:
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State")
     bool bActivated;
 
-private:
-    TWeakObjectPtr<AActor> Owner;
-
-    TWeakObjectPtr<UAbilitySystemComponent> OwnerAbilitySystem;
-
 public:
+    /* 이벤트 */
+
+    UFUNCTION()
+    virtual void OnGameplayEffectTagCountChanged(const FGameplayTag Tag, int32 Count);
+
     /* API */
 
     UFUNCTION(BlueprintCallable)
@@ -45,24 +52,20 @@ public:
     FORCEINLINE bool IsNotValid() const { return !IsValid(); }
 
     UFUNCTION(BlueprintCallable)
-    virtual void Enter();
+    void Enter();
 
     UFUNCTION(BlueprintCallable)
-    virtual void Tick(float DeltaTime);
+    void Tick(float DeltaTime);
 
     UFUNCTION(BlueprintCallable)
-    virtual void Exit();
+    void Exit();
 
     UFUNCTION(BlueprintPure)
     bool IsActive() const { return bActivated; }
 
-    /* 이벤트 메서드 */
-
-    // AbilitySystemComponent::RegisterGameplayTagEvent
-    UFUNCTION()
-    virtual void OnGameplayEffectTagCountChanged(const FGameplayTag Tag, int32 Count);
-
 protected:
+    /* 메서드 */
+
     UFUNCTION(BlueprintNativeEvent)
     void OnEnter();
 

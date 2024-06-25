@@ -11,6 +11,6 @@ void UGGFCharacterState::SetOwner(AActor* NewOwner)
     if(AActor* OwnerActor = GetOwner())
     {
         OwnerCharacter = Cast<ACharacter>(OwnerActor);
-        bValid = OwnerCharacter.IsValid();
+        bValid = bValid && OwnerCharacter.IsValid();
     }
 }

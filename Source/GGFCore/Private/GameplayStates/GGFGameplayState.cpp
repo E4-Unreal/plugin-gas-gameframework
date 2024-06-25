@@ -2,6 +2,7 @@
 
 #include "GameplayStates/GGFGameplayState.h"
 
+#include "Logging.h"
 #include "GGFGameplayTags.h"
 #include "AbilitySystemComponent.h"
 #include "AbilitySystemGlobals.h"
@@ -54,7 +55,9 @@ void UGGFGameplayState::Exit()
 
 void UGGFGameplayState::OnEnter_Implementation()
 {
-
+#if WITH_EDITOR
+    LOG(Log, TEXT("%s::%s"), *GetOwner()->GetName(), *GetName())
+#endif
 }
 
 void UGGFGameplayState::OnTick_Implementation(float DeltaTime)
@@ -64,7 +67,9 @@ void UGGFGameplayState::OnTick_Implementation(float DeltaTime)
 
 void UGGFGameplayState::OnExit_Implementation()
 {
-
+#if WITH_EDITOR
+    LOG(Log, TEXT("%s::%s"), *GetOwner()->GetName(), *GetName())
+#endif
 }
 
 void UGGFGameplayState::OnGameplayEffectTagCountChanged(const FGameplayTag Tag, int32 Count)

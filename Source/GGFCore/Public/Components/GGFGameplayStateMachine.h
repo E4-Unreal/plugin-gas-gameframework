@@ -9,8 +9,7 @@
 class UGGFGameplayState;
 
 /**
- * ASC에 부착되는 게임 플레이 태그를 하나의 상태로서 취급하여 동작하는 상태 머신 액터 컴포넌트입니다.
- * Owner의 AbilitySystemComponent에 의존성을 가지고 있습니다.
+ * ASC에 부착되는 게임 플레이 태그를 하나의 상태로서 취급하여 동작하는 상태 머신 클래스
  */
 UCLASS(meta=(BlueprintSpawnableComponent))
 class GGFCORE_API UGGFGameplayStateMachine : public UActorComponent

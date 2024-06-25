@@ -15,6 +15,8 @@ UGGFCharacterState_Dead::UGGFCharacterState_Dead()
 
 void UGGFCharacterState_Dead::OnEnter_Implementation()
 {
+    Super::OnEnter_Implementation();
+
     /* 모든 어빌리티 입력 Release 처리 */
     UAbilitySystemComponent* AbilitySystem = GetOwnerAbilitySystem();
     for (FGameplayAbilitySpec& ActivatableAbility : AbilitySystem->GetActivatableAbilities())
@@ -49,6 +51,8 @@ void UGGFCharacterState_Dead::OnEnter_Implementation()
 
 void UGGFCharacterState_Dead::OnExit_Implementation()
 {
+    Super::OnExit_Implementation();
+
     /* 일반 캐릭터 부활 설정 */
     // 캐릭터 변수 선언
     ACharacter* Character = GetOwnerCharacter();
