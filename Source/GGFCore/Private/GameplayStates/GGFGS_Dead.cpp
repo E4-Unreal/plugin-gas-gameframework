@@ -6,6 +6,9 @@
 #include "GGFGameplayTags.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/Character.h"
+#include "GameFramework/GameModeBase.h"
+#include "GameFramework/PlayerState.h"
+#include "Interfaces/GGFGameModeInterface.h"
 
 UGGFGS_Dead::UGGFGS_Dead()
 {
@@ -52,4 +55,22 @@ void UGGFGS_Dead::OnExit_Implementation()
 
 void UGGFGS_Dead::OnDelayTimerFinished_Implementation()
 {
+    // 서버 전용
+    if(auto GameMode = GetWorld()->GetAuthGameMode())
+    {
+        // 관전 모드 설정
+        if(auto PlayerState = GetOwnerPawn()->GetPlayerState())
+        {
+            PlayerState->SetIsSpectator(true);
+        }
+
+        // 관전 상대 변경
+        if(GameMode->Implements<UGGFGameModeInterface>())
+        {
+            IGGFGameModeInterface::Execute_SetViewTargetToNextPlayer(GameMode, Cast<APlayerController>(GetOwnerPawn()->Controller));
+        }
+
+        // 파괴
+        GetOwnerPawn()->Destroy();
+    }
 }

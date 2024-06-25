@@ -4,13 +4,14 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameMode.h"
+#include "Interfaces/GGFGameModeInterface.h"
 #include "GGFGameMode.generated.h"
 
 /**
  * GASGameFramework 플러그인 전용 게임 모드
  */
 UCLASS()
-class GGFPLAYERSYSTEM_API AGGFGameMode : public AGameMode
+class GGFPLAYERSYSTEM_API AGGFGameMode : public AGameMode, public IGGFGameModeInterface
 {
     GENERATED_BODY()
 
@@ -25,4 +26,10 @@ public:
     /* GameMode */
 
     virtual void PostLogin(APlayerController* NewPlayer) override;
+
+    /* API */
+
+    // 같은 팀 플레이어 화면 관전
+    UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+    void SetViewTargetToNextPlayer(APlayerController* PlayerController);
 };
