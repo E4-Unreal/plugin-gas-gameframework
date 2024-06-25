@@ -16,6 +16,10 @@ void UGGFGS_Dead::OnEnter_Implementation()
 {
     Super::OnEnter_Implementation();
 
+    // 타이머 활성화
+    auto& TimerManager = GetOwner()->GetWorldTimerManager();
+    TimerManager.SetTimer(DelayTimer, this, &ThisClass::OnDelayTimerFinished, DelayTime);
+
     // 모든 어빌리티 입력 비활성화
     for (auto& ActivatableAbility : GetOwnerAbilitySystem()->GetActivatableAbilities())
     {
@@ -32,6 +36,10 @@ void UGGFGS_Dead::OnEnter_Implementation()
 
 void UGGFGS_Dead::OnExit_Implementation()
 {
+    // 타이머 비활성화
+    auto& TimerManager = GetOwner()->GetWorldTimerManager();
+    if(TimerManager.IsTimerActive(DelayTimer)) TimerManager.ClearTimer(DelayTimer);
+
     // 캐릭터 콜리전 활성화
     if(auto Character = Cast<ACharacter>(GetOwnerPawn()))
     {
@@ -40,4 +48,8 @@ void UGGFGS_Dead::OnExit_Implementation()
     }
 
     Super::OnExit_Implementation();
+}
+
+void UGGFGS_Dead::OnDelayTimerFinished_Implementation()
+{
 }

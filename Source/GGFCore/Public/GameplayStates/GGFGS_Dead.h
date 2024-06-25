@@ -14,10 +14,22 @@ class GGFCORE_API UGGFGS_Dead : public UGGFGS_Stun
 {
     GENERATED_BODY()
 
+protected:
+    // 사망 지연 시간
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config")
+    float DelayTime = 3;
+
+    FTimerHandle DelayTimer;
+
 public:
     UGGFGS_Dead();
 
 protected:
+    /* 이벤트 */
+
+    UFUNCTION(BlueprintNativeEvent)
+    void OnDelayTimerFinished();
+
     /* GameplayState */
 
     virtual void OnEnter_Implementation() override;
