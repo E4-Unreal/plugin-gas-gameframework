@@ -2,7 +2,7 @@
 
 #include "Components/GGFCharacterStateMachine.h"
 
-#include "States/GGFCharacterState_Dead.h"
+#include "GameplayStates/GGFCharacterState_Dead.h"
 
 UGGFCharacterStateMachine::UGGFCharacterStateMachine()
 {

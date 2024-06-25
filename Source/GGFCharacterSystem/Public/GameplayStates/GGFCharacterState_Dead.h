@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Components/GGFGameplayStateMachine.h"
+#include "GameplayStates/GGFCharacterState.h"
 #include "GGFCharacterState_Dead.generated.h"
 
 /**
