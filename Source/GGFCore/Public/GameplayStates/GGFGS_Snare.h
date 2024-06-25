@@ -3,16 +3,19 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameplayStates/GGFGS_Dead.h"
-#include "GGFCharacterState_Dead.generated.h"
+#include "GGFPawnState.h"
+#include "GGFGS_Snare.generated.h"
 
 /**
- * 캐릭터 죽음 상태
+ * 속박 상태 - 이동 불가
  */
 UCLASS()
-class GGFCHARACTERSYSTEM_API UGGFCharacterState_Dead : public UGGFGS_Dead
+class GGFCORE_API UGGFGS_Snare : public UGGFPawnState
 {
     GENERATED_BODY()
+
+public:
+    UGGFGS_Snare();
 
 protected:
     /* GameplayState */
