@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GGFGameplayEffect.h"
-#include "GGFDamageBase.generated.h"
+#include "GGFDamage.generated.h"
 
 class UTargetTagRequirementsGameplayEffectComponent;
 
@@ -12,10 +12,13 @@ class UTargetTagRequirementsGameplayEffectComponent;
  * 데미지 전용 게임플레이 이펙트 클래스
  */
 UCLASS()
-class GGFCORE_API UGGFDamageBase : public UGGFGameplayEffect
+class GGFCORE_API UGGFDamage : public UGGFGameplayEffect
 {
     GENERATED_BODY()
 
+protected:
+    FGameplayModifierInfo* DamageModifierPtr;
+
 public:
-    UGGFDamageBase(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
+    UGGFDamage(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 };

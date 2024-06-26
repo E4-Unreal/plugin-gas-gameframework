@@ -8,7 +8,7 @@
 #include "GameplayEffect.h"
 #include "GGFGameplayTags.h"
 #include "Logging.h"
-#include "GameplayEffects/GGFDamageBase.h"
+#include "GameplayEffects/GGFDamage.h"
 
 FActiveGameplayEffectHandle UGGFBlueprintFunctionLibrary::ApplyGameplayEffectSpecToSelf(const AActor* TargetActor,
                                                                                         const FGameplayEffectSpec& EffectSpec)
@@ -245,7 +245,7 @@ void UGGFBlueprintFunctionLibrary::ApplyDamageToSelf(AActor* Target, float Damag
     if(TargetSystem == nullptr) return;
 
     // DamageClass 유효성 검사 (null인 경우 기본 데미지 클래스 사용)
-    if(DamageClass == nullptr) DamageClass = UGGFDamageBase::StaticClass();
+    if(DamageClass == nullptr) DamageClass = UGGFDamage::StaticClass();
 
     // 데미지 전용 GameplayEffectSpec 생성
     FGameplayEffectContextHandle ContextHandle = TargetSystem->MakeEffectContext();
@@ -265,7 +265,7 @@ void UGGFBlueprintFunctionLibrary::ApplyDamageToTarget(AActor* Source, AActor* T
     if(TargetSystem == nullptr) return;
 
     // 데미지 클래스 유효성 검사 (null인 경우 기본 데미지 클래스 사용)
-    if(DamageClass == nullptr) DamageClass = UGGFDamageBase::StaticClass();
+    if(DamageClass == nullptr) DamageClass = UGGFDamage::StaticClass();
 
     // 데미지 적용
     if(auto SourceSystem = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(Source))

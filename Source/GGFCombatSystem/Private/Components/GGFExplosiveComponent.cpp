@@ -6,14 +6,14 @@
 #include "GGFBlueprintFunctionLibrary.h"
 #include "Logging.h"
 #include "Components/SphereComponent.h"
-#include "GameplayEffects/GGFDamageBase.h"
+#include "GameplayEffects/GGFDamage.h"
 #include "GGFGameplayTags.h"
 #include "GGFCombatGameplayTags.h"
 
 UGGFExplosiveComponent::UGGFExplosiveComponent()
 {
     // 기본 설정
-    DamageEffect = UGGFDamageBase::StaticClass();
+    DamageEffect = UGGFDamage::StaticClass();
     DamageType = Data::Damage::Type::Default;
     ExplosionCueTag = FGameplayCueTag(GGFGameplayTags::GameplayCue::Explosion::Default);
 }

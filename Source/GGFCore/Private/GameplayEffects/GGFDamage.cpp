@@ -1,12 +1,13 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
-#include "GameplayEffects/GGFDamageBase.h"
+#include "GameplayEffects/GGFDamage.h"
 
 #include "GGFGameplayTags.h"
+#include "Attributes/GGFHealthAttributes.h"
 #include "GameplayEffectComponents/TargetTagRequirementsGameplayEffectComponent.h"
 #include "GameplayEffects/Calculations/GGFDamageCalculation.h"
 
-UGGFDamageBase::UGGFDamageBase(const FObjectInitializer& ObjectInitializer)
+UGGFDamage::UGGFDamage(const FObjectInitializer& ObjectInitializer)
 {
     // 데미지 무시
     FGameplayTagContainer& IgnoreTagContainer = GetOrFindTargetTagRequirementsComponent()->ApplicationTagRequirements.IgnoreTags;
@@ -16,4 +17,12 @@ UGGFDamageBase::UGGFDamageBase(const FObjectInitializer& ObjectInitializer)
     FGameplayEffectExecutionDefinition ExecutionDefinition;
     ExecutionDefinition.CalculationClass = UGGFDamageCalculation::StaticClass();
     Executions.Emplace(ExecutionDefinition);
+
+    // 데미지 모디파이어 추가
+    FGameplayModifierInfo DamageModifier;
+    DamageModifier.Attribute = UGGFHealthAttributes::GetDamageAttribute();
+    DamageModifier.ModifierOp = EGameplayModOp::Additive;
+    DamageModifier.ModifierMagnitude = FGameplayEffectModifierMagnitude(0);
+    int32 Index = Modifiers.Emplace(DamageModifier);
+    DamageModifierPtr = &Modifiers[Index];
 }
