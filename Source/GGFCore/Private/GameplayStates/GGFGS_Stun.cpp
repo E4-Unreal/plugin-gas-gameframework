@@ -6,7 +6,7 @@
 
 UGGFGS_Stun::UGGFGS_Stun()
 {
-    StateTag = State::Stun;
+    StateTag = State::Debuff::Stun;
 }
 
 void UGGFGS_Stun::OnEnter_Implementation()

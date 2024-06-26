@@ -71,10 +71,28 @@ namespace GGFGameplayTags
         UE_DEFINE_GAMEPLAY_TAG_COMMENT(Respawn, "State.Respawn", "부활 중인 상태입니다.")
         UE_DEFINE_GAMEPLAY_TAG_COMMENT(Reviving, "State.Reviving", "다른 플레이어를 부활시키는 중인 상태입니다.")
 
-        UE_DEFINE_GAMEPLAY_TAG_COMMENT(Snare, "State.Snare", "속박 상태로 이동이 불가능해집니다.")
-        UE_DEFINE_GAMEPLAY_TAG_COMMENT(Stun, "State.Stun", "행동이 불가능한 상태")
+        namespace Buff
+        {
+            UE_DEFINE_GAMEPLAY_TAG_COMMENT(Root, "State.Buff", "버프")
+            UE_DEFINE_GAMEPLAY_TAG_COMMENT(Test, "State.Buff.Test", "테스트 전용 버프")
 
-        UE_DEFINE_GAMEPLAY_TAG_COMMENT(Invinsible, "State.Invinsible", "데미지가 들어가지 않는 무적 상태")
+            UE_DEFINE_GAMEPLAY_TAG_COMMENT(Invinsible, "State.Buff.Invinsible", "데미지가 들어가지 않는 무적 상태")
+
+            namespace Immunity
+            {
+                UE_DEFINE_GAMEPLAY_TAG_COMMENT(Root, "State.Buff.Immunity", "특정 데미지 타입에 대한 면역")
+                UE_DEFINE_GAMEPLAY_TAG_COMMENT(Test, "State.Buff.Immunity.Test", "테스트 전용 면역")
+            }
+        }
+
+        namespace Debuff
+        {
+            UE_DEFINE_GAMEPLAY_TAG_COMMENT(Root, "State.Debuff", "디버프")
+            UE_DEFINE_GAMEPLAY_TAG_COMMENT(Test, "State.Debuff.Test", "테스트 전용 디버프")
+
+            UE_DEFINE_GAMEPLAY_TAG_COMMENT(Snare, "State.Debuff.Snare", "속박 상태로 이동이 불가능해집니다.")
+            UE_DEFINE_GAMEPLAY_TAG_COMMENT(Stun, "State.Debuff.Stun", "행동이 불가능한 상태")
+        }
     }
 
     /* 게임플레이 큐 */
@@ -105,27 +123,6 @@ namespace GGFGameplayTags
     {
         UE_DEFINE_GAMEPLAY_TAG_COMMENT(Root, "Event", "게임플레이 이벤트")
         UE_DEFINE_GAMEPLAY_TAG_COMMENT(Test, "Event.Test", "테스트 전용 게임플레이 이벤트")
-    }
-
-    /* 버프 */
-    namespace Buff
-    {
-        UE_DEFINE_GAMEPLAY_TAG_COMMENT(Root, "Buff", "버프")
-        UE_DEFINE_GAMEPLAY_TAG_COMMENT(Test, "Buff.Test", "테스트 전용 버프")
-
-        /* 면역 */
-        namespace Immunity
-        {
-            UE_DEFINE_GAMEPLAY_TAG_COMMENT(Root, "Buff.Immunity", "특정 데미지 타입에 대한 면역")
-            UE_DEFINE_GAMEPLAY_TAG_COMMENT(Test, "Buff.Immunity.Test", "테스트 전용 면역")
-        }
-    }
-
-    /* 디버프 */
-    namespace Debuff
-    {
-        UE_DEFINE_GAMEPLAY_TAG_COMMENT(Root, "Debuff", "디버프")
-        UE_DEFINE_GAMEPLAY_TAG_COMMENT(Test, "Debuff.Test", "테스트 전용 디버프")
     }
 
     /* 오브젝트 */

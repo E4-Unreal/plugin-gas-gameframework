@@ -76,17 +76,19 @@ namespace GGFGameplayTags
         }
     }
 
-    /* 버프 */
-    namespace Buff
+    /* 상태 */
+    namespace State
     {
-        /* 면역 */
-        namespace Immunity
+        namespace Buff
         {
-            UE_DEFINE_GAMEPLAY_TAG_COMMENT(Physical, "Buff.Immunity.Physical", "물리 속성 데미지") // 물리
-            UE_DEFINE_GAMEPLAY_TAG_COMMENT(Fire, "Buff.Immunity.Fire", "불 속성 데미지") // 불
-            UE_DEFINE_GAMEPLAY_TAG_COMMENT(Water, "Buff.Immunity.Water", "물 속성 데미지") // 물
-            UE_DEFINE_GAMEPLAY_TAG_COMMENT(Electricity, "Buff.Immunity.Electricity", "전기 속성 데미지") // 전기
-            UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ice, "Buff.Immunity.Ice", "얼음 속성 데미지") // 얼음
+            namespace Immunity
+            {
+                UE_DEFINE_GAMEPLAY_TAG_COMMENT(Physical, "State.Buff.Immunity.Physical", "물리 속성 데미지 면역")
+                UE_DEFINE_GAMEPLAY_TAG_COMMENT(Fire, "State.Buff.Immunity.Fire", "불 속성 데미지 면역")
+                UE_DEFINE_GAMEPLAY_TAG_COMMENT(Water, "State.Buff.Immunity.Water", "물 속성 데미지 면역")
+                UE_DEFINE_GAMEPLAY_TAG_COMMENT(Electricity, "State.Buff.Immunity.Electricity", "전기 속성 데미지 면역")
+                UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ice, "State.Buff.Immunity.Ice", "얼음 속성 데미지 면역")
+            }
         }
     }
 

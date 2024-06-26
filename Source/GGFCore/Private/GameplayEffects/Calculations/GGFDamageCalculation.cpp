@@ -14,7 +14,7 @@
 UGGFDamageCalculation::UGGFDamageCalculation()
 {
     IgnoreTagContainer.AddLeafTag(State::Dead);
-    IgnoreTagContainer.AddLeafTag(State::Invinsible);
+    IgnoreTagContainer.AddLeafTag(State::Buff::Invinsible);
 }
 
 void UGGFDamageCalculation::Execute_Implementation(const FGameplayEffectCustomExecutionParameters& ExecutionParams,

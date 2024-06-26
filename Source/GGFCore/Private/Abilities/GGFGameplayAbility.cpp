@@ -33,7 +33,7 @@ UGGFGameplayAbility::UGGFGameplayAbility()
     ActivationBlockedTags.AddTagFast(Action::Root);
     ActivationBlockedTags.AddTagFast(State::Dead);
     ActivationBlockedTags.AddTagFast(State::Knockdown);
-    ActivationBlockedTags.AddTagFast(State::Stun);
+    ActivationBlockedTags.AddTagFast(State::Debuff::Stun);
 }
 
 bool UGGFGameplayAbility::CanActivateAbility(const FGameplayAbilitySpecHandle Handle,

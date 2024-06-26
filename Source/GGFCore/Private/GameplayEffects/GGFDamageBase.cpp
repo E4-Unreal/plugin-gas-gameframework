@@ -17,7 +17,7 @@ UGGFDamageBase::UGGFDamageBase(const FObjectInitializer& ObjectInitializer)
 
     // 데미지 무시
     FGameplayTagContainer& IgnoreTagContainer = TargetTagRequirementsComponent->ApplicationTagRequirements.IgnoreTags;
-    IgnoreTagContainer.AddLeafTag(State::Invinsible); // 무적 상태
+    IgnoreTagContainer.AddLeafTag(State::Buff::Invinsible); // 무적 상태
     IgnoreTagContainer.AddLeafTag(State::Dead); // 이미 죽은 상태
 
     GEComponents.Emplace(TargetTagRequirementsComponent);

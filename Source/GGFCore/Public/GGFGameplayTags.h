@@ -73,10 +73,28 @@ namespace GGFGameplayTags
         GGFCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Respawn)
         GGFCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Reviving)
 
-        GGFCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Snare)
-        GGFCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Stun)
+        namespace Buff
+        {
+            GGFCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Root) // 루트
+            GGFCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Test) // 테스트 전용
 
-        GGFCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Invinsible)
+            GGFCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Invinsible)
+
+            namespace Immunity
+            {
+                GGFCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Root) // 루트
+                GGFCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Test) // 테스트 전용
+            }
+        }
+
+        namespace Debuff
+        {
+            GGFCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Root) // 루트
+            GGFCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Test) // 테스트 전용
+
+            GGFCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Snare)
+            GGFCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Stun)
+        }
     }
 
     /* 게임플레이 큐 */
@@ -104,27 +122,6 @@ namespace GGFGameplayTags
 
     /* 이벤트 */
     namespace Event
-    {
-        GGFCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Root) // 루트
-        GGFCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Test) // 테스트 전용
-    }
-
-    /* 버프 */
-    namespace Buff
-    {
-        GGFCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Root) // 루트
-        GGFCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Test) // 테스트 전용
-
-        /* 면역 */
-        namespace Immunity
-        {
-            GGFCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Root) // 루트
-            GGFCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Test) // 테스트 전용
-        }
-    }
-
-    /* 디버프 */
-    namespace Debuff
     {
         GGFCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Root) // 루트
         GGFCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Test) // 테스트 전용

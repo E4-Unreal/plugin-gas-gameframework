@@ -7,7 +7,7 @@
 
 UGGFGS_Snare::UGGFGS_Snare()
 {
-    StateTag = State::Snare;
+    StateTag = State::Debuff::Snare;
 }
 
 void UGGFGS_Snare::OnEnter_Implementation()
