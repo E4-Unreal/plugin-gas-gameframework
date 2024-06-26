@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayCueInterface.h"
 #include "GameplayTagContainer.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "GGFBlueprintFunctionLibrary.generated.h"
@@ -52,51 +53,51 @@ public:
     UFUNCTION(BlueprintCallable, Category = "GGFBlueprintFunctionLibrary|GameplayEffect")
     static TArray<FActiveGameplayEffectHandle> ApplyGameplayEffectsToTarget(const AActor* InstigatorActor, const AActor* TargetActor, const TArray<TSubclassOf<UGameplayEffect>>& EffectClasses);
 
-        /* Create And Add AttributeSet To Actor */
+    /* Create And Add AttributeSet To Actor */
 
-    UFUNCTION(BlueprintCallable, Category = "GEBlueprintFunctionLibrary|AttributeSet|Actor")
+    UFUNCTION(BlueprintCallable, Category = "GGFBlueprintFunctionLibrary|AttributeSet|Actor")
     static void AddAttributeSetToTarget(const TSubclassOf<UAttributeSet> AttributeSetClass, const AActor* TargetActor);
 
-    UFUNCTION(BlueprintCallable, Category = "GEBlueprintFunctionLibrary|AttributeSet|Actor")
+    UFUNCTION(BlueprintCallable, Category = "GGFBlueprintFunctionLibrary|AttributeSet|Actor")
     static void AddAttributeSetsToTarget(const TArray<TSubclassOf<UAttributeSet>>& AttributeSetClasses, const AActor* TargetActor);
 
     /* Create And Add AttributeSet To AbilitySystem */
 
-    UFUNCTION(BlueprintCallable, Category = "GEBlueprintFunctionLibrary|AttributeSet|System")
+    UFUNCTION(BlueprintCallable, Category = "GGFBlueprintFunctionLibrary|AttributeSet|System")
     static void AddAttributeSetToSystem(const TSubclassOf<UAttributeSet> AttributeSetClass, UAbilitySystemComponent* AbilitySystem);
 
-    UFUNCTION(BlueprintCallable, Category = "GEBlueprintFunctionLibrary|AttributeSet|System")
+    UFUNCTION(BlueprintCallable, Category = "GGFBlueprintFunctionLibrary|AttributeSet|System")
     static void AddAttributeSetsToSystem(const TArray<TSubclassOf<UAttributeSet>>& AttributeSetClasses, UAbilitySystemComponent* AbilitySystem);
 
     /* Give GameplayAbility To Actor */
 
-    UFUNCTION(BlueprintCallable, Category = "GEBlueprintFunctionLibrary|GameplayAbility|Actor")
+    UFUNCTION(BlueprintCallable, Category = "GGFBlueprintFunctionLibrary|GameplayAbility|Actor")
     static FGameplayAbilitySpecHandle GiveAbilityToTarget(const TSubclassOf<UGameplayAbility> AbilityClass, const AActor* Target);
 
-    UFUNCTION(BlueprintCallable, Category = "GEBlueprintFunctionLibrary|GameplayAbility|Actor")
+    UFUNCTION(BlueprintCallable, Category = "GGFBlueprintFunctionLibrary|GameplayAbility|Actor")
     static TArray<FGameplayAbilitySpecHandle> GiveAbilitiesToTarget(const TArray<TSubclassOf<UGameplayAbility>>& AbilityClasses, const AActor* Target);
 
     /* Give GameplayAbility To AbilitySystem */
 
-    UFUNCTION(BlueprintCallable, Category = "GEBlueprintFunctionLibrary|GameplayAbility|System")
+    UFUNCTION(BlueprintCallable, Category = "GGFBlueprintFunctionLibrary|GameplayAbility|System")
     static FGameplayAbilitySpecHandle GiveAbilityToSystem(const TSubclassOf<UGameplayAbility> AbilityClass, UAbilitySystemComponent* AbilitySystem);
 
-    UFUNCTION(BlueprintCallable, Category = "GEBlueprintFunctionLibrary|GameplayAbility|System")
+    UFUNCTION(BlueprintCallable, Category = "GGFBlueprintFunctionLibrary|GameplayAbility|System")
     static TArray<FGameplayAbilitySpecHandle> GiveAbilitiesToSystem(const TArray<TSubclassOf<UGameplayAbility>>& AbilityClasses, UAbilitySystemComponent* AbilitySystem);
 
     /* 데미지 */
 
-    UFUNCTION(BlueprintCallable, Category = "GEBlueprintFunctionLibrary|Damage")
+    UFUNCTION(BlueprintCallable, Category = "GGFBlueprintFunctionLibrary|Damage", meta = (DefaultToSelf = "Target"))
     static void ApplyDamageToSelf(AActor* Target, float Damage = 0, float DamageRatio = 1, FGameplayTag DamageTypeTag = FGameplayTag(), TSubclassOf<UGameplayEffect> DamageClass = nullptr);
 
-    UFUNCTION(BlueprintCallable, Category = "GEBlueprintFunctionLibrary|Damage")
+    UFUNCTION(BlueprintCallable, Category = "GGFBlueprintFunctionLibrary|Damage")
     static void ApplyDamageToTarget(AActor* Source, AActor* Target, float Damage = 0, float DamageRatio = 1, FGameplayTag DamageTypeTag = FGameplayTag(), TSubclassOf<UGameplayEffect> DamageClass = nullptr);
 
     /* 게임플레이 큐 */
 
-    UFUNCTION(BlueprintCallable, Category = "GEBlueprintFunctionLibrary|GameplayCue")
+    UFUNCTION(BlueprintCallable, Category = "GGFBlueprintFunctionLibrary|GameplayCue")
     static void LocalHandleGameplayCue(AActor* EffectCauser, const FGameplayCueTag& CueTag, AActor* Target = nullptr, AActor* Instigator = nullptr);
 
-    UFUNCTION(BlueprintCallable, Category = "GEBlueprintFunctionLibrary|GameplayCue")
+    UFUNCTION(BlueprintCallable, Category = "GGFBlueprintFunctionLibrary|GameplayCue")
     static void LocalHandleGameplayCueWithTransform(AActor* EffectCauser, const FGameplayCueTag& CueTag, const FTransform& Transform, AActor* Target = nullptr, AActor* Instigator = nullptr);
 };
