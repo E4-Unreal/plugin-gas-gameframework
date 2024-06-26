@@ -1,6 +1,6 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
-#include "GameplayCues/GEGameplayCueNotifyTypes.h"
+#include "GameplayCues/GGFGameplayCueNotifyTypes.h"
 
 #include "Kismet/GameplayStatics.h"
 #include "Particles/ParticleSystemComponent.h"
@@ -9,9 +9,9 @@
 #include "Misc/DataValidation.h"
 #endif
 
-#include "GameplayCues/GEGameplayCueNotify_Burst.h"
+#include "GameplayCues/GGFGameplayCueNotify_Burst.h"
 
-#include UE_INLINE_GENERATED_CPP_BY_NAME(GEGameplayCueNotifyTypes)
+#include UE_INLINE_GENERATED_CPP_BY_NAME(GGFGameplayCueNotifyTypes)
 
 #define LOCTEXT_NAMESPACE "GameplayCueNotify"
 
@@ -35,7 +35,7 @@ static EAttachLocation::Type GetAttachLocationTypeFromRule(EAttachmentRule Attac
     return EAttachLocation::KeepWorldPosition;
 }
 
-bool FGameplayCueNotify_CascadeInfo::PlayParticleEffect(AActor* Target, const FGameplayCueParameters& Parameters) const
+bool FGGFGameplayCueNotify_CascadeInfo::PlayParticleEffect(AActor* Target, const FGameplayCueParameters& Parameters) const
 {
     // 유효성 검사
     if(ParticleSystem == nullptr) return false;
@@ -89,7 +89,7 @@ bool FGameplayCueNotify_CascadeInfo::PlayParticleEffect(AActor* Target, const FG
     return (SpawnedFXSC != nullptr);
 }
 
-void FGameplayCueNotify_CascadeInfo::ValidateBurstAssets(const UObject* ContainingAsset, const FString& Context,
+void FGGFGameplayCueNotify_CascadeInfo::ValidateBurstAssets(const UObject* ContainingAsset, const FString& Context,
     FDataValidationContext& ValidationContext) const
 {
 #if WITH_EDITORONLY_DATA

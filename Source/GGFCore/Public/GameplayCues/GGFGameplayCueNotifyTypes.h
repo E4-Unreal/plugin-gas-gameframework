@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GEGameplayCueNotifyTypes.generated.h"
+#include "GGFGameplayCueNotifyTypes.generated.h"
 
 /**
  * FGameplayCueNotify_CascadeInfo
@@ -15,7 +15,7 @@
  * LNK2019 오류가 발생하기 때문에 FGameplayCueParameters로 대체하였습니다.
  */
 USTRUCT(BlueprintType)
-struct FGameplayCueNotify_CascadeInfo
+struct FGGFGameplayCueNotify_CascadeInfo
 {
     GENERATED_BODY()
 

@@ -1,13 +1,13 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
-#include "GameplayCues/GEGameplayCueNotify_Burst.h"
+#include "GameplayCues/GGFGameplayCueNotify_Burst.h"
 
-UGEGameplayCueNotify_Burst::UGEGameplayCueNotify_Burst()
+UGGFGameplayCueNotify_Burst::UGGFGameplayCueNotify_Burst()
 {
 
 }
 
-bool UGEGameplayCueNotify_Burst::OnExecute_Implementation(AActor* MyTarget,
+bool UGGFGameplayCueNotify_Burst::OnExecute_Implementation(AActor* MyTarget,
     const FGameplayCueParameters& Parameters) const
 {
     for (const auto& CascadeParticle : CascadeParticles)
