@@ -6,6 +6,15 @@
 #include "GameFramework/Actor.h"
 #include "GGFTriggerBox.generated.h"
 
+UENUM(BlueprintType)
+enum class EGGFPivot : uint8
+{
+    Center,
+    Bottom,
+    Top,
+    Custom
+};
+
 class UBoxComponent;
 
 /**
@@ -32,6 +41,9 @@ protected:
     // true로 설정된 경우 서버에서만 트리거 이벤트가 호출됩니다.
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config")
     bool bServerOnly;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config")
+    EGGFPivot TriggerBoxPivot = EGGFPivot::Bottom;
 
 #if WITH_EDITORONLY_DATA
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|Debug")

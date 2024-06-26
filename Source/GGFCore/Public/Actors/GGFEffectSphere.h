@@ -3,16 +3,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GGFTriggerBox.h"
-#include "GGFEffectArea.generated.h"
+#include "GGFTriggerSphere.h"
+#include "GGFEffectSphere.generated.h"
 
 class UGGFEffectAreaComponent;
 
-/**
- * 주기적으로 오버랩된 액터들에게 게임플레이 이펙트를 적용하는 트리거 박스 액터입니다.
- */
 UCLASS()
-class GGFCORE_API AGGFEffectArea : public AGGFTriggerBox
+class GGFCORE_API AGGFEffectSphere : public AGGFTriggerSphere
 {
     GENERATED_BODY()
 
@@ -22,12 +19,11 @@ class GGFCORE_API AGGFEffectArea : public AGGFTriggerBox
     TObjectPtr<UGGFEffectAreaComponent> EffectAreaComponent;
 
 public:
-    AGGFEffectArea(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
+    AGGFEffectSphere(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
     /* Actor */
 
     virtual void PostInitializeComponents() override;
-    virtual void BeginPlay() override;
 
 public:
     /* Getter */

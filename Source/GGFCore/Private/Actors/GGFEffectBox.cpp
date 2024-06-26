@@ -1,11 +1,11 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
-#include "Actors/GGFEffectArea.h"
+#include "Actors/GGFEffectBox.h"
 
 #include "Components/BoxComponent.h"
 #include "Components/GGFEffectAreaComponent.h"
 
-AGGFEffectArea::AGGFEffectArea(const FObjectInitializer& ObjectInitializer)
+AGGFEffectBox::AGGFEffectBox(const FObjectInitializer& ObjectInitializer)
     : Super(ObjectInitializer)
 {
     bReplicates = true;
@@ -14,7 +14,7 @@ AGGFEffectArea::AGGFEffectArea(const FObjectInitializer& ObjectInitializer)
     EffectAreaComponent = CreateDefaultSubobject<UGGFEffectAreaComponent>(TEXT("EffectAreaComponent"));
 }
 
-void AGGFEffectArea::PostInitializeComponents()
+void AGGFEffectBox::PostInitializeComponents()
 {
     Super::PostInitializeComponents();
 
@@ -22,7 +22,7 @@ void AGGFEffectArea::PostInitializeComponents()
     GetEffectAreaComponent()->Init(GetTriggerBox());
 }
 
-void AGGFEffectArea::BeginPlay()
+void AGGFEffectBox::BeginPlay()
 {
     Super::BeginPlay();
 
