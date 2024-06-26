@@ -12,7 +12,7 @@
 AGGFDamageableProjectile::AGGFDamageableProjectile(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
 {
     DamageClass = UGGFDamageBase::StaticClass();
-    FixedDamage = 10;
+    Damage = 10;
     DamageType = Data::Damage::Type::Default;
 }
 
@@ -32,12 +32,12 @@ void AGGFDamageableProjectile::ApplyEffects(AActor* Target)
         // 데미지 및 추가 GE 적용
         if(GetInstigator())
         {
-            UGGFBlueprintFunctionLibrary::ApplyDamageToTarget(GetInstigator(), Target, DamageClass, FixedDamage, DamageRatio, DamageType.Tag);
+            UGGFBlueprintFunctionLibrary::ApplyDamageToTarget(GetInstigator(), Target, Damage, DamageRatio, DamageType.Tag, DamageClass);
             UGGFBlueprintFunctionLibrary::ApplyGameplayEffectsToTarget(GetInstigator(), Target, AdditionalEffects);
         }
         else
         {
-            UGGFBlueprintFunctionLibrary::ApplyDamageToSelf(Target, DamageClass, FixedDamage, DamageRatio, DamageType.Tag);
+            UGGFBlueprintFunctionLibrary::ApplyDamageToSelf(Target,Damage, DamageRatio, DamageType.Tag, DamageClass);
             UGGFBlueprintFunctionLibrary::ApplyGameplayEffectsToSelf(Target, AdditionalEffects);
         }
     }

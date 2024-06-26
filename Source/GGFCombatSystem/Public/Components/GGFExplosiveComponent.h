@@ -33,7 +33,7 @@ public:
     TArray<TSubclassOf<UGameplayEffect>> AdditionalEffects;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|ExplosiveComponent")
-    float FixedDamage = 50;
+    float Damage = 50;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|ExplosiveComponent")
     FGGFDamageTypeTag DamageType;

@@ -193,7 +193,7 @@ void UGGFExplosiveComponent::ApplyEffects(AActor* Target)
     // 데미지 적용
     const float DamageRatio = CalculateDamageRatio(Target);
     if(DamageRatio == 0) return; // 피격 판정 실패
-    UGGFBlueprintFunctionLibrary::ApplyDamageToTarget(Instigator, Target, DamageEffect, FixedDamage, DamageRatio, DamageType.Tag);
+    UGGFBlueprintFunctionLibrary::ApplyDamageToTarget(Instigator, Target, Damage, DamageRatio, DamageType.Tag, DamageEffect);
 
     // 추가 이펙트 적용
     if(DamageRatio > 0)

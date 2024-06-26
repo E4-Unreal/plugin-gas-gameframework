@@ -23,7 +23,7 @@ public:
 
     // 데미지 계산식에 영향을 받지 않는 고정 데미지
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|DamageableProjectile")
-    float FixedDamage;
+    float Damage;
 
     // 데미지 타입
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|DamageableProjectile")

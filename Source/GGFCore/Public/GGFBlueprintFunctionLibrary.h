@@ -87,10 +87,10 @@ public:
     /* 데미지 */
 
     UFUNCTION(BlueprintCallable, Category = "GEBlueprintFunctionLibrary|Damage")
-    static void ApplyDamageToSelf(AActor* Target, TSubclassOf<UGameplayEffect> DamageClass, float Damage = 0, float DamageRatio = 1, FGameplayTag DamageTypeTag = FGameplayTag());
+    static void ApplyDamageToSelf(AActor* Target, float Damage = 0, float DamageRatio = 1, FGameplayTag DamageTypeTag = FGameplayTag(), TSubclassOf<UGameplayEffect> DamageClass = nullptr);
 
     UFUNCTION(BlueprintCallable, Category = "GEBlueprintFunctionLibrary|Damage")
-    static void ApplyDamageToTarget(AActor* Source, AActor* Target, TSubclassOf<UGameplayEffect> DamageClass, float Damage = 0, float DamageRatio = 1, FGameplayTag DamageTypeTag = FGameplayTag());
+    static void ApplyDamageToTarget(AActor* Source, AActor* Target, float Damage = 0, float DamageRatio = 1, FGameplayTag DamageTypeTag = FGameplayTag(), TSubclassOf<UGameplayEffect> DamageClass = nullptr);
 
     /* 게임플레이 큐 */
 

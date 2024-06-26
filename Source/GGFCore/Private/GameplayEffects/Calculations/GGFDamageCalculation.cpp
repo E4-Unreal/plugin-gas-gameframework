@@ -110,8 +110,8 @@ float UGGFDamageCalculation::CalculateTotalDamage(const FGameplayEffectCustomExe
     // 지역 변수 선언
     const FGameplayEffectSpec& OwningSpec = ExecutionParams.GetOwningSpec();
     float TotalDamage = 0;
-    float GenericDamage = OwningSpec.GetSetByCallerMagnitude(Data::Damage::Root);
-    float TrueDamage = OwningSpec.GetSetByCallerMagnitude(Data::Damage::True);
+    float GenericDamage = OwningSpec.GetSetByCallerMagnitude(Data::Damage::Root, false);
+    float TrueDamage = OwningSpec.GetSetByCallerMagnitude(Data::Damage::True, false);
     float StatsDamage = GenericDamage;
 
     // Target 스탯 가져오기

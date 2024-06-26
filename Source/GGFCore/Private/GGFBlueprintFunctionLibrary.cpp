@@ -8,9 +8,10 @@
 #include "GameplayEffect.h"
 #include "GGFGameplayTags.h"
 #include "Logging.h"
+#include "GameplayEffects/GGFDamageBase.h"
 
 FActiveGameplayEffectHandle UGGFBlueprintFunctionLibrary::ApplyGameplayEffectSpecToSelf(const AActor* TargetActor,
-    const FGameplayEffectSpec& EffectSpec)
+                                                                                        const FGameplayEffectSpec& EffectSpec)
 {
     // 지역 변수 정의
     auto TargetSystem = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(TargetActor);
@@ -236,37 +237,38 @@ TArray<FGameplayAbilitySpecHandle> UGGFBlueprintFunctionLibrary::GiveAbilitiesTo
     return AbilitySpecHandles;
 }
 
-void UGGFBlueprintFunctionLibrary::ApplyDamageToSelf(AActor* Target, TSubclassOf<UGameplayEffect> DamageClass,
-    float Damage, float DamageRatio, FGameplayTag DamageTypeTag)
+void UGGFBlueprintFunctionLibrary::ApplyDamageToSelf(AActor* Target, float Damage, float DamageRatio,
+    FGameplayTag DamageTypeTag, TSubclassOf<UGameplayEffect> DamageClass)
 {
-    if(Target && DamageClass)
-    {
-        if(UAbilitySystemComponent* TargetSystem = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(Target))
-        {
-            // 데미지 전용 GameplayEffectSpec 생성
-            FGameplayEffectContextHandle ContextHandle = TargetSystem->MakeEffectContext();
-            FGameplayEffectSpecHandle DamageSpecHandle = TargetSystem->MakeOutgoingSpec(DamageClass, DamageRatio, ContextHandle);
-            if(DamageTypeTag.IsValid()) DamageSpecHandle.Data->AddDynamicAssetTag(DamageTypeTag);
-            if(Damage > 0) DamageSpecHandle.Data->SetByCallerTagMagnitudes.Emplace(Data::Damage::Root, Damage);
+    // Target 유효성 검사
+    auto TargetSystem = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(Target);
+    if(TargetSystem == nullptr) return;
 
-            // 데미지 적용
-            TargetSystem->ApplyGameplayEffectSpecToSelf(*DamageSpecHandle.Data.Get());
-        }
-    }
-}
+    // DamageClass 유효성 검사 (null인 경우 기본 데미지 클래스 사용)
+    if(DamageClass == nullptr) DamageClass = UGGFDamageBase::StaticClass();
 
-void UGGFBlueprintFunctionLibrary::ApplyDamageToTarget(AActor* Source, AActor* Target,
-    TSubclassOf<UGameplayEffect> DamageClass, float Damage, float DamageRatio, FGameplayTag DamageTypeTag)
-{
-    // 지역 변수 선언
-    UAbilitySystemComponent* SourceSystem = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(Source);
-    UAbilitySystemComponent* TargetSystem = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(Target);
-
-    // 유효성 검사
-    if(TargetSystem == nullptr || DamageClass == nullptr) return;
+    // 데미지 전용 GameplayEffectSpec 생성
+    FGameplayEffectContextHandle ContextHandle = TargetSystem->MakeEffectContext();
+    FGameplayEffectSpecHandle DamageSpecHandle = TargetSystem->MakeOutgoingSpec(DamageClass, DamageRatio, ContextHandle);
+    if(DamageTypeTag.IsValid()) DamageSpecHandle.Data->AddDynamicAssetTag(DamageTypeTag);
+    if(Damage > 0) DamageSpecHandle.Data->SetByCallerTagMagnitudes.Emplace(Data::Damage::Root, Damage);
 
     // 데미지 적용
-    if(SourceSystem)
+    TargetSystem->ApplyGameplayEffectSpecToSelf(*DamageSpecHandle.Data.Get());
+}
+
+void UGGFBlueprintFunctionLibrary::ApplyDamageToTarget(AActor* Source, AActor* Target, float Damage, float DamageRatio,
+    FGameplayTag DamageTypeTag, TSubclassOf<UGameplayEffect> DamageClass)
+{
+    // Target 유효성 검사
+    auto TargetSystem = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(Target);
+    if(TargetSystem == nullptr) return;
+
+    // 데미지 클래스 유효성 검사 (null인 경우 기본 데미지 클래스 사용)
+    if(DamageClass == nullptr) DamageClass = UGGFDamageBase::StaticClass();
+
+    // 데미지 적용
+    if(auto SourceSystem = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(Source))
     {
         // 데미지 전용 GameplayEffectSpec 생성
         FGameplayEffectContextHandle ContextHandle = SourceSystem->MakeEffectContext();
@@ -282,7 +284,7 @@ void UGGFBlueprintFunctionLibrary::ApplyDamageToTarget(AActor* Source, AActor* T
 #if WITH_EDITOR
         LOG(Warning, TEXT("%s::%s > SourceSystem is null"), *StaticClass()->GetName(), *FString(__func__))
 #endif
-        ApplyDamageToSelf(Target, DamageClass, Damage, DamageRatio, DamageTypeTag);
+        ApplyDamageToSelf(Target, Damage, DamageRatio, DamageTypeTag, DamageClass);
     }
 }
 
