@@ -4,7 +4,7 @@
 
 #include "AbilitySystemGlobals.h"
 #include "GGFGameplayTags.h"
-#include "AbilitySystem/GEAbilitySystem.h"
+#include "AbilitySystem/GGFAbilitySystem.h"
 #include "GameFramework/Character.h"
 
 void UGEGameplayEventAction::SetOwner(AActor* NewOwner)
@@ -48,7 +48,7 @@ void UGEGameplayEventManager::InitializeComponent()
 {
     Super::InitializeComponent();
 
-    if(UGEAbilitySystem* AbilitySystem = Cast<UGEAbilitySystem>(UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(GetOwner())))
+    if(auto AbilitySystem = Cast<UGGFAbilitySystem>(UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(GetOwner())))
     {
         // 멀티캐스트 게임플레이 이벤트 기능 활성화 및 바인딩
         AbilitySystem->bUseMulticastGameplayEvent = true;

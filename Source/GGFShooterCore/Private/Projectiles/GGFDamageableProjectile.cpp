@@ -3,6 +3,7 @@
 #include "Projectiles/GGFDamageableProjectile.h"
 
 #include "GEBlueprintFunctionLibrary.h"
+#include "GGFBlueprintFunctionLibrary.h"
 #include "GameplayEffects/GEDamageBase.h"
 #include "GGFGameplayTags.h"
 
@@ -32,12 +33,12 @@ void AGGFDamageableProjectile::ApplyEffects(AActor* Target)
         if(GetInstigator())
         {
             UGEBlueprintFunctionLibrary::ApplyDamageToTarget(GetInstigator(), Target, DamageClass, FixedDamage, DamageRatio, DamageType.Tag);
-            UGEBlueprintFunctionLibrary::ApplyGameplayEffectsToTarget(AdditionalEffects, GetInstigator(), Target);
+            UGGFBlueprintFunctionLibrary::ApplyGameplayEffectsToTarget(GetInstigator(), Target, AdditionalEffects);
         }
         else
         {
             UGEBlueprintFunctionLibrary::ApplyDamageToSelf(Target, DamageClass, FixedDamage, DamageRatio, DamageType.Tag);
-            UGEBlueprintFunctionLibrary::ApplyGameplayEffectsToSelf(AdditionalEffects, Target);
+            UGGFBlueprintFunctionLibrary::ApplyGameplayEffectsToSelf(Target, AdditionalEffects);
         }
     }
 }

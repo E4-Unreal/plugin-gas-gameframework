@@ -3,6 +3,7 @@
 #include "Components/GGFExplosiveComponent.h"
 
 #include "GEBlueprintFunctionLibrary.h"
+#include "GGFBlueprintFunctionLibrary.h"
 #include "Logging.h"
 #include "Components/SphereComponent.h"
 #include "GameplayEffects/GEDamageBase.h"
@@ -197,6 +198,6 @@ void UGGFExplosiveComponent::ApplyEffects(AActor* Target)
     // 추가 이펙트 적용
     if(DamageRatio > 0)
     {
-        UGEBlueprintFunctionLibrary::ApplyGameplayEffectsToTarget(AdditionalEffects, Instigator, Target);
+        UGGFBlueprintFunctionLibrary::ApplyGameplayEffectsToTarget(Instigator, Target, AdditionalEffects);
     }
 }

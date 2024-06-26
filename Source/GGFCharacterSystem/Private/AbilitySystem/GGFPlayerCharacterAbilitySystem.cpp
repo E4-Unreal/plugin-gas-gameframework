@@ -1,11 +1,11 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
-#include "AbilitySystem/GGFPlayerAbilitySystem.h"
+#include "AbilitySystem/GGFPlayerCharacterAbilitySystem.h"
 
 #include "Abilities/GGFGA_Interact.h"
 #include "Abilities/GGFGA_Sprint.h"
 
-UGGFPlayerAbilitySystem::UGGFPlayerAbilitySystem()
+UGGFPlayerCharacterAbilitySystem::UGGFPlayerCharacterAbilitySystem()
 {
     /* 기본 어빌리티 설정 */
     Abilities.AddUnique(UGGFGA_Interact::StaticClass()); // 상호작용

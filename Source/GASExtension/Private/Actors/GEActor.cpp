@@ -2,7 +2,7 @@
 
 #include "Actors/GEActor.h"
 
-#include "AbilitySystem/GEAbilitySystem.h"
+#include "AbilitySystem/GGFAbilitySystem.h"
 #include "Components/GEGameplayEventManager.h"
 #include "Components/GGFGameplayStateMachine.h"
 
@@ -13,9 +13,9 @@ FName AGEActor::GameplayStateMachineName(TEXT("GameplayStateMachine"));
 AGEActor::AGEActor(const FObjectInitializer& ObjectInitializer)
 {
     bReplicates = true;
-    
+
     /* AbilitySystem */
-    AbilitySystem = CreateDefaultSubobject<UGEAbilitySystem>(AbilitySystemName);
+    AbilitySystem = CreateDefaultSubobject<UGGFAbilitySystem>(AbilitySystemName);
 
     /* GameplayEventManager */
     GameplayEventManager = CreateDefaultSubobject<UGEGameplayEventManager>(GameplayEventManagerName);

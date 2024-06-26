@@ -3,8 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GEAbilitySystem.h"
-#include "GEDamageableAbilitySystem.generated.h"
+#include "GGFAbilitySystem.h"
+#include "GGFDamageableAbilitySystem.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDeadSignature);
 
@@ -12,7 +12,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDeadSignature);
  * 체력 어트리뷰트가 기본적으로 등록되어 있으며 체력 어트리뷰트 값이 0이 되면 죽음 관련 이벤트가 호출됩니다.
  */
 UCLASS()
-class GASEXTENSION_API UGEDamageableAbilitySystem : public UGEAbilitySystem
+class GGFCORE_API UGGFDamageableAbilitySystem : public UGGFAbilitySystem
 {
     GENERATED_BODY()
 
@@ -25,7 +25,7 @@ public:
     float MaxHealth = 100;
 
 public:
-    UGEDamageableAbilitySystem();
+    UGGFDamageableAbilitySystem();
 
     /* API */
     UFUNCTION(BlueprintPure)

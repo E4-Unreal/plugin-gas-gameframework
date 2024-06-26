@@ -1,23 +1,23 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
-#include "AbilitySystem/GEDamageableAbilitySystem.h"
+#include "AbilitySystem/GGFDamageableAbilitySystem.h"
 
 #include "GGFGameplayTags.h"
 #include "Logging.h"
 #include "Attributes/GGFHealthAttributes.h"
 
-UGEDamageableAbilitySystem::UGEDamageableAbilitySystem()
+UGGFDamageableAbilitySystem::UGGFDamageableAbilitySystem()
 {
     // 체력 어트리뷰트 추가
     Attributes.AddUnique(UGGFHealthAttributes::StaticClass());
 }
 
-bool UGEDamageableAbilitySystem::IsDead() const
+bool UGGFDamageableAbilitySystem::IsDead() const
 {
     return HasMatchingGameplayTag(State::Dead);
 }
 
-void UGEDamageableAbilitySystem::LocalInitializeComponent_Implementation()
+void UGGFDamageableAbilitySystem::LocalInitializeComponent_Implementation()
 {
     Super::LocalInitializeComponent_Implementation();
 
@@ -29,7 +29,7 @@ void UGEDamageableAbilitySystem::LocalInitializeComponent_Implementation()
     OnGameplayEffectTagCountChanged.AddUObject(this, &ThisClass::OnDeadTagAdded);
 }
 
-void UGEDamageableAbilitySystem::ServerInitializeComponent_Implementation()
+void UGGFDamageableAbilitySystem::ServerInitializeComponent_Implementation()
 {
     Super::ServerInitializeComponent_Implementation();
 
@@ -37,7 +37,7 @@ void UGEDamageableAbilitySystem::ServerInitializeComponent_Implementation()
     RegisterHealthValueChangeEvent();
 
     // 체력 어트리뷰트 초기화
-    FGEAttributeContainer HealthAttributeContainer
+    FGGFAttributeContainer HealthAttributeContainer
     {
         UGGFHealthAttributes::GetHealthAttribute(),
         UGGFHealthAttributes::GetMaxHealthAttribute(),
@@ -47,7 +47,7 @@ void UGEDamageableAbilitySystem::ServerInitializeComponent_Implementation()
     InitAttribute(HealthAttributeContainer, MaxHealth);
 }
 
-void UGEDamageableAbilitySystem::InternalOnDead_Implementation()
+void UGGFDamageableAbilitySystem::InternalOnDead_Implementation()
 {
 #if WITH_EDITOR
     FString Role = "None";
@@ -66,11 +66,12 @@ void UGEDamageableAbilitySystem::InternalOnDead_Implementation()
         Role = "None";
     break;
     }
-    UE_LOG(LogGASExtension, Log, TEXT("%s > %s > %s::%s"),*Role, *GetOwner()->GetName(), *StaticClass()->GetName(), *FString(__func__))
+
+    LOG_ACTOR_COMPONENT_DETAIL(Log, TEXT(""))
 #endif
 }
 
-void UGEDamageableAbilitySystem::RegisterHealthValueChangeEvent()
+void UGGFDamageableAbilitySystem::RegisterHealthValueChangeEvent()
 {
     FOnGameplayAttributeValueChange& Delegate = GetGameplayAttributeValueChangeDelegate(UGGFHealthAttributes::GetHealthAttribute());
     Delegate.AddLambda([this](const FOnAttributeChangeData& OnAttributeChangeData)
@@ -87,7 +88,7 @@ void UGEDamageableAbilitySystem::RegisterHealthValueChangeEvent()
     });
 }
 
-void UGEDamageableAbilitySystem::OnDeadTagAdded(const FGameplayTag Tag, int32 Count)
+void UGGFDamageableAbilitySystem::OnDeadTagAdded(const FGameplayTag Tag, int32 Count)
 {
     // 죽음 이벤트 호출
     if(Count == 1) OnDead.Broadcast();

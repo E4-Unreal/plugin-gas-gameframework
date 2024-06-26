@@ -4,7 +4,7 @@
 
 #include "EnhancedInputSubsystems.h"
 #include "GGFWeapon.h"
-#include "AbilitySystem/GGFPlayerAbilitySystem.h"
+#include "AbilitySystem/GGFPlayerCharacterAbilitySystem.h"
 #include "Components/GGFCharacterManager.h"
 #include "Components/GGFCharacterMovement.h"
 #include "Components/GGFCharacterSkinManager.h"
@@ -22,7 +22,7 @@ FName AGGFPlayerCharacter::InteractionManagerName(TEXT("InteractionManager"));
 AGGFPlayerCharacter::AGGFPlayerCharacter(const FObjectInitializer& ObjectInitializer)
 : Super(ObjectInitializer
     .SetDefaultSubobjectClass<UGGFCharacterMovement>(CharacterMovementComponentName)
-    .SetDefaultSubobjectClass<UGGFPlayerAbilitySystem>(AbilitySystemName)
+    .SetDefaultSubobjectClass<UGGFPlayerCharacterAbilitySystem>(AbilitySystemName)
     .SetDefaultSubobjectClass<UGGFInputManager>(InputManagerName)
     .SetDefaultSubobjectClass<UGGFCharacterStateMachine>(GameplayStateMachineName))
 {

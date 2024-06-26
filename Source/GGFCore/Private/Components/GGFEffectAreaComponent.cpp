@@ -3,7 +3,7 @@
 #include "Components/GGFEffectAreaComponent.h"
 
 #include "AbilitySystemGlobals.h"
-#include "GGFCore/GGFBlueprintFunctionLibrary.h"
+#include "GGFBlueprintFunctionLibrary.h"
 
 UGGFEffectAreaComponent::UGGFEffectAreaComponent()
 {

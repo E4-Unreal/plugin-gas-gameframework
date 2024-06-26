@@ -3,17 +3,17 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "AbilitySystem/GEPlayerAbilitySystem.h"
-#include "GGFPlayerAbilitySystem.generated.h"
+#include "AbilitySystem/GGFPlayerAbilitySystem.h"
+#include "GGFPlayerCharacterAbilitySystem.generated.h"
 
 /**
  * GASGameFramework에서 작성된 기본 어빌리티가 설정되어있는 플레이어 전용 ASC
  */
 UCLASS()
-class GGFCHARACTERSYSTEM_API UGGFPlayerAbilitySystem : public UGEPlayerAbilitySystem
+class GGFCHARACTERSYSTEM_API UGGFPlayerCharacterAbilitySystem : public UGGFPlayerAbilitySystem
 {
     GENERATED_BODY()
 
 public:
-    UGGFPlayerAbilitySystem();
+    UGGFPlayerCharacterAbilitySystem();
 };

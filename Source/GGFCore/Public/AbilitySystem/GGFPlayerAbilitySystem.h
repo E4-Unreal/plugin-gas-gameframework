@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GEDamageableAbilitySystem.h"
-#include "GEPlayerAbilitySystem.generated.h"
+#include "GGFDamageableAbilitySystem.h"
+#include "GGFPlayerAbilitySystem.generated.h"
 
 /**
  * 플레이어 캐릭터 전용 ASC로 어빌리티 입력 관련 기능이 포함되어 있습니다.
  */
 UCLASS()
-class GASEXTENSION_API UGEPlayerAbilitySystem : public UGEDamageableAbilitySystem
+class GGFCORE_API UGGFPlayerAbilitySystem : public UGGFDamageableAbilitySystem
 {
     GENERATED_BODY()
 

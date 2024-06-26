@@ -2,7 +2,7 @@
 
 #include "Actors/GGFEnergyShield.h"
 
-#include "AbilitySystem/GEDamageableAbilitySystem.h"
+#include "AbilitySystem/GGFDamageableAbilitySystem.h"
 
 AGGFEnergyShield::AGGFEnergyShield(const FObjectInitializer& ObjectInitializer)
     : Super(ObjectInitializer)
@@ -11,7 +11,7 @@ AGGFEnergyShield::AGGFEnergyShield(const FObjectInitializer& ObjectInitializer)
     GetDisplayMesh()->SetCollisionProfileName("IgnoreOnlyPawn");
 
     /* DamageableAbilitySystem */
-    if(auto CastedAbilitySystem = Cast<UGEDamageableAbilitySystem>(GetAbilitySystem()))
+    if(auto CastedAbilitySystem = Cast<UGGFDamageableAbilitySystem>(GetAbilitySystem()))
     {
         CastedAbilitySystem->MaxHealth = 500;
     }

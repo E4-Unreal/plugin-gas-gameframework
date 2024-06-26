@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "AbilitySystemComponent.h"
-#include "GEAbilitySystem.generated.h"
+#include "GGFAbilitySystem.generated.h"
 
 /**
  * 체력, 마나, 기력처럼 캐릭터 특성 정보는 일반적으로 Max, Current, RegenRate 3가지로 구성되어 있습니다.
  */
 USTRUCT(BlueprintType)
-struct FGEAttributeContainer
+struct FGGFAttributeContainer
 {
     GENERATED_BODY()
 
@@ -35,7 +35,7 @@ class UGGFStatsBase;
  * - HandleGameplayEvent를 확장하여 EventTag 멀티캐스트 기능을 추가하였습니다.
  */
 UCLASS(Blueprintable, meta=(BlueprintSpawnableComponent))
-class GASEXTENSION_API UGEAbilitySystem : public UAbilitySystemComponent
+class GGFCORE_API UGGFAbilitySystem : public UAbilitySystemComponent
 {
     GENERATED_BODY()
 
@@ -70,7 +70,7 @@ protected:
     FGameplayTagContainer GameplayTags;
 
 public:
-    UGEAbilitySystem();
+    UGGFAbilitySystem();
 
     /* ActorComponent */
 
@@ -84,7 +84,7 @@ public:
     /* API */
 
     // 특성 초기화
-    virtual void InitAttribute(const FGEAttributeContainer& AttributeContainer, float MaxValue, float Ratio = 1, float RegenRate = 0);
+    virtual void InitAttribute(const FGGFAttributeContainer& AttributeContainer, float MaxValue, float Ratio = 1, float RegenRate = 0);
 
 protected:
     /* 이벤트 */

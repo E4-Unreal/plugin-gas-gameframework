@@ -5,7 +5,7 @@
 #include "AbilitySystemComponent.h"
 #include "AbilitySystemGlobals.h"
 #include "GameplayEffect.h"
-#include "GEBlueprintFunctionLibrary.h"
+#include "GGFBlueprintFunctionLibrary.h"
 #include "Components/GGFEquipmentDataManager.h"
 #include "Data/GGFEquipmentDefinition.h"
 
@@ -188,7 +188,7 @@ void AGGFEquipment::GiveAbilitiesToOwner(const TArray<TSubclassOf<UGameplayAbili
     if(!AbilitySpecHandles.IsEmpty()) AbilitySpecHandles.Reset();
 
     // 어빌리티 부여
-    AbilitySpecHandles = UGEBlueprintFunctionLibrary::GiveAbilitiesToSystem(AbilitiesToGive, GetOwnerAbilitySystem());
+    AbilitySpecHandles = UGGFBlueprintFunctionLibrary::GiveAbilitiesToSystem(AbilitiesToGive, GetOwnerAbilitySystem());
 }
 
 void AGGFEquipment::ClearAbilitiesFromOwner(TArray<FGameplayAbilitySpecHandle>& AbilitySpecHandles)
@@ -216,7 +216,7 @@ void AGGFEquipment::ApplyEffectsToOwner(const TArray<TSubclassOf<UGameplayEffect
     if(!EffectSpecHandles.IsEmpty()) EffectSpecHandles.Reset();
 
     // 게임플레이 이펙트 적용
-    EffectSpecHandles = UGEBlueprintFunctionLibrary::ApplyGameplayEffectsToSystem(EffectsToApply, GetOwnerAbilitySystem());
+    EffectSpecHandles = UGGFBlueprintFunctionLibrary::ApplyGameplayEffectsToSelf(this, EffectsToApply);
 }
 
 void AGGFEquipment::RemoveEffectsFromOwner(TArray<FActiveGameplayEffectHandle>& EffectSpecHandles)

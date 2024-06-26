@@ -1,16 +1,16 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
-#include "AbilitySystem/GEAbilitySystem.h"
+#include "AbilitySystem/GGFAbilitySystem.h"
 
-#include "GEBlueprintFunctionLibrary.h"
 #include "GGFGameplayTags.h"
+#include "GGFBlueprintFunctionLibrary.h"
 
-UGEAbilitySystem::UGEAbilitySystem()
+UGGFAbilitySystem::UGGFAbilitySystem()
 {
     bWantsInitializeComponent = true;
 }
 
-void UGEAbilitySystem::InitializeComponent()
+void UGGFAbilitySystem::InitializeComponent()
 {
     Super::InitializeComponent();
 
@@ -24,7 +24,7 @@ void UGEAbilitySystem::InitializeComponent()
     }
 }
 
-int32 UGEAbilitySystem::HandleGameplayEvent(FGameplayTag EventTag, const FGameplayEventData* Payload)
+int32 UGGFAbilitySystem::HandleGameplayEvent(FGameplayTag EventTag, const FGameplayEventData* Payload)
 {
     // 멀티캐스트 게임플레이 이벤트 사용 설정 및 서버 액터인지 확인
     if(bUseMulticastGameplayEvent && IsOwnerActorAuthoritative() && EventTag.MatchesTag(Event::Root))
@@ -35,7 +35,7 @@ int32 UGEAbilitySystem::HandleGameplayEvent(FGameplayTag EventTag, const FGamepl
     return Super::HandleGameplayEvent(EventTag, Payload);
 }
 
-void UGEAbilitySystem::InitAttribute(const FGEAttributeContainer& AttributeContainer, float MaxValue, float Ratio,
+void UGGFAbilitySystem::InitAttribute(const FGGFAttributeContainer& AttributeContainer, float MaxValue, float Ratio,
     float RegenRate)
 {
     MaxValue = FMath::Max(MaxValue, 0);
@@ -47,17 +47,17 @@ void UGEAbilitySystem::InitAttribute(const FGEAttributeContainer& AttributeConta
     SetNumericAttributeBase(AttributeContainer.AttributeRegenRate, RegenRate);
 }
 
-void UGEAbilitySystem::OnAbilitySpecDirtied(const FGameplayAbilitySpec& AbilitySpec)
+void UGGFAbilitySystem::OnAbilitySpecDirtied(const FGameplayAbilitySpec& AbilitySpec)
 {
 }
 
-void UGEAbilitySystem::ServerInitializeComponent_Implementation()
+void UGGFAbilitySystem::ServerInitializeComponent_Implementation()
 {
     // 이벤트 바인딩
-    AbilitySpecDirtiedCallbacks.AddUObject(this, &UGEAbilitySystem::OnAbilitySpecDirtied);
+    AbilitySpecDirtiedCallbacks.AddUObject(this, &UGGFAbilitySystem::OnAbilitySpecDirtied);
 
     // 기본 AttributeSet 생성 및 등록
-    UGEBlueprintFunctionLibrary::AddAttributeSetsToSystem(Attributes, this);
+    UGGFBlueprintFunctionLibrary::AddAttributeSetsToSystem(Attributes, this);
 
     // TODO 리팩토링
     // 기본 Stats 생성 및 등록
@@ -67,22 +67,22 @@ void UGEAbilitySystem::ServerInitializeComponent_Implementation()
     {
         CastedStats.Emplace(StatClass);
     }
-    UGEBlueprintFunctionLibrary::AddAttributeSetsToSystem(CastedStats, this);
+    UGGFBlueprintFunctionLibrary::AddAttributeSetsToSystem(CastedStats, this);
 
     // 기본 GameplayEffect 적용
-    UGEBlueprintFunctionLibrary::ApplyGameplayEffectsToSystem(Effects, this);
+    UGGFBlueprintFunctionLibrary::ApplyGameplayEffectsToSelf(GetOwner(), Effects);
 
     // 기본 GameplayAbility 부여
-    UGEBlueprintFunctionLibrary::GiveAbilitiesToSystem(Abilities, this);
+    UGGFBlueprintFunctionLibrary::GiveAbilitiesToSystem(Abilities, this);
 }
 
-void UGEAbilitySystem::LocalInitializeComponent_Implementation()
+void UGGFAbilitySystem::LocalInitializeComponent_Implementation()
 {
     // 기본 게임플레이 태그 부여
     AddLooseGameplayTags(GameplayTags);
 }
 
-void UGEAbilitySystem::NetMulticast_HandleGameplayEvent_Implementation(FGameplayTag EventTag)
+void UGGFAbilitySystem::NetMulticast_HandleGameplayEvent_Implementation(FGameplayTag EventTag)
 {
     OnGameplayEventInvoked.Broadcast(EventTag);
 }

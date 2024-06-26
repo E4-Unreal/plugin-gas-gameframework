@@ -5,12 +5,12 @@
 #include "EnhancedInputComponent.h"
 #include "Input/GEInputManager.h"
 
-class UGEPlayerAbilitySystem;
+class UGGFPlayerAbilitySystem;
 
 FName AGEPlayerPawn::InputManagerName(TEXT("InputManager"));
 
 AGEPlayerPawn::AGEPlayerPawn(const FObjectInitializer& ObjectInitializer)
-    : Super(ObjectInitializer.SetDefaultSubobjectClass<UGEPlayerAbilitySystem>(AbilitySystemName))
+    : Super(ObjectInitializer.SetDefaultSubobjectClass<UGGFPlayerAbilitySystem>(AbilitySystemName))
 {
     /* InputManager */
     InputManager = CreateDefaultSubobject<UGEInputManager>(InputManagerName);

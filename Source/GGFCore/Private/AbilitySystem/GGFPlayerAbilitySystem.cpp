@@ -1,12 +1,12 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
-#include "AbilitySystem/GEPlayerAbilitySystem.h"
+#include "AbilitySystem/GGFPlayerAbilitySystem.h"
 
 #include "GGFGameplayTags.h"
 #include "Abilities/GGFGameplayAbility.h"
 #include "Attributes/GGFHealthAttributes.h"
 
-void UGEPlayerAbilitySystem::PressInputTag(FGameplayTag InputTag)
+void UGGFPlayerAbilitySystem::PressInputTag(FGameplayTag InputTag)
 {
     // 디버깅을 위한 입력 태그를 추가합니다.
     if(!HasMatchingGameplayTag(InputTag)) AddLooseGameplayTag(InputTag);
@@ -14,7 +14,7 @@ void UGEPlayerAbilitySystem::PressInputTag(FGameplayTag InputTag)
     PressInputID(GetTypeHash(InputTag));
 }
 
-void UGEPlayerAbilitySystem::ReleaseInputTag(FGameplayTag InputTag)
+void UGGFPlayerAbilitySystem::ReleaseInputTag(FGameplayTag InputTag)
 {
     // 디버깅을 위한 입력 태그를 제거합니다.
     if(HasMatchingGameplayTag(InputTag)) RemoveLooseGameplayTag(InputTag);
@@ -22,7 +22,7 @@ void UGEPlayerAbilitySystem::ReleaseInputTag(FGameplayTag InputTag)
     ReleaseInputID(GetTypeHash(InputTag));
 }
 
-void UGEPlayerAbilitySystem::OnGiveAbility(FGameplayAbilitySpec& AbilitySpec)
+void UGGFPlayerAbilitySystem::OnGiveAbility(FGameplayAbilitySpec& AbilitySpec)
 {
     Super::OnGiveAbility(AbilitySpec);
 
@@ -38,7 +38,7 @@ void UGEPlayerAbilitySystem::OnGiveAbility(FGameplayAbilitySpec& AbilitySpec)
     }
 }
 
-void UGEPlayerAbilitySystem::OnAbilitySpecDirtied(const FGameplayAbilitySpec& AbilitySpec)
+void UGGFPlayerAbilitySystem::OnAbilitySpecDirtied(const FGameplayAbilitySpec& AbilitySpec)
 {
     Super::OnAbilitySpecDirtied(AbilitySpec);
 

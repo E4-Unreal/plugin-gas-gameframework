@@ -3,10 +3,10 @@
 #include "Actors/GEDamageableActor.h"
 
 #include "AbilitySystemComponent.h"
-#include "AbilitySystem/GEDamageableAbilitySystem.h"
+#include "AbilitySystem/GGFDamageableAbilitySystem.h"
 
 AGEDamageableActor::AGEDamageableActor(const FObjectInitializer& ObjectInitializer)
-    : Super(ObjectInitializer.SetDefaultSubobjectClass<UGEDamageableAbilitySystem>(AbilitySystemName))
+    : Super(ObjectInitializer.SetDefaultSubobjectClass<UGGFDamageableAbilitySystem>(AbilitySystemName))
 {
 
 }
@@ -16,7 +16,7 @@ void AGEDamageableActor::OnBindEvents()
     Super::OnBindEvents();
 
     // OnDead
-    if(auto CastedAbilitySystem = Cast<UGEDamageableAbilitySystem>(GetAbilitySystem()))
+    if(auto CastedAbilitySystem = Cast<UGGFDamageableAbilitySystem>(GetAbilitySystem()))
     {
         CastedAbilitySystem->OnDead.AddDynamic(this, &ThisClass::OnDead);
     }

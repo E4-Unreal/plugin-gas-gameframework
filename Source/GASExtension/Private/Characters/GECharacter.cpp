@@ -2,7 +2,7 @@
 
 #include "Characters/GECharacter.h"
 
-#include "AbilitySystem/GEDamageableAbilitySystem.h"
+#include "AbilitySystem/GGFDamageableAbilitySystem.h"
 #include "Components/GEGameplayEventManager.h"
 #include "Components/GGFPawnStateMachine.h"
 
@@ -15,7 +15,7 @@ AGECharacter::AGECharacter(const FObjectInitializer& ObjectInitializer)
     bReplicates = true;
 
     /* AbilitySystem */
-    AbilitySystem = CreateDefaultSubobject<UGEDamageableAbilitySystem>(AbilitySystemName);
+    AbilitySystem = CreateDefaultSubobject<UGGFDamageableAbilitySystem>(AbilitySystemName);
 
     /* GameplayEventManager */
     GameplayEventManager = CreateDefaultSubobject<UGEGameplayEventManager>(GameplayEventManagerName);
@@ -54,7 +54,7 @@ void AGECharacter::BindEvents()
 void AGECharacter::OnBindEvents()
 {
     // OnDead
-    if(auto CastedAbilitySystem = Cast<UGEDamageableAbilitySystem>(GetAbilitySystem()))
+    if(auto CastedAbilitySystem = Cast<UGGFDamageableAbilitySystem>(GetAbilitySystem()))
     {
         CastedAbilitySystem->OnDead.AddDynamic(this, &ThisClass::OnDead);
     }

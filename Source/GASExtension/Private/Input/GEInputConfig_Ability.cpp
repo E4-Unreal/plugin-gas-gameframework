@@ -5,12 +5,12 @@
 
 #include "AbilitySystemGlobals.h"
 #include "EnhancedInputComponent.h"
-#include "AbilitySystem/GEPlayerAbilitySystem.h"
+#include "AbilitySystem/GGFPlayerAbilitySystem.h"
 
 void UGEInputConfig_Ability::OnBindEnhancedInput(UEnhancedInputComponent* EnhancedInputComponent)
 {
     // AbilitySystem 유효성 검사
-    UGEPlayerAbilitySystem* AbilitySystem = Cast<UGEPlayerAbilitySystem>(UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(EnhancedInputComponent->GetOwner()));
+    UGGFPlayerAbilitySystem* AbilitySystem = Cast<UGGFPlayerAbilitySystem>(UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(EnhancedInputComponent->GetOwner()));
     if(AbilitySystem == nullptr) return;
 
     // 어빌리티 입력 바인딩
@@ -25,7 +25,7 @@ void UGEInputConfig_Ability::OnBindEnhancedInput(UEnhancedInputComponent* Enhanc
             InputAction,
             ETriggerEvent::Triggered,
             AbilitySystem,
-            &UGEPlayerAbilitySystem::PressInputTag,
+            &UGGFPlayerAbilitySystem::PressInputTag,
             InputTag
             );
 
@@ -34,7 +34,7 @@ void UGEInputConfig_Ability::OnBindEnhancedInput(UEnhancedInputComponent* Enhanc
             InputAction,
             ETriggerEvent::Completed,
             AbilitySystem,
-            &UGEPlayerAbilitySystem::ReleaseInputTag,
+            &UGGFPlayerAbilitySystem::ReleaseInputTag,
             InputTag
             );
     }
