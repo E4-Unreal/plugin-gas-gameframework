@@ -96,10 +96,10 @@ bool UGGFDamageCalculation::HasImmunity(UAbilitySystemComponent* TargetASC, cons
 
 FGGFDamageTypeTag UGGFDamageCalculation::GetDamageTypeTag(const FGameplayEffectSpec& Spec) const
 {
-    FGameplayTagContainer DamageTypeTags = FGameplayTagContainer(Damage::Type::Root);
+    FGameplayTagContainer DamageTypeTags = FGameplayTagContainer(Data::Damage::Type::Root);
     const FGameplayTagContainer& SpecTags = Spec.CapturedSourceTags.GetSpecTags();
     DamageTypeTags = SpecTags.Filter(DamageTypeTags);
-    DamageTypeTags.RemoveTag(Damage::Type::Root);
+    DamageTypeTags.RemoveTag(Data::Damage::Type::Root);
 
     return DamageTypeTags.IsEmpty() ? FGameplayTag::EmptyTag : DamageTypeTags.First();
 }
@@ -110,21 +110,26 @@ float UGGFDamageCalculation::CalculateTotalDamage(const FGameplayEffectCustomExe
     // 지역 변수 선언
     const FGameplayEffectSpec& OwningSpec = ExecutionParams.GetOwningSpec();
     float TotalDamage = 0;
+    float GenericDamage = OwningSpec.GetSetByCallerMagnitude(Data::Damage::Root);
+    float TrueDamage = OwningSpec.GetSetByCallerMagnitude(Data::Damage::True);
+    float StatsDamage = GenericDamage;
 
-    // 스탯 계산이 필요한지 확인
-    if(SourceSystem != TargetSystem)
+    // Target 스탯 가져오기
+    const float TargetDefense = TargetSystem->GetNumericAttribute(UGGFDefenseStats::GetDefenseAttribute());
+
+    // Source 검사
+    if(SourceSystem && SourceSystem != TargetSystem)
     {
-        // 스탯 계산
+        // Source 스탯 가져오기
         const float SourceAttack = SourceSystem->GetNumericAttribute(UGGFAttackStats::GetAttackAttribute());
-        const float TargetDefense = TargetSystem->GetNumericAttribute(UGGFDefenseStats::GetDefenseAttribute());
-        TotalDamage = FMath::Max(0, SourceAttack - TargetDefense);
+        StatsDamage += SourceAttack;
     }
 
-    const float StatsDamage = TotalDamage;
+    // 스탯 데미지 계산
+    StatsDamage = FMath::Max(0, StatsDamage - TargetDefense);
 
-    // 고정 피해량 추가
-    const float FixedDamage = OwningSpec.GetSetByCallerMagnitude(Damage::Root);
-    TotalDamage += FixedDamage;
+    // 총 데미지 계산
+    TotalDamage = StatsDamage + TrueDamage;
 
     // 데미지 배율 적용
     const float DamageRatio = OwningSpec.GetLevel() == UGameplayEffect::INVALID_LEVEL ? 1 : OwningSpec.GetLevel();
@@ -134,7 +139,7 @@ float UGGFDamageCalculation::CalculateTotalDamage(const FGameplayEffectCustomExe
     TotalDamage = FMath::Max(TotalDamage, 0);
 
 #if WITH_EDITOR
-    LOG(Log, TEXT("%s Take Damage From %s: TotalDamage(%f) = (StatsDamage(%f) + FixedDamage(%f)) * DamageRatio(%f)"), *TargetSystem->GetAvatarActor()->GetName(), *SourceSystem->GetAvatarActor()->GetName(), TotalDamage, StatsDamage, FixedDamage, DamageRatio)
+    LOG(Log, TEXT("%s Take Damage From %s: TotalDamage(%f) = (StatsDamage(%f) + TrueDamage(%f)) * DamageRatio(%f)"), *TargetSystem->GetAvatarActor()->GetName(), *SourceSystem->GetAvatarActor()->GetName(), TotalDamage, StatsDamage, TrueDamage, DamageRatio)
 #endif
 
     return TotalDamage;

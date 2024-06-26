@@ -13,7 +13,7 @@ AGGFDamageableProjectile::AGGFDamageableProjectile(const FObjectInitializer& Obj
 {
     DamageClass = UGGFDamageBase::StaticClass();
     FixedDamage = 10;
-    DamageType = Damage::Type::Default;
+    DamageType = Data::Damage::Type::Default;
 }
 
 void AGGFDamageableProjectile::OnSphereColliderHit_Implementation(UPrimitiveComponent* HitComponent, AActor* OtherActor,

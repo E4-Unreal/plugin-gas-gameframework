@@ -9,6 +9,13 @@ namespace GGFGameplayTags
         {
             UE_DEFINE_GAMEPLAY_TAG_COMMENT(Root, "Data.Damage", "일반 데미지")
             UE_DEFINE_GAMEPLAY_TAG_COMMENT(True, "Data.Damage.True", "고정 데미지")
+
+            namespace Type
+            {
+                UE_DEFINE_GAMEPLAY_TAG_COMMENT(Root, "Data.Damage.Type", "데미지 타입")
+                UE_DEFINE_GAMEPLAY_TAG_COMMENT(Default, "Data.Damage.Type.Default", "기본 데미지 타입")
+                UE_DEFINE_GAMEPLAY_TAG_COMMENT(Test, "Data.Damage.Type.Test", "테스트 전용 데미지 타입")
+            }
         }
 
         namespace Attribute
@@ -98,19 +105,6 @@ namespace GGFGameplayTags
     {
         UE_DEFINE_GAMEPLAY_TAG_COMMENT(Root, "Event", "게임플레이 이벤트")
         UE_DEFINE_GAMEPLAY_TAG_COMMENT(Test, "Event.Test", "테스트 전용 게임플레이 이벤트")
-    }
-
-    /* 데미지 */
-    namespace Damage
-    {
-        UE_DEFINE_GAMEPLAY_TAG_COMMENT(Root, "Damage", "데미지")
-
-        namespace Type
-        {
-            UE_DEFINE_GAMEPLAY_TAG_COMMENT(Root, "Damage.Type", "데미지 타입")
-            UE_DEFINE_GAMEPLAY_TAG_COMMENT(Default, "Damage.Type.Default", "기본 데미지 타입")
-            UE_DEFINE_GAMEPLAY_TAG_COMMENT(Test, "Damage.Type.Test", "테스트 전용 데미지 타입")
-        }
     }
 
     /* 버프 */

@@ -11,6 +11,13 @@ namespace GGFGameplayTags
         {
             GGFCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Root)
             GGFCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(True)
+
+            namespace Type
+            {
+                GGFCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Root)
+                GGFCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Default)
+                GGFCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Test)
+            }
         }
 
         namespace Attribute
@@ -100,19 +107,6 @@ namespace GGFGameplayTags
     {
         GGFCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Root) // 루트
         GGFCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Test) // 테스트 전용
-    }
-
-    /* 데미지 */
-    namespace Damage
-    {
-        GGFCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Root) // 루트
-
-        namespace Type
-        {
-            GGFCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Root) // 루트
-            GGFCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Default) // 기본
-            GGFCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Test) // 테스트 전용
-        }
     }
 
     /* 버프 */

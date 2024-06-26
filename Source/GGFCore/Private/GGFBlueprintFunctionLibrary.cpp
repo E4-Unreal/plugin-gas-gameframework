@@ -247,7 +247,7 @@ void UGGFBlueprintFunctionLibrary::ApplyDamageToSelf(AActor* Target, TSubclassOf
             FGameplayEffectContextHandle ContextHandle = TargetSystem->MakeEffectContext();
             FGameplayEffectSpecHandle DamageSpecHandle = TargetSystem->MakeOutgoingSpec(DamageClass, DamageRatio, ContextHandle);
             if(DamageTypeTag.IsValid()) DamageSpecHandle.Data->AddDynamicAssetTag(DamageTypeTag);
-            if(Damage > 0) DamageSpecHandle.Data->SetByCallerTagMagnitudes.Emplace(Damage::Root, Damage);
+            if(Damage > 0) DamageSpecHandle.Data->SetByCallerTagMagnitudes.Emplace(Data::Damage::Root, Damage);
 
             // 데미지 적용
             TargetSystem->ApplyGameplayEffectSpecToSelf(*DamageSpecHandle.Data.Get());
@@ -272,7 +272,7 @@ void UGGFBlueprintFunctionLibrary::ApplyDamageToTarget(AActor* Source, AActor* T
         FGameplayEffectContextHandle ContextHandle = SourceSystem->MakeEffectContext();
         FGameplayEffectSpecHandle DamageSpecHandle = SourceSystem->MakeOutgoingSpec(DamageClass, DamageRatio, ContextHandle);
         if(DamageTypeTag.IsValid()) DamageSpecHandle.Data->AddDynamicAssetTag(DamageTypeTag);
-        DamageSpecHandle.Data->SetByCallerTagMagnitudes.Emplace(Damage::Root, FMath::Max(Damage, 0));
+        DamageSpecHandle.Data->SetByCallerTagMagnitudes.Emplace(Data::Damage::Root, FMath::Max(Damage, 0));
 
         // 적용
         SourceSystem->ApplyGameplayEffectSpecToTarget(*DamageSpecHandle.Data.Get(), TargetSystem);
