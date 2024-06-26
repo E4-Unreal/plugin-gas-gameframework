@@ -1,16 +1,16 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
-#include "Actors/GEActor.h"
+#include "Actors/GGFActor.h"
 
 #include "AbilitySystem/GGFAbilitySystem.h"
-#include "Components/GEGameplayEventManager.h"
+#include "Components/GGFGameplayEventManager.h"
 #include "Components/GGFGameplayStateMachine.h"
 
-FName AGEActor::AbilitySystemName(TEXT("AbilitySystem"));
-FName AGEActor::GameplayEventManagerName(TEXT("GameplayEventManager"));
-FName AGEActor::GameplayStateMachineName(TEXT("GameplayStateMachine"));
+FName AGGFActor::AbilitySystemName(TEXT("AbilitySystem"));
+FName AGGFActor::GameplayEventManagerName(TEXT("GameplayEventManager"));
+FName AGGFActor::GameplayStateMachineName(TEXT("GameplayStateMachine"));
 
-AGEActor::AGEActor(const FObjectInitializer& ObjectInitializer)
+AGGFActor::AGGFActor(const FObjectInitializer& ObjectInitializer)
 {
     bReplicates = true;
 
@@ -18,13 +18,13 @@ AGEActor::AGEActor(const FObjectInitializer& ObjectInitializer)
     AbilitySystem = CreateDefaultSubobject<UGGFAbilitySystem>(AbilitySystemName);
 
     /* GameplayEventManager */
-    GameplayEventManager = CreateDefaultSubobject<UGEGameplayEventManager>(GameplayEventManagerName);
+    GameplayEventManager = CreateDefaultSubobject<UGGFGameplayEventManager>(GameplayEventManagerName);
 
     /* GameplayStateMachine */
     GameplayStateMachine = CreateDefaultSubobject<UGGFGameplayStateMachine>(GameplayStateMachineName);
 }
 
-void AGEActor::PostInitializeComponents()
+void AGGFActor::PostInitializeComponents()
 {
     Super::PostInitializeComponents();
 
@@ -32,7 +32,7 @@ void AGEActor::PostInitializeComponents()
     BindEvents();
 }
 
-void AGEActor::BindEvents()
+void AGGFActor::BindEvents()
 {
     if(HasAuthority())
     {
@@ -42,10 +42,10 @@ void AGEActor::BindEvents()
     OnBindEvents();
 }
 
-void AGEActor::OnBindEvents()
+void AGGFActor::OnBindEvents()
 {
 }
 
-void AGEActor::OnServerBindEvents()
+void AGGFActor::OnServerBindEvents()
 {
 }

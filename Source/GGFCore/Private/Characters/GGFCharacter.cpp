@@ -1,16 +1,16 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
-#include "Characters/GECharacter.h"
+#include "Characters/GGFCharacter.h"
 
 #include "AbilitySystem/GGFDamageableAbilitySystem.h"
-#include "Components/GEGameplayEventManager.h"
+#include "Components/GGFGameplayEventManager.h"
 #include "Components/GGFPawnStateMachine.h"
 
-FName AGECharacter::AbilitySystemName(TEXT("AbilitySystem"));
-FName AGECharacter::GameplayEventManagerName(TEXT("GameplayEventManager"));
-FName AGECharacter::GameplayStateMachineName(TEXT("GameplayStateMachine"));
+FName AGGFCharacter::AbilitySystemName(TEXT("AbilitySystem"));
+FName AGGFCharacter::GameplayEventManagerName(TEXT("GameplayEventManager"));
+FName AGGFCharacter::GameplayStateMachineName(TEXT("GameplayStateMachine"));
 
-AGECharacter::AGECharacter(const FObjectInitializer& ObjectInitializer)
+AGGFCharacter::AGGFCharacter(const FObjectInitializer& ObjectInitializer)
 {
     bReplicates = true;
 
@@ -18,7 +18,7 @@ AGECharacter::AGECharacter(const FObjectInitializer& ObjectInitializer)
     AbilitySystem = CreateDefaultSubobject<UGGFDamageableAbilitySystem>(AbilitySystemName);
 
     /* GameplayEventManager */
-    GameplayEventManager = CreateDefaultSubobject<UGEGameplayEventManager>(GameplayEventManagerName);
+    GameplayEventManager = CreateDefaultSubobject<UGGFGameplayEventManager>(GameplayEventManagerName);
 
     /* GameplayStateMachine */
     GameplayStateMachine = CreateDefaultSubobject<UGGFPawnStateMachine>(GameplayStateMachineName);
@@ -30,7 +30,7 @@ AGECharacter::AGECharacter(const FObjectInitializer& ObjectInitializer)
     BoneNamesToHide.Emplace("weapon_r"); // 파라곤
 }
 
-void AGECharacter::PostInitializeComponents()
+void AGGFCharacter::PostInitializeComponents()
 {
     Super::PostInitializeComponents();
 
@@ -41,7 +41,7 @@ void AGECharacter::PostInitializeComponents()
     HideBones();
 }
 
-void AGECharacter::BindEvents()
+void AGGFCharacter::BindEvents()
 {
     if(HasAuthority())
     {
@@ -51,7 +51,7 @@ void AGECharacter::BindEvents()
     OnBindEvents();
 }
 
-void AGECharacter::OnBindEvents()
+void AGGFCharacter::OnBindEvents()
 {
     // OnDead
     if(auto CastedAbilitySystem = Cast<UGGFDamageableAbilitySystem>(GetAbilitySystem()))
@@ -60,16 +60,16 @@ void AGECharacter::OnBindEvents()
     }
 }
 
-void AGECharacter::OnServerBindEvents()
+void AGGFCharacter::OnServerBindEvents()
 {
 }
 
-void AGECharacter::OnDead_Implementation()
+void AGGFCharacter::OnDead_Implementation()
 {
     // TODO Destroy 등 죽음 처리
 }
 
-void AGECharacter::HideBones()
+void AGGFCharacter::HideBones()
 {
     USkeletalMeshComponent* CharacterMesh = GetMesh();
     for (FName BoneName : BoneNamesToHide)

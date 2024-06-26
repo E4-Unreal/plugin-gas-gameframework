@@ -4,17 +4,19 @@
 
 #include "CoreMinimal.h"
 #include "AbilitySystemInterface.h"
-#include "GameFramework/Actor.h"
-#include "GEActor.generated.h"
+#include "GameFramework/Pawn.h"
+#include "GGFPawn.generated.h"
 
-class UGEGameplayEventManager;
+class UGGFGameplayEventManager;
 class UGGFGameplayStateMachine;
 
 /**
- * GAS를 사용하기 위한 기본 액터 클래스
+ * GAS를 사용하기 위한 기본 폰 클래스
+ *
+ * DamageableAbilitySystem이 기본으로 탑재되어 있습니다.
  */
 UCLASS()
-class GASEXTENSION_API AGEActor : public AActor, public IAbilitySystemInterface
+class GGFCORE_API AGGFPawn : public APawn, public IAbilitySystemInterface
 {
     GENERATED_BODY()
 
@@ -37,14 +39,14 @@ private:
 
     // 멀티캐스트 게임플레이 태그 이벤트를 사용하기 위한 컴포넌트
     UPROPERTY(VisibleAnywhere, BlueprintGetter = GetGameplayEventManager, Category = "Component")
-    TObjectPtr<UGEGameplayEventManager> GameplayEventManager;
+    TObjectPtr<UGGFGameplayEventManager> GameplayEventManager;
 
     // 게임 플레이 태그 상태 머신 액터 컴포넌트
     UPROPERTY(VisibleAnywhere, BlueprintGetter = GetGameplayStateMachine, Category = "Component")
     TObjectPtr<UGGFGameplayStateMachine> GameplayStateMachine;
 
 public:
-    AGEActor(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
+    AGGFPawn(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
     /* Actor */
 
@@ -62,6 +64,10 @@ protected:
     // 서버에서만 필요한 이벤트 바인딩
     virtual void OnServerBindEvents();
 
+    // 죽음 이벤트
+    UFUNCTION(BlueprintNativeEvent)
+    void OnDead();
+
 protected:
     /* Getter */
 
@@ -69,7 +75,7 @@ protected:
     FORCEINLINE UAbilitySystemComponent* GetAbilitySystem() const { return AbilitySystem; }
 
     UFUNCTION(BlueprintGetter)
-    FORCEINLINE UGEGameplayEventManager* GetGameplayEventManager() const { return GameplayEventManager; }
+    FORCEINLINE UGGFGameplayEventManager* GetGameplayEventManager() const { return GameplayEventManager; }
 
     UFUNCTION(BlueprintGetter)
     FORCEINLINE UGGFGameplayStateMachine* GetGameplayStateMachine() const { return GameplayStateMachine; }

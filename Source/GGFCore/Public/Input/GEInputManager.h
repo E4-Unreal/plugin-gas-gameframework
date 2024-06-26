@@ -13,7 +13,7 @@ class UGEInputConfig;
  * 향상된 입력 시스템에 입력 액션 바인딩 전용 컴포넌트
  */
 UCLASS(meta=(BlueprintSpawnableComponent))
-class GASEXTENSION_API UGEInputManager : public UActorComponent
+class GGFCORE_API UGEInputManager : public UActorComponent
 {
     GENERATED_BODY()
 

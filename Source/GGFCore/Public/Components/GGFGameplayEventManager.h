@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameplayTagContainer.h"
 #include "Components/ActorComponent.h"
-#include "GEGameplayEventManager.generated.h"
+#include "GGFGameplayEventManager.generated.h"
 
 /**
  * GameplayEvent에 대응하는 동작을 수행하기 위한 클래스로
@@ -14,7 +14,7 @@
  * GameplayAbility와 다른 점은 멀티캐스트 전용이라는 것입니다.
  */
 UCLASS(Blueprintable, BlueprintType, HideDropdown)
-class GASEXTENSION_API UGEGameplayEventAction : public UObject
+class GGFCORE_API UGGFGameplayEventAction : public UObject
 {
     GENERATED_BODY()
 
@@ -51,7 +51,7 @@ protected:
  * 캐릭터 전용 GameplayEventAction 클래스입니다.
  */
 UCLASS(HideDropdown)
-class GASEXTENSION_API UGECharacterEventAction : public UGEGameplayEventAction
+class GGFCORE_API UGGFCharacterEventAction : public UGGFGameplayEventAction
 {
     GENERATED_BODY()
 
@@ -71,7 +71,7 @@ protected:
  * Owner의 AbilitySystemComponent는 GEAbilitySystem을 상속받고 있어야 합니다.
  */
 UCLASS(meta=(BlueprintSpawnableComponent))
-class GASEXTENSION_API UGEGameplayEventManager : public UActorComponent
+class GGFCORE_API UGGFGameplayEventManager : public UActorComponent
 {
     GENERATED_BODY()
 
@@ -80,13 +80,13 @@ protected:
     bool bValid;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config")
-    TArray<TSubclassOf<UGEGameplayEventAction>> GameplayEventActions;
+    TArray<TSubclassOf<UGGFGameplayEventAction>> GameplayEventActions;
 
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State")
-    TArray<TObjectPtr<UGEGameplayEventAction>> GameplayEventActionInstances;
+    TArray<TObjectPtr<UGGFGameplayEventAction>> GameplayEventActionInstances;
 
 public:
-    UGEGameplayEventManager();
+    UGGFGameplayEventManager();
 
     virtual void InitializeComponent() override;
 

@@ -3,13 +3,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GEPawn.h"
-#include "GEPlayerPawn.generated.h"
+#include "Characters/GGFCharacter.h"
+#include "GEPlayerCharacter.generated.h"
 
 class UGEInputManager;
 
 UCLASS()
-class GASEXTENSION_API AGEPlayerPawn : public AGEPawn
+class GGFCORE_API AGEPlayerCharacter : public AGGFCharacter
 {
     GENERATED_BODY()
 
@@ -25,7 +25,7 @@ private:
     TObjectPtr<UGEInputManager> InputManager;
 
 public:
-    AGEPlayerPawn(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
+    AGEPlayerCharacter(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
     /* Pawn */
     virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;

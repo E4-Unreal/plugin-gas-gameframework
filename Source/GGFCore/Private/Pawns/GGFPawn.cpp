@@ -1,17 +1,17 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
-#include "Pawns/GEPawn.h"
+#include "Pawns/GGFPawn.h"
 
 #include "GGFGameplayTags.h"
 #include "AbilitySystem/GGFDamageableAbilitySystem.h"
-#include "Components/GEGameplayEventManager.h"
+#include "Components/GGFGameplayEventManager.h"
 #include "Components/GGFGameplayStateMachine.h"
 
-FName AGEPawn::AbilitySystemName(TEXT("AbilitySystem"));
-FName AGEPawn::GameplayEventManagerName(TEXT("GameplayEventManager"));
-FName AGEPawn::GameplayStateMachineName(TEXT("GameplayStateMachine"));
+FName AGGFPawn::AbilitySystemName(TEXT("AbilitySystem"));
+FName AGGFPawn::GameplayEventManagerName(TEXT("GameplayEventManager"));
+FName AGGFPawn::GameplayStateMachineName(TEXT("GameplayStateMachine"));
 
-AGEPawn::AGEPawn(const FObjectInitializer& ObjectInitializer)
+AGGFPawn::AGGFPawn(const FObjectInitializer& ObjectInitializer)
 {
     bReplicates = true;
 
@@ -19,13 +19,13 @@ AGEPawn::AGEPawn(const FObjectInitializer& ObjectInitializer)
     AbilitySystem = CreateDefaultSubobject<UGGFDamageableAbilitySystem>(AbilitySystemName);
 
     /* GameplayEventManager */
-    GameplayEventManager = CreateDefaultSubobject<UGEGameplayEventManager>(GameplayEventManagerName);
+    GameplayEventManager = CreateDefaultSubobject<UGGFGameplayEventManager>(GameplayEventManagerName);
 
     /* GameplayStateMachine */
     GameplayStateMachine = CreateDefaultSubobject<UGGFGameplayStateMachine>(GameplayStateMachineName);
 }
 
-void AGEPawn::PostInitializeComponents()
+void AGGFPawn::PostInitializeComponents()
 {
     Super::PostInitializeComponents();
 
@@ -33,7 +33,7 @@ void AGEPawn::PostInitializeComponents()
     BindEvents();
 }
 
-void AGEPawn::BindEvents()
+void AGGFPawn::BindEvents()
 {
     if(HasAuthority())
     {
@@ -43,7 +43,7 @@ void AGEPawn::BindEvents()
     OnBindEvents();
 }
 
-void AGEPawn::OnBindEvents()
+void AGGFPawn::OnBindEvents()
 {
     // OnDead
     if(auto CastedAbilitySystem = Cast<UGGFDamageableAbilitySystem>(GetAbilitySystem()))
@@ -52,11 +52,11 @@ void AGEPawn::OnBindEvents()
     }
 }
 
-void AGEPawn::OnServerBindEvents()
+void AGGFPawn::OnServerBindEvents()
 {
 }
 
-void AGEPawn::OnDead_Implementation()
+void AGGFPawn::OnDead_Implementation()
 {
     // TODO Destroy 등 죽음 처리
 }

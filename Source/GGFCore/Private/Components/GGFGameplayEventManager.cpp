@@ -1,13 +1,13 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
-#include "Components/GEGameplayEventManager.h"
+#include "Components/GGFGameplayEventManager.h"
 
 #include "AbilitySystemGlobals.h"
 #include "GGFGameplayTags.h"
 #include "AbilitySystem/GGFAbilitySystem.h"
 #include "GameFramework/Character.h"
 
-void UGEGameplayEventAction::SetOwner(AActor* NewOwner)
+void UGGFGameplayEventAction::SetOwner(AActor* NewOwner)
 {
     if(Owner.IsValid() || NewOwner == nullptr) return;
 
@@ -15,19 +15,19 @@ void UGEGameplayEventAction::SetOwner(AActor* NewOwner)
     bValid = true;
 }
 
-bool UGEGameplayEventAction::IsValid() const
+bool UGGFGameplayEventAction::IsValid() const
 {
     return bValid && EventTag.MatchesTag(Event::Root);
 }
 
-void UGEGameplayEventAction::ActivateAction_Implementation()
+void UGGFGameplayEventAction::ActivateAction_Implementation()
 {
     UE_LOG(LogTemp, Error, TEXT("Acitvate"));
 
     Owner->Destroy();
 }
 
-void UGECharacterEventAction::SetOwner(AActor* NewOwner)
+void UGGFCharacterEventAction::SetOwner(AActor* NewOwner)
 {
     Super::SetOwner(NewOwner);
 
@@ -38,13 +38,13 @@ void UGECharacterEventAction::SetOwner(AActor* NewOwner)
     }
 }
 
-UGEGameplayEventManager::UGEGameplayEventManager()
+UGGFGameplayEventManager::UGGFGameplayEventManager()
 {
     bWantsInitializeComponent = true;
     SetIsReplicatedByDefault(true);
 }
 
-void UGEGameplayEventManager::InitializeComponent()
+void UGGFGameplayEventManager::InitializeComponent()
 {
     Super::InitializeComponent();
 
@@ -61,16 +61,16 @@ void UGEGameplayEventManager::InitializeComponent()
     }
 }
 
-void UGEGameplayEventManager::CreateGameplayEventActionInstances()
+void UGGFGameplayEventManager::CreateGameplayEventActionInstances()
 {
     GameplayEventActionInstances.Reserve(GameplayEventActions.Num());
-    for (TSubclassOf<UGEGameplayEventAction> ActionClass : GameplayEventActions)
+    for (TSubclassOf<UGGFGameplayEventAction> ActionClass : GameplayEventActions)
     {
         if(ActionClass)
         {
             // GameplayEventAction 인스턴스 생성
-            UGEGameplayEventAction* ActionInstance = NewObject<UGEGameplayEventAction>(this, ActionClass);
-            ActionInstance->EventTag = ActionClass->GetDefaultObject<UGEGameplayEventAction>()->EventTag;
+            UGGFGameplayEventAction* ActionInstance = NewObject<UGGFGameplayEventAction>(this, ActionClass);
+            ActionInstance->EventTag = ActionClass->GetDefaultObject<UGGFGameplayEventAction>()->EventTag;
             ActionInstance->SetOwner(GetOwner());
 
             // 유효성 검사 (실패 시 GC에서 생성된 인스턴스 파괴)
@@ -82,9 +82,9 @@ void UGEGameplayEventManager::CreateGameplayEventActionInstances()
     }
 }
 
-void UGEGameplayEventManager::HandleGameplayEvent(const FGameplayTag& EventTag)
+void UGGFGameplayEventManager::HandleGameplayEvent(const FGameplayTag& EventTag)
 {
-    for (UGEGameplayEventAction* ActionInstance : GameplayEventActionInstances)
+    for (UGGFGameplayEventAction* ActionInstance : GameplayEventActionInstances)
     {
         if(ActionInstance->EventTag.MatchesTag(EventTag))
         {

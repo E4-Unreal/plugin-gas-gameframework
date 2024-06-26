@@ -26,7 +26,7 @@ struct FGGFAbilityInputAction
  * 어빌리티 전용 입력 에셋 설정을 위한 데이터 에셋으로 GGFAbilitySystemBase에 의존성을 가지고 있습니다.
  */
 UCLASS()
-class GASEXTENSION_API UGEInputConfig_Ability : public UGEInputConfig
+class GGFCORE_API UGEInputConfig_Ability : public UGEInputConfig
 {
     GENERATED_BODY()
 

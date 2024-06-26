@@ -1,22 +1,22 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
-#include "Pawns/GEPlayerPawn.h"
+#include "Pawns/GGFPlayerPawn.h"
 
 #include "EnhancedInputComponent.h"
 #include "Input/GEInputManager.h"
 
 class UGGFPlayerAbilitySystem;
 
-FName AGEPlayerPawn::InputManagerName(TEXT("InputManager"));
+FName AGGFPlayerPawn::InputManagerName(TEXT("InputManager"));
 
-AGEPlayerPawn::AGEPlayerPawn(const FObjectInitializer& ObjectInitializer)
+AGGFPlayerPawn::AGGFPlayerPawn(const FObjectInitializer& ObjectInitializer)
     : Super(ObjectInitializer.SetDefaultSubobjectClass<UGGFPlayerAbilitySystem>(AbilitySystemName))
 {
     /* InputManager */
     InputManager = CreateDefaultSubobject<UGEInputManager>(InputManagerName);
 }
 
-void AGEPlayerPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+void AGGFPlayerPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
     Super::SetupPlayerInputComponent(PlayerInputComponent);
 
@@ -26,7 +26,7 @@ void AGEPlayerPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
     }
 }
 
-void AGEPlayerPawn::SetupEnhancedInputComponent(UEnhancedInputComponent* EnhancedInputComponent)
+void AGGFPlayerPawn::SetupEnhancedInputComponent(UEnhancedInputComponent* EnhancedInputComponent)
 {
     // null 검사
     if(EnhancedInputComponent == nullptr) return;

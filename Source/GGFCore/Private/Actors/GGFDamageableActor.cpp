@@ -1,17 +1,17 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
-#include "Actors/GEDamageableActor.h"
+#include "Actors/GGFDamageableActor.h"
 
 #include "AbilitySystemComponent.h"
 #include "AbilitySystem/GGFDamageableAbilitySystem.h"
 
-AGEDamageableActor::AGEDamageableActor(const FObjectInitializer& ObjectInitializer)
+AGGFDamageableActor::AGGFDamageableActor(const FObjectInitializer& ObjectInitializer)
     : Super(ObjectInitializer.SetDefaultSubobjectClass<UGGFDamageableAbilitySystem>(AbilitySystemName))
 {
 
 }
 
-void AGEDamageableActor::OnBindEvents()
+void AGGFDamageableActor::OnBindEvents()
 {
     Super::OnBindEvents();
 
@@ -22,7 +22,7 @@ void AGEDamageableActor::OnBindEvents()
     }
 }
 
-void AGEDamageableActor::OnDead_Implementation()
+void AGGFDamageableActor::OnDead_Implementation()
 {
 
 }

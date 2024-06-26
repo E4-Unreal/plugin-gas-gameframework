@@ -3,19 +3,19 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GEActor.h"
-#include "GEDamageableActor.generated.h"
+#include "GGFActor.h"
+#include "GGFDamageableActor.generated.h"
 
 /**
  * 데미지를 입을 수 있는 액터 클래스
  */
 UCLASS()
-class GASEXTENSION_API AGEDamageableActor : public AGEActor
+class GGFCORE_API AGGFDamageableActor : public AGGFActor
 {
     GENERATED_BODY()
 
 public:
-    AGEDamageableActor(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
+    AGGFDamageableActor(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
 protected:
     /* GEActor */

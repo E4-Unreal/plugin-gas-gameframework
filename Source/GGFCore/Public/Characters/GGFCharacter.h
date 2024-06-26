@@ -4,19 +4,19 @@
 
 #include "CoreMinimal.h"
 #include "AbilitySystemInterface.h"
-#include "GameFramework/Pawn.h"
-#include "GEPawn.generated.h"
+#include "GameFramework/Character.h"
+#include "GGFCharacter.generated.h"
 
-class UGEGameplayEventManager;
+class UGGFGameplayEventManager;
 class UGGFGameplayStateMachine;
 
 /**
- * GAS를 사용하기 위한 기본 폰 클래스
+ * GAS를 사용하기 위한 기본 캐릭터 클래스
  *
  * DamageableAbilitySystem이 기본으로 탑재되어 있습니다.
  */
 UCLASS()
-class GASEXTENSION_API AGEPawn : public APawn, public IAbilitySystemInterface
+class GGFCORE_API AGGFCharacter : public ACharacter, public IAbilitySystemInterface
 {
     GENERATED_BODY()
 
@@ -39,14 +39,19 @@ private:
 
     // 멀티캐스트 게임플레이 태그 이벤트를 사용하기 위한 컴포넌트
     UPROPERTY(VisibleAnywhere, BlueprintGetter = GetGameplayEventManager, Category = "Component")
-    TObjectPtr<UGEGameplayEventManager> GameplayEventManager;
+    TObjectPtr<UGGFGameplayEventManager> GameplayEventManager;
 
     // 게임 플레이 태그 상태 머신 액터 컴포넌트
     UPROPERTY(VisibleAnywhere, BlueprintGetter = GetGameplayStateMachine, Category = "Component")
     TObjectPtr<UGGFGameplayStateMachine> GameplayStateMachine;
 
+protected:
+    // 캐릭터 메시에서 기본적으로 숨길 스켈레톤 이름
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|CharacterMesh")
+    TArray<FName> BoneNamesToHide;
+
 public:
-    AGEPawn(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
+    AGGFCharacter(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
     /* Actor */
 
@@ -68,6 +73,10 @@ protected:
     UFUNCTION(BlueprintNativeEvent)
     void OnDead();
 
+    // BoneNamesToHide에 설정된 스켈레톤을 숨깁니다.
+    UFUNCTION(BlueprintCallable)
+    virtual void HideBones();
+
 protected:
     /* Getter */
 
@@ -75,7 +84,7 @@ protected:
     FORCEINLINE UAbilitySystemComponent* GetAbilitySystem() const { return AbilitySystem; }
 
     UFUNCTION(BlueprintGetter)
-    FORCEINLINE UGEGameplayEventManager* GetGameplayEventManager() const { return GameplayEventManager; }
+    FORCEINLINE UGGFGameplayEventManager* GetGameplayEventManager() const { return GameplayEventManager; }
 
     UFUNCTION(BlueprintGetter)
     FORCEINLINE UGGFGameplayStateMachine* GetGameplayStateMachine() const { return GameplayStateMachine; }

@@ -10,6 +10,7 @@ public class GGFCore : ModuleRules
             new string[]
             {
                 "Core",
+                "EnhancedInput",
 
                 // GAS
                 "GameplayTags",

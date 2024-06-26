@@ -3,11 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Actors/GEDamageableActor.h"
+#include "Actors/GGFDamageableActor.h"
 #include "GGFDestructibleActor.generated.h"
 
 UCLASS()
-class GGFCOMBATSYSTEM_API AGGFDestructibleActor : public AGEDamageableActor
+class GGFCOMBATSYSTEM_API AGGFDestructibleActor : public AGGFDamageableActor
 {
     GENERATED_BODY()
 
