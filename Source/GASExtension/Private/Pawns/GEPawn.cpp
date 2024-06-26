@@ -2,7 +2,7 @@
 
 #include "Pawns/GEPawn.h"
 
-#include "GEGameplayTags.h"
+#include "GGFGameplayTags.h"
 #include "AbilitySystem/GEDamageableAbilitySystem.h"
 #include "Components/GEGameplayEventManager.h"
 #include "Components/GGFGameplayStateMachine.h"
@@ -14,7 +14,7 @@ FName AGEPawn::GameplayStateMachineName(TEXT("GameplayStateMachine"));
 AGEPawn::AGEPawn(const FObjectInitializer& ObjectInitializer)
 {
     bReplicates = true;
-    
+
     /* AbilitySystem */
     AbilitySystem = CreateDefaultSubobject<UGEDamageableAbilitySystem>(AbilitySystemName);
 

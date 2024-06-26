@@ -3,7 +3,7 @@
 #include "Abilities/GGFGA_Fire.h"
 
 #include "Abilities/Tasks/AbilityTask_WaitInputRelease.h"
-#include "GEGameplayTags.h"
+#include "GGFGameplayTags.h"
 #include "GGFShooterGameplayTags.h"
 #include "Weapons/GGFFireArm.h"
 

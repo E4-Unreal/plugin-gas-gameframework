@@ -4,7 +4,7 @@
 
 #include "GEBlueprintFunctionLibrary.h"
 #include "GameplayEffects/GEDamageBase.h"
-#include "GEGameplayTags.h"
+#include "GGFGameplayTags.h"
 
 
 

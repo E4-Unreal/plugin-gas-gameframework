@@ -6,7 +6,7 @@
 #include "Logging.h"
 #include "Components/SphereComponent.h"
 #include "GameplayEffects/GEDamageBase.h"
-#include "GEGameplayTags.h"
+#include "GGFGameplayTags.h"
 #include "GGFCombatGameplayTags.h"
 
 UGGFExplosiveComponent::UGGFExplosiveComponent()

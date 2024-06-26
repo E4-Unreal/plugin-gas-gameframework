@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GEGameplayAbility.h"
-#include "GEPawnAbility.generated.h"
+#include "GGFGameplayAbility.h"
+#include "GGFPawnAbility.generated.h"
 
 /**
  * Pawn 전용 어빌리티 클래스
  */
 UCLASS()
-class GASEXTENSION_API UGEPawnAbility : public UGEGameplayAbility
+class GGFCORE_API UGGFPawnAbility : public UGGFGameplayAbility
 {
     GENERATED_BODY()
 

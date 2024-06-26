@@ -3,7 +3,7 @@
 #include "AbilitySystem/GEAbilitySystem.h"
 
 #include "GEBlueprintFunctionLibrary.h"
-#include "GEGameplayTags.h"
+#include "GGFGameplayTags.h"
 
 UGEAbilitySystem::UGEAbilitySystem()
 {

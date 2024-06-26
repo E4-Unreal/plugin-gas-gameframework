@@ -1,12 +1,12 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
-#include "Abilities/GEGameplayAbility.h"
+#include "Abilities/GGFGameplayAbility.h"
 
 #include "AbilitySystemComponent.h"
-#include "GEGameplayTags.h"
+#include "GGFGameplayTags.h"
 #include "GameplayEffectComponents/TargetTagsGameplayEffectComponent.h"
 
-UGEGameplayAbility::UGEGameplayAbility()
+UGGFGameplayAbility::UGGFGameplayAbility()
 {
     /* 기본 설정 */
 
@@ -36,14 +36,14 @@ UGEGameplayAbility::UGEGameplayAbility()
     ActivationBlockedTags.AddTagFast(State::Stun);
 }
 
-bool UGEGameplayAbility::CanActivateAbility(const FGameplayAbilitySpecHandle Handle,
+bool UGGFGameplayAbility::CanActivateAbility(const FGameplayAbilitySpecHandle Handle,
     const FGameplayAbilityActorInfo* ActorInfo, const FGameplayTagContainer* SourceTags,
     const FGameplayTagContainer* TargetTags, FGameplayTagContainer* OptionalRelevantTags) const
 {
     if(InstancingPolicy == EGameplayAbilityInstancingPolicy::InstancedPerActor)
     {
         auto AbilitySpec = ActorInfo->AbilitySystemComponent->FindAbilitySpecFromHandle(Handle);
-        auto AbilityInstance = CastChecked<UGEGameplayAbility>(AbilitySpec->GetPrimaryInstance());
+        auto AbilityInstance = CastChecked<UGGFGameplayAbility>(AbilitySpec->GetPrimaryInstance());
 
         return Super::CanActivateAbility(Handle, ActorInfo, SourceTags, TargetTags, OptionalRelevantTags) && AbilityInstance->bValid && AbilityInstance->InternalCanActivate();
     }
@@ -51,7 +51,7 @@ bool UGEGameplayAbility::CanActivateAbility(const FGameplayAbilitySpecHandle Han
     return Super::CanActivateAbility(Handle, ActorInfo, SourceTags, TargetTags, OptionalRelevantTags);
 }
 
-void UGEGameplayAbility::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
+void UGGFGameplayAbility::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
     const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo,
     const FGameplayEventData* TriggerEventData)
 {
@@ -63,7 +63,7 @@ void UGEGameplayAbility::ActivateAbility(const FGameplayAbilitySpecHandle Handle
     }
 }
 
-void UGEGameplayAbility::InputPressed(const FGameplayAbilitySpecHandle Handle,
+void UGGFGameplayAbility::InputPressed(const FGameplayAbilitySpecHandle Handle,
                                       const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo)
 {
     Super::InputPressed(Handle, ActorInfo, ActivationInfo);
@@ -73,7 +73,7 @@ void UGEGameplayAbility::InputPressed(const FGameplayAbilitySpecHandle Handle,
     GetCurrentAbilitySpec()->InputPressed = GetCurrentAbilitySpec()->IsActive();
 }
 
-void UGEGameplayAbility::InputReleased(const FGameplayAbilitySpecHandle Handle,
+void UGGFGameplayAbility::InputReleased(const FGameplayAbilitySpecHandle Handle,
     const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo)
 {
     Super::InputReleased(Handle, ActorInfo, ActivationInfo);
@@ -82,14 +82,14 @@ void UGEGameplayAbility::InputReleased(const FGameplayAbilitySpecHandle Handle,
     if(bCancelableByInputRelease && GetCurrentAbilitySpec()->IsActive()) CancelAbility(CurrentSpecHandle, CurrentActorInfo, CurrentActivationInfo, true);
 }
 
-void UGEGameplayAbility::OnGiveAbility(const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilitySpec& Spec)
+void UGGFGameplayAbility::OnGiveAbility(const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilitySpec& Spec)
 {
     Super::OnGiveAbility(ActorInfo, Spec);
 
     CreateCooldownEffectInstance();
 }
 
-void UGEGameplayAbility::ApplyCooldown(const FGameplayAbilitySpecHandle Handle,
+void UGGFGameplayAbility::ApplyCooldown(const FGameplayAbilitySpecHandle Handle,
     const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo) const
 {
     if(UGameplayEffect* CooldownGE = GetCooldownGameplayEffect())
@@ -100,14 +100,14 @@ void UGEGameplayAbility::ApplyCooldown(const FGameplayAbilitySpecHandle Handle,
     }
 }
 
-UGameplayEffect* UGEGameplayAbility::GetCooldownGameplayEffect() const
+UGameplayEffect* UGGFGameplayAbility::GetCooldownGameplayEffect() const
 {
     if(CooldownEffectInstance) return CooldownEffectInstance;
 
     return Super::GetCooldownGameplayEffect();
 }
 
-void UGEGameplayAbility::CreateCooldownEffectInstance()
+void UGGFGameplayAbility::CreateCooldownEffectInstance()
 {
     // 쿨다운 시간이 설정된 경우
     if(!FMath::IsNearlyZero(CooldownTime))
@@ -125,7 +125,7 @@ void UGEGameplayAbility::CreateCooldownEffectInstance()
     }
 }
 
-void UGEGameplayAbility::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
+void UGGFGameplayAbility::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
                                     const FGameplayAbilityActivationInfo ActivationInfo, bool bReplicateEndAbility, bool bWasCancelled)
 {
     Super::EndAbility(Handle, ActorInfo, ActivationInfo, bReplicateEndAbility, bWasCancelled);
@@ -134,7 +134,7 @@ void UGEGameplayAbility::EndAbility(const FGameplayAbilitySpecHandle Handle, con
     GetCurrentAbilitySpec()->InputPressed = false;
 }
 
-bool UGEGameplayAbility::InternalCanActivate()
+bool UGGFGameplayAbility::InternalCanActivate()
 {
 #if WITH_EDITOR
       // TODO 원인 분석 및 수정 필요

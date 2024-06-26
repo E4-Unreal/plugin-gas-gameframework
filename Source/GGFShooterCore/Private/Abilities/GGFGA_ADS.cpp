@@ -3,7 +3,7 @@
 #include "Abilities/GGFGA_ADS.h"
 
 #include "GGFShooterGameplayTags.h"
-#include "GEGameplayTags.h"
+#include "GGFGameplayTags.h"
 #include "Components/GGFCameraComponent.h"
 #include "Weapons/GGFSniper.h"
 

@@ -2,7 +2,7 @@
 
 #include "GameplayEffects/GEDamageBase.h"
 
-#include "GEGameplayTags.h"
+#include "GGFGameplayTags.h"
 #include "GameplayEffects/Calculations/GEDamageCalculation.h"
 #include "GameplayEffectComponents/TargetTagRequirementsGameplayEffectComponent.h"
 

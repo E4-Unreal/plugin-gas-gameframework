@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GEPawnAbility.h"
-#include "GECharacterAbility.generated.h"
+#include "GGFPawnAbility.h"
+#include "GGFCharacterAbility.generated.h"
 
 /**
  * Character 전용 어빌리티 클래스
  */
 UCLASS()
-class GASEXTENSION_API UGECharacterAbility : public UGEPawnAbility
+class GGFCORE_API UGGFCharacterAbility : public UGGFPawnAbility
 {
     GENERATED_BODY()
 

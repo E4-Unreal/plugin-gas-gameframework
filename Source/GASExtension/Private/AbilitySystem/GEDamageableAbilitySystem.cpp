@@ -2,11 +2,9 @@
 
 #include "AbilitySystem/GEDamageableAbilitySystem.h"
 
-#include "GEGameplayTags.h"
+#include "GGFGameplayTags.h"
 #include "Logging.h"
 #include "Attributes/GGFHealthAttributes.h"
-
-
 
 UGEDamageableAbilitySystem::UGEDamageableAbilitySystem()
 {

@@ -1,11 +1,11 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Abilities/GECharacterAbility.h"
+#include "Abilities/GGFCharacterAbility.h"
 
 #include "GameFramework/Character.h"
 
-void UGECharacterAbility::OnAvatarSet(const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilitySpec& Spec)
+void UGGFCharacterAbility::OnAvatarSet(const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilitySpec& Spec)
 {
     Super::OnAvatarSet(ActorInfo, Spec);
 

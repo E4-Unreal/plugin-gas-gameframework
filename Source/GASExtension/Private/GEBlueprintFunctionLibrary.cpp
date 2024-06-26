@@ -7,7 +7,7 @@
 #include "AbilitySystemGlobals.h"
 #include "GameplayCueManager.h"
 #include "GameplayEffectTypes.h"
-#include "GEGameplayTags.h"
+#include "GGFGameplayTags.h"
 #include "Logging.h"
 
 

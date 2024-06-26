@@ -8,7 +8,7 @@
 #include "Attributes/GGFShieldAttributes.h"
 #include "Stats/GGFAttackStats.h"
 #include "Stats/GGFDefenseStats.h"
-#include "GEGameplayTags.h"
+#include "GGFGameplayTags.h"
 #include "Logging.h"
 
 

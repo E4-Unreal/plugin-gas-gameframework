@@ -2,8 +2,8 @@
 
 #include "AbilitySystem/GEPlayerAbilitySystem.h"
 
-#include "GEGameplayTags.h"
-#include "Abilities/GEGameplayAbility.h"
+#include "GGFGameplayTags.h"
+#include "Abilities/GGFGameplayAbility.h"
 #include "Attributes/GGFHealthAttributes.h"
 
 void UGEPlayerAbilitySystem::PressInputTag(FGameplayTag InputTag)
@@ -30,9 +30,9 @@ void UGEPlayerAbilitySystem::OnGiveAbility(FGameplayAbilitySpec& AbilitySpec)
     if(GetOwner()->HasAuthority())
     {
         // InputTag의 해시 값을 사용하여 InputID 설정
-        if(AbilitySpec.Ability->Implements<UGEPlayerAbilityInterface>())
+        if(AbilitySpec.Ability->Implements<UGGFPlayerAbilityInterface>())
         {
-            const FGameplayTag& InputTag = IGEPlayerAbilityInterface::Execute_GetAbilityInputTag(AbilitySpec.Ability);
+            const FGameplayTag& InputTag = IGGFPlayerAbilityInterface::Execute_GetAbilityInputTag(AbilitySpec.Ability);
             AbilitySpec.InputID = GetTypeHash(InputTag);
         }
     }
@@ -42,12 +42,12 @@ void UGEPlayerAbilitySystem::OnAbilitySpecDirtied(const FGameplayAbilitySpec& Ab
 {
     Super::OnAbilitySpecDirtied(AbilitySpec);
 
-    if(AbilitySpec.Ability->Implements<UGEPlayerAbilityInterface>())
+    if(AbilitySpec.Ability->Implements<UGGFPlayerAbilityInterface>())
     {
         if(auto AbilityInstance = AbilitySpec.GetPrimaryInstance())
         {
-            const auto AbilityInputTag = IGEPlayerAbilityInterface::Execute_GetAbilityInputTag(AbilitySpec.Ability);
-            const auto AbilityInstanceInputTag = IGEPlayerAbilityInterface::Execute_GetAbilityInputTag(AbilityInstance);
+            const auto AbilityInputTag = IGGFPlayerAbilityInterface::Execute_GetAbilityInputTag(AbilitySpec.Ability);
+            const auto AbilityInstanceInputTag = IGGFPlayerAbilityInterface::Execute_GetAbilityInputTag(AbilityInstance);
             if(AbilityInputTag != AbilityInstanceInputTag)
             {
                 FindAbilitySpecFromHandle(AbilitySpec.Handle)->InputID = GetTypeHash(AbilityInstanceInputTag);

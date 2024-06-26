@@ -4,14 +4,14 @@
 
 #include "CoreMinimal.h"
 #include "Abilities/GameplayAbility.h"
-#include "Interfaces/GEPlayerAbilityInterface.h"
-#include "GEGameplayAbility.generated.h"
+#include "Interfaces/GGFPlayerAbilityInterface.h"
+#include "GGFGameplayAbility.generated.h"
 
 /**
  * 자주 사용하는 정책과 게임플레이 태그 설정이 적용된 게임플레이 어빌리티 클래스입니다.
  */
 UCLASS()
-class GASEXTENSION_API UGEGameplayAbility : public UGameplayAbility, public IGEPlayerAbilityInterface
+class GGFCORE_API UGGFGameplayAbility : public UGameplayAbility, public IGGFPlayerAbilityInterface
 {
     GENERATED_BODY()
 
@@ -38,7 +38,7 @@ protected:
     TObjectPtr<UGameplayEffect> CooldownEffectInstance;
 
 public:
-    UGEGameplayAbility();
+    UGGFGameplayAbility();
 
     /* GameplayAbility */
 

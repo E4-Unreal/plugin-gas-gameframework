@@ -4,7 +4,7 @@
 
 #include "AbilitySystemComponent.h"
 #include "AbilitySystemGlobals.h"
-#include "Abilities/GEGameplayAbility.h"
+#include "Abilities/GGFGameplayAbility.h"
 #include "Data/GGFSkillDataSubsystem.h"
 #include "Data/GGFSkillDefinition.h"
 
@@ -73,7 +73,7 @@ void UGGFSkillManager::SetSkillSlotByDefinition(const FGameplayTag& InputTag, UG
         // 어빌리티 인스턴스 설정
         if(auto ActivatableAbilitySpec = OwnerSystem->FindAbilitySpecFromHandle(Slot.AbilitySpecHandle))
         {
-            if(auto AbilityInstance = Cast<UGEGameplayAbility>(ActivatableAbilitySpec->GetPrimaryInstance()))
+            if(auto AbilityInstance = Cast<UGGFGameplayAbility>(ActivatableAbilitySpec->GetPrimaryInstance()))
             {
                 // 입력 태그 설정
                 AbilityInstance->InputTag = InputTag;

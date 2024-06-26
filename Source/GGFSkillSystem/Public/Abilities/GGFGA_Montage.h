@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Abilities/GECharacterAbility.h"
+#include "Abilities/GGFCharacterAbility.h"
 #include "GGFGA_Montage.generated.h"
 
 /**
  *
  */
 UCLASS()
-class GGFSKILLSYSTEM_API UGGFGA_Montage : public UGECharacterAbility
+class GGFSKILLSYSTEM_API UGGFGA_Montage : public UGGFCharacterAbility
 {
     GENERATED_BODY()
 

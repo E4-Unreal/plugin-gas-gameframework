@@ -3,7 +3,7 @@
 #include "Components/GEGameplayEventManager.h"
 
 #include "AbilitySystemGlobals.h"
-#include "GEGameplayTags.h"
+#include "GGFGameplayTags.h"
 #include "AbilitySystem/GEAbilitySystem.h"
 #include "GameFramework/Character.h"
 
