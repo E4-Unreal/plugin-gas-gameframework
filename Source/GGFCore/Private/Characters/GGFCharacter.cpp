@@ -5,6 +5,7 @@
 #include "AbilitySystem/GGFDamageableAbilitySystem.h"
 #include "Components/GGFGameplayEventManager.h"
 #include "Components/GGFPawnStateMachine.h"
+#include "GGFGameplayTags.h"
 
 FName AGGFCharacter::AbilitySystemName(TEXT("AbilitySystem"));
 FName AGGFCharacter::GameplayEventManagerName(TEXT("GameplayEventManager"));
@@ -39,6 +40,22 @@ void AGGFCharacter::PostInitializeComponents()
 
     // BoneNamesToHide에 설정된 스켈레톤을 숨깁니다.
     HideBones();
+}
+
+void AGGFCharacter::FellOutOfWorld(const UDamageType& dmgType)
+{
+    if(auto DamageableAbilitySystem = Cast<UGGFDamageableAbilitySystem>(GetAbilitySystem()))
+    {
+        if(HasAuthority())
+        {
+            DamageableAbilitySystem->AddLooseGameplayTag(State::Dead);
+            DamageableAbilitySystem->AddReplicatedLooseGameplayTag(State::Dead);
+        }
+    }
+    else
+    {
+        Super::FellOutOfWorld(dmgType);
+    }
 }
 
 void AGGFCharacter::BindEvents()

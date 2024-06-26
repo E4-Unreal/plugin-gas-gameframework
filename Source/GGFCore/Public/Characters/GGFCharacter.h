@@ -57,6 +57,8 @@ public:
 
     virtual void PostInitializeComponents() override;
 
+    virtual void FellOutOfWorld(const UDamageType& dmgType) override;
+
 protected:
     /* 메서드 */
 

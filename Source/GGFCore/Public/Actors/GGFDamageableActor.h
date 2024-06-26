@@ -17,6 +17,10 @@ class GGFCORE_API AGGFDamageableActor : public AGGFActor
 public:
     AGGFDamageableActor(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
+    /* Actor */
+
+    virtual void FellOutOfWorld(const UDamageType& dmgType) override;
+
 protected:
     /* GEActor */
 

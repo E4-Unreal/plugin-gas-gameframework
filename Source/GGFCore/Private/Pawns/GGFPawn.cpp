@@ -33,6 +33,22 @@ void AGGFPawn::PostInitializeComponents()
     BindEvents();
 }
 
+void AGGFPawn::FellOutOfWorld(const UDamageType& dmgType)
+{
+    if(auto DamageableAbilitySystem = Cast<UGGFDamageableAbilitySystem>(GetAbilitySystem()))
+    {
+        if(HasAuthority())
+        {
+            DamageableAbilitySystem->AddLooseGameplayTag(State::Dead);
+            DamageableAbilitySystem->AddReplicatedLooseGameplayTag(State::Dead);
+        }
+    }
+    else
+    {
+        Super::FellOutOfWorld(dmgType);
+    }
+}
+
 void AGGFPawn::BindEvents()
 {
     if(HasAuthority())
