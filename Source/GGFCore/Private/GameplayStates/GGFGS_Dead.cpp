@@ -55,6 +55,9 @@ void UGGFGS_Dead::OnExit_Implementation()
 
 void UGGFGS_Dead::OnDelayTimerFinished_Implementation()
 {
+    // 유효성 검사
+    if(GetOwnerPawn() == nullptr) return;
+
     // 서버 전용
     if(auto GameMode = GetWorld()->GetAuthGameMode())
     {
