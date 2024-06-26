@@ -59,6 +59,8 @@ public:
 
     virtual void FellOutOfWorld(const UDamageType& dmgType) override;
 
+    virtual float TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
+
 protected:
     /* 메서드 */
 

@@ -2,6 +2,7 @@
 
 #include "Pawns/GGFPawn.h"
 
+#include "GGFBlueprintFunctionLibrary.h"
 #include "GGFGameplayTags.h"
 #include "AbilitySystem/GGFDamageableAbilitySystem.h"
 #include "Components/GGFGameplayEventManager.h"
@@ -47,6 +48,14 @@ void AGGFPawn::FellOutOfWorld(const UDamageType& dmgType)
     {
         Super::FellOutOfWorld(dmgType);
     }
+}
+
+float AGGFPawn::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator,
+    AActor* DamageCauser)
+{
+    UGGFBlueprintFunctionLibrary::ApplyDamageToTarget(EventInstigator, this, DamageAmount);
+
+    return Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
 }
 
 void AGGFPawn::BindEvents()

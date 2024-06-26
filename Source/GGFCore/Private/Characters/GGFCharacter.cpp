@@ -2,6 +2,7 @@
 
 #include "Characters/GGFCharacter.h"
 
+#include "GGFBlueprintFunctionLibrary.h"
 #include "AbilitySystem/GGFDamageableAbilitySystem.h"
 #include "Components/GGFGameplayEventManager.h"
 #include "Components/GGFPawnStateMachine.h"
@@ -56,6 +57,14 @@ void AGGFCharacter::FellOutOfWorld(const UDamageType& dmgType)
     {
         Super::FellOutOfWorld(dmgType);
     }
+}
+
+float AGGFCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator,
+    AActor* DamageCauser)
+{
+    UGGFBlueprintFunctionLibrary::ApplyDamageToTarget(EventInstigator, this, DamageAmount);
+    
+    return Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
 }
 
 void AGGFCharacter::BindEvents()
