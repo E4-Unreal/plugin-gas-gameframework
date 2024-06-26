@@ -4,7 +4,9 @@
 
 #include "EnhancedInputSubsystems.h"
 #include "GGFWeapon.h"
-#include "AbilitySystem/GGFPlayerCharacterAbilitySystem.h"
+#include "Abilities/GGFGA_Interact.h"
+#include "Abilities/GGFGA_Sprint.h"
+#include "AbilitySystem/GGFAbilitySystem.h"
 #include "Components/GGFCharacterManager.h"
 #include "Components/GGFCharacterMovement.h"
 #include "Components/GGFCharacterSkinManager.h"
@@ -22,7 +24,6 @@ FName AGGFPlayerCharacter::InteractionManagerName(TEXT("InteractionManager"));
 AGGFPlayerCharacter::AGGFPlayerCharacter(const FObjectInitializer& ObjectInitializer)
 : Super(ObjectInitializer
     .SetDefaultSubobjectClass<UGGFCharacterMovement>(CharacterMovementComponentName)
-    .SetDefaultSubobjectClass<UGGFPlayerCharacterAbilitySystem>(AbilitySystemName)
     .SetDefaultSubobjectClass<UGGFInputManager>(InputManagerName)
     .SetDefaultSubobjectClass<UGGFCharacterStateMachine>(GameplayStateMachineName))
 {
@@ -39,6 +40,13 @@ AGGFPlayerCharacter::AGGFPlayerCharacter(const FObjectInitializer& ObjectInitial
 
     /* InteractionManager */
     InteractionManager = CreateDefaultSubobject<UGGFInteractionManager>(InteractionManagerName);
+
+    /* AbilitySystem */
+    if(auto CastedAbilitySystem = Cast<UGGFAbilitySystem>(GetAbilitySystem()))
+    {
+        CastedAbilitySystem->Abilities.AddUnique(UGGFGA_Interact::StaticClass()); // 상호작용
+        CastedAbilitySystem->Abilities.AddUnique(UGGFGA_Sprint::StaticClass()); // 빠르게 달리기
+    }
 }
 
 void AGGFPlayerCharacter::PreReplication(IRepChangedPropertyTracker& ChangedPropertyTracker)

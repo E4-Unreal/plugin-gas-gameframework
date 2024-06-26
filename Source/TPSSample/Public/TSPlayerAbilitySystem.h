@@ -3,11 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "AbilitySystem/GGFPlayerCharacterAbilitySystem.h"
+#include "AbilitySystem/GGFPlayerAbilitySystem.h"
 #include "TSPlayerAbilitySystem.generated.h"
 
 UCLASS(meta=(BlueprintSpawnableComponent))
-class TPSSAMPLE_API UTSPlayerAbilitySystem : public UGGFPlayerCharacterAbilitySystem
+class TPSSAMPLE_API UTSPlayerAbilitySystem : public UGGFPlayerAbilitySystem
 {
     GENERATED_BODY()
 

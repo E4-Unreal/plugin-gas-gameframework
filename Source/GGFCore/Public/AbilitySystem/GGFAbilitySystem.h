@@ -48,7 +48,6 @@ public:
     UPROPERTY(BlueprintAssignable)
     FOnGameplayEventInvoked OnGameplayEventInvoked;
 
-protected:
     // 기본으로 사용할 AttributeSet 목록입니다.
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|Default")
     TArray<TSubclassOf<UAttributeSet>> Attributes;
