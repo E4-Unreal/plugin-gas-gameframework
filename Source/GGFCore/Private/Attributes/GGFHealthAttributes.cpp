@@ -24,11 +24,11 @@ void UGGFHealthAttributes::PostGameplayEffectExecute(const FGameplayEffectModCal
         const float LocalDamage = GetDamage();
         SetDamage(0.f);
 
-        // 데미지 값이 음수이거나 이미 체력이 0인 경우 무시
+        /*// 데미지 값이 음수이거나 이미 체력이 0인 경우 무시
         if(LocalDamage <= 0.f || GetHealth() <= 0.f) return;
 
         // 데미지 처리
-        TakeDamageByGameplayEffect(Data, LocalDamage);
+        TakeDamageByGameplayEffect(Data, LocalDamage);*/
     }
 }
 
