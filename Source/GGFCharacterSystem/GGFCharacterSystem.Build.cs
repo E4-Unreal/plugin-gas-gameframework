@@ -28,7 +28,8 @@ public class GGFCharacterSystem : ModuleRules
                 "GGFInteractionSystem",
                 "GGFEquipmentSystem",
                 "GGFShooterCore",
-                "GGFDataSystem"
+                "GGFDataSystem",
+                "GGFAnimationSystem"
             }
         );
 

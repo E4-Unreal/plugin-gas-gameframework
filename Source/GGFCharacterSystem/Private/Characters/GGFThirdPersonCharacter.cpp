@@ -3,6 +3,7 @@
 #include "Characters/GGFThirdPersonCharacter.h"
 
 #include "Logging.h"
+#include "Animations/GGFCharacterAnimInstance.h"
 #include "Components/GGFSpringArmComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/GGFCameraComponent.h"
@@ -39,11 +40,11 @@ AGGFThirdPersonCharacter::AGGFThirdPersonCharacter(const FObjectInitializer& Obj
     FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
     FollowCamera->bUsePawnControlRotation = false;
 
-    /* UnrealMannequins 플러그인 에셋 */
+    /* 기본 에셋 설정 */
     ConstructorHelpers::FObjectFinder<USkeletalMesh> CharacterMeshFinder(TEXT("/UnrealMannequins/Mannequin_UE4/Meshes/SKM_Mannequin_UE4.SKM_Mannequin_UE4"));
     if(CharacterMeshFinder.Succeeded()) CharacterMesh->SetSkeletalMeshAsset(CharacterMeshFinder.Object);
 
-    ConstructorHelpers::FClassFinder<UAnimInstance> CharacterAnimInstanceFinder(TEXT("/UnrealMannequins/Mannequin_UE4/Animations/ABP_Mannequin_UE4.ABP_Mannequin_UE4_C"));
+    ConstructorHelpers::FClassFinder<UGGFCharacterAnimInstance> CharacterAnimInstanceFinder(TEXT("/GASGameFramework/Characters/ABP_GGFThirdPersonCharacter.ABP_GGFThirdPersonCharacter_C"));
     if(CharacterAnimInstanceFinder.Succeeded()) CharacterMesh->SetAnimInstanceClass(CharacterAnimInstanceFinder.Class);
 }
 

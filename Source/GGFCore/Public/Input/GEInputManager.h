@@ -7,7 +7,7 @@
 #include "GEInputManager.generated.h"
 
 class UInputMappingContext;
-class UGEInputConfig;
+class UGGFInputConfig;
 
 /**
  * 향상된 입력 시스템에 입력 액션 바인딩 전용 컴포넌트
@@ -22,7 +22,7 @@ protected:
     TArray<TObjectPtr<UInputMappingContext>> InputMappingContexts;
 
     UPROPERTY(EditDefaultsOnly, Category = "Config")
-    TArray<TObjectPtr<UGEInputConfig>> InputConfigs;
+    TArray<TObjectPtr<UGGFInputConfig>> InputConfigs;
 
 public:
     UGEInputManager();

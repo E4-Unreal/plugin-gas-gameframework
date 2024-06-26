@@ -11,13 +11,13 @@ UGGFInputManager::UGGFInputManager()
     ConstructorHelpers::FObjectFinder<UInputMappingContext> CharacterInputMappingContextFinder(TEXT("/GASGameFramework/Input/Character/IMC_Character.IMC_Character"));
     if(CharacterInputMappingContextFinder.Succeeded()) InputMappingContexts.Emplace(CharacterInputMappingContextFinder.Object);
 
-    ConstructorHelpers::FObjectFinder<UGEInputConfig> CharacterInputConfigFinder(TEXT("/GASGameFramework/Input/Character/IC_Character.IC_Character"));
+    ConstructorHelpers::FObjectFinder<UGGFInputConfig> CharacterInputConfigFinder(TEXT("/GASGameFramework/Input/Character/IC_Character.IC_Character"));
     if(CharacterInputConfigFinder.Succeeded()) InputConfigs.Emplace(CharacterInputConfigFinder.Object);
 
     // Equipment
     ConstructorHelpers::FObjectFinder<UInputMappingContext> EquipmentInputMappingContextFinder(TEXT("/GASGameFramework/Input/Equipment/IMC_Equipment.IMC_Equipment"));
     if(EquipmentInputMappingContextFinder.Succeeded()) InputMappingContexts.Emplace(EquipmentInputMappingContextFinder.Object);
 
-    ConstructorHelpers::FObjectFinder<UGEInputConfig> EquipmentInputConfigFinder(TEXT("/GASGameFramework/Input/Equipment/IC_Equipment.IC_Equipment"));
+    ConstructorHelpers::FObjectFinder<UGGFInputConfig> EquipmentInputConfigFinder(TEXT("/GASGameFramework/Input/Equipment/IC_Equipment.IC_Equipment"));
     if(EquipmentInputConfigFinder.Succeeded()) InputConfigs.Emplace(EquipmentInputConfigFinder.Object);
 }

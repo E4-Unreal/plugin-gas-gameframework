@@ -4,7 +4,7 @@
 
 #include "EnhancedInputSubsystems.h"
 #include "InputMappingContext.h"
-#include "Input/GEInputConfig.h"
+#include "Input/GGFInputConfig.h"
 
 UGEInputManager::UGEInputManager()
 {
@@ -12,7 +12,7 @@ UGEInputManager::UGEInputManager()
     ConstructorHelpers::FObjectFinder<UInputMappingContext> InputMappingContextFinder(TEXT("/GASGameFramework/Input/Ability/IMC_Ability.IMC_Ability"));
     if(InputMappingContextFinder.Succeeded()) InputMappingContexts.Emplace(InputMappingContextFinder.Object);
 
-    ConstructorHelpers::FObjectFinder<UGEInputConfig> InputConfigFinder(TEXT("/GASGameFramework/Input/Ability/IC_Ability.IC_Ability"));
+    ConstructorHelpers::FObjectFinder<UGGFInputConfig> InputConfigFinder(TEXT("/GASGameFramework/Input/Ability/IC_Ability.IC_Ability"));
     if(InputConfigFinder.Succeeded()) InputConfigs.Emplace(InputConfigFinder.Object);
 }
 
@@ -29,7 +29,7 @@ void UGEInputManager::BindEnhancedInput(UEnhancedInputComponent* EnhancedInputCo
     // EnhancedInputComponent null 검사
     if(EnhancedInputComponent == nullptr) return;
 
-    for (TObjectPtr<UGEInputConfig> InputConfig : InputConfigs)
+    for (TObjectPtr<UGGFInputConfig> InputConfig : InputConfigs)
     {
         // 유효성 검사
         if(!InputConfig) continue;
