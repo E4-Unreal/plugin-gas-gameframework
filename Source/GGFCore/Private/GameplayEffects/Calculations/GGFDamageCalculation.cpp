@@ -1,9 +1,9 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
-#include "GameplayEffects/Calculations/GEDamageCalculation.h"
+#include "GameplayEffects/Calculations/GGFDamageCalculation.h"
 
 #include "AbilitySystemComponent.h"
-#include "GASExtensionSetting.h"
+#include "GGFCoreSetting.h"
 #include "Attributes/GGFHealthAttributes.h"
 #include "Attributes/GGFShieldAttributes.h"
 #include "Stats/GGFAttackStats.h"
@@ -11,15 +11,13 @@
 #include "GGFGameplayTags.h"
 #include "Logging.h"
 
-
-
-UGEDamageCalculation::UGEDamageCalculation()
+UGGFDamageCalculation::UGGFDamageCalculation()
 {
     IgnoreTagContainer.AddLeafTag(State::Dead);
     IgnoreTagContainer.AddLeafTag(State::Invinsible);
 }
 
-void UGEDamageCalculation::Execute_Implementation(const FGameplayEffectCustomExecutionParameters& ExecutionParams,
+void UGGFDamageCalculation::Execute_Implementation(const FGameplayEffectCustomExecutionParameters& ExecutionParams,
                                                   FGameplayEffectCustomExecutionOutput& OutExecutionOutput) const
 {
     // 유효성 검사
@@ -43,7 +41,7 @@ void UGEDamageCalculation::Execute_Implementation(const FGameplayEffectCustomExe
     OutExecutionOutput.AddOutputModifier(FGameplayModifierEvaluatedData(UGGFHealthAttributes::GetHealthAttribute(), EGameplayModOp::Additive, -HealthDamage));
 }
 
-bool UGEDamageCalculation::IsValid(const FGameplayEffectCustomExecutionParameters& ExecutionParams) const
+bool UGGFDamageCalculation::IsValid(const FGameplayEffectCustomExecutionParameters& ExecutionParams) const
 {
     UAbilitySystemComponent* SourceSystem = ExecutionParams.GetSourceAbilitySystemComponent();
     UAbilitySystemComponent* TargetSystem = ExecutionParams.GetTargetAbilitySystemComponent();
@@ -60,7 +58,7 @@ bool UGEDamageCalculation::IsValid(const FGameplayEffectCustomExecutionParameter
     return false;
 }
 
-bool UGEDamageCalculation::CanExecute(const FGameplayEffectCustomExecutionParameters& ExecutionParams) const
+bool UGGFDamageCalculation::CanExecute(const FGameplayEffectCustomExecutionParameters& ExecutionParams) const
 {
     // 지역 변수 선언
     UAbilitySystemComponent* TargetASC = ExecutionParams.GetTargetAbilitySystemComponent();
@@ -74,13 +72,13 @@ bool UGEDamageCalculation::CanExecute(const FGameplayEffectCustomExecutionParame
     return true;
 }
 
-bool UGEDamageCalculation::HasImmunity(UAbilitySystemComponent* TargetASC, const FDamageTypeTag& DamageTypeTag) const
+bool UGGFDamageCalculation::HasImmunity(UAbilitySystemComponent* TargetASC, const FGGFDamageTypeTag& DamageTypeTag) const
 {
     // 유효성 검사
     if(!DamageTypeTag.IsValid()) return false;
 
     // 프로젝트 설정 가져오기
-    auto Setting = GetMutableDefault<UGASExtensionSetting>();
+    auto Setting = GetMutableDefault<UGGFCoreSetting>();
     const auto& DamageImmunityMap = Setting->DamageImmunityMap;
 
     // 면역 태그 확인
@@ -89,14 +87,14 @@ bool UGEDamageCalculation::HasImmunity(UAbilitySystemComponent* TargetASC, const
 #if WITH_EDITOR
     if(bResult)
     {
-        UE_LOG(LogGASExtension, Log, TEXT("%s는 해당 데미지 타입(%s)에 대한 면역이 있습니다."), *TargetASC->GetAvatarActor()->GetName(), *DamageTypeTag.Tag.GetTagName().ToString())
+        LOG(Log, TEXT("%s는 해당 데미지 타입(%s)에 대한 면역이 있습니다."), *TargetASC->GetAvatarActor()->GetName(), *DamageTypeTag.Tag.GetTagName().ToString())
     }
 #endif
 
     return bResult;
 }
 
-FDamageTypeTag UGEDamageCalculation::GetDamageTypeTag(const FGameplayEffectSpec& Spec) const
+FGGFDamageTypeTag UGGFDamageCalculation::GetDamageTypeTag(const FGameplayEffectSpec& Spec) const
 {
     FGameplayTagContainer DamageTypeTags = FGameplayTagContainer(Damage::Type::Root);
     const FGameplayTagContainer& SpecTags = Spec.CapturedSourceTags.GetSpecTags();
@@ -106,7 +104,7 @@ FDamageTypeTag UGEDamageCalculation::GetDamageTypeTag(const FGameplayEffectSpec&
     return DamageTypeTags.IsEmpty() ? FGameplayTag::EmptyTag : DamageTypeTags.First();
 }
 
-float UGEDamageCalculation::CalculateTotalDamage(const FGameplayEffectCustomExecutionParameters& ExecutionParams,
+float UGGFDamageCalculation::CalculateTotalDamage(const FGameplayEffectCustomExecutionParameters& ExecutionParams,
     UAbilitySystemComponent* SourceSystem, UAbilitySystemComponent* TargetSystem) const
 {
     // 지역 변수 선언
@@ -136,7 +134,7 @@ float UGEDamageCalculation::CalculateTotalDamage(const FGameplayEffectCustomExec
     TotalDamage = FMath::Max(TotalDamage, 0);
 
 #if WITH_EDITOR
-    UE_LOG(LogGASExtension, Log, TEXT("%s Take Damage From %s: TotalDamage(%f) = (StatsDamage(%f) + FixedDamage(%f)) * DamageRatio(%f)"), *TargetSystem->GetAvatarActor()->GetName(), *SourceSystem->GetAvatarActor()->GetName(), TotalDamage, StatsDamage, FixedDamage, DamageRatio)
+    LOG(Log, TEXT("%s Take Damage From %s: TotalDamage(%f) = (StatsDamage(%f) + FixedDamage(%f)) * DamageRatio(%f)"), *TargetSystem->GetAvatarActor()->GetName(), *SourceSystem->GetAvatarActor()->GetName(), TotalDamage, StatsDamage, FixedDamage, DamageRatio)
 #endif
 
     return TotalDamage;

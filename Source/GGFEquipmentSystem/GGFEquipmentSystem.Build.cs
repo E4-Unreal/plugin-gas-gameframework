@@ -18,8 +18,7 @@ public class GGFEquipmentSystem : ModuleRules
 
                 // GASGameFramework
                 "GGFCore",
-                "GGFDataSystem",
-                "GASExtension"
+                "GGFDataSystem"
             }
         );
 
@@ -32,8 +31,8 @@ public class GGFEquipmentSystem : ModuleRules
                 "SlateCore",
                 "EnhancedInput",
 
-                // 커스텀 모듈
-                "GASExtension"
+                // GASGameFramework
+                "GGFCore"
             }
         );
     }

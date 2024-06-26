@@ -25,11 +25,6 @@
 			"LoadingPhase": "PreDefault"
 		},
 		{
-			"Name": "GASExtension",
-			"Type": "Runtime",
-			"LoadingPhase": "PreDefault"
-		},
-		{
 			"Name": "GGFDataSystem",
 			"Type": "Runtime",
 			"LoadingPhase": "PreDefault"

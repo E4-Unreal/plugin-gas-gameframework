@@ -23,8 +23,7 @@ public class GGFInteractionSystem : ModuleRules
                 "GameplayAbilities",
 
                 // GASExtension
-                "GGFCore",
-                "GASExtension"
+                "GGFCore"
             }
         );
 

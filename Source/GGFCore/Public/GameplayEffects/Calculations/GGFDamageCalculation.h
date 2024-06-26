@@ -4,9 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "GameplayEffectExecutionCalculation.h"
-#include "GEDamageCalculation.generated.h"
+#include "GGFDamageCalculation.generated.h"
 
-struct FDamageTypeTag;
+struct FGGFDamageTypeTag;
 
 /**
  * 가장 기본적인 데미지 계산식입니다.
@@ -21,7 +21,7 @@ struct FDamageTypeTag;
  * 데미지 타입 검사는 GameplayEffectSpec의 태그 목록에서 이루어집니다.
  */
 UCLASS()
-class GASEXTENSION_API UGEDamageCalculation : public UGameplayEffectExecutionCalculation
+class GGFCORE_API UGGFDamageCalculation : public UGameplayEffectExecutionCalculation
 {
     GENERATED_BODY()
 
@@ -31,7 +31,7 @@ protected:
     FGameplayTagContainer IgnoreTagContainer;
 
 public:
-    UGEDamageCalculation();
+    UGGFDamageCalculation();
 
     /* GameplayEffectExecutionCalculation */
 
@@ -45,10 +45,10 @@ protected:
     virtual bool CanExecute(const FGameplayEffectCustomExecutionParameters& ExecutionParams) const;
 
     // 데미지 타입에 대해 면역 상태인지 확인
-    virtual bool HasImmunity(UAbilitySystemComponent* TargetASC, const FDamageTypeTag& DamageTypeTag) const;
+    virtual bool HasImmunity(UAbilitySystemComponent* TargetASC, const FGGFDamageTypeTag& DamageTypeTag) const;
 
     // GameplayEffectSpec에 추가된 AssetTags로부터 DamageTypeTag 가져오기
-    virtual FDamageTypeTag GetDamageTypeTag(const FGameplayEffectSpec& Spec) const;
+    virtual FGGFDamageTypeTag GetDamageTypeTag(const FGameplayEffectSpec& Spec) const;
 
     // 데미지 계산
     virtual float CalculateTotalDamage(const FGameplayEffectCustomExecutionParameters& ExecutionParams, UAbilitySystemComponent* SourceSystem, UAbilitySystemComponent* TargetSystem) const;

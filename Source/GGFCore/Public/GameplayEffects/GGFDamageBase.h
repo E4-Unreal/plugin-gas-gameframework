@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameplayEffect.h"
-#include "GEDamageBase.generated.h"
+#include "GGFDamageBase.generated.h"
 
 class UTargetTagRequirementsGameplayEffectComponent;
 
@@ -12,7 +12,7 @@ class UTargetTagRequirementsGameplayEffectComponent;
  * 데미지 전용 게임플레이 이펙트 클래스
  */
 UCLASS()
-class GASEXTENSION_API UGEDamageBase : public UGameplayEffect
+class GGFCORE_API UGGFDamageBase : public UGameplayEffect
 {
     GENERATED_BODY()
 
@@ -28,7 +28,7 @@ private:
     TObjectPtr<UTargetTagRequirementsGameplayEffectComponent> TargetTagRequirementsComponent;
 
 public:
-    UGEDamageBase(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
+    UGGFDamageBase(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
 protected:
     /* Getter */

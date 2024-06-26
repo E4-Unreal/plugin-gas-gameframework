@@ -5,13 +5,13 @@
 #include "CoreMinimal.h"
 #include "GameplayTagContainer.h"
 #include "UObject/Object.h"
-#include "GASExtensionSetting.generated.h"
+#include "GGFCoreSetting.generated.h"
 
 /**
  *	Damage.Type 카테고리로 제한된 게임플레이 태그 래핑 구조체
  */
 USTRUCT(Atomic, BlueprintType)
-struct FDamageTypeTag
+struct FGGFDamageTypeTag
 {
     GENERATED_BODY()
 
@@ -20,9 +20,9 @@ struct FDamageTypeTag
 
     /* 생성자 */
 
-    FDamageTypeTag() { }
+    FGGFDamageTypeTag() { }
 
-    FDamageTypeTag(FGameplayTag InTag)
+    FGGFDamageTypeTag(FGameplayTag InTag)
     {
         Tag = InTag;
     }
@@ -36,17 +36,17 @@ struct FDamageTypeTag
 
     /* 연산자 */
 
-    FORCEINLINE bool operator==(const FDamageTypeTag& Other) const
+    FORCEINLINE bool operator==(const FGGFDamageTypeTag& Other) const
     {
         return Equals(Other);
     }
 
-    FORCEINLINE bool operator!=(const FDamageTypeTag& Other) const
+    FORCEINLINE bool operator!=(const FGGFDamageTypeTag& Other) const
     {
         return !(*this == Other);
     }
 
-    FORCEINLINE bool Equals(const FDamageTypeTag& Other) const
+    FORCEINLINE bool Equals(const FGGFDamageTypeTag& Other) const
     {
         return Tag.MatchesTagExact(Other.Tag);
     }
@@ -66,12 +66,12 @@ struct FDamageTypeTag
         return Tag.MatchesTagExact(Other);
     }
 
-    friend FORCEINLINE uint32 GetTypeHash(const FDamageTypeTag& DamageTypeTag)
+    friend FORCEINLINE uint32 GetTypeHash(const FGGFDamageTypeTag& DamageTypeTag)
     {
         return GetTypeHash(DamageTypeTag.Tag);
     }
 
-    FORCEINLINE FDamageTypeTag& operator=(const FGameplayTag& Other)
+    FORCEINLINE FGGFDamageTypeTag& operator=(const FGameplayTag& Other)
     {
         Tag = Other;
         return *this;
@@ -82,7 +82,7 @@ struct FDamageTypeTag
  *	Buff.Immunity 카테고리로 제한된 게임플레이 태그 래핑 구조체
  */
 USTRUCT(Atomic, BlueprintType)
-struct FImmunityTag
+struct FGGFImmunityTag
 {
     GENERATED_BODY()
 
@@ -91,9 +91,9 @@ struct FImmunityTag
 
     /* 생성자 */
 
-    FImmunityTag() { }
+    FGGFImmunityTag() { }
 
-    FORCEINLINE FImmunityTag(FGameplayTag InTag)
+    FORCEINLINE FGGFImmunityTag(FGameplayTag InTag)
     {
         Tag = InTag;
     }
@@ -107,17 +107,17 @@ struct FImmunityTag
 
     /* 연산자 */
 
-    FORCEINLINE bool operator==(const FImmunityTag& Other) const
+    FORCEINLINE bool operator==(const FGGFImmunityTag& Other) const
     {
         return Equals(Other);
     }
 
-    FORCEINLINE bool operator!=(const FImmunityTag& Other) const
+    FORCEINLINE bool operator!=(const FGGFImmunityTag& Other) const
     {
         return !(*this == Other);
     }
 
-    FORCEINLINE bool Equals(const FImmunityTag& Other) const
+    FORCEINLINE bool Equals(const FGGFImmunityTag& Other) const
     {
         return Tag.MatchesTagExact(Other.Tag);
     }
@@ -137,12 +137,12 @@ struct FImmunityTag
         return Tag.MatchesTagExact(Other);
     }
 
-    friend FORCEINLINE uint32 GetTypeHash(const FImmunityTag& ImmunityTag)
+    friend FORCEINLINE uint32 GetTypeHash(const FGGFImmunityTag& ImmunityTag)
     {
         return GetTypeHash(ImmunityTag.Tag);
     }
 
-    FORCEINLINE FImmunityTag& operator=(const FGameplayTag& Other)
+    FORCEINLINE FGGFImmunityTag& operator=(const FGameplayTag& Other)
     {
         Tag = Other;
         return *this;
@@ -153,12 +153,12 @@ struct FImmunityTag
  * GASExtension 모듈 전용 프로젝트 설정
  */
 UCLASS(Config = GASGameFramework)
-class GASEXTENSION_API UGASExtensionSetting : public UObject
+class GGFCORE_API UGGFCoreSetting : public UObject
 {
     GENERATED_BODY()
 
 public:
     // 데미지 타입에 대한 면역 태그 매핑
     UPROPERTY(Config, EditAnywhere, Category = "Config")
-    TMap<FDamageTypeTag, FImmunityTag> DamageImmunityMap;
+    TMap<FGGFDamageTypeTag, FGGFImmunityTag> DamageImmunityMap;
 };

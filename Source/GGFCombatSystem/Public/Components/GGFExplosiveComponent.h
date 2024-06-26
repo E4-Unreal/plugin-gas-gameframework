@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameplayCueInterface.h"
-#include "GASExtensionSetting.h"
+#include "GGFCoreSetting.h"
 #include "Components/ActorComponent.h"
 #include "GGFExplosiveComponent.generated.h"
 
@@ -36,7 +36,7 @@ public:
     float FixedDamage = 50;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|ExplosiveComponent")
-    FDamageTypeTag DamageType;
+    FGGFDamageTypeTag DamageType;
 
     // 폭발 피격 판정을 위한 콜리전 채널
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|ExplosiveComponent")

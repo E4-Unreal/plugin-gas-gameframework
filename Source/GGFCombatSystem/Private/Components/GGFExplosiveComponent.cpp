@@ -2,18 +2,18 @@
 
 #include "Components/GGFExplosiveComponent.h"
 
-#include "GEBlueprintFunctionLibrary.h"
+#include "GGFBlueprintFunctionLibrary.h"
 #include "GGFBlueprintFunctionLibrary.h"
 #include "Logging.h"
 #include "Components/SphereComponent.h"
-#include "GameplayEffects/GEDamageBase.h"
+#include "GameplayEffects/GGFDamageBase.h"
 #include "GGFGameplayTags.h"
 #include "GGFCombatGameplayTags.h"
 
 UGGFExplosiveComponent::UGGFExplosiveComponent()
 {
     // 기본 설정
-    DamageEffect = UGEDamageBase::StaticClass();
+    DamageEffect = UGGFDamageBase::StaticClass();
     DamageType = Damage::Type::Default;
     ExplosionCueTag = FGameplayCueTag(GGFGameplayTags::GameplayCue::Explosion::Default);
 }
@@ -45,7 +45,7 @@ void UGGFExplosiveComponent::Explode()
     }
 
     // 폭발 효과
-    UGEBlueprintFunctionLibrary::LocalHandleGameplayCue(GetOwner(), ExplosionCueTag);
+    UGGFBlueprintFunctionLibrary::LocalHandleGameplayCue(GetOwner(), ExplosionCueTag);
 
     // 파괴
     if(bAutoDestroy) GetOwner()->Destroy();
@@ -193,7 +193,7 @@ void UGGFExplosiveComponent::ApplyEffects(AActor* Target)
     // 데미지 적용
     const float DamageRatio = CalculateDamageRatio(Target);
     if(DamageRatio == 0) return; // 피격 판정 실패
-    UGEBlueprintFunctionLibrary::ApplyDamageToTarget(Instigator, Target, DamageEffect, FixedDamage, DamageRatio, DamageType.Tag);
+    UGGFBlueprintFunctionLibrary::ApplyDamageToTarget(Instigator, Target, DamageEffect, FixedDamage, DamageRatio, DamageType.Tag);
 
     // 추가 이펙트 적용
     if(DamageRatio > 0)

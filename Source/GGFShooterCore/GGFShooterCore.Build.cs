@@ -26,7 +26,6 @@ public class GGFShooterCore : ModuleRules
                 // GASGameFramework
                 "GGFCore",
                 "GGFDataSystem",
-                "GASExtension",
                 "GGFEquipmentSystem",
                 "GGFCombatSystem",
                 "GGFInteractionSystem"

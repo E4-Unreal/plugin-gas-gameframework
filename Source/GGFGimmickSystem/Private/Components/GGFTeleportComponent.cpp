@@ -4,7 +4,7 @@
 
 #include "Logging.h"
 #include "AbilitySystemGlobals.h"
-#include "GEBlueprintFunctionLibrary.h"
+#include "GGFBlueprintFunctionLibrary.h"
 #include "GameFramework/PawnMovementComponent.h"
 #include "GGFGimmickGameplayTags.h"
 
@@ -50,8 +50,8 @@ void UGGFTeleportComponent::Teleport(AActor* ActorToTeleport, AActor* TargetToTe
     ActorToTeleport->TeleportTo(DestLocation, DestRotation);
 
     // 기존 위치와 목표 위치에 순간이동 이펙트 재생
-    UGEBlueprintFunctionLibrary::LocalHandleGameplayCue(GetOwner(), TeleportInCueTag); // 기존
-    UGEBlueprintFunctionLibrary::LocalHandleGameplayCue(GetOwner(), TeleportOutCueTag, ActorToTeleport); // 목표
+    UGGFBlueprintFunctionLibrary::LocalHandleGameplayCue(GetOwner(), TeleportInCueTag); // 기존
+    UGGFBlueprintFunctionLibrary::LocalHandleGameplayCue(GetOwner(), TeleportOutCueTag, ActorToTeleport); // 목표
 
 #if WITH_EDITOR
     LOG_ACTOR_COMPONENT_DETAIL(Log, TEXT("%s를 %s로 순간이동시켰습니다."), *ActorToTeleport->GetName(), *TargetToTeleport->GetName())

@@ -18,7 +18,6 @@ public class GGFCombatSystem : ModuleRules
 
                 // GASGameFramework
                 "GGFCore",
-                "GASExtension",
                 "GGFDataSystem"
             }
         );

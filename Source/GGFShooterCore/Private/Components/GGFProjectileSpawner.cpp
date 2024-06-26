@@ -2,7 +2,7 @@
 
 #include "Components/GGFProjectileSpawner.h"
 
-#include "GEBlueprintFunctionLibrary.h"
+#include "GGFBlueprintFunctionLibrary.h"
 #include "Components/SphereComponent.h"
 #include "Projectiles/GGFProjectile.h"
 #include "GGFShooterGameplayTags.h"
@@ -91,5 +91,5 @@ AGGFProjectile* UGGFProjectileSpawner::SpawnProjectile(const FVector& SpawnLocat
 void UGGFProjectileSpawner::PlayMuzzleGameplayCue(const FVector& SpawnLocation, const FRotator& SpawnRotation)
 {
     FTransform SpawnTransform(SpawnRotation, SpawnLocation);
-    UGEBlueprintFunctionLibrary::LocalHandleGameplayCueWithTransform(GetOwner(), MuzzleCueTag, SpawnTransform);
+    UGGFBlueprintFunctionLibrary::LocalHandleGameplayCueWithTransform(GetOwner(), MuzzleCueTag, SpawnTransform);
 }

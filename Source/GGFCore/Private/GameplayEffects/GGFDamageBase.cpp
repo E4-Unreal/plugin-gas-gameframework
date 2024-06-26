@@ -1,16 +1,16 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
-#include "GameplayEffects/GEDamageBase.h"
+#include "GameplayEffects/GGFDamageBase.h"
 
 #include "GGFGameplayTags.h"
-#include "GameplayEffects/Calculations/GEDamageCalculation.h"
+#include "GameplayEffects/Calculations/GGFDamageCalculation.h"
 #include "GameplayEffectComponents/TargetTagRequirementsGameplayEffectComponent.h"
 
 
 
-FName UGEDamageBase::TargetTagRequirementsComponentName(TEXT("TargetTagRequirements"));
+FName UGGFDamageBase::TargetTagRequirementsComponentName(TEXT("TargetTagRequirements"));
 
-UGEDamageBase::UGEDamageBase(const FObjectInitializer& ObjectInitializer)
+UGGFDamageBase::UGGFDamageBase(const FObjectInitializer& ObjectInitializer)
 {
     /* TargetTagRequirements */
     TargetTagRequirementsComponent = CreateDefaultSubobject<UTargetTagRequirementsGameplayEffectComponent>(TargetTagRequirementsComponentName);
@@ -24,6 +24,6 @@ UGEDamageBase::UGEDamageBase(const FObjectInitializer& ObjectInitializer)
 
     /* 기본 Execution 설정 */
     FGameplayEffectExecutionDefinition ExecutionDefinition;
-    ExecutionDefinition.CalculationClass = UGEDamageCalculation::StaticClass(); // 기본 데미지 계산식
+    ExecutionDefinition.CalculationClass = UGGFDamageCalculation::StaticClass(); // 기본 데미지 계산식
     Executions.Emplace(ExecutionDefinition);
 }

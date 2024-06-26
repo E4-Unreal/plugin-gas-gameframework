@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GASExtensionSetting.h"
+#include "GGFCoreSetting.h"
 #include "GGFProjectile.h"
 #include "GGFDamageableProjectile.generated.h"
 
@@ -27,7 +27,7 @@ public:
 
     // 데미지 타입
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|DamageableProjectile")
-    FDamageTypeTag DamageType;
+    FGGFDamageTypeTag DamageType;
 
     // 데미지 배율 (샷건 등에서 사용)
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|DamageableProjectile", meta = (ClampMin = 0))
