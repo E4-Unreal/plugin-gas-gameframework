@@ -6,7 +6,10 @@
 #include "Components/SphereComponent.h"
 
 AGGFEffectSphere::AGGFEffectSphere(const FObjectInitializer& ObjectInitializer)
+    : Super(ObjectInitializer)
 {
+    bReplicates = true;
+
     /* EffectAreaComponent */
     EffectAreaComponent = CreateDefaultSubobject<UGGFEffectAreaComponent>(TEXT("EffectAreaComponent"));
 }

@@ -114,6 +114,11 @@ float UGGFDamageCalculation::CalculateTotalDamage(const FGameplayEffectCustomExe
     float TrueDamage = OwningSpec.GetSetByCallerMagnitude(Data::Damage::True, false);
     float StatsDamage = GenericDamage;
 
+    if(auto ModifiedAttribute = OwningSpec.GetModifiedAttribute(UGGFHealthAttributes::GetDamageAttribute()))
+    {
+        GenericDamage += ModifiedAttribute->TotalMagnitude;
+    }
+
     // Target 스탯 가져오기
     const float TargetDefense = TargetSystem->GetNumericAttribute(UGGFDefenseStats::GetDefenseAttribute());
 
