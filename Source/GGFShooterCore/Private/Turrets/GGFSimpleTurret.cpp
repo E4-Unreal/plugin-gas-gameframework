@@ -38,7 +38,7 @@ void AGGFSimpleTurret::BeginPlay()
 void AGGFSimpleTurret::Destroyed()
 {
     // 비활성화
-    if(bActivated) Execute_Deactivate(this, this);
+    if(bActive) Execute_Deactivate(this, this);
 
     // 폭발 효과 스폰
     GetEffectManager()->PlayEffectsAtActor(this);
@@ -55,12 +55,28 @@ void AGGFSimpleTurret::OnDead_Implementation()
 
 bool AGGFSimpleTurret::Activate_Implementation(AActor* InstigatorActor)
 {
-    if(bActivated) return false;
-    bActivated = true;
+    // 중복 호출 방지
+    if(bActive) return false;
+    bActive = true;
 
-    if(HasAuthority())
+    // 애니메이션 활성화
+    if(auto AnimInstance = GetSkeletalMesh()->GetAnimInstance())
     {
-        GetWorldTimerManager().SetTimer(AutoFireTimer, GetProjectileSpawner(), &UGGFProjectileSpawner::FireForward, 60 / RPM, true);
+        if(AnimInstance->Implements<UGGFActivatableInterface>())
+        {
+            Execute_Activate(AnimInstance, this);
+        }
+    }
+
+    // 활성화 타이머 설정
+    if(ActivationTime <= 0)
+    {
+        OnActivated();
+    }
+    else
+    {
+        auto& TimerManager = GetWorldTimerManager();
+        TimerManager.SetTimer(ActivationTimer, this, &ThisClass::OnActivated, ActivationTime);
     }
 
     return true;
@@ -68,11 +84,38 @@ bool AGGFSimpleTurret::Activate_Implementation(AActor* InstigatorActor)
 
 bool AGGFSimpleTurret::Deactivate_Implementation(AActor* InstigatorActor)
 {
-    if(!bActivated) return false;
-    bActivated = false;
+    // 중복 호출 방지
+    if(!bActive) return false;
+    bActive = false;
 
-    auto& TimerManager = GetWorldTimerManager();
-    if(TimerManager.IsTimerActive(AutoFireTimer)) GetWorldTimerManager().ClearTimer(AutoFireTimer);
+    // 애니메이션 비활성화
+    if(auto AnimInstance = GetSkeletalMesh()->GetAnimInstance())
+    {
+        if(AnimInstance->Implements<UGGFActivatableInterface>())
+        {
+            Execute_Deactivate(AnimInstance, this);
+        }
+    }
+
+    // 비활성화
+    OnDeactivated();
 
     return true;
+}
+
+void AGGFSimpleTurret::OnActivated_Implementation()
+{
+    auto& TimerManager = GetWorldTimerManager();
+    if(HasAuthority())
+    {
+        TimerManager.SetTimer(AutoFireTimer, GetProjectileSpawner(), &UGGFProjectileSpawner::FireForward, 60 / RPM, true, 0);
+    }
+
+}
+
+void AGGFSimpleTurret::OnDeactivated_Implementation()
+{
+    auto& TimerManager = GetWorldTimerManager();
+    if(TimerManager.IsTimerActive(ActivationTimer)) TimerManager.ClearTimer(ActivationTimer);
+    if(TimerManager.IsTimerActive(AutoFireTimer)) TimerManager.ClearTimer(AutoFireTimer);
 }

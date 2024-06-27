@@ -44,7 +44,13 @@ protected:
 
     // 활성화 여부
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State", Transient)
-    bool bActivated = false;
+    bool bActive = false;
+
+    // 활성화 시간
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config")
+    float ActivationTime = 2.5f;
+
+    FTimerHandle ActivationTimer;
 
 public:
     AGGFSimpleTurret(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
@@ -62,6 +68,15 @@ public:
 
     virtual bool Activate_Implementation(AActor* InstigatorActor) override;
     virtual bool Deactivate_Implementation(AActor* InstigatorActor) override;
+
+protected:
+    /* 이벤트 */
+
+    UFUNCTION(BlueprintNativeEvent, Category = "Event")
+    void OnActivated();
+
+    UFUNCTION(BlueprintNativeEvent, Category = "Event")
+    void OnDeactivated();
 
 public:
     /* Getter */
