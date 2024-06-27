@@ -7,11 +7,9 @@
 #include "GameplayEffects/GGFDamage.h"
 #include "GGFGameplayTags.h"
 
-
-
 AGGFDamageableProjectile::AGGFDamageableProjectile(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
 {
-    DamageClass = UGGFDamage::StaticClass();
+    DamageEffect = UGGFDamage::StaticClass();
     Damage = 10;
     DamageType = Data::Damage::Type::Default;
 }
@@ -32,13 +30,13 @@ void AGGFDamageableProjectile::ApplyEffects(AActor* Target)
         // 데미지 및 추가 GE 적용
         if(GetInstigator())
         {
-            UGGFBlueprintFunctionLibrary::ApplyDamageToTarget(GetInstigator(), Target, Damage, DamageRatio, DamageType.Tag, DamageClass);
-            UGGFBlueprintFunctionLibrary::ApplyGameplayEffectsToTarget(GetInstigator(), Target, AdditionalEffects);
+            UGGFBlueprintFunctionLibrary::ApplyDamageToTarget(GetInstigator(), Target, Damage, DamageRatio, DamageType.Tag, DamageEffect);
+            UGGFBlueprintFunctionLibrary::ApplyGameplayEffectsToTarget(GetInstigator(), Target, EffectsToApply);
         }
         else
         {
-            UGGFBlueprintFunctionLibrary::ApplyDamageToSelf(Target,Damage, DamageRatio, DamageType.Tag, DamageClass);
-            UGGFBlueprintFunctionLibrary::ApplyGameplayEffectsToSelf(Target, AdditionalEffects);
+            UGGFBlueprintFunctionLibrary::ApplyDamageToSelf(Target,Damage, DamageRatio, DamageType.Tag, DamageEffect);
+            UGGFBlueprintFunctionLibrary::ApplyGameplayEffectsToSelf(Target, EffectsToApply);
         }
     }
 }
