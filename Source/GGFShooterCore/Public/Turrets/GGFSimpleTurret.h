@@ -7,6 +7,7 @@
 #include "Pawns/GGFPawn.h"
 #include "GGFSimpleTurret.generated.h"
 
+class UCapsuleComponent;
 class UGGFProjectileSpawner;
 class UGGFEffectManager;
 
@@ -19,6 +20,9 @@ class GGFSHOOTERCORE_API AGGFSimpleTurret : public AGGFPawn, public IGGFActivata
     GENERATED_BODY()
 
     /* 컴포넌트 */
+
+    UPROPERTY(VisibleAnywhere, BlueprintGetter = GetCapsuleComponent, Category = "Component")
+    TObjectPtr<UCapsuleComponent> CapsuleComponent;
 
     // 터렛 메시
     UPROPERTY(VisibleAnywhere, BlueprintGetter = GetSkeletalMesh, Category = "Component")
@@ -80,6 +84,9 @@ protected:
 
 public:
     /* Getter */
+
+    UFUNCTION(BlueprintGetter)
+    FORCEINLINE UCapsuleComponent* GetCapsuleComponent() const { return CapsuleComponent; }
 
     UFUNCTION(BlueprintGetter)
     FORCEINLINE USkeletalMeshComponent* GetSkeletalMesh() const { return SkeletalMesh; }

@@ -2,6 +2,7 @@
 
 #include "Turrets/GGFSimpleTurret.h"
 
+#include "Components/CapsuleComponent.h"
 #include "Components/GGFProjectileSpawner.h"
 
 AGGFSimpleTurret::AGGFSimpleTurret(const FObjectInitializer& ObjectInitializer)
@@ -12,9 +13,13 @@ AGGFSimpleTurret::AGGFSimpleTurret(const FObjectInitializer& ObjectInitializer)
     // 리플리케이트 설정
     bReplicates = true;
 
+    /* CapsuleComponent */
+    CapsuleComponent = CreateDefaultSubobject<UCapsuleComponent>(TEXT("CapsuleComponent"));
+    SetRootComponent(CapsuleComponent);
+
     /* SkeletalMesh */
     SkeletalMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletalMesh"));
-    SetRootComponent(SkeletalMesh);
+    SkeletalMesh->SetupAttachment(RootComponent);
     SkeletalMesh->SetCollisionProfileName("CharacterMesh");
 
     /* ProjectileSpawner */

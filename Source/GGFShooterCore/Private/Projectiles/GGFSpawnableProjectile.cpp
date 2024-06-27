@@ -13,6 +13,7 @@ void AGGFSpawnableProjectile::OnSphereColliderHit_Implementation(UPrimitiveCompo
         FActorSpawnParameters ActorSpawnParameters;
         ActorSpawnParameters.Instigator = GetInstigator();
         ActorSpawnParameters.Owner = GetOwner();
+        ActorSpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
 
         if(bUseHitResult)
         {
