@@ -7,6 +7,11 @@
 AGGFSimpleTurret::AGGFSimpleTurret(const FObjectInitializer& ObjectInitializer)
     : Super(ObjectInitializer)
 {
+    /* 기본 설정 */
+
+    // 리플리케이트 설정
+    bReplicates = true;
+
     /* SkeletalMesh */
     SkeletalMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletalMesh"));
     SetRootComponent(SkeletalMesh);
