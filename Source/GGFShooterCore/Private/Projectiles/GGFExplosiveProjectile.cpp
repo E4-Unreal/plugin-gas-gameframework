@@ -30,7 +30,7 @@ void AGGFExplosiveProjectile::PostInitializeComponents()
 
     // TODO 리팩토링 (구조체 혹은 데이터 에셋으로 대체)
     ExplosiveComponent->DamageEffect = DamageClass;
-    ExplosiveComponent->AdditionalEffects = AdditionalEffects;
+    ExplosiveComponent->EffectsToApply = AdditionalEffects;
     ExplosiveComponent->Damage = Damage;
     ExplosiveComponent->DamageType = DamageType;
 }

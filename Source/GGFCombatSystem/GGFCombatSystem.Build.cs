@@ -18,7 +18,8 @@ public class GGFCombatSystem : ModuleRules
 
                 // GASGameFramework
                 "GGFCore",
-                "GGFDataSystem"
+                "GGFDataSystem",
+                "GGFEffectSystem"
             }
         );
 

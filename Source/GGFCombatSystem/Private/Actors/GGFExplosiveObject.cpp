@@ -10,7 +10,7 @@ AGGFExplosiveObject::AGGFExplosiveObject()
     // ExplosionArea
     ExplosionArea = CreateDefaultSubobject<USphereComponent>(TEXT("ExplosionSphere"));
     ExplosionArea->SetupAttachment(RootComponent);
-    ExplosionArea->SetSphereRadius(200);
+    ExplosionArea->SetSphereRadius(400);
 
     // ExplosiveComponent
     ExplosiveComponent = CreateDefaultSubobject<UGGFExplosiveComponent>(TEXT("ExplosiveComponent"));

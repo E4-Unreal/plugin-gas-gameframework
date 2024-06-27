@@ -18,5 +18,10 @@ AGGFEnergyShield::AGGFEnergyShield(const FObjectInitializer& ObjectInitializer)
 
     /* 기본 에셋 설정 */
     ConstructorHelpers::FObjectFinder<UStaticMesh> DisplayMeshFinder(TEXT("/E4Effects/Meshes/SM_EnergyShield_Sphere"));
-    if(DisplayMeshFinder.Succeeded()) GetDisplayMesh()->SetStaticMesh(DisplayMeshFinder.Object);
+    if(DisplayMeshFinder.Succeeded())
+    {
+        GetDisplayMesh()->SetStaticMesh(DisplayMeshFinder.Object);
+        ConstructorHelpers::FObjectFinder<UMaterialInterface> DisplayMeshMaterialFinder(TEXT("/E4Effects/Materials/Shield/MI_EnergyShield"));
+        if(DisplayMeshMaterialFinder.Succeeded()) GetDisplayMesh()->SetMaterial(0, DisplayMeshMaterialFinder.Object);
+    }
 }

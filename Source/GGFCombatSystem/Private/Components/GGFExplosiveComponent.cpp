@@ -3,7 +3,6 @@
 #include "Components/GGFExplosiveComponent.h"
 
 #include "GGFBlueprintFunctionLibrary.h"
-#include "GGFBlueprintFunctionLibrary.h"
 #include "Logging.h"
 #include "Components/SphereComponent.h"
 #include "GameplayEffects/GGFDamage.h"
@@ -15,16 +14,13 @@ UGGFExplosiveComponent::UGGFExplosiveComponent()
     // 기본 설정
     DamageEffect = UGGFDamage::StaticClass();
     DamageType = Data::Damage::Type::Default;
-    ExplosionCueTag = FGameplayCueTag(GGFGameplayTags::GameplayCue::Explosion::Default);
 }
 
 void UGGFExplosiveComponent::Init(USphereComponent* InExplosionArea)
 {
     ExplosionArea = InExplosionArea;
 
-#if WITH_EDITOR
-    bValid = ExplosionArea.IsValid();
-#endif
+    bValid = bValid && ExplosionArea.IsValid();
 }
 
 void UGGFExplosiveComponent::Explode()
@@ -44,11 +40,8 @@ void UGGFExplosiveComponent::Explode()
         }
     }
 
-    // 폭발 효과
-    UGGFBlueprintFunctionLibrary::LocalHandleGameplayCue(GetOwner(), ExplosionCueTag);
-
-    // 파괴
-    if(bAutoDestroy) GetOwner()->Destroy();
+    // 폭발 효과 스폰
+    PlayEffectsAtActor(GetOwner());
 }
 
 float UGGFExplosiveComponent::CalculateDamageRatio(AActor* Target)
@@ -198,6 +191,6 @@ void UGGFExplosiveComponent::ApplyEffects(AActor* Target)
     // 추가 이펙트 적용
     if(DamageRatio > 0)
     {
-        UGGFBlueprintFunctionLibrary::ApplyGameplayEffectsToTarget(Instigator, Target, AdditionalEffects);
+        UGGFBlueprintFunctionLibrary::ApplyGameplayEffectsToTarget(Instigator, Target, EffectsToApply);
     }
 }
