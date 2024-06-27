@@ -4,10 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "UObject/Interface.h"
-#include "GGFActivationInterface.generated.h"
+#include "GGFActivatableInterface.generated.h"
 
 UINTERFACE(BlueprintType, Blueprintable)
-class GGFGIMMICKSYSTEM_API UGGFActivationInterface : public UInterface
+class GGFCORE_API UGGFActivatableInterface : public UInterface
 {
     GENERATED_BODY()
 };
@@ -15,7 +15,7 @@ class GGFGIMMICKSYSTEM_API UGGFActivationInterface : public UInterface
 /**
  * 액터 활성화 혹은 비활성화 이벤트 호출을 위한 인터페이스
  */
-class GGFGIMMICKSYSTEM_API IGGFActivationInterface
+class GGFCORE_API IGGFActivatableInterface
 {
     GENERATED_BODY()
 

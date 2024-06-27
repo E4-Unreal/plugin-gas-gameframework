@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Actors/GGFInteractableActor.h"
-#include "Interfaces/GGFActivationInterface.h"
+#include "Interfaces/GGFActivatableInterface.h"
 #include "GGFInteractableTrigger.generated.h"
 
 class UGGFActivatableComponent;
@@ -15,7 +15,7 @@ class UGGFTriggerComponent;
  * 상호작용 가능한 트리거 전용 액터입니다.
  */
 UCLASS()
-class GGFGIMMICKSYSTEM_API AGGFInteractableTrigger : public AGGFInteractableActor, public IGGFActivationInterface
+class GGFGIMMICKSYSTEM_API AGGFInteractableTrigger : public AGGFInteractableActor, public IGGFActivatableInterface
 {
     GENERATED_BODY()
 

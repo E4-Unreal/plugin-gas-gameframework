@@ -8,6 +8,7 @@
 
 UGGFProjectileSpawner::UGGFProjectileSpawner()
 {
+    SetIsReplicatedByDefault(true);
     ProjectileClass = AGGFDamageableProjectile::StaticClass();
 }
 
@@ -71,7 +72,7 @@ void UGGFProjectileSpawner::FireToTarget(const FVector& TargetLocation)
 AGGFProjectile* UGGFProjectileSpawner::SpawnProjectile(const FVector& SpawnLocation, const FRotator& SpawnRotation)
 {
     // 총구 이펙트 스폰
-    PlayEffectsAtSocket(SkeletalMesh.Get(), MuzzleSocketName);
+    NetMulticastSpawnMuzzleEffects();
 
     // 스폰 변수 설정
     FActorSpawnParameters SpawnParams;
@@ -91,4 +92,9 @@ AGGFProjectile* UGGFProjectileSpawner::SpawnProjectile(const FVector& SpawnLocat
     SpawnedProjectile->GetSphereCollider()->IgnoreActorWhenMoving(SpawnParams.Instigator, true);
 
     return SpawnedProjectile;
+}
+
+void UGGFProjectileSpawner::NetMulticastSpawnMuzzleEffects_Implementation()
+{
+    PlayEffectsAtSocket(SkeletalMesh.Get(), MuzzleSocketName);
 }

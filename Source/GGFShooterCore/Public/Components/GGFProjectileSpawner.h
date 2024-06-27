@@ -46,6 +46,10 @@ protected:
     UFUNCTION(BlueprintCallable)
     virtual AGGFProjectile* SpawnProjectile(const FVector& SpawnLocation, const FRotator& SpawnRotation);
 
+    // 총구 이펙트 스폰
+    UFUNCTION(NetMulticast, Reliable)
+    virtual void NetMulticastSpawnMuzzleEffects();
+
 public:
     /* Getter */
 
