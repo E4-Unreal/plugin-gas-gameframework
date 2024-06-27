@@ -2,14 +2,13 @@
 
 #include "Components/GGFProjectileSpawner.h"
 
-#include "GGFBlueprintFunctionLibrary.h"
 #include "Components/SphereComponent.h"
+#include "Projectiles/GGFDamageableProjectile.h"
 #include "Projectiles/GGFProjectile.h"
-#include "GGFShooterGameplayTags.h"
 
 UGGFProjectileSpawner::UGGFProjectileSpawner()
 {
-    MuzzleCueTag.GameplayCueTag = GameplayCue::FireArm::Muzzle::Default;
+    ProjectileClass = AGGFDamageableProjectile::StaticClass();
 }
 
 void UGGFProjectileSpawner::Init(USkeletalMeshComponent* InSkeletalMesh)
@@ -20,6 +19,9 @@ void UGGFProjectileSpawner::Init(USkeletalMeshComponent* InSkeletalMesh)
 
 void UGGFProjectileSpawner::FireForward()
 {
+    // 서버에서만 호출 가능
+    if(!GetOwner()->HasAuthority()) return;
+
     // 유효성 검사
     if(ProjectileClass == nullptr) return;
 
@@ -37,15 +39,15 @@ void UGGFProjectileSpawner::FireForward()
         SpawnRotation = GetOwner()->GetActorRotation();
     }
 
-    // 총구 이펙트 재생
-    PlayMuzzleGameplayCue(SpawnLocation, SpawnRotation);
-
     // 총알 스폰
     SpawnProjectile(SpawnLocation, SpawnRotation);
 }
 
 void UGGFProjectileSpawner::FireToTarget(const FVector& TargetLocation)
 {
+    // 서버에서만 호출 가능
+    if(!GetOwner()->HasAuthority()) return;
+
     // 유효성 검사
     if(ProjectileClass == nullptr) return;
 
@@ -68,6 +70,9 @@ void UGGFProjectileSpawner::FireToTarget(const FVector& TargetLocation)
 
 AGGFProjectile* UGGFProjectileSpawner::SpawnProjectile(const FVector& SpawnLocation, const FRotator& SpawnRotation)
 {
+    // 총구 이펙트 스폰
+    PlayEffectsAtSocket(SkeletalMesh.Get(), MuzzleSocketName);
+
     // 스폰 변수 설정
     FActorSpawnParameters SpawnParams;
     SpawnParams.Owner = GetOwner();
@@ -86,10 +91,4 @@ AGGFProjectile* UGGFProjectileSpawner::SpawnProjectile(const FVector& SpawnLocat
     SpawnedProjectile->GetSphereCollider()->IgnoreActorWhenMoving(SpawnParams.Instigator, true);
 
     return SpawnedProjectile;
-}
-
-void UGGFProjectileSpawner::PlayMuzzleGameplayCue(const FVector& SpawnLocation, const FRotator& SpawnRotation)
-{
-    FTransform SpawnTransform(SpawnRotation, SpawnLocation);
-    UGGFBlueprintFunctionLibrary::LocalHandleGameplayCueWithTransform(GetOwner(), MuzzleCueTag, SpawnTransform);
 }
