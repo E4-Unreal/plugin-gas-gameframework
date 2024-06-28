@@ -7,6 +7,21 @@
 #include "Abilities/GGFGameplayAbility.h"
 #include "Data/GGFSkillDataSubsystem.h"
 #include "Data/GGFSkillDefinition.h"
+#include "GGFSkillGameplayTags.h"
+
+UGGFSkillManager::UGGFSkillManager()
+{
+    FGGFSkillSlot PrimarySkillSlot;
+    PrimarySkillSlot.InputTag = Input::Skill::Q;
+    PrimarySkillSlot.CooldownTag = Skill::Cooldown::Q;
+
+    FGGFSkillSlot SecondarySkillSlot;
+    SecondarySkillSlot.InputTag = Input::Skill::E;
+    SecondarySkillSlot.CooldownTag = Skill::Cooldown::E;
+
+    Slots.Emplace(PrimarySkillSlot);
+    Slots.Emplace(SecondarySkillSlot);
+}
 
 void UGGFSkillManager::Reset()
 {

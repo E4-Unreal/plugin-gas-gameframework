@@ -6,15 +6,13 @@
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
-using namespace GGFGameplayTags;
-
 UGGFGA_Sprint::UGGFGA_Sprint()
 {
     // 입력 태그 설정
     InputTag = Input::Sprint;
 
     // 상태 태그 설정
-    ActivationOwnedTags.AddTagFast(State::Sprinting);
+    ActivationOwnedTags.AddTagFast(State::Locomotion::Sprinting);
 }
 
 void UGGFGA_Sprint::OnAvatarSet(const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilitySpec& Spec)

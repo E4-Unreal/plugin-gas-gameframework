@@ -15,11 +15,13 @@
 #include "Components/GGFInteractionManager.h"
 #include "Input/GGFInputManager.h"
 #include "Net/UnrealNetwork.h"
+#include "Components/GGFSkillManager.h"
 
 FName AGGFPlayerCharacter::EquipmentManagerName(TEXT("EquipmentManager"));
 FName AGGFPlayerCharacter::CharacterManagerName(TEXT("CharacterManager"));
 FName AGGFPlayerCharacter::SkinManagerName(TEXT("SkinManager"));
 FName AGGFPlayerCharacter::InteractionManagerName(TEXT("InteractionManager"));
+FName AGGFPlayerCharacter::SkillManagerName(TEXT("SkillManager"));
 
 AGGFPlayerCharacter::AGGFPlayerCharacter(const FObjectInitializer& ObjectInitializer)
 : Super(ObjectInitializer
@@ -47,6 +49,9 @@ AGGFPlayerCharacter::AGGFPlayerCharacter(const FObjectInitializer& ObjectInitial
         CastedAbilitySystem->Abilities.AddUnique(UGGFGA_Interact::StaticClass()); // 상호작용
         CastedAbilitySystem->Abilities.AddUnique(UGGFGA_Sprint::StaticClass()); // 빠르게 달리기
     }
+
+    /* SkillManager */
+    SkillManager = CreateDefaultSubobject<UGGFSkillManager>(TEXT("SkillManager"));
 }
 
 void AGGFPlayerCharacter::PreReplication(IRepChangedPropertyTracker& ChangedPropertyTracker)

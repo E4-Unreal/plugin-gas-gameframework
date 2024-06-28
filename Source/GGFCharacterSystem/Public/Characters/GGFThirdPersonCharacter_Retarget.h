@@ -34,6 +34,10 @@ public:
 
     virtual void PostInitializeComponents() override;
 
+    /* GGFCharacterMeshInterface */
+
+    virtual USkeletalMeshComponent* GetThirdPersonRetargetMesh_Implementation() const override { return RetargetMesh; }
+
 protected:
     virtual void HideBones() override;
 

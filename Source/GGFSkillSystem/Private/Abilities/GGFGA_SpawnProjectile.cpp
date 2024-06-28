@@ -3,8 +3,9 @@
 #include "Abilities/GGFGA_SpawnProjectile.h"
 
 #include "Animation/SkeletalMeshActor.h"
-#include "Characters/GGFThirdPersonCharacter_Retarget.h"
 #include "GameFramework/Character.h"
+#include "Interfaces/GGFAimingInterface.h"
+#include "Interfaces/GGFCharacterMeshInterface.h"
 #include "Interfaces/GGFEquipmentManagerInterface.h"
 
 void UGGFGA_SpawnProjectile::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
@@ -36,8 +37,7 @@ void UGGFGA_SpawnProjectile::SpawnSpecialWeapon()
 {
     if(!HasAuthority(&CurrentActivationInfo)) return;
 
-    auto RetargetCharacter = Cast<AGGFThirdPersonCharacter_Retarget>(GetAvatarCharacter());
-    USkeletalMeshComponent* CharacterMesh = RetargetCharacter ? RetargetCharacter->GetRetargetMesh() : GetAvatarCharacter()->GetMesh();
+    auto CharacterMesh = GetAvatarCharacter()->Implements<UGGFCharacterMeshInterface>() ? IGGFCharacterMeshInterface::Execute_GetThirdPersonRetargetMesh(GetAvatarCharacter()) : GetAvatarCharacter()->GetMesh();
 
     if(!CharacterMesh->DoesSocketExist(WeaponSocketName)) return;
 

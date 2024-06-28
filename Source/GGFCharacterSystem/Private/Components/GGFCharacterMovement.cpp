@@ -16,12 +16,9 @@ UGGFCharacterMovement::UGGFCharacterMovement()
     NavAgentProps.bCanCrouch = true;
     bCanWalkOffLedgesWhenCrouching = true;
 
-    // 태그 기본값 설정
-    using namespace GGFGameplayTags::State;
-
-    FallingTag = Falling;
-    CrouchingTag = Crouching;
-    MovingTag = Moving;
+    FallingTag = State::Locomotion::Falling;
+    CrouchingTag = State::Locomotion::Crouching;
+    MovingTag = State::Locomotion::Moving;
 
     // 일반 설정
     GravityScale = 1.5f;

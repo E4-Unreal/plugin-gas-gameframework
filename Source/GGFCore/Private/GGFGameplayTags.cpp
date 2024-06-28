@@ -71,6 +71,16 @@ namespace GGFGameplayTags
         UE_DEFINE_GAMEPLAY_TAG_COMMENT(Respawn, "State.Respawn", "부활 중인 상태입니다.")
         UE_DEFINE_GAMEPLAY_TAG_COMMENT(Reviving, "State.Reviving", "다른 플레이어를 부활시키는 중인 상태입니다.")
 
+        namespace Locomotion
+        {
+            UE_DEFINE_GAMEPLAY_TAG_COMMENT(Moving, "State.Locomotion.Moving", "땅 위에서 움직이고 있는 상태")
+            UE_DEFINE_GAMEPLAY_TAG_COMMENT(Running, "State.Locomotion.Moving.Running", "달리고 있는 상태")
+            UE_DEFINE_GAMEPLAY_TAG_COMMENT(Sprinting, "State.Locomotion.Moving.Sprinting", "빠르게 달리고 있는 상태")
+            UE_DEFINE_GAMEPLAY_TAG_COMMENT(Falling, "State.Locomotion.Falling", "체공 상태")
+            UE_DEFINE_GAMEPLAY_TAG_COMMENT(Crouching, "State.Locomotion.Crouching", "앉아 있는 상태")
+            UE_DEFINE_GAMEPLAY_TAG_COMMENT(Proning, "State.Locomotion.Proning", "누워 있는 상태")
+        }
+
         namespace Buff
         {
             UE_DEFINE_GAMEPLAY_TAG_COMMENT(Root, "State.Buff", "버프")

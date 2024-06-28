@@ -22,7 +22,6 @@ public class GGFSkillSystem : ModuleRules
                 // GASGameFramework
                 "GGFCore",
                 "GGFDataSystem",
-                "GGFCharacterSystem",
                 "GGFCombatSystem",
                 "GGFShooterCore"
             }

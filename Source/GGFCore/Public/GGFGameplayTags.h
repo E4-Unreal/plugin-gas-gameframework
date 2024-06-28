@@ -73,6 +73,16 @@ namespace GGFGameplayTags
         GGFCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Respawn)
         GGFCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Reviving)
 
+        namespace Locomotion
+        {
+            GGFCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Moving)
+            GGFCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Running)
+            GGFCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Sprinting)
+            GGFCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Falling)
+            GGFCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Crouching)
+            GGFCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Proning)
+        }
+
         namespace Buff
         {
             GGFCORE_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Root) // 루트
