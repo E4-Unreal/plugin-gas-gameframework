@@ -128,7 +128,7 @@ float UGGFExplosiveComponent::CalculateDamageRatio(AActor* Target)
     float DamageRatio = HitRatio * DistanceRatio;
 
 #if WITH_EDITOR
-    UE_LOG(LogGGFCombatSystem, Log, TEXT("%s > DamageRatio(%f) = HitRatio(%f) * DistanceRatio(%f)"), *Target->GetName(), DamageRatio, HitRatio, DistanceRatio)
+    LOG_ACTOR_COMPONENT_DETAIL(Log, TEXT("%s > DamageRatio(%f) = HitRatio(%f) * DistanceRatio(%f)"), *Target->GetName(), DamageRatio, HitRatio, DistanceRatio)
 #endif
 
     return DamageRatio;
