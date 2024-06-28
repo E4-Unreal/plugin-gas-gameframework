@@ -4,6 +4,7 @@
 
 #include "Components/CapsuleComponent.h"
 #include "Components/GGFProjectileSpawner.h"
+#include "Net/UnrealNetwork.h"
 
 AGGFSimpleTurret::AGGFSimpleTurret(const FObjectInitializer& ObjectInitializer)
     : Super(ObjectInitializer)
@@ -30,11 +31,18 @@ AGGFSimpleTurret::AGGFSimpleTurret(const FObjectInitializer& ObjectInitializer)
     EffectManager = CreateDefaultSubobject<UGGFEffectManager>(TEXT("EffectManager"));
 }
 
+void AGGFSimpleTurret::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+    Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+    DOREPLIFETIME(ThisClass, bActive);
+}
+
 void AGGFSimpleTurret::BeginPlay()
 {
     Super::BeginPlay();
 
-    if(bAutoActivate)
+    if(bAutoActivate && HasAuthority())
     {
         Execute_Activate(this, this);
     }
@@ -116,6 +124,15 @@ bool AGGFSimpleTurret::Deactivate_Implementation(AActor* InstigatorActor)
     }
 
     return true;
+}
+
+void AGGFSimpleTurret::OnRep_Active(bool bOldActive)
+{
+    bool bNewActive = bActive;
+    bActive = bOldActive;
+
+    if(bNewActive) Execute_Activate(this, this);
+    else Execute_Deactivate(this, this);
 }
 
 void AGGFSimpleTurret::OnActivated_Implementation()

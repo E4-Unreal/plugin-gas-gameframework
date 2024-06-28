@@ -47,7 +47,7 @@ protected:
     bool bAutoActivate;
 
     // 활성화 여부
-    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State", Transient)
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State", Transient, ReplicatedUsing = OnRep_Active)
     bool bActive = false;
 
     // 활성화 시간
@@ -67,6 +67,7 @@ public:
 
     /* Actor */
 
+    virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
     virtual void BeginPlay() override;
     virtual void Destroyed() override;
     virtual void LifeSpanExpired() override;
@@ -88,6 +89,11 @@ protected:
 
     UFUNCTION(BlueprintNativeEvent, Category = "Event")
     void OnDeactivated();
+
+    /* 리플리케이트 */
+
+    UFUNCTION()
+    virtual void OnRep_Active(bool bOldActive);
 
 public:
     /* Getter */
