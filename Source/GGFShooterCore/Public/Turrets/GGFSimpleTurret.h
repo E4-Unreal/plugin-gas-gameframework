@@ -56,6 +56,12 @@ protected:
 
     FTimerHandle ActivationTimer;
 
+    // 비활성화 시간
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config")
+    float DeactivationTime = 2.5f;
+
+    FTimerHandle DeactivationTimer;
+
 public:
     AGGFSimpleTurret(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
@@ -63,6 +69,7 @@ public:
 
     virtual void BeginPlay() override;
     virtual void Destroyed() override;
+    virtual void LifeSpanExpired() override;
 
     /* GGFPawn */
 

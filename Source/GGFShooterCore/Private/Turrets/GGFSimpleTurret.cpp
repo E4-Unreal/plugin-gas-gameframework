@@ -42,13 +42,15 @@ void AGGFSimpleTurret::BeginPlay()
 
 void AGGFSimpleTurret::Destroyed()
 {
-    // 비활성화
-    if(bActive) Execute_Deactivate(this, this);
-
     // 폭발 효과 스폰
     GetEffectManager()->PlayEffectsAtActor(this);
 
     Super::Destroyed();
+}
+
+void AGGFSimpleTurret::LifeSpanExpired()
+{
+    Execute_Deactivate(this, this);
 }
 
 void AGGFSimpleTurret::OnDead_Implementation()
@@ -102,8 +104,16 @@ bool AGGFSimpleTurret::Deactivate_Implementation(AActor* InstigatorActor)
         }
     }
 
-    // 비활성화
-    OnDeactivated();
+    // 비활성화 타이머 설정
+    if(DeactivationTime <= 0)
+    {
+        OnDeactivated();
+    }
+    else
+    {
+        auto& TimerManager = GetWorldTimerManager();
+        TimerManager.SetTimer(DeactivationTimer, this, &ThisClass::OnDeactivated, DeactivationTime);
+    }
 
     return true;
 }
@@ -123,4 +133,7 @@ void AGGFSimpleTurret::OnDeactivated_Implementation()
     auto& TimerManager = GetWorldTimerManager();
     if(TimerManager.IsTimerActive(ActivationTimer)) TimerManager.ClearTimer(ActivationTimer);
     if(TimerManager.IsTimerActive(AutoFireTimer)) TimerManager.ClearTimer(AutoFireTimer);
+    if(TimerManager.IsTimerActive(DeactivationTimer)) TimerManager.ClearTimer(DeactivationTimer);
+
+    Destroy();
 }

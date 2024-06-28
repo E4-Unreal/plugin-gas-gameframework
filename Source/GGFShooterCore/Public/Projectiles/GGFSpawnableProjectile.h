@@ -22,6 +22,10 @@ protected:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config")
     bool bUseHitResult;
 
+    // 스폰 대상 수명 설정
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config")
+    float LifeSpan = 10;
+
 protected:
     /* Projectile */
 
