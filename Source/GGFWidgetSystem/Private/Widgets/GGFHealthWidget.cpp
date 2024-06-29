@@ -3,15 +3,15 @@
 #include "Widgets/GGFHealthWidget.h"
 
 #include "AbilitySystemComponent.h"
-#include "Attributes/GEHealthAttributes.h"
-#include "Attributes/GEShieldAttributes.h"
+#include "Attributes/GGFHealthAttributes.h"
+#include "Attributes/GGFShieldAttributes.h"
 
 UGGFHealthWidget::UGGFHealthWidget()
 {
-    Attribute = UGEHealthAttributes::GetHealthAttribute();
-    MaxAttribute = UGEHealthAttributes::GetMaxHealthAttribute();
-    AttributeRegenRate = UGEHealthAttributes::GetHealthRegenRateAttribute();
-    ShieldAttribute = UGEShieldAttributes::GetShieldAttribute();
+    Attribute = UGGFHealthAttributes::GetHealthAttribute();
+    MaxAttribute = UGGFHealthAttributes::GetMaxHealthAttribute();
+    AttributeRegenRate = UGGFHealthAttributes::GetHealthRegenRateAttribute();
+    ShieldAttribute = UGGFShieldAttributes::GetShieldAttribute();
 }
 
 void UGGFHealthWidget::RefreshAttributeValues()
