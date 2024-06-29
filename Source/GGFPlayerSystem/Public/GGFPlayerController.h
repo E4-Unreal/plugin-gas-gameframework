@@ -31,6 +31,18 @@ protected:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|Input")
     TObjectPtr<UInputAction> SpectateNextAction;
 
+    // 플레이어 메뉴을 열고 닫기 위한 입력 액션
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|Input")
+    TObjectPtr<UInputAction> MenuAction;
+
+    // 플레이어 메뉴 위젯 클래스
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config")
+    TSubclassOf<UUserWidget> MenuWidgetClass;
+
+    // 메뉴 위젯 인스턴스
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State", Transient)
+    TObjectPtr<UUserWidget> MenuWidget;
+
 public:
     AGGFPlayerController();
 
@@ -46,15 +58,27 @@ public:
 protected:
     /* 이벤트 */
 
+    // 이전 플레이어 관전 입력 이벤트
     UFUNCTION(BlueprintNativeEvent)
     void OnSpectatePreviousActionTriggered();
 
+    // 다음 플레이어 관전 입력 이벤트
     UFUNCTION(BlueprintNativeEvent)
     void OnSpectateNextActionTriggered();
 
+    // 메뉴 입력 이벤트
+    UFUNCTION(BlueprintNativeEvent)
+    void OnMenuActionTriggered();
+
+    /* RPC */
+
+    // 이전 플레이어 관전 (서버)
     UFUNCTION(Server, Reliable)
     void ServerSpectatePrevious();
 
+    // 다음 플레이어 관전 (서버)
     UFUNCTION(Server, Reliable)
     void ServerSpectateNext();
+
+
 };
