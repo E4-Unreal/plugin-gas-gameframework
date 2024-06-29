@@ -4,11 +4,11 @@
 
 #include "Widgets/GGFUserWidget.h"
 
-void UGGFWidgetComponent::SetWidget(UUserWidget* InWidget)
+void UGGFWidgetComponent::InitWidget()
 {
-    Super::SetWidget(InWidget);
+    Super::InitWidget();
 
-    if(auto CastedWidget = Cast<UGGFUserWidget>(InWidget))
+    if(auto CastedWidget = Cast<UGGFUserWidget>(GetWidget()))
     {
         CastedWidget->SetTargetActor(GetOwner());
     }

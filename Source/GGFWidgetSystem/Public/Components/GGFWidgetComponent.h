@@ -17,5 +17,5 @@ class GGFWIDGETSYSTEM_API UGGFWidgetComponent : public UWidgetComponent
 public:
     /* WidgetComponent */
 
-    virtual void SetWidget(UUserWidget* InWidget) override;
+    virtual void InitWidget() override;
 };
