@@ -4,6 +4,7 @@
 #include "Abilities/GGFGA_SpawnTurret.h"
 
 #include "GameFramework/Character.h"
+#include "Interfaces/GGFAimingInterface.h"
 
 void UGGFGA_SpawnTurret::SpawnActor()
 {
@@ -35,6 +36,11 @@ void UGGFGA_SpawnTurret::SpawnActor()
         const FTransform& ActorTransform = AvatarActor->GetActorTransform();
         FVector SpawnLocation = GetAvatarCharacter()->GetMesh()->GetSocketLocation(HandSocketName);
         FRotator SpawnRotation = ActorTransform.GetRotation().Rotator();
+        if(GetAvatarCharacter()->Implements<UGGFAimingInterface>())
+        {
+            FVector Target = IGGFAimingInterface::Execute_GetTargetLocation(GetAvatarCharacter());
+            SpawnRotation = (Target - SpawnLocation).GetSafeNormal().ToOrientationRotator();
+        }
 
         // 에너지 실드 스폰
         SpawnedActor = World->SpawnActor(ActorToSpawn, &SpawnLocation, &SpawnRotation, ActorSpawnParameters);
