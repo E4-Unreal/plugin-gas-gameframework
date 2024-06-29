@@ -13,6 +13,7 @@ public class GGFWidgetSystem : ModuleRules
 
                 // UI
                 "UMG",
+                "EnhancedInput",
 
                 // GAS
                 "GameplayTags",

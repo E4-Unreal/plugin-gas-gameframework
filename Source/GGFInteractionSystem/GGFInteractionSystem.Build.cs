@@ -22,8 +22,9 @@ public class GGFInteractionSystem : ModuleRules
                 "GameplayTasks",
                 "GameplayAbilities",
 
-                // GASExtension
-                "GGFCore"
+                // GASGameFramework
+                "GGFCore",
+                "GGFWidgetSystem"
             }
         );
 
