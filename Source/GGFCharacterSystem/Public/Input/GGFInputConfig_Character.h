@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Input/GEInputConfig.h"
+#include "Input/GGFInputConfig.h"
 #include "GGFInputConfig_Character.generated.h"
 
 /**
  * 캐릭터 전용 입력 에셋 설정을 위한 데이터 에셋으로 GGFCharacter에 의존성을 가지고 있습니다.
  */
 UCLASS()
-class GGFCHARACTERSYSTEM_API UGGFInputConfig_Character : public UGEInputConfig
+class GGFCHARACTERSYSTEM_API UGGFInputConfig_Character : public UGGFInputConfig
 {
     GENERATED_BODY()
 

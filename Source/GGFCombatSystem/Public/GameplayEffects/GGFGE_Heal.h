@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameplayEffect.h"
-#include "GGFGameplayEffect.h"
+#include "GameplayEffects/GGFGameplayEffect.h"
 #include "GGFGE_Heal.generated.h"
 
 /**

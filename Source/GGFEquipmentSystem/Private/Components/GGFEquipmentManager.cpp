@@ -82,7 +82,40 @@ void UGGFEquipmentManager::OnComponentDestroyed(bool bDestroyingHierarchy)
     }
 }
 
-bool UGGFEquipmentManager::AddEquipmentByID(int32 EquipmentID)
+bool UGGFEquipmentManager::AddEquipmentByActor_Implementation(AActor* EquipmentActor)
+{
+    // 입력 유효성 검사
+    if(EquipmentActor == nullptr) return false;
+
+    // 슬롯에 무기 추가
+    const FGameplayTag& SlotTag = IGGFEquipmentInterface::Execute_GetEquipmentSlot(EquipmentActor);
+    const FEquipmentSlot& EquipmentSlot = GetAvailableSlot(SlotTag);
+    EquipmentSlots.Emplace(EquipmentSlot, EquipmentActor);
+
+    if(!IsSelectedEquipmentExist())
+    {
+        // 선택 무기가 비어 있다면 새로운 무기를 선택 무기로 지정합니다.
+        Server_SelectEquipment(EquipmentSlot.SlotTag, EquipmentSlot.Index);
+    }
+    else
+    {
+        // 선택 무기가 비어 있지 않은 경우 몸에 부착합니다.
+        AttachEquipment(EquipmentActor, EquipmentSlot.SocketName);
+    }
+
+    return true;
+}
+
+bool UGGFEquipmentManager::AddEquipmentByClass_Implementation(TSubclassOf<AActor> EquipmentClass)
+{
+    // 장비를 추가할 수 있는지 확인
+    if(!CanAddEquipment(EquipmentClass->GetDefaultObject<AActor>())) return false;
+
+    // 장비 스폰 후 추가
+    return AddEquipmentByActor(SpawnEquipment(EquipmentClass));
+}
+
+bool UGGFEquipmentManager::AddEquipmentByID_Implementation(int32 EquipmentID)
 {
     if(auto GaminInstance = GetOwner()->GetGameInstance())
     {
@@ -112,39 +145,6 @@ bool UGGFEquipmentManager::AddEquipmentByID(int32 EquipmentID)
     }
 
     return false;
-}
-
-bool UGGFEquipmentManager::AddEquipmentByClass(TSubclassOf<AActor> EquipmentClass)
-{
-    // 장비를 추가할 수 있는지 확인
-    if(!CanAddEquipment(EquipmentClass->GetDefaultObject<AActor>())) return false;
-
-    // 장비 스폰 후 추가
-    return AddEquipmentByActor(SpawnEquipment(EquipmentClass));
-}
-
-bool UGGFEquipmentManager::AddEquipmentByActor(AActor* EquipmentActor)
-{
-    // 입력 유효성 검사
-    if(EquipmentActor == nullptr) return false;
-
-    // 슬롯에 무기 추가
-    const FGameplayTag& SlotTag = IGGFEquipmentInterface::Execute_GetEquipmentSlot(EquipmentActor);
-    const FEquipmentSlot& EquipmentSlot = GetAvailableSlot(SlotTag);
-    EquipmentSlots.Emplace(EquipmentSlot, EquipmentActor);
-
-    if(!IsSelectedEquipmentExist())
-    {
-        // 선택 무기가 비어 있다면 새로운 무기를 선택 무기로 지정합니다.
-        Server_SelectEquipment(EquipmentSlot.SlotTag, EquipmentSlot.Index);
-    }
-    else
-    {
-        // 선택 무기가 비어 있지 않은 경우 몸에 부착합니다.
-        AttachEquipment(EquipmentActor, EquipmentSlot.SocketName);
-    }
-
-    return true;
 }
 
 void UGGFEquipmentManager::RemoveEquipment(FGameplayTag Slot, int32 Index)

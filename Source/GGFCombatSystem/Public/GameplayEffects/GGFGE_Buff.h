@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GGFGameplayEffect.h"
+#include "GameplayEffects/GGFGameplayEffect.h"
 #include "GGFGE_Buff.generated.h"
 
 /**

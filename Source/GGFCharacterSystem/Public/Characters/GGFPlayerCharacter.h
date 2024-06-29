@@ -6,6 +6,7 @@
 #include "Characters/GEPlayerCharacter.h"
 #include "Interfaces/GGFCharacterAnimationInterface.h"
 #include "Interfaces/GGFCharacterInterface.h"
+#include "Interfaces/GGFCharacterMeshInterface.h"
 #include "GGFPlayerCharacter.generated.h"
 
 /**
@@ -28,6 +29,7 @@ class UGGFCharacterManager;
 class UGGFCharacterSkinManager;
 struct FInputActionValue;
 class UGGFEquipmentManager;
+class UGGFSkillManager;
 
 // TODO 플레이어 캐릭터가 아닌 GGFPlayerCharacter 클래스 작성
 /*
@@ -36,7 +38,8 @@ class UGGFEquipmentManager;
 UCLASS()
 class GGFCHARACTERSYSTEM_API AGGFPlayerCharacter : public AGEPlayerCharacter,
     public IGGFCharacterInterface,
-    public IGGFCharacterAnimationInterface
+    public IGGFCharacterAnimationInterface,
+    public IGGFCharacterMeshInterface
 {
     GENERATED_BODY()
 
@@ -47,6 +50,7 @@ public:
     static FName CharacterManagerName;
     static FName SkinManagerName;
     static FName InteractionManagerName;
+    static FName SkillManagerName;
 
 private:
     /* 컴포넌트 */
@@ -66,6 +70,9 @@ private:
     // 상호작용을 관리하기 위한 컴포넌트
     UPROPERTY(VisibleAnywhere, BlueprintGetter = GetInteractionManager, Category = "Component")
     TObjectPtr<UGGFInteractionManager> InteractionManager;
+
+    UPROPERTY(VisibleAnywhere, BlueprintGetter = GetSkillManager, Category = "Component")
+    TObjectPtr<UGGFSkillManager> SkillManager;
 
 protected:
     /* CharacterManager & SkinManager */
@@ -121,6 +128,10 @@ public:
     virtual int32 GetCharacterID_Implementation() const override;
     virtual TArray<int32> GetCharacterSkinIDList_Implementation() const override;
 
+    /* GGFCharacterMeshInterface */
+
+    virtual USkeletalMeshComponent* GetThirdPersonMesh_Implementation() const override { return GetMesh(); }
+
     UFUNCTION(Server, Reliable)
     void ServerSetCharacter(int32 NewCharacterID);
 
@@ -151,4 +162,7 @@ public:
 
     UFUNCTION(BlueprintGetter)
     FORCEINLINE UGGFInteractionManager* GetInteractionManager() const { return InteractionManager; }
+
+    UFUNCTION(BlueprintGetter)
+    FORCEINLINE UGGFSkillManager* GetSkillManager() const { return SkillManager; }
 };

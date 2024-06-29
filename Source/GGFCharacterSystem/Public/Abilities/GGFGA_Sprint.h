@@ -3,8 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Abilities/GECharacterAbility.h"
-#include "Abilities/GEGameplayAbility.h"
+#include "Abilities/GGFCharacterAbility.h"
+#include "Abilities/GGFGameplayAbility.h"
 #include "GGFGA_Sprint.generated.h"
 
 class UCharacterMovementComponent;
@@ -14,7 +14,7 @@ class UCharacterMovementComponent;
  * 캐릭터의 빠른 달리기를 위한 플레이어 어빌리티
  */
 UCLASS()
-class GGFCHARACTERSYSTEM_API UGGFGA_Sprint : public UGECharacterAbility
+class GGFCHARACTERSYSTEM_API UGGFGA_Sprint : public UGGFCharacterAbility
 {
     GENERATED_BODY()
 

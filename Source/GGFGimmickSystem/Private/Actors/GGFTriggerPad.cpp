@@ -2,7 +2,7 @@
 
 #include "Actors/GGFTriggerPad.h"
 
-#include "GEBlueprintFunctionLibrary.h"
+#include "GGFBlueprintFunctionLibrary.h"
 #include "Components/BoxComponent.h"
 #include "Components/GGFTriggerComponent.h"
 #include "GameFramework/Character.h"
@@ -74,12 +74,12 @@ bool AGGFTriggerPad::IsTriggerConditionSatisfied()
 
 bool AGGFTriggerPad::Activate_Implementation(AActor* InstigatorActor)
 {
-    UGEBlueprintFunctionLibrary::LocalHandleGameplayCue(this, ActivateCueTag);
+    UGGFBlueprintFunctionLibrary::LocalHandleGameplayCue(this, ActivateCueTag);
     return true;
 }
 
 bool AGGFTriggerPad::Deactivate_Implementation(AActor* InstigatorActor)
 {
-    UGEBlueprintFunctionLibrary::LocalHandleGameplayCue(this, DeactivateCueTag);
+    UGGFBlueprintFunctionLibrary::LocalHandleGameplayCue(this, DeactivateCueTag);
     return true;
 }

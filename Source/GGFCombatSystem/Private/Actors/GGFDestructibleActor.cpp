@@ -9,9 +9,15 @@ AGGFDestructibleActor::AGGFDestructibleActor(const FObjectInitializer& ObjectIni
     DisplayMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMesh"));
     SetRootComponent(DisplayMesh);
 
-    /* 에셋 설정 */
+    /* 기본 에셋 설정 */
     ConstructorHelpers::FObjectFinder<UStaticMesh> DisplayMeshFinder(TEXT("/Engine/BasicShapes/Cube"));
-    if(DisplayMeshFinder.Succeeded()) GetDisplayMesh()->SetStaticMesh(DisplayMeshFinder.Object);
+    if(DisplayMeshFinder.Succeeded())
+    {
+        GetDisplayMesh()->SetStaticMesh(DisplayMeshFinder.Object);
+
+        ConstructorHelpers::FObjectFinder<UMaterialInterface> DisplayMeshMaterialFinder(TEXT("/Engine/BasicShapes/BasicShapeMaterial"));
+        if(DisplayMeshMaterialFinder.Succeeded()) GetDisplayMesh()->SetMaterial(0, DisplayMeshMaterialFinder.Object);
+    }
 }
 
 void AGGFDestructibleActor::OnDead_Implementation()

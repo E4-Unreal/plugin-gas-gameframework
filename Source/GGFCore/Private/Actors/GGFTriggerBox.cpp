@@ -77,7 +77,22 @@ void AGGFTriggerBox::UnBindTriggerBoxEvents()
 void AGGFTriggerBox::RefreshTriggerBox()
 {
     const FVector ScaledTriggerBoxExtent = TriggerBox->GetScaledBoxExtent();
-    TriggerBox->SetRelativeLocation(FVector(0, 0, ScaledTriggerBoxExtent.Z));
+
+    switch (TriggerBoxPivot)
+    {
+    case EGGFPivot::Center:
+        TriggerBox->SetRelativeLocation(FVector(0, 0, 0));
+        break;
+    case EGGFPivot::Bottom:
+        TriggerBox->SetRelativeLocation(FVector(0, 0, ScaledTriggerBoxExtent.Z));
+        break;
+    case EGGFPivot::Top:
+        TriggerBox->SetRelativeLocation(FVector(0, 0, -ScaledTriggerBoxExtent.Z));
+        break;
+    case EGGFPivot::Custom:
+        // 아무 행동도 하지 않습니다.
+        break;
+    }
 }
 
 void AGGFTriggerBox::OnTriggerBoxBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,

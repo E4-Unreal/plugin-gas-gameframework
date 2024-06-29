@@ -2,21 +2,23 @@
 
 #include "Projectiles/GGFProjectile.h"
 
-#include "AbilitySystemComponent.h"
-#include "AbilitySystemGlobals.h"
-#include "GameplayCueManager.h"
 #include "Components/SphereComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
-#include "GGFCombatGameplayTags.h"
 #include "Logging.h"
+#include "Components/GGFEffectManager.h"
 
 FName AGGFProjectile::ProjectileMovementName(TEXT("ProjectileMovement"));
+FName AGGFProjectile::EffectManagerName(TEXT("EffectManager"));
 
 AGGFProjectile::AGGFProjectile(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
 {
+    /* 기본 설정 */
     // 서버 스폰을 위한 리플리케이트
     bReplicates = true;
     SetReplicatingMovement(true);
+
+    // 자동 파괴 시간 설정
+    InitialLifeSpan = 20;
 
     /* SphereCollider */
     SphereCollider = CreateDefaultSubobject<USphereComponent>(TEXT("SphereCollider"));
@@ -36,25 +38,29 @@ AGGFProjectile::AGGFProjectile(const FObjectInitializer& ObjectInitializer) : Su
     ProjectileMovement->bRotationFollowsVelocity = true;
     ProjectileMovement->ProjectileGravityScale = 0.1f;
 
-    // 기본 설정
-    HitCueTag = FGameplayCueTag(GGFGameplayTags::GameplayCue::Hit::Default);
+    /* EffectManager */
+    EffectManager = CreateDefaultSubobject<UGGFEffectManager>(EffectManagerName);
+
+    /* 기본 에셋 설정 */
+    ConstructorHelpers::FObjectFinder<UStaticMesh> DisplayMeshFinder(TEXT("/Engine/BasicShapes/Sphere"));
+    if(DisplayMeshFinder.Succeeded())
+    {
+        DisplayMesh->SetStaticMesh(DisplayMeshFinder.Object);
+        ConstructorHelpers::FObjectFinder<UMaterialInterface> DisplayMeshMaterialFinder(TEXT("/Engine/BasicShapes/BasicShapeMaterial"));
+        if(DisplayMeshMaterialFinder.Succeeded()) DisplayMesh->SetMaterial(0, DisplayMeshMaterialFinder.Object);
+
+        DisplayMesh->SetRelativeScale3D(FVector(0.02, 0.02, 0.02));
+    }
 }
 
 void AGGFProjectile::PostInitializeComponents()
 {
     Super::PostInitializeComponents();
 
-    // SphereCollider::OnComponentHit 이벤트 바인딩 여부 확인
-    if(bEnableHitTrigger)
+    // 이벤트 바인딩
+    if(HasAuthority())
     {
-        // 이벤트 바인딩
         GetSphereCollider()->OnComponentHit.AddDynamic(this, &ThisClass::OnSphereColliderHit);
-    }
-    else
-    {
-        // 바운스 설정
-        GetProjectileMovement()->bShouldBounce = true;
-        GetProjectileMovement()->OnProjectileBounce.AddDynamic(this, &ThisClass::OnProjectileMovementBounce);
     }
 }
 
@@ -62,105 +68,24 @@ void AGGFProjectile::BeginPlay()
 {
     Super::BeginPlay();
 
-    // 자동 파괴 타이머 설정
-    SetAutoDestroyTimer();
-
     /* 충돌 무시 설정 */
     SphereCollider->IgnoreActorWhenMoving(GetOwner(), true); // 무기
     SphereCollider->IgnoreActorWhenMoving(GetInstigator(), true); // 캐릭터
 }
 
-void AGGFProjectile::Destroyed()
+void AGGFProjectile::NetMulticastSpawnHitEffects_Implementation(const FHitResult& HitResult)
 {
-    // 타이머 초기화
-    if(AutoDestroyTimer.IsValid()) AutoDestroyTimer.Invalidate();
-
-    Super::Destroyed();
-}
-
-void AGGFProjectile::Deactivate_Implementation()
-{
-    // ProjectileMovement
-    GetProjectileMovement()->Deactivate();
-
-    // SphereCollider
-    GetSphereCollider()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-    GetSphereCollider()->Deactivate();
-
-    // DisplayMesh
-    DisplayMesh->SetHiddenInGame(true);
-
-    // ChildrenComponent
-    TArray<USceneComponent*> ChildrenComponents;
-    GetDisplayMesh()->GetChildrenComponents(true, ChildrenComponents);
-    for (auto ChildrenComponent : ChildrenComponents)
-    {
-        ChildrenComponent->SetHiddenInGame(true);
-    }
-}
-
-void AGGFProjectile::SetAutoDestroyTimer()
-{
-    // 중복 호출 방지
-    if(AutoDestroyTimer.IsValid()) return;
-
-    // 타이머 설정
-    if(AutoDestroyTime <= 0)
-    {
-        DestroyDeferred();
-    }
-    else
-    {
-        GetWorldTimerManager().SetTimer(
-            AutoDestroyTimer,
-            FTimerDelegate::CreateUObject(this, &ThisClass::DestroyDeferred),
-            AutoDestroyTime,
-            false
-            );
-    }
-}
-
-void AGGFProjectile::DestroyDeferred()
-{
-    // 비활성화
-    Deactivate();
-
-    // 2초 후 파괴
-    SetLifeSpan(2);
-}
-
-void AGGFProjectile::LocalHandleHitGameplayCue(const FHitResult& HitResult, const FGameplayTag& EffectTag) const
-{
-    FGameplayCueParameters GameplayCueParameters;
-    auto& EffectContext = GameplayCueParameters.EffectContext;
-    EffectContext = FGameplayEffectContextHandle(UAbilitySystemGlobals::Get().AllocGameplayEffectContext());
-    EffectContext.AddInstigator(GetInstigator(), GetOwner());
-    EffectContext.AddSourceObject(this);
-    EffectContext.AddHitResult(HitResult);
-
-    UAbilitySystemGlobals::Get().GetGameplayCueManager()->HandleGameplayCue(HitResult.GetActor(), EffectTag, EGameplayCueEvent::Executed, GameplayCueParameters);
+    GetEffectManager()->PlayEffectsByHitResult(HitResult);
 }
 
 void AGGFProjectile::OnSphereColliderHit_Implementation(UPrimitiveComponent* HitComponent, AActor* OtherActor,
                                                         UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
 #if WITH_EDITOR
-    UE_LOG(LogGGFShooterCore, Log, TEXT("%s::%s > OtherActor: %s"), *StaticClass()->GetName(), *FString(__func__), *OtherActor->GetName())
+    LOG_ACTOR_DETAIL(Log, TEXT("OtherActor: %s"), *OtherActor->GetName())
 #endif
 
-    // 로컬에서 피격 효과 스폰
-    LocalHandleHitGameplayCue(Hit, HitCueTag.GameplayCueTag);
+    NetMulticastSpawnHitEffects(Hit);
 
-    // 파괴
-    DestroyDeferred();
-}
-
-void AGGFProjectile::OnProjectileMovementBounce_Implementation(const FHitResult& ImpactResult, const FVector& ImpactVelocity)
-{
-    // TODO ImpactResult.Distance에 따라 크기 조절
-    // 트리거 조건 검사
-    if(ImpactResult.Distance < BounceThreshold) return;
-
-    // 로컬에서 피격 효과 스폰
-    LocalHandleHitGameplayCue(ImpactResult, HitCueTag.GameplayCueTag);
+    Destroy();
 }

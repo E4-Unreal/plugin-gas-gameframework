@@ -2,7 +2,7 @@
 
 #include "GameplayEffects/GGFGE_Heal.h"
 
-#include "Attributes/GEHealthAttributes.h"
+#include "Attributes/GGFHealthAttributes.h"
 #include "GGFCombatGameplayTags.h"
 
 UGGFGE_Heal::UGGFGE_Heal()
@@ -10,7 +10,7 @@ UGGFGE_Heal::UGGFGE_Heal()
     DurationPolicy = EGameplayEffectDurationType::Instant;
 
     FGameplayModifierInfo HealthModifier;
-    HealthModifier.Attribute = UGEHealthAttributes::GetHealthAttribute();
+    HealthModifier.Attribute = UGGFHealthAttributes::GetHealthAttribute();
     HealthModifier.ModifierOp = EGameplayModOp::Additive;
     HealthModifier.ModifierMagnitude = FGameplayEffectModifierMagnitude(50);
     int32 Index = Modifiers.Emplace(HealthModifier);

@@ -4,7 +4,7 @@
 
 #include "AbilitySystemGlobals.h"
 #include "GameplayCueManager.h"
-#include "GASExtensionSetting.h"
+#include "GGFCoreSetting.h"
 #include "GGFDataSystemSetting.h"
 
 IMPLEMENT_MODULE(FGASGameFrameworkModule, GASGameFramework)
@@ -38,7 +38,7 @@ void FGASGameFrameworkModule::InitializeForGameplayAbilitySystem()
 void FGASGameFrameworkModule::ReloadConfigs()
 {
     // GASExtension (다른 모듈에서 선언된 NativeGameplayTag 갱신)
-    auto GASExtensionSetting = GetMutableDefault<UGASExtensionSetting>();
+    auto GASExtensionSetting = GetMutableDefault<UGGFCoreSetting>();
     GASExtensionSetting->LoadConfig();
 
     // GGFDataSystem

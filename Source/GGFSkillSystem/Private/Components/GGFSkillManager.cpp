@@ -4,9 +4,24 @@
 
 #include "AbilitySystemComponent.h"
 #include "AbilitySystemGlobals.h"
-#include "Abilities/GEGameplayAbility.h"
+#include "Abilities/GGFGameplayAbility.h"
 #include "Data/GGFSkillDataSubsystem.h"
 #include "Data/GGFSkillDefinition.h"
+#include "GGFSkillGameplayTags.h"
+
+UGGFSkillManager::UGGFSkillManager()
+{
+    FGGFSkillSlot PrimarySkillSlot;
+    PrimarySkillSlot.InputTag = Input::Skill::Q;
+    PrimarySkillSlot.CooldownTag = Skill::Cooldown::Q;
+
+    FGGFSkillSlot SecondarySkillSlot;
+    SecondarySkillSlot.InputTag = Input::Skill::E;
+    SecondarySkillSlot.CooldownTag = Skill::Cooldown::E;
+
+    Slots.Emplace(PrimarySkillSlot);
+    Slots.Emplace(SecondarySkillSlot);
+}
 
 void UGGFSkillManager::Reset()
 {
@@ -73,7 +88,7 @@ void UGGFSkillManager::SetSkillSlotByDefinition(const FGameplayTag& InputTag, UG
         // 어빌리티 인스턴스 설정
         if(auto ActivatableAbilitySpec = OwnerSystem->FindAbilitySpecFromHandle(Slot.AbilitySpecHandle))
         {
-            if(auto AbilityInstance = Cast<UGEGameplayAbility>(ActivatableAbilitySpec->GetPrimaryInstance()))
+            if(auto AbilityInstance = Cast<UGGFGameplayAbility>(ActivatableAbilitySpec->GetPrimaryInstance()))
             {
                 // 입력 태그 설정
                 AbilityInstance->InputTag = InputTag;

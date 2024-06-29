@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Actors/GGFTimelineActor.h"
-#include "Interfaces/GGFActivationInterface.h"
+#include "Interfaces/GGFActivatableInterface.h"
 #include "GGFDoor.generated.h"
 
 /**
@@ -24,7 +24,7 @@ class USoundCue;
  * 문
  */
 UCLASS()
-class GGFGIMMICKSYSTEM_API AGGFDoor : public AGGFTimelineActor, public IGGFActivationInterface
+class GGFGIMMICKSYSTEM_API AGGFDoor : public AGGFTimelineActor, public IGGFActivatableInterface
 {
     GENERATED_BODY()
 

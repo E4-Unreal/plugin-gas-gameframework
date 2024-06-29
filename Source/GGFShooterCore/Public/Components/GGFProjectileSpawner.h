@@ -3,8 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameplayCueInterface.h"
-#include "GGFCore/Public/Components/GGFActorComponent.h"
+#include "Components/GGFEffectManager.h"
 #include "GGFProjectileSpawner.generated.h"
 
 class AGGFProjectile;
@@ -13,7 +12,7 @@ class AGGFProjectile;
  * 발사체를 스폰하는 기능이 구현된 액터 컴포넌트
  */
 UCLASS(meta=(BlueprintSpawnableComponent))
-class GGFSHOOTERCORE_API UGGFProjectileSpawner : public UGGFActorComponent
+class GGFSHOOTERCORE_API UGGFProjectileSpawner : public UGGFEffectManager
 {
     GENERATED_BODY()
 
@@ -25,10 +24,6 @@ public:
     // 발사할 발사체 클래스
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config")
     TSubclassOf<AGGFProjectile> ProjectileClass;
-
-    // 발사체 스폰 시 총구에서 재생할 게임플레이 큐 태그
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config")
-    FGameplayCueTag MuzzleCueTag;
 
 private:
     TWeakObjectPtr<USkeletalMeshComponent> SkeletalMesh;
@@ -51,8 +46,9 @@ protected:
     UFUNCTION(BlueprintCallable)
     virtual AGGFProjectile* SpawnProjectile(const FVector& SpawnLocation, const FRotator& SpawnRotation);
 
-    UFUNCTION(BlueprintCallable)
-    virtual void PlayMuzzleGameplayCue(const FVector& SpawnLocation, const FRotator& SpawnRotation);
+    // 총구 이펙트 스폰
+    UFUNCTION(NetMulticast, Reliable)
+    virtual void NetMulticastSpawnMuzzleEffects();
 
 public:
     /* Getter */

@@ -13,6 +13,7 @@ void AGGFSpawnableProjectile::OnSphereColliderHit_Implementation(UPrimitiveCompo
         FActorSpawnParameters ActorSpawnParameters;
         ActorSpawnParameters.Instigator = GetInstigator();
         ActorSpawnParameters.Owner = GetOwner();
+        ActorSpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
 
         if(bUseHitResult)
         {
@@ -25,7 +26,8 @@ void AGGFSpawnableProjectile::OnSphereColliderHit_Implementation(UPrimitiveCompo
             SpawnRotation = GetActorRotation();
         }
 
-        GetWorld()->SpawnActor(ActorToSpawn, &SpawnLocation, &SpawnRotation, ActorSpawnParameters);
+        auto SpawnedActor = GetWorld()->SpawnActor(ActorToSpawn, &SpawnLocation, &SpawnRotation, ActorSpawnParameters);
+        SpawnedActor->SetLifeSpan(LifeSpan);
     }
 
     Super::OnSphereColliderHit_Implementation(HitComponent, OtherActor, OtherComp, NormalImpulse, Hit);

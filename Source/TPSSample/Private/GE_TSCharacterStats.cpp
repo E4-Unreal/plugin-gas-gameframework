@@ -3,10 +3,10 @@
 
 #include "GE_TSCharacterStats.h"
 
-#include "Stats/GEAttackSpeedStats.h"
-#include "Stats/GEAttackStats.h"
-#include "Stats/GEDefenseStats.h"
-#include "Stats/GEMoveSpeedStats.h"
+#include "Stats/GGFAttackSpeedStats.h"
+#include "Stats/GGFAttackStats.h"
+#include "Stats/GGFDefenseStats.h"
+#include "Stats/GGFMoveSpeedStats.h"
 
 UGE_TSCharacterStats::UGE_TSCharacterStats()
 {
@@ -15,7 +15,7 @@ UGE_TSCharacterStats::UGE_TSCharacterStats()
     const float MaxAttack = 999;
     const FGameplayModifierInfo MaxAttackModifier
     {
-        UGEAttackStats::GetMaxAttackAttribute(),
+        UGGFAttackStats::GetMaxAttackAttribute(),
         EGameplayModOp::Override,
         FGameplayEffectModifierMagnitude(FScalableFloat(MaxAttack))
     };
@@ -23,7 +23,7 @@ UGE_TSCharacterStats::UGE_TSCharacterStats()
     const float Attack = 20;
     const FGameplayModifierInfo AttackModifier
     {
-        UGEAttackStats::GetAttackAttribute(),
+        UGGFAttackStats::GetAttackAttribute(),
         EGameplayModOp::Override,
         FGameplayEffectModifierMagnitude(FScalableFloat(Attack))
     };
@@ -32,7 +32,7 @@ UGE_TSCharacterStats::UGE_TSCharacterStats()
     const float MaxDefense = 999;
     const FGameplayModifierInfo MaxDefenseModifier
     {
-        UGEDefenseStats::GetMaxDefenseAttribute(),
+        UGGFDefenseStats::GetMaxDefenseAttribute(),
         EGameplayModOp::Override,
         FGameplayEffectModifierMagnitude(FScalableFloat(MaxDefense))
     };
@@ -40,7 +40,7 @@ UGE_TSCharacterStats::UGE_TSCharacterStats()
     const float Defense = 10;
     const FGameplayModifierInfo DefenseModifier
     {
-        UGEDefenseStats::GetDefenseAttribute(),
+        UGGFDefenseStats::GetDefenseAttribute(),
         EGameplayModOp::Override,
         FGameplayEffectModifierMagnitude(FScalableFloat(Defense))
     };
@@ -49,7 +49,7 @@ UGE_TSCharacterStats::UGE_TSCharacterStats()
     const float MaxAttackSpeed = 10;
     const FGameplayModifierInfo MaxAttackSpeedModifier
     {
-        UGEAttackSpeedStats::GetMaxAttackSpeedAttribute(),
+        UGGFAttackSpeedStats::GetMaxAttackSpeedAttribute(),
         EGameplayModOp::Override,
         FGameplayEffectModifierMagnitude(FScalableFloat(MaxAttackSpeed))
     };
@@ -57,7 +57,7 @@ UGE_TSCharacterStats::UGE_TSCharacterStats()
     const float AttackSpeed = 1;
     const FGameplayModifierInfo AttackSpeedModifier
     {
-        UGEAttackSpeedStats::GetAttackSpeedAttribute(),
+        UGGFAttackSpeedStats::GetAttackSpeedAttribute(),
         EGameplayModOp::Override,
         FGameplayEffectModifierMagnitude(FScalableFloat(AttackSpeed))
     };
@@ -66,7 +66,7 @@ UGE_TSCharacterStats::UGE_TSCharacterStats()
     const float MaxMoveSpeed = 10;
     const FGameplayModifierInfo MaxMoveSpeedModifier
     {
-        UGEMoveSpeedStats::GetMaxMoveSpeedAttribute(),
+        UGGFMoveSpeedStats::GetMaxMoveSpeedAttribute(),
         EGameplayModOp::Override,
         FGameplayEffectModifierMagnitude(FScalableFloat(MaxMoveSpeed))
     };
@@ -74,7 +74,7 @@ UGE_TSCharacterStats::UGE_TSCharacterStats()
     const float MoveSpeed = 10;
     const FGameplayModifierInfo MoveSpeedModifier
     {
-        UGEMoveSpeedStats::GetMoveSpeedAttribute(),
+        UGGFMoveSpeedStats::GetMoveSpeedAttribute(),
         EGameplayModOp::Override,
         FGameplayEffectModifierMagnitude(FScalableFloat(MoveSpeed))
     };

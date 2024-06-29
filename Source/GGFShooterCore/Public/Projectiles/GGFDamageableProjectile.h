@@ -3,9 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GASExtensionSetting.h"
+#include "GGFCoreSetting.h"
 #include "GGFProjectile.h"
 #include "GGFDamageableProjectile.generated.h"
+
+class UGameplayEffect;
 
 UCLASS()
 class GGFSHOOTERCORE_API AGGFDamageableProjectile : public AGGFProjectile
@@ -15,19 +17,19 @@ class GGFSHOOTERCORE_API AGGFDamageableProjectile : public AGGFProjectile
 public:
     // 데미지 전용 게임플레이 이펙트 클래스
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|DamageableProjectile")
-    TSubclassOf<UGameplayEffect> DamageClass;
+    TSubclassOf<UGameplayEffect> DamageEffect;
 
     // 추가로 적용할 게임플레이 이펙트 클래스 목록
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|DamageableProjectile")
-    TArray<TSubclassOf<UGameplayEffect>> AdditionalEffects;
+    TArray<TSubclassOf<UGameplayEffect>> EffectsToApply;
 
     // 데미지 계산식에 영향을 받지 않는 고정 데미지
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|DamageableProjectile")
-    float FixedDamage;
+    float Damage;
 
     // 데미지 타입
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|DamageableProjectile")
-    FDamageTypeTag DamageType;
+    FGGFDamageTypeTag DamageType;
 
     // 데미지 배율 (샷건 등에서 사용)
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|DamageableProjectile", meta = (ClampMin = 0))

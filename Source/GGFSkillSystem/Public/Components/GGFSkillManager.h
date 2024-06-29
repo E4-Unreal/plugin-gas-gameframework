@@ -69,6 +69,8 @@ protected:
     TArray<FGGFSkillSlot> Slots;
 
 public:
+    UGGFSkillManager();
+
     /* GGFActorComponent */
 
     virtual void Reset() override;

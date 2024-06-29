@@ -3,7 +3,7 @@
 #include "Abilities/GGFGA_Fire.h"
 
 #include "Abilities/Tasks/AbilityTask_WaitInputRelease.h"
-#include "GEGameplayTags.h"
+#include "GGFGameplayTags.h"
 #include "GGFShooterGameplayTags.h"
 #include "Weapons/GGFFireArm.h"
 
@@ -16,8 +16,8 @@ UGGFGA_Fire::UGGFGA_Fire()
     InputTag = Input::Fire;
 
     // 태그 설정
-    AbilityTags.AddLeafTag(GEGameplayTags::Action::Attack);
-    ActivationOwnedTags.AddLeafTag(GEGameplayTags::Action::Attack);
+    AbilityTags.AddLeafTag(Action::Attack);
+    ActivationOwnedTags.AddLeafTag(Action::Attack);
 }
 
 void UGGFGA_Fire::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,

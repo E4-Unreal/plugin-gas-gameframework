@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Abilities/GEGameplayAbility.h"
+#include "Abilities/GGFGameplayAbility.h"
 #include "GGFGA_Interact.generated.h"
 
 class UGGFInteractionManager;
@@ -12,7 +12,7 @@ class UGGFInteractionManager;
  * 상호작용을 위한 게임플레이 어빌리티
  */
 UCLASS()
-class GGFINTERACTIONSYSTEM_API UGGFGA_Interact : public UGEGameplayAbility
+class GGFINTERACTIONSYSTEM_API UGGFGA_Interact : public UGGFGameplayAbility
 {
     GENERATED_BODY()
 

@@ -1,5 +1,10 @@
 ﻿#include "GGFCore.h"
 
+#include "AbilitySystemGlobals.h"
+#include "GameplayCueManager.h"
+#include "GGFCoreSetting.h"
+#include "Developer/Settings/Public/ISettingsModule.h"
+
 #if WITH_EDITOR
 #include "PropertyEditorModule.h"
 #endif
@@ -10,6 +15,16 @@ IMPLEMENT_MODULE(FGGFCoreModule, GGFCore)
 
 void FGGFCoreModule::StartupModule()
 {
+    // GAS를 위한 설정
+    InitializeForGameplayAbilitySystem();
+
+    if(ISettingsModule* SettingsModule = FModuleManager::GetModulePtr<ISettingsModule>("Settings"))
+    {
+        SettingsModule->RegisterSettings("Project", "Plugins", "GGFCore",
+            LOCTEXT("RuntimeSettingsName", "GGFCore"), LOCTEXT("RuntimeSettingsDescription", "Setting for GGFCore"),
+            GetMutableDefault<UGGFCoreSetting>());
+    }
+
 #if WITH_EDITOR
     // 디테일 패널에 커스텀 섹션 추가
     RegisterSectionMappings();
@@ -18,7 +33,26 @@ void FGGFCoreModule::StartupModule()
 
 void FGGFCoreModule::ShutdownModule()
 {
+    if(ISettingsModule* SettingsModule = FModuleManager::GetModulePtr<ISettingsModule>("Settings"))
+    {
+        SettingsModule->UnregisterSettings("Project", "Plugins", "GGFCore");
+    }
+}
 
+void FGGFCoreModule::InitializeForGameplayAbilitySystem()
+{
+    // AbilitySystemGlobals
+    UAbilitySystemGlobals& AbilitySystemGlobals = UAbilitySystemGlobals::Get();
+
+    // TargetData 오류 방지
+    AbilitySystemGlobals.InitGlobalData();
+
+    // 디버그 설정
+    AbilitySystemGlobals.bUseDebugTargetFromHud = true;
+
+    // GameplayCue 경로 추가
+    UGameplayCueManager* GameplayCueManager = AbilitySystemGlobals.GetGameplayCueManager();
+    GameplayCueManager->AddGameplayCueNotifyPath("/GASGameFramework");
 }
 
 #undef LOCTEXT_NAMESPACE

@@ -3,11 +3,11 @@
 
 #include "Data/GGFEquipmentDefinition.h"
 
-#include "Stats/GEAbilityHasteStats.h"
-#include "Stats/GEAttackSpeedStats.h"
-#include "Stats/GEAttackStats.h"
-#include "Stats/GEDefenseStats.h"
-#include "Stats/GEMoveSpeedStats.h"
+#include "Stats/GGFAbilityHasteStats.h"
+#include "Stats/GGFAttackSpeedStats.h"
+#include "Stats/GGFAttackStats.h"
+#include "Stats/GGFDefenseStats.h"
+#include "Stats/GGFMoveSpeedStats.h"
 
 const FGGFEquipmentData FGGFEquipmentData::EmptyEquipmentData;
 
@@ -17,11 +17,11 @@ UGameplayEffect* UGGFEquipmentDefinition::CreateStatsEffect()
     UGameplayEffect* NewStats = NewObject<UGameplayEffect>(this, *(Data.DisplayName.ToString() + " Stats"));
     NewStats->DurationPolicy = EGameplayEffectDurationType::Infinite;
     NewStats->Modifiers.Reserve(5);
-    if(!FMath::IsNearlyZero(Data.Attack)) NewStats->Modifiers.Emplace(CreateModifier(UGEAttackStats::GetAttackAttribute(), Data.Attack));
-    if(!FMath::IsNearlyZero(Data.Defense)) NewStats->Modifiers.Emplace(CreateModifier(UGEDefenseStats::GetDefenseAttribute(), Data.Defense));
-    if(!FMath::IsNearlyZero(Data.AttackSpeed)) NewStats->Modifiers.Emplace(CreateModifier(UGEAttackSpeedStats::GetAttackSpeedAttribute(), Data.AttackSpeed));
-    if(!FMath::IsNearlyZero(Data.MoveSpeed)) NewStats->Modifiers.Emplace(CreateModifier(UGEMoveSpeedStats::GetMoveSpeedAttribute(), Data.MoveSpeed));
-    if(!FMath::IsNearlyZero(Data.AbilityHaste)) NewStats->Modifiers.Emplace(CreateModifier(UGEAbilityHasteStats::GetAbilityHasteAttribute(), Data.AbilityHaste));
+    if(!FMath::IsNearlyZero(Data.Attack)) NewStats->Modifiers.Emplace(CreateModifier(UGGFAttackStats::GetAttackAttribute(), Data.Attack));
+    if(!FMath::IsNearlyZero(Data.Defense)) NewStats->Modifiers.Emplace(CreateModifier(UGGFDefenseStats::GetDefenseAttribute(), Data.Defense));
+    if(!FMath::IsNearlyZero(Data.AttackSpeed)) NewStats->Modifiers.Emplace(CreateModifier(UGGFAttackSpeedStats::GetAttackSpeedAttribute(), Data.AttackSpeed));
+    if(!FMath::IsNearlyZero(Data.MoveSpeed)) NewStats->Modifiers.Emplace(CreateModifier(UGGFMoveSpeedStats::GetMoveSpeedAttribute(), Data.MoveSpeed));
+    if(!FMath::IsNearlyZero(Data.AbilityHaste)) NewStats->Modifiers.Emplace(CreateModifier(UGGFAbilityHasteStats::GetAbilityHasteAttribute(), Data.AbilityHaste));
 
     return NewStats;
 }

@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Abilities/GEGameplayAbility.h"
+#include "Abilities/GGFGameplayAbility.h"
 #include "Components/GGFEquipmentManager.h"
 #include "GGFEquipmentAbility.generated.h"
 
@@ -13,7 +13,7 @@ class UGGFEquipmentManager;
  * 장비 전용 어빌리티
  */
 UCLASS()
-class GGFEQUIPMENTSYSTEM_API UGGFEquipmentAbility : public UGEGameplayAbility
+class GGFEQUIPMENTSYSTEM_API UGGFEquipmentAbility : public UGGFGameplayAbility
 {
     GENERATED_BODY()
 

@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameplayCueInterface.h"
 #include "Actors/GGFTriggerBox.h"
-#include "Interfaces/GGFActivationInterface.h"
+#include "Interfaces/GGFActivatableInterface.h"
 #include "GGFTriggerPad.generated.h"
 
 class UGGFTriggerComponent;
@@ -14,7 +14,7 @@ class UGGFTriggerComponent;
  * 특정 액터가 오버랩되면 트리거를 동작시키는 패드입니다.
  */
 UCLASS()
-class GGFGIMMICKSYSTEM_API AGGFTriggerPad : public AGGFTriggerBox, public IGGFActivationInterface
+class GGFGIMMICKSYSTEM_API AGGFTriggerPad : public AGGFTriggerBox, public IGGFActivatableInterface
 {
     GENERATED_BODY()
 

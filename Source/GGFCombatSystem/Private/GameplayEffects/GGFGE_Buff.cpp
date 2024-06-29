@@ -2,11 +2,11 @@
 
 #include "GameplayEffects/GGFGE_Buff.h"
 
-#include "Stats/GEAttackStats.h"
-#include "Stats/GEDefenseStats.h"
-#include "Stats/GEAttackSpeedStats.h"
-#include "Stats/GEMoveSpeedStats.h"
-#include "Stats/GEAbilityHasteStats.h"
+#include "Stats/GGFAttackStats.h"
+#include "Stats/GGFDefenseStats.h"
+#include "Stats/GGFAttackSpeedStats.h"
+#include "Stats/GGFMoveSpeedStats.h"
+#include "Stats/GGFAbilityHasteStats.h"
 
 UGGFGE_Buff::UGGFGE_Buff()
 {
@@ -22,27 +22,27 @@ UGGFGE_Buff::UGGFGE_Buff()
 
 void UGGFGE_Buff::SetAttackModifier(EGameplayModOp::Type ModifierOp, float Magnitude)
 {
-    SetModifier(UGEAttackStats::GetAttackAttribute(), AttackModifierPtr, ModifierOp, Magnitude);
+    SetModifier(UGGFAttackStats::GetAttackAttribute(), AttackModifierPtr, ModifierOp, Magnitude);
 }
 
 void UGGFGE_Buff::SetDefenseModifier(EGameplayModOp::Type ModifierOp, float Magnitude)
 {
-    SetModifier(UGEDefenseStats::GetDefenseAttribute(), DefenseModifierPtr, ModifierOp, Magnitude);
+    SetModifier(UGGFDefenseStats::GetDefenseAttribute(), DefenseModifierPtr, ModifierOp, Magnitude);
 }
 
 void UGGFGE_Buff::SetAttackSpeedModifier(EGameplayModOp::Type ModifierOp, float Magnitude)
 {
-    SetModifier(UGEAttackSpeedStats::GetAttackSpeedAttribute(), AttackSpeedModifierPtr, ModifierOp, Magnitude);
+    SetModifier(UGGFAttackSpeedStats::GetAttackSpeedAttribute(), AttackSpeedModifierPtr, ModifierOp, Magnitude);
 }
 
 void UGGFGE_Buff::SetMoveSpeedModifier(EGameplayModOp::Type ModifierOp, float Magnitude)
 {
-    SetModifier(UGEMoveSpeedStats::GetMoveSpeedAttribute(), MoveSpeedModifierPtr, ModifierOp, Magnitude);
+    SetModifier(UGGFMoveSpeedStats::GetMoveSpeedAttribute(), MoveSpeedModifierPtr, ModifierOp, Magnitude);
 }
 
 void UGGFGE_Buff::SetAbilityHasteModifier(EGameplayModOp::Type ModifierOp, float Magnitude)
 {
-    SetModifier(UGEAbilityHasteStats::GetAbilityHasteAttribute(), AbilityHasteModifierPtr, ModifierOp, Magnitude);
+    SetModifier(UGGFAbilityHasteStats::GetAbilityHasteAttribute(), AbilityHasteModifierPtr, ModifierOp, Magnitude);
 }
 
 void UGGFGE_Buff::SetModifier(FGameplayAttribute Attribute, FGameplayModifierInfo*& ModifierPtr,

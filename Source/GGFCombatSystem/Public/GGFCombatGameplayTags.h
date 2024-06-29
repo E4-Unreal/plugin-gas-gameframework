@@ -60,32 +60,36 @@ namespace GGFGameplayTags
         }
     }
 
-    /* 데미지 */
-    namespace Damage
+    /* 데이터 */
+    namespace Data
     {
-        namespace Type
+        namespace Damage
         {
-            GGFCOMBATSYSTEM_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Physical) // 물리
-            GGFCOMBATSYSTEM_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Fire) // 불
-            GGFCOMBATSYSTEM_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Water) // 물
-            GGFCOMBATSYSTEM_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Electricity) // 전기
-            GGFCOMBATSYSTEM_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Ice) // 얼음
-
-            GGFCOMBATSYSTEM_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Gravity) // 중력
+            namespace Type
+            {
+                GGFCOMBATSYSTEM_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Physical) // 물리
+                GGFCOMBATSYSTEM_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Fire) // 불
+                GGFCOMBATSYSTEM_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Water) // 물
+                GGFCOMBATSYSTEM_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Electricity) // 전기
+                GGFCOMBATSYSTEM_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Ice) // 얼음
+                GGFCOMBATSYSTEM_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Gravity) // 중력
+            }
         }
     }
 
-    /* 버프 */
-    namespace Buff
+    /* 상태 */
+    namespace State
     {
-        /* 면역 */
-        namespace Immunity
+        namespace Buff
         {
-            GGFCOMBATSYSTEM_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Physical) // 물리
-            GGFCOMBATSYSTEM_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Fire) // 불
-            GGFCOMBATSYSTEM_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Water) // 물
-            GGFCOMBATSYSTEM_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Electricity) // 전기
-            GGFCOMBATSYSTEM_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Ice) // 얼음
+            namespace Immunity
+            {
+                GGFCOMBATSYSTEM_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Physical)
+                GGFCOMBATSYSTEM_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Fire)
+                GGFCOMBATSYSTEM_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Water)
+                GGFCOMBATSYSTEM_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Electricity)
+                GGFCOMBATSYSTEM_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Ice)
+            }
         }
     }
 

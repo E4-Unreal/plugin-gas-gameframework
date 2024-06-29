@@ -4,7 +4,9 @@
 
 #include "EnhancedInputSubsystems.h"
 #include "GGFWeapon.h"
-#include "AbilitySystem/GGFPlayerAbilitySystem.h"
+#include "Abilities/GGFGA_Interact.h"
+#include "Abilities/GGFGA_Sprint.h"
+#include "AbilitySystem/GGFAbilitySystem.h"
 #include "Components/GGFCharacterManager.h"
 #include "Components/GGFCharacterMovement.h"
 #include "Components/GGFCharacterSkinManager.h"
@@ -13,16 +15,17 @@
 #include "Components/GGFInteractionManager.h"
 #include "Input/GGFInputManager.h"
 #include "Net/UnrealNetwork.h"
+#include "Components/GGFSkillManager.h"
 
 FName AGGFPlayerCharacter::EquipmentManagerName(TEXT("EquipmentManager"));
 FName AGGFPlayerCharacter::CharacterManagerName(TEXT("CharacterManager"));
 FName AGGFPlayerCharacter::SkinManagerName(TEXT("SkinManager"));
 FName AGGFPlayerCharacter::InteractionManagerName(TEXT("InteractionManager"));
+FName AGGFPlayerCharacter::SkillManagerName(TEXT("SkillManager"));
 
 AGGFPlayerCharacter::AGGFPlayerCharacter(const FObjectInitializer& ObjectInitializer)
 : Super(ObjectInitializer
     .SetDefaultSubobjectClass<UGGFCharacterMovement>(CharacterMovementComponentName)
-    .SetDefaultSubobjectClass<UGGFPlayerAbilitySystem>(AbilitySystemName)
     .SetDefaultSubobjectClass<UGGFInputManager>(InputManagerName)
     .SetDefaultSubobjectClass<UGGFCharacterStateMachine>(GameplayStateMachineName))
 {
@@ -39,6 +42,16 @@ AGGFPlayerCharacter::AGGFPlayerCharacter(const FObjectInitializer& ObjectInitial
 
     /* InteractionManager */
     InteractionManager = CreateDefaultSubobject<UGGFInteractionManager>(InteractionManagerName);
+
+    /* AbilitySystem */
+    if(auto CastedAbilitySystem = Cast<UGGFAbilitySystem>(GetAbilitySystem()))
+    {
+        CastedAbilitySystem->Abilities.AddUnique(UGGFGA_Interact::StaticClass()); // 상호작용
+        CastedAbilitySystem->Abilities.AddUnique(UGGFGA_Sprint::StaticClass()); // 빠르게 달리기
+    }
+
+    /* SkillManager */
+    SkillManager = CreateDefaultSubobject<UGGFSkillManager>(TEXT("SkillManager"));
 }
 
 void AGGFPlayerCharacter::PreReplication(IRepChangedPropertyTracker& ChangedPropertyTracker)

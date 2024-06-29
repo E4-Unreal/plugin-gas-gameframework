@@ -2,7 +2,7 @@
 
 #include "Components/GGFTriggerComponent.h"
 
-#include "Interfaces/GGFActivationInterface.h"
+#include "Interfaces/GGFActivatableInterface.h"
 #include "Logging.h"
 
 void UGGFTriggerComponent::ToggleActivateTargets()
@@ -32,9 +32,9 @@ void UGGFTriggerComponent::ActivateTargets()
             continue;
         }
 
-        if(Target->Implements<UGGFActivationInterface>())
+        if(Target->Implements<UGGFActivatableInterface>())
         {
-            IGGFActivationInterface::Execute_Activate(Target, GetOwner());
+            IGGFActivatableInterface::Execute_Activate(Target, GetOwner());
 #if WITH_EDITOR
             LOG_ACTOR_COMPONENT_DETAIL(Log, TEXT("Try Activate %s"), *Target->GetName())
 #endif
@@ -49,9 +49,9 @@ void UGGFTriggerComponent::DeactivateTargets()
 
     for (auto Target : Targets)
     {
-        if(Target->Implements<UGGFActivationInterface>())
+        if(Target->Implements<UGGFActivatableInterface>())
         {
-            IGGFActivationInterface::Execute_Deactivate(Target, GetOwner());
+            IGGFActivatableInterface::Execute_Deactivate(Target, GetOwner());
 #if WITH_EDITOR
             LOG_ACTOR_COMPONENT_DETAIL(Log, TEXT("Try Deactivate %s"), *Target->GetName())
 #endif

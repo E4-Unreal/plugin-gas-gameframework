@@ -3,9 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameplayCueInterface.h"
-#include "GASExtensionSetting.h"
-#include "Components/ActorComponent.h"
+#include "GGFCoreSetting.h"
+#include "Components/GGFEffectManager.h"
 #include "GGFExplosiveComponent.generated.h"
 
 class USphereComponent;
@@ -17,26 +16,28 @@ class UGameplayEffect;
  * 폭발 피격 판정 전용 컴포넌트
  */
 UCLASS(meta=(BlueprintSpawnableComponent))
-class GGFCOMBATSYSTEM_API UGGFExplosiveComponent : public UActorComponent
+class GGFCOMBATSYSTEM_API UGGFExplosiveComponent : public UGGFEffectManager
 {
     GENERATED_BODY()
 
     TWeakObjectPtr<USphereComponent> ExplosionArea;
 
 public:
-    // 폭발 데미지 클래스
+    // 폭발 피격 대상에게 적용할 이펙트 목록
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|ExplosiveComponent")
+    TArray<TSubclassOf<UGameplayEffect>> EffectsToApply;
+
+    // 커스텀 데미지 클래스
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|ExplosiveComponent")
     TSubclassOf<UGameplayEffect> DamageEffect;
 
-    // 폭발 범위 대상에게 적용할 추가 이펙트
+    // 폭발 최대 데미지
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|ExplosiveComponent")
-    TArray<TSubclassOf<UGameplayEffect>> AdditionalEffects;
+    float Damage = 50;
 
+    // 폭발 데미지 타입
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|ExplosiveComponent")
-    float FixedDamage = 50;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|ExplosiveComponent")
-    FDamageTypeTag DamageType;
+    FGGFDamageTypeTag DamageType;
 
     // 폭발 피격 판정을 위한 콜리전 채널
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|ExplosiveComponent")
@@ -46,19 +47,8 @@ public:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|ExplosiveComponent", meta = (ClampMin = 0, ClampMax = 1))
     float InnerRadiusRatio = 1;
 
-    // 폭발 이펙트 전용 게임플레이 큐 태그
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|ExplosiveComponent")
-    FGameplayCueTag ExplosionCueTag;
-
-    // 폭발 후 자동 파괴 여부
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|ExplosiveComponent")
-    bool bAutoDestroy = true;
-
 protected:
 #if WITH_EDITORONLY_DATA
-    UPROPERTY(VisibleAnywhere, Category = "Config|ExplosiveComponent|Debug")
-    bool bValid = false;
-
     UPROPERTY(EditAnywhere, Category = "Config|ExplosiveComponent|Debug")
     bool bShowDebug = false;
 #endif
@@ -77,14 +67,14 @@ public:
 protected:
     /* 메서드 */
 
-    // ApplyRadialDamage를 위한 데미지 배율 계산
+    // 데미지 배율 계산
     virtual float CalculateDamageRatio(AActor* Target);
 
     // TODO 피격판정 로직 개선 필요
     // 폭발 피격 판정을 위한 위치 계산
     static void GetLocationsForExplosionDetection(AActor* Target, TArray<FVector>& TargetLocations);
 
-    // 폭발 피격 대상에게 데미지 및 추가 효과 적용
+    // 폭발 피격 대상에게 데미지 및 게임플레이 이펙트 적용
     UFUNCTION(BlueprintCallable)
     virtual void ApplyEffects(AActor* Target);
 };

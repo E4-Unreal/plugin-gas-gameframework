@@ -24,11 +24,12 @@ public class GGFCharacterSystem : ModuleRules
 
                 // GASGameFramework
                 "GGFCore",
-                "GASExtension",
                 "GGFInteractionSystem",
                 "GGFEquipmentSystem",
                 "GGFShooterCore",
-                "GGFDataSystem"
+                "GGFDataSystem",
+                "GGFAnimationSystem",
+                "GGFSkillSystem"
             }
         );
 

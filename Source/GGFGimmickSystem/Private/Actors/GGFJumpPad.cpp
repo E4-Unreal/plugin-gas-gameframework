@@ -2,7 +2,7 @@
 
 #include "Actors/GGFJumpPad.h"
 
-#include "GEBlueprintFunctionLibrary.h"
+#include "GGFBlueprintFunctionLibrary.h"
 #include "Components/ArrowComponent.h"
 #include "GameFramework/Character.h"
 #include "GGFGimmickGameplayTags.h"
@@ -44,5 +44,5 @@ void AGGFJumpPad::Launch_Implementation(AActor* Target)
         PrimitiveComponent->SetPhysicsLinearVelocity(LaunchVelocity);
     }
 
-    UGEBlueprintFunctionLibrary::LocalHandleGameplayCue(this, LaunchCueTag);
+    UGGFBlueprintFunctionLibrary::LocalHandleGameplayCue(this, LaunchCueTag);
 }

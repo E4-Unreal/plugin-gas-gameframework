@@ -2,17 +2,15 @@
 
 #include "Projectiles/GGFDamageableProjectile.h"
 
-#include "GEBlueprintFunctionLibrary.h"
-#include "GameplayEffects/GEDamageBase.h"
-#include "GEGameplayTags.h"
-
-using namespace GEGameplayTags;
+#include "GGFBlueprintFunctionLibrary.h"
+#include "GGFGameplayTags.h"
+#include "GameplayEffects/GGFStatDamage.h"
 
 AGGFDamageableProjectile::AGGFDamageableProjectile(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
 {
-    DamageClass = UGEDamageBase::StaticClass();
-    FixedDamage = 10;
-    DamageType = Damage::Type::Default;
+    DamageEffect = UGGFStatDamage::StaticClass();
+    Damage = 10;
+    DamageType = Data::Damage::Type::Default;
 }
 
 void AGGFDamageableProjectile::OnSphereColliderHit_Implementation(UPrimitiveComponent* HitComponent, AActor* OtherActor,
@@ -31,13 +29,13 @@ void AGGFDamageableProjectile::ApplyEffects(AActor* Target)
         // 데미지 및 추가 GE 적용
         if(GetInstigator())
         {
-            UGEBlueprintFunctionLibrary::ApplyDamageToTarget(GetInstigator(), Target, DamageClass, FixedDamage, DamageRatio, DamageType.Tag);
-            UGEBlueprintFunctionLibrary::ApplyGameplayEffectsToTarget(AdditionalEffects, GetInstigator(), Target);
+            UGGFBlueprintFunctionLibrary::ApplyDamageToTarget(GetInstigator(), Target, Damage, DamageRatio, DamageType.Tag, DamageEffect);
+            UGGFBlueprintFunctionLibrary::ApplyGameplayEffectsToTarget(GetInstigator(), Target, EffectsToApply);
         }
         else
         {
-            UGEBlueprintFunctionLibrary::ApplyDamageToSelf(Target, DamageClass, FixedDamage, DamageRatio, DamageType.Tag);
-            UGEBlueprintFunctionLibrary::ApplyGameplayEffectsToSelf(AdditionalEffects, Target);
+            UGGFBlueprintFunctionLibrary::ApplyDamageToSelf(Target,Damage, DamageRatio, DamageType.Tag, DamageEffect);
+            UGGFBlueprintFunctionLibrary::ApplyGameplayEffectsToSelf(Target, EffectsToApply);
         }
     }
 }

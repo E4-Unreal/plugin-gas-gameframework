@@ -58,32 +58,37 @@ namespace GGFGameplayTags
         }
     }
 
-    /* 데미지 */
-    namespace Damage
+    /* 데이터 */
+    namespace Data
     {
-        namespace Type
+        namespace Damage
         {
-            UE_DEFINE_GAMEPLAY_TAG_COMMENT(Physical, "Damage.Type.Physical", "물리 속성 데미지")
-            UE_DEFINE_GAMEPLAY_TAG_COMMENT(Fire, "Damage.Type.Fire", "불 속성 데미지")
-            UE_DEFINE_GAMEPLAY_TAG_COMMENT(Water, "Damage.Type.Water", "물 속성 데미지")
-            UE_DEFINE_GAMEPLAY_TAG_COMMENT(Electricity, "Damage.Type.Electricity", "전기 속성 데미지")
-            UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ice, "Damage.Type.Ice", "얼음 속성 데미지")
+            namespace Type
+            {
+                UE_DEFINE_GAMEPLAY_TAG_COMMENT(Physical, "Data.Damage.Type.Physical", "물리 속성 데미지")
+                UE_DEFINE_GAMEPLAY_TAG_COMMENT(Fire, "Data.Damage.Type.Fire", "불 속성 데미지")
+                UE_DEFINE_GAMEPLAY_TAG_COMMENT(Water, "Data.Damage.Type.Water", "물 속성 데미지")
+                UE_DEFINE_GAMEPLAY_TAG_COMMENT(Electricity, "Data.Damage.Type.Electricity", "전기 속성 데미지")
+                UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ice, "Data.Damage.Type.Ice", "얼음 속성 데미지")
 
-            UE_DEFINE_GAMEPLAY_TAG_COMMENT(Gravity, "Damage.Type.Physical.Gravity", "중력 속성 데미지")
+                UE_DEFINE_GAMEPLAY_TAG_COMMENT(Gravity, "Data.Damage.Type.Physical.Gravity", "중력 속성 데미지")
+            }
         }
     }
 
-    /* 버프 */
-    namespace Buff
+    /* 상태 */
+    namespace State
     {
-        /* 면역 */
-        namespace Immunity
+        namespace Buff
         {
-            UE_DEFINE_GAMEPLAY_TAG_COMMENT(Physical, "Buff.Immunity.Physical", "물리 속성 데미지") // 물리
-            UE_DEFINE_GAMEPLAY_TAG_COMMENT(Fire, "Buff.Immunity.Fire", "불 속성 데미지") // 불
-            UE_DEFINE_GAMEPLAY_TAG_COMMENT(Water, "Buff.Immunity.Water", "물 속성 데미지") // 물
-            UE_DEFINE_GAMEPLAY_TAG_COMMENT(Electricity, "Buff.Immunity.Electricity", "전기 속성 데미지") // 전기
-            UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ice, "Buff.Immunity.Ice", "얼음 속성 데미지") // 얼음
+            namespace Immunity
+            {
+                UE_DEFINE_GAMEPLAY_TAG_COMMENT(Physical, "State.Buff.Immunity.Physical", "물리 속성 데미지 면역")
+                UE_DEFINE_GAMEPLAY_TAG_COMMENT(Fire, "State.Buff.Immunity.Fire", "불 속성 데미지 면역")
+                UE_DEFINE_GAMEPLAY_TAG_COMMENT(Water, "State.Buff.Immunity.Water", "물 속성 데미지 면역")
+                UE_DEFINE_GAMEPLAY_TAG_COMMENT(Electricity, "State.Buff.Immunity.Electricity", "전기 속성 데미지 면역")
+                UE_DEFINE_GAMEPLAY_TAG_COMMENT(Ice, "State.Buff.Immunity.Ice", "얼음 속성 데미지 면역")
+            }
         }
     }
 

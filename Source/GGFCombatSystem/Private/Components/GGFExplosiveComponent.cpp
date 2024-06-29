@@ -2,28 +2,25 @@
 
 #include "Components/GGFExplosiveComponent.h"
 
-#include "GEBlueprintFunctionLibrary.h"
+#include "GGFBlueprintFunctionLibrary.h"
 #include "Logging.h"
 #include "Components/SphereComponent.h"
-#include "GameplayEffects/GEDamageBase.h"
-#include "GEGameplayTags.h"
+#include "GameplayEffects/GGFDamage.h"
+#include "GGFGameplayTags.h"
 #include "GGFCombatGameplayTags.h"
 
 UGGFExplosiveComponent::UGGFExplosiveComponent()
 {
     // 기본 설정
-    DamageEffect = UGEDamageBase::StaticClass();
-    DamageType = GEGameplayTags::Damage::Type::Default;
-    ExplosionCueTag = FGameplayCueTag(GGFGameplayTags::GameplayCue::Explosion::Default);
+    DamageEffect = UGGFDamage::StaticClass();
+    DamageType = Data::Damage::Type::Default;
 }
 
 void UGGFExplosiveComponent::Init(USphereComponent* InExplosionArea)
 {
     ExplosionArea = InExplosionArea;
 
-#if WITH_EDITOR
-    bValid = ExplosionArea.IsValid();
-#endif
+    bValid = bValid && ExplosionArea.IsValid();
 }
 
 void UGGFExplosiveComponent::Explode()
@@ -43,11 +40,8 @@ void UGGFExplosiveComponent::Explode()
         }
     }
 
-    // 폭발 효과
-    UGEBlueprintFunctionLibrary::LocalHandleGameplayCue(GetOwner(), ExplosionCueTag);
-
-    // 파괴
-    if(bAutoDestroy) GetOwner()->Destroy();
+    // 폭발 효과 스폰
+    PlayEffectsAtActor(GetOwner());
 }
 
 float UGGFExplosiveComponent::CalculateDamageRatio(AActor* Target)
@@ -134,7 +128,7 @@ float UGGFExplosiveComponent::CalculateDamageRatio(AActor* Target)
     float DamageRatio = HitRatio * DistanceRatio;
 
 #if WITH_EDITOR
-    UE_LOG(LogGGFCombatSystem, Log, TEXT("%s > DamageRatio(%f) = HitRatio(%f) * DistanceRatio(%f)"), *Target->GetName(), DamageRatio, HitRatio, DistanceRatio)
+    LOG_ACTOR_COMPONENT_DETAIL(Log, TEXT("%s > DamageRatio(%f) = HitRatio(%f) * DistanceRatio(%f)"), *Target->GetName(), DamageRatio, HitRatio, DistanceRatio)
 #endif
 
     return DamageRatio;
@@ -192,11 +186,11 @@ void UGGFExplosiveComponent::ApplyEffects(AActor* Target)
     // 데미지 적용
     const float DamageRatio = CalculateDamageRatio(Target);
     if(DamageRatio == 0) return; // 피격 판정 실패
-    UGEBlueprintFunctionLibrary::ApplyDamageToTarget(Instigator, Target, DamageEffect, FixedDamage, DamageRatio, DamageType.Tag);
+    UGGFBlueprintFunctionLibrary::ApplyDamageToTarget(Instigator, Target, Damage, DamageRatio, DamageType.Tag, DamageEffect);
 
     // 추가 이펙트 적용
     if(DamageRatio > 0)
     {
-        UGEBlueprintFunctionLibrary::ApplyGameplayEffectsToTarget(AdditionalEffects, Instigator, Target);
+        UGGFBlueprintFunctionLibrary::ApplyGameplayEffectsToTarget(Instigator, Target, EffectsToApply);
     }
 }
