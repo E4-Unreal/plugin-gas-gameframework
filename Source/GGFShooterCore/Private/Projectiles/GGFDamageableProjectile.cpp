@@ -3,13 +3,12 @@
 #include "Projectiles/GGFDamageableProjectile.h"
 
 #include "GGFBlueprintFunctionLibrary.h"
-#include "GGFBlueprintFunctionLibrary.h"
-#include "GameplayEffects/GGFDamage.h"
 #include "GGFGameplayTags.h"
+#include "GameplayEffects/GGFStatDamage.h"
 
 AGGFDamageableProjectile::AGGFDamageableProjectile(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
 {
-    DamageEffect = UGGFDamage::StaticClass();
+    DamageEffect = UGGFStatDamage::StaticClass();
     Damage = 10;
     DamageType = Data::Damage::Type::Default;
 }

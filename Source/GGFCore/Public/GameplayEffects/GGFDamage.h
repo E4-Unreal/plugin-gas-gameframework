@@ -9,7 +9,7 @@
 class UTargetTagRequirementsGameplayEffectComponent;
 
 /**
- * 데미지 전용 게임플레이 이펙트 클래스
+ * 일반 데미지 전용 게임플레이 이펙트
  */
 UCLASS()
 class GGFCORE_API UGGFDamage : public UGGFGameplayEffect
@@ -17,6 +17,7 @@ class GGFCORE_API UGGFDamage : public UGGFGameplayEffect
     GENERATED_BODY()
 
 protected:
+    FGameplayEffectExecutionDefinition* ExecutionDefinitionPtr;
     FGameplayModifierInfo* DamageModifierPtr;
 
 public:

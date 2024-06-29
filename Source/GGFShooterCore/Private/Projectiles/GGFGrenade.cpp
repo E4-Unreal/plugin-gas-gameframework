@@ -4,9 +4,13 @@
 
 #include "Components/SphereComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
+#include "GameplayEffects/GGFDamage.h"
 
 AGGFGrenade::AGGFGrenade()
 {
+    /* 기본 설정 */
+    DamageEffect = UGGFDamage::StaticClass();
+
     /* ProjectileMovement */
     GetProjectileMovement()->MaxSpeed = 1000;
     GetProjectileMovement()->InitialSpeed = 1000;

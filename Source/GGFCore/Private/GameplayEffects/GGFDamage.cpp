@@ -16,13 +16,14 @@ UGGFDamage::UGGFDamage(const FObjectInitializer& ObjectInitializer)
     /* 기본 데미지 계산식 설정 */
     FGameplayEffectExecutionDefinition ExecutionDefinition;
     ExecutionDefinition.CalculationClass = UGGFDamageCalculation::StaticClass();
-    Executions.Emplace(ExecutionDefinition);
+    int32 Index = Executions.Emplace(ExecutionDefinition);
+    ExecutionDefinitionPtr = &Executions[Index];
 
     // 데미지 모디파이어 추가
     FGameplayModifierInfo DamageModifier;
     DamageModifier.Attribute = UGGFHealthAttributes::GetDamageAttribute();
     DamageModifier.ModifierOp = EGameplayModOp::Additive;
     DamageModifier.ModifierMagnitude = FGameplayEffectModifierMagnitude(0);
-    int32 Index = Modifiers.Emplace(DamageModifier);
+    Index = Modifiers.Emplace(DamageModifier);
     DamageModifierPtr = &Modifiers[Index];
 }
