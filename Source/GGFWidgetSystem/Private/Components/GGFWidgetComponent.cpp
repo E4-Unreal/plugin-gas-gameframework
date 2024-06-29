@@ -4,6 +4,12 @@
 
 #include "Widgets/GGFUserWidget.h"
 
+UGGFWidgetComponent::UGGFWidgetComponent()
+{
+    Space = EWidgetSpace::Screen;
+    bDrawAtDesiredSize = true;
+}
+
 void UGGFWidgetComponent::InitWidget()
 {
     Super::InitWidget();

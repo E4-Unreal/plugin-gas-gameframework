@@ -15,6 +15,8 @@ class GGFWIDGETSYSTEM_API UGGFWidgetComponent : public UWidgetComponent
     GENERATED_BODY()
 
 public:
+    UGGFWidgetComponent();
+
     /* WidgetComponent */
 
     virtual void InitWidget() override;
