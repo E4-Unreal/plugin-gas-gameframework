@@ -93,7 +93,12 @@
 			"Name": "GGFEffectSystem",
 			"Type": "Runtime",
 			"LoadingPhase": "PreDefault"
-		}
+		},
+        {
+            "Name": "GGFWidgetSystem",
+            "Type": "Runtime",
+            "LoadingPhase": "PreDefault"
+        }
 	],
 	"Plugins": [
 		{

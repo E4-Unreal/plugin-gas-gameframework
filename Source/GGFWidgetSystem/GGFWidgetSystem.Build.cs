@@ -1,8 +1,8 @@
 ﻿using UnrealBuildTool;
 
-public class GGFInteractionSystem : ModuleRules
+public class GGFWidgetSystem : ModuleRules
 {
-    public GGFInteractionSystem(ReadOnlyTargetRules Target) : base(Target)
+    public GGFWidgetSystem(ReadOnlyTargetRules Target) : base(Target)
     {
         PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
 
@@ -13,8 +13,6 @@ public class GGFInteractionSystem : ModuleRules
 
                 // UI
                 "UMG",
-
-                // 향상된 입력
                 "EnhancedInput",
 
                 // GAS
@@ -23,8 +21,7 @@ public class GGFInteractionSystem : ModuleRules
                 "GameplayAbilities",
 
                 // GASGameFramework
-                "GGFCore",
-                "GGFWidgetSystem"
+                "GGFCore"
             }
         );
 
