@@ -76,7 +76,6 @@ public:
     /* Actor */
 
     virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
-    virtual void PostInitializeComponents() override;
     virtual void BeginPlay() override;
 
     /* API */

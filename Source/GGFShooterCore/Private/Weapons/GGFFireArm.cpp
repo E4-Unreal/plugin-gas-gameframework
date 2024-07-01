@@ -43,14 +43,6 @@ AGGFFireArm::AGGFFireArm(const FObjectInitializer& ObjectInitializer)
     ActiveAbilities.Emplace(UGGFGA_AutoReload::StaticClass());
 }
 
-void AGGFFireArm::PostInitializeComponents()
-{
-    Super::PostInitializeComponents();
-
-    // 발사 간격 계산
-    CalculateFireInterval();
-}
-
 void AGGFFireArm::BeginPlay()
 {
     Super::BeginPlay();
@@ -215,6 +207,9 @@ void AGGFFireArm::OnIDUpdated(int32 NewID)
     // NiagaraSystem
     GetNiagaraSystem()->AttachToComponent(GetSkeletalMesh(), AttachmentTransformRules, MuzzleSocketName);
     GetNiagaraSystem()->SetAsset(FireArmData.MuzzleSystem);
+
+    // RPM 재계산
+    CalculateFireInterval();
 }
 
 void AGGFFireArm::Activate_Implementation()
