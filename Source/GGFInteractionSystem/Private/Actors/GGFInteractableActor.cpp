@@ -13,7 +13,7 @@ AGGFInteractableActor::AGGFInteractableActor()
 
     /* Interactable Component */
     InteractableComponent = CreateDefaultSubobject<UGGFInteractableComponent>(TEXT("InteractableComponent"));
-    InteractableComponent->SetupAttachment(GetTriggerBox());
+    InteractableComponent->SetupAttachment(GetBoxCollision());
 
     /* 블루프린트 에셋 기본 할당 */
     // LevelPrototyping 플러그인
@@ -29,7 +29,7 @@ void AGGFInteractableActor::PostInitializeComponents()
 {
     Super::PostInitializeComponents();
 
-    InteractableComponent->Init(GetTriggerBox(), GetDisplayMesh());
+    InteractableComponent->Init(GetBoxCollision(), GetDisplayMesh());
     InteractableComponent->OnPawnInteract.AddDynamic(this, &ThisClass::OnPawnInteract);
     InteractableComponent->OnLocalPawnInteract.AddDynamic(this, &ThisClass::OnLocalPawnInteract);
     InteractableComponent->OnPawnBeginOverlap.AddDynamic(this, &ThisClass::OnPawnBeginOverlap);

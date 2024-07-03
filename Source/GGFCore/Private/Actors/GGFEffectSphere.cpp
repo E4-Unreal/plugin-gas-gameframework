@@ -19,5 +19,5 @@ void AGGFEffectSphere::PostInitializeComponents()
     Super::PostInitializeComponents();
 
     /* 컴포넌트 초기화 */
-    GetEffectAreaComponent()->Init(GetTriggerSphere());
+    GetEffectAreaComponent()->Init(GetSphereCollision());
 }

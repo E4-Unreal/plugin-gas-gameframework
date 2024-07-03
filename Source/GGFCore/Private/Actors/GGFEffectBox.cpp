@@ -19,7 +19,7 @@ void AGGFEffectBox::PostInitializeComponents()
     Super::PostInitializeComponents();
 
     /* 컴포넌트 초기화 */
-    GetEffectAreaComponent()->Init(GetTriggerBox());
+    GetEffectAreaComponent()->Init(GetBoxCollision());
 }
 
 void AGGFEffectBox::BeginPlay()

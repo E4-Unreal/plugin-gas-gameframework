@@ -19,20 +19,20 @@ AGGFTriggerPad::AGGFTriggerPad()
     DeactivateCueTag.GameplayCueTag = GameplayCue::Button::Deactivate;
 }
 
-void AGGFTriggerPad::OnTriggerBoxBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+void AGGFTriggerPad::OnCollisionComponentBeginOverlap_Implementation(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
                                               UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-    Super::OnTriggerBoxBeginOverlap(OverlappedComponent, OtherActor, OtherComp, OtherBodyIndex, bFromSweep,
+    Super::OnCollisionComponentBeginOverlap_Implementation(OverlappedComponent, OtherActor, OtherComp, OtherBodyIndex, bFromSweep,
                                     SweepResult);
 
     // 트리거 조건 만족 여부에 따라 활성화 혹은 비활성화
     CheckTriggerCondition();
 }
 
-void AGGFTriggerPad::OnTriggerBoxEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+void AGGFTriggerPad::OnCollisionComponentEndOverlap_Implementation(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
     UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-    Super::OnTriggerBoxEndOverlap(OverlappedComponent, OtherActor, OtherComp, OtherBodyIndex);
+    Super::OnCollisionComponentEndOverlap_Implementation(OverlappedComponent, OtherActor, OtherComp, OtherBodyIndex);
 
     // 트리거 조건 만족 여부에 따라 활성화 혹은 비활성화
     CheckTriggerCondition();
@@ -47,7 +47,7 @@ void AGGFTriggerPad::CheckTriggerCondition()
     {
         if(bTriggerOnce)
         {
-            UnBindTriggerBoxEvents();
+            UnbindOverlapEvents();
         }
 
         GetTriggerComponent()->ActivateTargets();
@@ -63,7 +63,7 @@ bool AGGFTriggerPad::IsTriggerConditionSatisfied()
     for (const auto& [ActorClass, Num] : TriggerConditionMap)
     {
         TArray<AActor*> OverlappingActors;
-        GetTriggerBox()->GetOverlappingActors(OverlappingActors, ActorClass);
+        GetBoxCollision()->GetOverlappingActors(OverlappingActors, ActorClass);
         OverlappingActors.RemoveSwap(this);
 
         if(OverlappingActors.Num() < Num) return false;
