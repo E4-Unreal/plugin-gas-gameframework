@@ -178,6 +178,9 @@ void AGGFGameMode::SetViewTargetToNextPlayer_Implementation(APlayerController* P
     AvailableTeamList.Reserve(TeamList.Num());
     for (auto OtherPlayerController : TeamList)
     {
+        // 유효성 검사
+        if(!IsValid(OtherPlayerController)) continue;
+
         // 자기 자신 무시
         if(OtherPlayerController == PlayerController) continue;
 
