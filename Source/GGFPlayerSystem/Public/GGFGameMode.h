@@ -38,8 +38,8 @@ public:
     AGGFGameMode();
 
     /* GameMode */
-
-    virtual void PostLogin(APlayerController* NewPlayer) override;
+    
+    virtual void GenericPlayerInitialization(AController* C) override;
 
     /* API */
 
@@ -55,4 +55,7 @@ public:
 
     UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
     TArray<APlayerController*> GetTeamListByPlayerController(APlayerController* PlayerController) const;
+
+protected:
+    virtual void AssignTeamID(APlayerController* PlayerController);
 };

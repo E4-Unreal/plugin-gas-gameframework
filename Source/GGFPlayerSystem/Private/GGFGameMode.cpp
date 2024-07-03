@@ -17,25 +17,56 @@ AGGFGameMode::AGGFGameMode()
     PlayerStateClass = AGGFPlayerState::StaticClass();
 }
 
-void AGGFGameMode::PostLogin(APlayerController* NewPlayer)
+void AGGFGameMode::GenericPlayerInitialization(AController* C)
 {
-    Super::PostLogin(NewPlayer);
+    Super::GenericPlayerInitialization(C);
 
+    if(auto NewPlayer = Cast<APlayerController>(C))
+    {
+        if(bAllPlayerSameTeam)
+        {
+            if(auto PlayerState = NewPlayer->GetPlayerState<APlayerState>())
+            {
+                if(PlayerState->Implements<UGGFTeamInterface>())
+                {
+                    IGGFTeamInterface::Execute_SetTeamID(PlayerState, 0);
+                    if(TeamMap.Contains(0))
+                    {
+                        TeamMap[0].List.Emplace(NewPlayer);
+                    }
+                    else
+                    {
+                        FGGFPlayerControllerList PlayerList;
+                        PlayerList.List.Emplace(NewPlayer);
+                        TeamMap.Emplace(0, PlayerList);
+                    }
+                }
+            }
+        }
+    }
+}
+
+void AGGFGameMode::AssignTeamID(APlayerController* PlayerController)
+{
+    // 입력 유효성 검사
+    if(PlayerController == nullptr) return;
+
+    // 팀 ID 배정
     if(bAllPlayerSameTeam)
     {
-        if(auto PlayerState = NewPlayer->GetPlayerState<APlayerState>())
+        if(auto PlayerState = PlayerController->GetPlayerState<APlayerState>())
         {
             if(PlayerState->Implements<UGGFTeamInterface>())
             {
                 IGGFTeamInterface::Execute_SetTeamID(PlayerState, 0);
                 if(TeamMap.Contains(0))
                 {
-                    TeamMap[0].List.Emplace(NewPlayer);
+                    TeamMap[0].List.Emplace(PlayerController);
                 }
                 else
                 {
                     FGGFPlayerControllerList PlayerList;
-                    PlayerList.List.Emplace(NewPlayer);
+                    PlayerList.List.Emplace(PlayerController);
                     TeamMap.Emplace(0, PlayerList);
                 }
             }
