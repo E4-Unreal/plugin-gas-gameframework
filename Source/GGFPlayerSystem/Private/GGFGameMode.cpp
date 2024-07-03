@@ -61,6 +61,9 @@ TArray<APlayerController*> AGGFGameMode::GetTeamListByTeamID_Implementation(int3
 
 void AGGFGameMode::SetViewTargetToPreviousPlayer_Implementation(APlayerController* PlayerController)
 {
+    // 입력 유효성 검사
+    if(PlayerController == nullptr) return;
+
     // 관전 모드 검사
     if(!PlayerController->PlayerState->IsSpectator()) return;
 
@@ -125,6 +128,9 @@ void AGGFGameMode::SetViewTargetToPreviousPlayer_Implementation(APlayerControlle
 
 void AGGFGameMode::SetViewTargetToNextPlayer_Implementation(APlayerController* PlayerController)
 {
+    // 입력 유효성 검사
+    if(PlayerController == nullptr) return;
+
     // 관전 모드 검사
     if(!PlayerController->PlayerState->IsSpectator()) return;
 
