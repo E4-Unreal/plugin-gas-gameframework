@@ -5,9 +5,9 @@
 #include "Interfaces/GGFActivatableInterface.h"
 #include "Logging.h"
 
-void UGGFTriggerComponent::ToggleActivateTargets()
+void UGGFTriggerComponent::ToggleTargets()
 {
-    if(IsActivated())
+    if(bTriggered)
     {
         DeactivateTargets();
     }
@@ -19,10 +19,10 @@ void UGGFTriggerComponent::ToggleActivateTargets()
 
 void UGGFTriggerComponent::ActivateTargets()
 {
-    if(bShouldToggle && bActivated) return;
-    bActivated = true;
+    if(!bCanRetrigger && bTriggered) return;
+    bTriggered = true;
 
-    for (auto Target : Targets)
+    for (auto Target : TargetsToActivate)
     {
         if(!Target)
         {
@@ -44,10 +44,10 @@ void UGGFTriggerComponent::ActivateTargets()
 
 void UGGFTriggerComponent::DeactivateTargets()
 {
-    if(bShouldToggle && !bActivated) return;
-    bActivated = false;
+    if(!bTriggered) return;
+    bTriggered = false;
 
-    for (auto Target : Targets)
+    for (auto Target : TargetsToActivate)
     {
         if(Target->Implements<UGGFActivatableInterface>())
         {

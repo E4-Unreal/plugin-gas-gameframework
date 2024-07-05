@@ -17,7 +17,7 @@ AGGFInteractableTrigger::AGGFInteractableTrigger()
 
 void AGGFInteractableTrigger::OnPawnInteract_Implementation(APawn* OtherPawn)
 {
-    GetTriggerComponent()->ToggleActivateTargets();
+    GetTriggerComponent()->ToggleTargets();
 }
 
 bool AGGFInteractableTrigger::Activate_Implementation(AActor* InstigatorActor)

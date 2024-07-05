@@ -2,25 +2,35 @@
 
 #include "Actors/GGFTriggerPad.h"
 
-#include "GGFBlueprintFunctionLibrary.h"
 #include "Components/BoxComponent.h"
+#include "Components/GGFEffectManager.h"
 #include "Components/GGFTriggerComponent.h"
 #include "GameFramework/Character.h"
-#include "GGFGimmickGameplayTags.h"
 
 AGGFTriggerPad::AGGFTriggerPad()
 {
+    /* 기본 설정 */
+    TriggerConditionMap.Emplace(ACharacter::StaticClass(), 1);
+
     /* TriggerComponent */
     TriggerComponent = CreateDefaultSubobject<UGGFTriggerComponent>(TEXT("TriggerComponent"));
 
-    /* 기본 설정 */
-    TriggerConditionMap.Emplace(ACharacter::StaticClass(), 1);
-    ActivateCueTag.GameplayCueTag = GameplayCue::Button::Activate;
-    DeactivateCueTag.GameplayCueTag = GameplayCue::Button::Deactivate;
+    /* EffectManager */
+    EffectManager = CreateDefaultSubobject<UGGFEffectManager>(TEXT("EffectManager"));
+}
+
+void AGGFTriggerPad::BeginPlay()
+{
+    Super::BeginPlay();
+
+    if(bActivateSelf)
+    {
+        GetTriggerComponent()->TargetsToActivate.AddUnique(this);
+    }
 }
 
 void AGGFTriggerPad::OnCollisionComponentBeginOverlap_Implementation(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-                                              UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+                                                                     UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
     Super::OnCollisionComponentBeginOverlap_Implementation(OverlappedComponent, OtherActor, OtherComp, OtherBodyIndex, bFromSweep,
                                     SweepResult);
@@ -40,19 +50,18 @@ void AGGFTriggerPad::OnCollisionComponentEndOverlap_Implementation(UPrimitiveCom
 
 void AGGFTriggerPad::CheckTriggerCondition()
 {
-    // 중복 호출 방지
-    if(bTriggerOnce && GetTriggerComponent()->IsActivated()) return;
-
+    // 조건 달성
     if(IsTriggerConditionSatisfied())
     {
-        if(bTriggerOnce)
+        GetTriggerComponent()->ActivateTargets();
+
+        // 한 번만 트리거가 동작하도록 설정된 경우 오버랩 이벤트 언바인딩
+        if(!GetTriggerComponent()->bCanRetrigger)
         {
             UnbindOverlapEvents();
         }
-
-        GetTriggerComponent()->ActivateTargets();
     }
-    else
+    else // 조건 달성 실패
     {
         GetTriggerComponent()->DeactivateTargets();
     }
@@ -74,12 +83,16 @@ bool AGGFTriggerPad::IsTriggerConditionSatisfied()
 
 bool AGGFTriggerPad::Activate_Implementation(AActor* InstigatorActor)
 {
-    UGGFBlueprintFunctionLibrary::LocalHandleGameplayCue(this, ActivateCueTag);
+    GetEffectManager()->EffectDefinitionContainer = ActivateEffect;
+    GetEffectManager()->PlayEffectsAtActor(this);
+
     return true;
 }
 
 bool AGGFTriggerPad::Deactivate_Implementation(AActor* InstigatorActor)
 {
-    UGGFBlueprintFunctionLibrary::LocalHandleGameplayCue(this, DeactivateCueTag);
+    GetEffectManager()->EffectDefinitionContainer = DeactivateEffect;
+    GetEffectManager()->PlayEffectsAtActor(this);
+
     return true;
 }
