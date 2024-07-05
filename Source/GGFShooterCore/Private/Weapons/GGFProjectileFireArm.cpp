@@ -24,6 +24,17 @@ void AGGFProjectileFireArm::OnFire_Implementation()
     auto SpawnedProjectile = SpawnProjectile(FireDirection);
 }
 
+void AGGFProjectileFireArm::OnIDUpdated(int32 NewID)
+{
+    Super::OnIDUpdated(NewID);
+
+    // 변수 선언
+    const auto& FireArmData = GetFireArmData();
+
+    // 총알 클래스 설정
+    ProjectileClass = FireArmData.DefaultProjectile;
+}
+
 AGGFProjectile* AGGFProjectileFireArm::SpawnProjectile(const FVector& Direction)
 {
     // World 검사

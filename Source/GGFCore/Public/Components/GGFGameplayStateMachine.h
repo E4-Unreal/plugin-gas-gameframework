@@ -16,7 +16,7 @@ class GGFCORE_API UGGFGameplayStateMachine : public UActorComponent
 {
     GENERATED_BODY()
 
-protected:
+public:
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State", Transient)
     bool bValid;
 

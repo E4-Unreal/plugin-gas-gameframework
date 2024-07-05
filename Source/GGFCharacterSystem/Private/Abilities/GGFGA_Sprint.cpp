@@ -12,6 +12,7 @@ UGGFGA_Sprint::UGGFGA_Sprint()
     InputTag = Input::Sprint;
 
     // 상태 태그 설정
+    ActivationOwnedTags.RemoveTag(Action::Root);
     ActivationOwnedTags.AddTagFast(State::Locomotion::Sprinting);
 }
 

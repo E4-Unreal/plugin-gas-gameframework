@@ -29,6 +29,7 @@ protected:
     /* FireArm */
 
     virtual void OnFire_Implementation() override;
+    virtual void OnIDUpdated(int32 NewID) override;
 
     /* 메서드 */
 
