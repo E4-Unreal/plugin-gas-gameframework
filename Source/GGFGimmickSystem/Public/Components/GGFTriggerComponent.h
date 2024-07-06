@@ -24,25 +24,33 @@ public:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config")
     bool bCanRetrigger = true;
 
+    // true 설정 시 TargetsToActivate에 Owner를 포함합니다.
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config")
+    bool bIncludeOwner = true;
+
 protected:
     // 트리거 동작 여부
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State", Transient)
     bool bTriggered = false;
 
 public:
+    /* ActorComponent */
+
+    virtual void InitializeComponent() override;
+
     /* API */
 
     // 대상 액터 그룹 활성화 혹은 비활성화
     UFUNCTION(BlueprintCallable)
-    virtual void ToggleTargets();
+    virtual void ToggleTargets(AActor* Instigator);
 
     // 대상 액터 그룹 활성화
     UFUNCTION(BlueprintCallable)
-    virtual void ActivateTargets();
+    virtual void ActivateTargets(AActor* Instigator);
 
     // 대상 액터 그룹 비활성화
     UFUNCTION(BlueprintCallable)
-    virtual void DeactivateTargets();
+    virtual void DeactivateTargets(AActor* Instigator);
 
     // 트리거 동작 여부
     UFUNCTION(BlueprintPure)

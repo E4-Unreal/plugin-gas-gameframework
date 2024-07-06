@@ -5,6 +5,7 @@
 #include "Components/BoxComponent.h"
 #include "Components/GGFEffectManager.h"
 #include "Components/GGFTriggerComponent.h"
+#include "Effects/GGFEffectDefinition.h"
 #include "GameFramework/Character.h"
 
 AGGFTriggerPad::AGGFTriggerPad()
@@ -15,17 +16,15 @@ AGGFTriggerPad::AGGFTriggerPad()
     /* TriggerComponent */
     TriggerComponent = CreateDefaultSubobject<UGGFTriggerComponent>(TEXT("TriggerComponent"));
 
-    /* EffectManager */
-    EffectManager = CreateDefaultSubobject<UGGFEffectManager>(TEXT("EffectManager"));
-}
-
-void AGGFTriggerPad::BeginPlay()
-{
-    Super::BeginPlay();
-
-    if(bActivateSelf)
+    /* 기본 에셋 설정 */
     {
-        GetTriggerComponent()->TargetsToActivate.AddUnique(this);
+        ConstructorHelpers::FObjectFinder<UGGFEffectDefinition> EffectFinder(TEXT("/GASGameFramework/DataAssets/Effects/Activate_Default"));
+        if(EffectFinder.Succeeded()) ActivateEffect.EffectDefinition = EffectFinder.Object;
+    }
+
+    {
+        ConstructorHelpers::FObjectFinder<UGGFEffectDefinition> EffectFinder(TEXT("/GASGameFramework/DataAssets/Effects/Deactivate_Default"));
+        if(EffectFinder.Succeeded()) DeactivateEffect.EffectDefinition = EffectFinder.Object;
     }
 }
 
@@ -53,7 +52,7 @@ void AGGFTriggerPad::CheckTriggerCondition()
     // 조건 달성
     if(IsTriggerConditionSatisfied())
     {
-        GetTriggerComponent()->ActivateTargets();
+        GetTriggerComponent()->ActivateTargets(this);
 
         // 한 번만 트리거가 동작하도록 설정된 경우 오버랩 이벤트 언바인딩
         if(!GetTriggerComponent()->bCanRetrigger)
@@ -63,7 +62,7 @@ void AGGFTriggerPad::CheckTriggerCondition()
     }
     else // 조건 달성 실패
     {
-        GetTriggerComponent()->DeactivateTargets();
+        GetTriggerComponent()->DeactivateTargets(this);
     }
 }
 
@@ -81,18 +80,22 @@ bool AGGFTriggerPad::IsTriggerConditionSatisfied()
     return true;
 }
 
-bool AGGFTriggerPad::Activate_Implementation(AActor* InstigatorActor)
+bool AGGFTriggerPad::TryActivate_Implementation(AActor* InCauser, AActor* InInstigator)
 {
-    GetEffectManager()->EffectDefinitionContainer = ActivateEffect;
-    GetEffectManager()->PlayEffectsAtActor(this);
+    if(auto EffectDefinition = ActivateEffect.GetEffectDefinition())
+    {
+        EffectDefinition->PlayEffectsAtActor(this);
+    }
 
     return true;
 }
 
-bool AGGFTriggerPad::Deactivate_Implementation(AActor* InstigatorActor)
+bool AGGFTriggerPad::TryDeactivate_Implementation(AActor* InCauser, AActor* InInstigator)
 {
-    GetEffectManager()->EffectDefinitionContainer = DeactivateEffect;
-    GetEffectManager()->PlayEffectsAtActor(this);
+    if(auto EffectDefinition = DeactivateEffect.GetEffectDefinition())
+    {
+        EffectDefinition->PlayEffectsAtActor(this);
+    }
 
     return true;
 }

@@ -5,19 +5,26 @@
 #include "Interfaces/GGFActivatableInterface.h"
 #include "Logging.h"
 
-void UGGFTriggerComponent::ToggleTargets()
+void UGGFTriggerComponent::InitializeComponent()
+{
+    Super::InitializeComponent();
+
+    if(bIncludeOwner) TargetsToActivate.Emplace(GetOwner());
+}
+
+void UGGFTriggerComponent::ToggleTargets(AActor* Instigator)
 {
     if(bTriggered)
     {
-        DeactivateTargets();
+        DeactivateTargets(Instigator);
     }
     else
     {
-        ActivateTargets();
+        ActivateTargets(Instigator);
     }
 }
 
-void UGGFTriggerComponent::ActivateTargets()
+void UGGFTriggerComponent::ActivateTargets(AActor* Instigator)
 {
     if(!bCanRetrigger && bTriggered) return;
     bTriggered = true;
@@ -34,7 +41,7 @@ void UGGFTriggerComponent::ActivateTargets()
 
         if(Target->Implements<UGGFActivatableInterface>())
         {
-            IGGFActivatableInterface::Execute_Activate(Target, GetOwner());
+            IGGFActivatableInterface::Execute_TryActivate(Target, GetOwner(), Instigator);
 #if WITH_EDITOR
             LOG_ACTOR_COMPONENT_DETAIL(Log, TEXT("Try Activate %s"), *Target->GetName())
 #endif
@@ -42,7 +49,7 @@ void UGGFTriggerComponent::ActivateTargets()
     }
 }
 
-void UGGFTriggerComponent::DeactivateTargets()
+void UGGFTriggerComponent::DeactivateTargets(AActor* Instigator)
 {
     if(!bTriggered) return;
     bTriggered = false;
@@ -51,7 +58,7 @@ void UGGFTriggerComponent::DeactivateTargets()
     {
         if(Target->Implements<UGGFActivatableInterface>())
         {
-            IGGFActivatableInterface::Execute_Deactivate(Target, GetOwner());
+            IGGFActivatableInterface::Execute_TryDeactivate(Target, GetOwner(), Instigator);
 #if WITH_EDITOR
             LOG_ACTOR_COMPONENT_DETAIL(Log, TEXT("Try Deactivate %s"), *Target->GetName())
 #endif

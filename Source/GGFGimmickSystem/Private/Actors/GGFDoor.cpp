@@ -69,7 +69,7 @@ void AGGFDoor::PostInitializeComponents()
     TransformOffset = DoorMesh->GetRelativeTransform();
 }
 
-bool AGGFDoor::Activate_Implementation(AActor* InstigatorActor)
+bool AGGFDoor::TryActivate_Implementation(AActor* InCauser, AActor* InInstigator)
 {
     ++TriggerStack;
 
@@ -78,7 +78,7 @@ bool AGGFDoor::Activate_Implementation(AActor* InstigatorActor)
     return true;
 }
 
-bool AGGFDoor::Deactivate_Implementation(AActor* InstigatorActor)
+bool AGGFDoor::TryDeactivate_Implementation(AActor* InCauser, AActor* InInstigator)
 {
     --TriggerStack;
 

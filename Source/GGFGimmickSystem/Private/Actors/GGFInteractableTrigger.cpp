@@ -12,20 +12,19 @@ AGGFInteractableTrigger::AGGFInteractableTrigger()
 
     /* Activatable Component */
     ActivatableComponent = CreateDefaultSubobject<UGGFActivatableComponent>(TEXT("ActivatableComponent"));
-    ActivatableComponent->SetupAttachment(GetDisplayMesh());
 }
 
 void AGGFInteractableTrigger::OnPawnInteract_Implementation(APawn* OtherPawn)
 {
-    GetTriggerComponent()->ToggleTargets();
+    GetTriggerComponent()->ToggleTargets(OtherPawn);
 }
 
-bool AGGFInteractableTrigger::Activate_Implementation(AActor* InstigatorActor)
+bool AGGFInteractableTrigger::TryActivate_Implementation(AActor* InCauser, AActor* InInstigator)
 {
-    return GetActivatableComponent()->TryActivate(this);
+    return GetActivatableComponent()->TryActivate(InCauser, InInstigator);
 }
 
-bool AGGFInteractableTrigger::Deactivate_Implementation(AActor* InstigatorActor)
+bool AGGFInteractableTrigger::TryDeactivate_Implementation(AActor* InCauser, AActor* InInstigator)
 {
-    return GetActivatableComponent()->TryDeactivate(this);
+    return GetActivatableComponent()->TryDeactivate(InCauser, InInstigator);
 }

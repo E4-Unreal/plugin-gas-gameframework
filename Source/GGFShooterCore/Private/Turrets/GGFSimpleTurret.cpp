@@ -44,7 +44,7 @@ void AGGFSimpleTurret::BeginPlay()
 
     if(bAutoActivate && HasAuthority())
     {
-        Execute_Activate(this, this);
+        Execute_TryActivate(this, this, this);
     }
 }
 
@@ -58,7 +58,7 @@ void AGGFSimpleTurret::Destroyed()
 
 void AGGFSimpleTurret::LifeSpanExpired()
 {
-    Execute_Deactivate(this, this);
+    Execute_TryDeactivate(this, this, this);
 }
 
 void AGGFSimpleTurret::OnDead_Implementation()
@@ -68,7 +68,7 @@ void AGGFSimpleTurret::OnDead_Implementation()
     Destroy();
 }
 
-bool AGGFSimpleTurret::Activate_Implementation(AActor* InstigatorActor)
+bool AGGFSimpleTurret::TryActivate_Implementation(AActor* InCauser, AActor* InInstigator)
 {
     // 중복 호출 방지
     if(bActive) return false;
@@ -79,7 +79,7 @@ bool AGGFSimpleTurret::Activate_Implementation(AActor* InstigatorActor)
     {
         if(AnimInstance->Implements<UGGFActivatableInterface>())
         {
-            Execute_Activate(AnimInstance, this);
+            Execute_TryActivate(AnimInstance, this, this);
         }
     }
 
@@ -97,7 +97,7 @@ bool AGGFSimpleTurret::Activate_Implementation(AActor* InstigatorActor)
     return true;
 }
 
-bool AGGFSimpleTurret::Deactivate_Implementation(AActor* InstigatorActor)
+bool AGGFSimpleTurret::TryDeactivate_Implementation(AActor* InCauser, AActor* InInstigator)
 {
     // 중복 호출 방지
     if(!bActive) return false;
@@ -108,7 +108,7 @@ bool AGGFSimpleTurret::Deactivate_Implementation(AActor* InstigatorActor)
     {
         if(AnimInstance->Implements<UGGFActivatableInterface>())
         {
-            Execute_Deactivate(AnimInstance, this);
+            Execute_TryDeactivate(AnimInstance, this, this);
         }
     }
 
@@ -131,8 +131,8 @@ void AGGFSimpleTurret::OnRep_Active(bool bOldActive)
     bool bNewActive = bActive;
     bActive = bOldActive;
 
-    if(bNewActive) Execute_Activate(this, this);
-    else Execute_Deactivate(this, this);
+    if(bNewActive) Execute_TryActivate(this, this, this);
+    else Execute_TryDeactivate(this, this, this);
 }
 
 void AGGFSimpleTurret::OnActivated_Implementation()
