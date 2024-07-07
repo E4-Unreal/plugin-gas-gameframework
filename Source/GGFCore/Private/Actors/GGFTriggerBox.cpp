@@ -5,7 +5,7 @@
 #include "Components/BoxComponent.h"
 
 AGGFTriggerBox::AGGFTriggerBox(const FObjectInitializer& ObjectInitializer)
-    : Super(ObjectInitializer.SetDefaultSubobjectClass<UBoxComponent>(CollisionComponentName))
+    : Super(ObjectInitializer.SetDefaultSubobjectClass<UBoxComponent>(CollisionName))
 {
     if(GetBoxCollision())
     {

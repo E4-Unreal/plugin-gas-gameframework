@@ -21,10 +21,10 @@ AGGFJumpPad::AGGFJumpPad()
     if(EffectFinder.Succeeded()) LaunchEffect.EffectDefinition = EffectFinder.Object;
 }
 
-void AGGFJumpPad::OnCollisionComponentBeginOverlap_Implementation(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+void AGGFJumpPad::OnCollisionBeginOverlap_Implementation(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
                                            UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-    Super::OnCollisionComponentBeginOverlap_Implementation(OverlappedComponent, OtherActor, OtherComp, OtherBodyIndex, bFromSweep,
+    Super::OnCollisionBeginOverlap_Implementation(OverlappedComponent, OtherActor, OtherComp, OtherBodyIndex, bFromSweep,
                                     SweepResult);
 
     if(OtherActor->GetClass()->IsChildOf(ActorClassToLaunch))

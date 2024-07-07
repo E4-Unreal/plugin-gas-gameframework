@@ -10,7 +10,7 @@
 class USphereComponent;
 
 /**
- * 기본 트리거 액터 - 구
+ * 구 콜리전 컴포넌트 오버랩 이벤트가 기본 바인딩된 액터 클래스
  */
 UCLASS()
 class GGFCORE_API AGGFTriggerSphere : public AGGFTriggerBase
@@ -24,5 +24,5 @@ public:
     /* Getter */
 
     UFUNCTION(BlueprintPure)
-    FORCEINLINE USphereComponent* GetSphereCollision() const { return Cast<USphereComponent>(GetCollisionComponent()); }
+    FORCEINLINE USphereComponent* GetSphereCollision() const { return Cast<USphereComponent>(GetCollision()); }
 };

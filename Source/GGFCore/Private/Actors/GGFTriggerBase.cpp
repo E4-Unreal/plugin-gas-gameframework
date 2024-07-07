@@ -6,7 +6,7 @@
 #include "Components/ShapeComponent.h"
 
 FName AGGFTriggerBase::DefaultSceneName(TEXT("DefaultScene"));
-FName AGGFTriggerBase::CollisionComponentName(TEXT("CollisionComponent"));
+FName AGGFTriggerBase::CollisionName(TEXT("Collision"));
 FName AGGFTriggerBase::DisplayMeshName(TEXT("DisplayMesh"));
 
 AGGFTriggerBase::AGGFTriggerBase(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
@@ -15,18 +15,18 @@ AGGFTriggerBase::AGGFTriggerBase(const FObjectInitializer& ObjectInitializer) : 
     DefaultScene = CreateDefaultSubobject<USceneComponent>(DefaultSceneName);
     SetRootComponent(DefaultScene);
 
-    /* CollisionComponent */
-    CollisionComponent = CreateDefaultSubobject<UShapeComponent>(CollisionComponentName);
-    if (CollisionComponent)
+    /* Collision */
+    Collision = CreateDefaultSubobject<UShapeComponent>(CollisionName);
+    if (Collision)
     {
         // 계층 구조 설정
-        CollisionComponent->SetupAttachment(RootComponent);
+        Collision->SetupAttachment(RootComponent);
 
         // 충돌 설정
-        CollisionComponent->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
-        CollisionComponent->SetCollisionResponseToAllChannels(ECR_Overlap);
-        CollisionComponent->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
-        CollisionComponent->SetCollisionResponseToChannel(ECC_Visibility, ECR_Ignore);
+        Collision->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+        Collision->SetCollisionResponseToAllChannels(ECR_Overlap);
+        Collision->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
+        Collision->SetCollisionResponseToChannel(ECC_Visibility, ECR_Ignore);
     }
 
     /* DisplayMesh */
@@ -44,68 +44,104 @@ void AGGFTriggerBase::PostInitializeComponents()
     BindOverlapEvents();
 }
 
+bool AGGFTriggerBase::CheckOverlapCondition(AActor* OtherActor) const
+{
+    // 클래스 필터가 설정되지 않은 경우 모든 클래스 허용
+    if(ClassFilters.IsEmpty()) return true;
+
+    // 클래스 필터 검사
+    for (auto ClassFilter : ClassFilters)
+    {
+        if(OtherActor->IsA(ClassFilter))
+        {
+            // 성공
+            return true;
+        }
+    }
+
+    // 실패
+    return false;
+}
+
 void AGGFTriggerBase::BindOverlapEvents()
 {
-    if(GetCollisionComponent())
+    if(GetCollision())
     {
-        GetCollisionComponent()->OnComponentBeginOverlap.AddDynamic(this, &ThisClass::OnCollisionComponentBeginOverlap);
-        GetCollisionComponent()->OnComponentEndOverlap.AddDynamic(this, &ThisClass::OnCollisionComponentEndOverlap);
+        GetCollision()->OnComponentBeginOverlap.AddDynamic(this, &ThisClass::InternalOnCollisionBeginOverlap);
+        GetCollision()->OnComponentEndOverlap.AddDynamic(this, &ThisClass::InternalOnCollisionEndOverlap);
     }
 }
 
 void AGGFTriggerBase::UnbindOverlapEvents()
 {
-    if(GetCollisionComponent())
+    if(GetCollision())
     {
-        GetCollisionComponent()->OnComponentBeginOverlap.RemoveDynamic(this, &ThisClass::OnCollisionComponentBeginOverlap);
-        GetCollisionComponent()->OnComponentEndOverlap.RemoveDynamic(this, &ThisClass::OnCollisionComponentEndOverlap);
+        GetCollision()->OnComponentBeginOverlap.RemoveDynamic(this, &ThisClass::InternalOnCollisionBeginOverlap);
+        GetCollision()->OnComponentEndOverlap.RemoveDynamic(this, &ThisClass::InternalOnCollisionEndOverlap);
     }
 }
 
-void AGGFTriggerBase::OnCollisionComponentBeginOverlap_Implementation(UPrimitiveComponent* OverlappedComponent,
-                                                                      AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
-                                                                      const FHitResult& SweepResult)
+void AGGFTriggerBase::InternalOnCollisionBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+    UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+    // 클래스 필터가 설정되지 않은 경우 모든 클래스 허용
+    bool bSucceed = ClassFilters.IsEmpty();
+
+    // 클래스 필터 적용
+    for (auto ClassFilter : ClassFilters)
+    {
+        if(bSucceed) break;
+
+        bSucceed = OtherActor->IsA(ClassFilter);
+    }
+
+    // 클래스 필터 결과 확인
+    if(!bSucceed) return;
+
 #if WITH_EDITOR
     if(bEnableLog)
         LOG_ACTOR_DETAIL(Log, TEXT("OtherActor: %s"), *OtherActor->GetName())
 #endif
 
-    if(APawn* OtherPawn = Cast<APawn>(OtherActor))
-    {
-        OnCollisionComponentBeginOverlapPawn(OverlappedComponent, OtherPawn, OtherComp, OtherBodyIndex, bFromSweep, SweepResult);
-    }
+    // 이벤트 호출
+    OnCollisionBeginOverlap(OverlappedComponent, OtherActor, OtherComp, OtherBodyIndex, bFromSweep, SweepResult);
 }
 
-void AGGFTriggerBase::OnCollisionComponentEndOverlap_Implementation(UPrimitiveComponent* OverlappedComponent,
+void AGGFTriggerBase::InternalOnCollisionEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+    UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+    // 클래스 필터가 설정되지 않은 경우 모든 클래스 허용
+    bool bSucceed = ClassFilters.IsEmpty();
+
+    // 클래스 필터 적용
+    for (auto ClassFilter : ClassFilters)
+    {
+        if(bSucceed) break;
+
+        bSucceed = OtherActor->IsA(ClassFilter);
+    }
+
+    // 클래스 필터 결과 확인
+    if(!bSucceed) return;
+
+#if WITH_EDITOR
+    if(bEnableLog)
+        LOG_ACTOR_DETAIL(Log, TEXT("OtherActor: %s"), *OtherActor->GetName())
+#endif
+
+    // 이벤트 호출
+    OnCollisionEndOverlap(OverlappedComponent, OtherActor, OtherComp, OtherBodyIndex);
+}
+
+void AGGFTriggerBase::OnCollisionBeginOverlap_Implementation(UPrimitiveComponent* OverlappedComponent,
+                                                             AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
+                                                             const FHitResult& SweepResult)
+{
+
+}
+
+void AGGFTriggerBase::OnCollisionEndOverlap_Implementation(UPrimitiveComponent* OverlappedComponent,
     AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-#if WITH_EDITOR
-    if(bEnableLog)
-        LOG_ACTOR_DETAIL(Log, TEXT("OtherActor: %s"), *OtherActor->GetName())
-#endif
 
-    if(APawn* OtherPawn = Cast<APawn>(OtherActor))
-    {
-        OnCollisionComponentEndOverlapPawn(OverlappedComponent, OtherPawn, OtherComp, OtherBodyIndex);
-    }
-}
-
-void AGGFTriggerBase::OnCollisionComponentBeginOverlapPawn_Implementation(UPrimitiveComponent* OverlappedComponent,
-    APawn* OtherPawn, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
-    const FHitResult& SweepResult)
-{
-#if WITH_EDITOR
-    if(bEnableLog)
-        LOG_ACTOR_DETAIL(Log, TEXT("OtherPawn: %s"), *OtherPawn->GetName())
-#endif
-}
-
-void AGGFTriggerBase::OnCollisionComponentEndOverlapPawn_Implementation(UPrimitiveComponent* OverlappedComponent,
-    APawn* OtherPawn, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
-{
-#if WITH_EDITOR
-    if(bEnableLog)
-        LOG_ACTOR_DETAIL(Log, TEXT("OtherPawn: %s"), *OtherPawn->GetName())
-#endif
 }

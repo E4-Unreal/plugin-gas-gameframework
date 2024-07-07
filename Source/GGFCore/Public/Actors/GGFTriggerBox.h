@@ -20,7 +20,7 @@ enum class EGGFPivot : uint8
 class UBoxComponent;
 
 /**
- * 기본적인 박스 오버랩 이벤트가 바인딩된 범용 액터 클래스입니다.
+ * 박스 콜리전 컴포넌트 오버랩 이벤트가 기본 바인딩된 액터 클래스
  */
 UCLASS()
 class GGFCORE_API AGGFTriggerBox : public AGGFTriggerBase
@@ -49,5 +49,5 @@ public:
     /* Getter */
 
     UFUNCTION(BlueprintPure)
-    FORCEINLINE UBoxComponent* GetBoxCollision() const { return Cast<UBoxComponent>(GetCollisionComponent()); }
+    FORCEINLINE UBoxComponent* GetBoxCollision() const { return Cast<UBoxComponent>(GetCollision()); }
 };

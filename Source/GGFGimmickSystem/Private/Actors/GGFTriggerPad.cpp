@@ -28,20 +28,20 @@ AGGFTriggerPad::AGGFTriggerPad()
     }
 }
 
-void AGGFTriggerPad::OnCollisionComponentBeginOverlap_Implementation(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+void AGGFTriggerPad::OnCollisionBeginOverlap_Implementation(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
                                                                      UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-    Super::OnCollisionComponentBeginOverlap_Implementation(OverlappedComponent, OtherActor, OtherComp, OtherBodyIndex, bFromSweep,
+    Super::OnCollisionBeginOverlap_Implementation(OverlappedComponent, OtherActor, OtherComp, OtherBodyIndex, bFromSweep,
                                     SweepResult);
 
     // 트리거 조건 만족 여부에 따라 활성화 혹은 비활성화
     CheckTriggerCondition();
 }
 
-void AGGFTriggerPad::OnCollisionComponentEndOverlap_Implementation(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+void AGGFTriggerPad::OnCollisionEndOverlap_Implementation(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
     UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-    Super::OnCollisionComponentEndOverlap_Implementation(OverlappedComponent, OtherActor, OtherComp, OtherBodyIndex);
+    Super::OnCollisionEndOverlap_Implementation(OverlappedComponent, OtherActor, OtherComp, OtherBodyIndex);
 
     // 트리거 조건 만족 여부에 따라 활성화 혹은 비활성화
     CheckTriggerCondition();
