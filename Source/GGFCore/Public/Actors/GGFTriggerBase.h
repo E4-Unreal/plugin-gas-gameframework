@@ -34,6 +34,10 @@ private:
     TObjectPtr<UStaticMeshComponent> DisplayMesh;
 
 protected:
+    // true 설정 시 서버에서만 오버랩 이벤트를 바인딩합니다.
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config")
+    bool bServerOnly = false;
+
     // 오버랩 이벤트를 호출할 액터 클래스
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config")
     TArray<TSubclassOf<AActor>> ClassFilters;
@@ -49,7 +53,7 @@ public:
 
     /* Actor */
 
-    virtual void PostInitializeComponents() override;
+    virtual void BeginPlay() override;
 
 protected:
     /* 메서드 */
