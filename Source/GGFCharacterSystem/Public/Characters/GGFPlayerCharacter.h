@@ -81,6 +81,14 @@ protected:
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State", Transient, ReplicatedUsing = OnRep_CharacterConfig)
     FGGFCharacterConfig CharacterConfig;
 
+    // 캐릭터 HUD 클래스
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|UI")
+    TSubclassOf<UUserWidget> HUDClass;
+
+    // 캐릭터 HUD
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State|UI", Transient)
+    TObjectPtr<UUserWidget> HUD;
+
 public:
     AGGFPlayerCharacter(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
@@ -93,6 +101,8 @@ public:
 
     /* Pawn */
 
+    virtual void PossessedBy(AController* NewController) override;
+    virtual void OnRep_Controller() override;
     virtual void Restart() override;
 
     /* Character */
@@ -139,6 +149,11 @@ public:
     void ServerSetCharacterSkin(int32 NewSkinID);
 
 protected:
+    /* 메서드 */
+
+    UFUNCTION(BlueprintCallable)
+    virtual void CreateHUD();
+
     /* 리플리케이트 */
 
     // 서버 캐릭터의 CharacterConfig 값 업데이트
