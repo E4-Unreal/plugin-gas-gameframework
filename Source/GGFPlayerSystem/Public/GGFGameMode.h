@@ -38,10 +38,16 @@ public:
     AGGFGameMode();
 
     /* GameMode */
-    
+
     virtual void GenericPlayerInitialization(AController* C) override;
 
     /* API */
+
+    UFUNCTION(BlueprintCallable)
+    void ServerTravel(const FString& InURL, bool bAbsolute = false, bool bShouldSkipGameNotify = false);
+
+    UFUNCTION(BlueprintCallable)
+    void ServerTravelBySoftObjectPtr(const TSoftObjectPtr<UWorld> Level, bool bAbsolute = false, bool bShouldSkipGameNotify = false);
 
     UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
     void SetViewTargetToPreviousPlayer(APlayerController* PlayerController);

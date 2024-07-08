@@ -49,6 +49,20 @@ void AGGFGameMode::GenericPlayerInitialization(AController* C)
     }
 }
 
+void AGGFGameMode::ServerTravel(const FString& InURL, bool bAbsolute, bool bShouldSkipGameNotify)
+{
+    if(GetWorld())
+    {
+        GetWorld()->ServerTravel(InURL, bAbsolute, bShouldSkipGameNotify);
+    }
+}
+
+void AGGFGameMode::ServerTravelBySoftObjectPtr(const TSoftObjectPtr<UWorld> Level, bool bAbsolute, bool bShouldSkipGameNotify)
+{
+    const FString URL = *FPackageName::ObjectPathToPackageName(Level.ToString());
+    ServerTravel(URL, bAbsolute, bShouldSkipGameNotify);
+}
+
 void AGGFGameMode::AssignTeamID(APlayerController* PlayerController)
 {
     // 입력 유효성 검사
