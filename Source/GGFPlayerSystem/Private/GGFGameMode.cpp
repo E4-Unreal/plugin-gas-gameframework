@@ -12,6 +12,9 @@ const TArray<APlayerController*> FGGFPlayerControllerList::EmptyList;
 
 AGGFGameMode::AGGFGameMode()
 {
+    // SeamlessTravel 설정
+    bUseSeamlessTravel = true;
+
     GameStateClass = AGGFGameState::StaticClass();
     PlayerControllerClass = AGGFPlayerController::StaticClass();
     PlayerStateClass = AGGFPlayerState::StaticClass();
