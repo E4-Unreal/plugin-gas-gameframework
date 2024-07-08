@@ -2,46 +2,20 @@
 
 #include "Actors/GGFTimelineActor.h"
 
-#include "Components/TimelineComponent.h"
+#include "Components/GGFTimelineComponent.h"
 
 AGGFTimelineActor::AGGFTimelineActor()
 {
-    Timeline = CreateDefaultSubobject<UTimelineComponent>(TEXT("Timeline"));
-    TimelineInterpFunction.BindDynamic(this, &ThisClass::OnTimelineActivated);
-    TimelineFinishedFunction.BindDynamic(this, &ThisClass::OnTimelineFinished);
-
-    const ConstructorHelpers::FObjectFinder<UCurveFloat> TimelineCurveFinder(TEXT("/Niagara/DefaultAssets/Curves/Templates/LinearRampUp.LinearRampUp"));
-    if(TimelineCurveFinder.Succeeded()) TimelineCurveFloat = TimelineCurveFinder.Object;
+    Timeline = CreateDefaultSubobject<UGGFTimelineComponent>(TEXT("Timeline"));
 }
 
-void AGGFTimelineActor::PostInitializeComponents()
+void AGGFTimelineActor::BeginPlay()
 {
-    Super::PostInitializeComponents();
+    Super::BeginPlay();
 
-    Timeline->AddInterpFloat(TimelineCurveFloat, TimelineInterpFunction);
-    Timeline->SetTimelineFinishedFunc(TimelineFinishedFunction);
-}
-
-void AGGFTimelineActor::PlayTimeline(bool bReverse, bool bReset)
-{
-    auto CachedTimeline = GetTimeline();
-
-    if(bUseCustomDuration)
-    {
-        auto PlayRate = CachedTimeline->GetTimelineLength() / Duration;
-        CachedTimeline->SetPlayRate(PlayRate);
-    }
-
-    if(bReverse)
-    {
-        if(bReset) CachedTimeline->ReverseFromEnd();
-        else CachedTimeline->Reverse();
-    }
-    else
-    {
-        if(bReset) CachedTimeline->PlayFromStart();
-        else CachedTimeline->Play();
-    }
+    // 이벤트 바인딩
+    GetTimeline()->OnActivated.AddDynamic(this, &ThisClass::OnTimelineActivated);
+    GetTimeline()->OnFinished.AddDynamic(this, &ThisClass::OnTimelineFinished);
 }
 
 void AGGFTimelineActor::OnTimelineActivated_Implementation(float Value)
