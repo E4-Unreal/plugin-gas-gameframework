@@ -2,126 +2,131 @@
 
 #include "Components/GGFActivatableComponent.h"
 
-#include "Sound/SoundCue.h"
-
-UGGFActivatableComponent::UGGFActivatableComponent()
+void UGGFActivatableComponent::BeginDestroy()
 {
-    /* 기본 에셋 설정 */
-    static ConstructorHelpers::FObjectFinder<USoundCue> SoundFinder(TEXT("/LyraContent/Custom/SoundCues/Effects/SC_Button_01"));
-    if (SoundFinder.Succeeded())
+    // 타이머 초기화
+    if(GetWorld())
     {
-        ActivationSound = SoundFinder.Object;
-        DeactivationSound = SoundFinder.Object;
+        auto& TimerManager = GetWorld()->GetTimerManager();
+        if(TimerManager.IsTimerActive(ActivationTimer)) TimerManager.ClearTimer(ActivationTimer);
+        if(TimerManager.IsTimerActive(DeactivationTimer)) TimerManager.ClearTimer(DeactivationTimer);
     }
+
+    Super::BeginDestroy();
 }
 
-bool UGGFActivatableComponent::TryActivate(AActor* NewActivator, bool bForce)
+bool UGGFActivatableComponent::TryActivate(AActor* InCauser, AActor* InInstigator)
 {
-    // 유효성 검사
-    if(NewActivator == nullptr) return false;
+    // 입력 유효성 검사
+    if(InCauser == nullptr || InInstigator == nullptr) return false;
 
-    // 중복 호출 검사
-    if(!bForce && bActivated) return false;
+    // 중복 호출 방지
+    if(ActivationState == EGGFActivationState::Activating || ActivationState == EGGFActivationState::Activated) return false;
+
+    // 비활성화 중인 상태인지 확인
+    if(ActivationState == EGGFActivationState::Deactivating)
+    {
+        // 비활성화 취소
+        if(bCanAbort)
+        {
+            // 비활성화 취소 이벤트 호출
+            OnDeactivationAbort.Broadcast(Causer, Instigator);
+        }
+        else
+        {
+            // 비활성화가 마무리되기 전까진 활성화할 수 없습니다.
+            return false;
+        }
+    }
+
+    // 활성화 중인 상태로 변경
+    ActivationState = EGGFActivationState::Activating;
 
     // 변수 할당
-    Activator = NewActivator;
+    Causer = InCauser;
+    Instigator = InInstigator;
 
-    // 타이머 초기화
-    ResetTimer();
+    // 활성화 시작 이벤트 호출
+    OnActivationBegin.Broadcast(Causer, Instigator);
 
-    // 활성화 사운드 재생
-    PlaySound(ActivationSound, ActivationDuration);
-
-    // 이벤트 호출
-    OnBeginActivate.Broadcast(Activator);
-
-    if(FMath::IsNearlyZero(ActivationDuration))
+    // 활성화 타이머 설정
+    auto& TimerManager = GetWorld()->GetTimerManager();
+    if(ActivationDuration > 0)
     {
-        // 즉시 활성화 종료
-        InternalOnEndActivate();
+        ActivationState = EGGFActivationState::Activating;
+        TimerManager.SetTimer(ActivationTimer, this, &ThisClass::InternalOnActivationEnd, ActivationDuration);
     }
     else
     {
-        // 활성화 종료 타이머 설정
-        GetOwner()->GetWorldTimerManager().SetTimer(ActivationTimerHandle, this, &ThisClass::InternalOnEndActivate, ActivationDuration);
+        InternalOnActivationEnd();
     }
 
     return true;
 }
 
-bool UGGFActivatableComponent::TryDeactivate(AActor* NewActivator, bool bForce)
+bool UGGFActivatableComponent::TryDeactivate(AActor* InCauser, AActor* InInstigator)
 {
-    // 유효성 검사
-    if(NewActivator == nullptr) return false;
+    // 입력 유효성 검사
+    if(InCauser == nullptr || InInstigator == nullptr) return false;
 
-    // 중복 호출 검사
-    if(!bForce && !bActivated) return false;
+    // 중복 호출 방지
+    if(ActivationState == EGGFActivationState::Deactivating || ActivationState == EGGFActivationState::Deactivated) return false;
+
+    // 활성화 중인 상태인지 확인
+    if(ActivationState == EGGFActivationState::Activating)
+    {
+        // 활성화 취소
+        if(bCanAbort)
+        {
+            // 활성화 취소 이벤트 호출
+            OnActivationAbort.Broadcast(Causer, Instigator);
+        }
+        else
+        {
+            // 활성화가 마무리되기 전까진 비활성화할 수 없습니다.
+            return false;
+        }
+    }
+
+    // 비활성화 중인 상태로 변경
+    ActivationState = EGGFActivationState::Deactivating;
 
     // 변수 할당
-    Activator = NewActivator;
+    Causer = InCauser;
+    Instigator = InInstigator;
 
-    // 타이머 초기화
-    ResetTimer();
+    // 비활성화 시작 이벤트 호출
+    OnDeactivationBegin.Broadcast(Causer, Instigator);
 
-    // 비활성화 사운드 재생
-    PlaySound(DeactivationSound, DeactivationDuration);
-
-    // 이벤트 호출
-    OnBeginDeactivate.Broadcast(Activator);
-
-    if(FMath::IsNearlyZero(DeactivationDuration))
+    // 비활성화 타이머 설정
+    auto& TimerManager = GetWorld()->GetTimerManager();
+    if(DeactivationDuration > 0)
     {
-        // 즉시 활성화 종료
-        InternalOnEndDeactivate();
+        ActivationState = EGGFActivationState::Deactivating;
+        TimerManager.SetTimer(DeactivationTimer, this, &ThisClass::InternalOnDeactivationEnd, DeactivationDuration);
     }
     else
     {
-        // 타이머 설정
-        GetOwner()->GetWorldTimerManager().SetTimer(DeactivationTimerHandle, this, &ThisClass::InternalOnEndDeactivate, DeactivationDuration);
+        InternalOnDeactivationEnd();
     }
 
-    return false;
+    return true;
 }
 
-void UGGFActivatableComponent::PlaySound(USoundCue* NewSound, float Duration)
+void UGGFActivatableComponent::InternalOnActivationEnd()
 {
-    // 기존 소리 재생 중지
-    Stop();
+    // 활성화 상태로 변경
+    ActivationState = EGGFActivationState::Activated;
 
-    // 유효성 검사
-    if(NewSound == nullptr) return;
-
-    // 소리 설정
-    SetSound(NewSound);
-
-    // 재생
-    float PlayRate = FMath::IsNearlyZero(Duration) ? 1 : NewSound->MaxDistance / Duration;
-    SetPitchMultiplier(PlayRate);
-    Play();
+    // 활성화 종료 이벤트 호출
+    OnActivationEnd.Broadcast(Causer, Instigator);
 }
 
-void UGGFActivatableComponent::ResetTimer()
+void UGGFActivatableComponent::InternalOnDeactivationEnd()
 {
-    // 타이머 초기화
-    auto& TimerManager = GetOwner()->GetWorldTimerManager();
-    if(TimerManager.IsTimerActive(DeactivationTimerHandle))
-    {
-        TimerManager.ClearTimer(DeactivationTimerHandle);
-        OnAbortDeactivate.Broadcast(Activator);
-    }
-    else if(TimerManager.IsTimerActive(ActivationTimerHandle))
-    {
-        TimerManager.ClearTimer(ActivationTimerHandle);
-        OnAbortActivate.Broadcast(Activator);
-    }
-}
+    // 비활성화 상태로 변경
+    ActivationState = EGGFActivationState::Deactivated;
 
-void UGGFActivatableComponent::InternalOnEndActivate()
-{
-    OnEndActivate.Broadcast(Activator);
-}
-
-void UGGFActivatableComponent::InternalOnEndDeactivate()
-{
-    OnEndDeactivate.Broadcast(Activator);
+    // 비활성화 종료 이벤트 호출
+    OnDeactivationEnd.Broadcast(Causer, Instigator);
 }

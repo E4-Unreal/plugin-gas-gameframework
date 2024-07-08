@@ -6,7 +6,7 @@
 
 void UGGFEffectManager::PlayEffectsAtActor(AActor* Actor, bool bAttach)
 {
-    if(auto Definition = GetEffectDefinition())
+    if(auto Definition = EffectDefinitionContainer.GetEffectDefinition())
     {
         Definition->PlayEffectsAtActor(Actor, bAttach);
     }
@@ -14,7 +14,7 @@ void UGGFEffectManager::PlayEffectsAtActor(AActor* Actor, bool bAttach)
 
 void UGGFEffectManager::PlayEffectsAtSocket(UPrimitiveComponent* ComponentToAttach, FName SocketName)
 {
-    if(auto Definition = GetEffectDefinition())
+    if(auto Definition = EffectDefinitionContainer.GetEffectDefinition())
     {
         Definition->PlayEffectsAtSocket(ComponentToAttach, SocketName);
     }
@@ -22,7 +22,7 @@ void UGGFEffectManager::PlayEffectsAtSocket(UPrimitiveComponent* ComponentToAtta
 
 void UGGFEffectManager::PlayEffectsByHitResult(const FHitResult& HitResult, bool bAttach)
 {
-    if(auto Definition = GetEffectDefinition())
+    if(auto Definition = EffectDefinitionContainer.GetEffectDefinition())
     {
         Definition->PlayEffectsByHitResult(HitResult, bAttach);
     }

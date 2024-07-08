@@ -3,8 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameplayCueInterface.h"
 #include "Actors/GGFTriggerBox.h"
+#include "Components/GGFEffectManager.h"
 #include "Interfaces/GGFActivatableInterface.h"
 #include "GGFTriggerPad.generated.h"
 
@@ -18,6 +18,8 @@ class GGFGIMMICKSYSTEM_API AGGFTriggerPad : public AGGFTriggerBox, public IGGFAc
 {
     GENERATED_BODY()
 
+    /* 컴포넌트 */
+
     UPROPERTY(VisibleAnywhere, BlueprintGetter = GetTriggerComponent, Category = "Component")
     TObjectPtr<UGGFTriggerComponent> TriggerComponent;
 
@@ -26,31 +28,27 @@ protected:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config", meta = (ClampMin = 1))
     TMap<TSubclassOf<AActor>, int32> TriggerConditionMap;
 
-    // 트리거 조건을 한 번 만족하고 나면 비활성화됩니다.
+    // 활성화 이펙트
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config")
-    bool bTriggerOnce;
+    FGGFEffectDefinitionContainer ActivateEffect;
 
-    // 활성화 게임플레이 큐 태그
+    // 비활성화 이펙트
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config")
-    FGameplayCueTag ActivateCueTag;
-
-    // 비활성화 게임플레이 큐 태그
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config")
-    FGameplayCueTag DeactivateCueTag;
+    FGGFEffectDefinitionContainer DeactivateEffect;
 
 public:
     AGGFTriggerPad();
 
     /* ActivationInterface */
 
-    virtual bool Activate_Implementation(AActor* InstigatorActor) override;
-    virtual bool Deactivate_Implementation(AActor* InstigatorActor) override;
+    virtual bool TryActivate_Implementation(AActor* InCauser, AActor* InInstigator) override;
+    virtual bool TryDeactivate_Implementation(AActor* InCauser, AActor* InInstigator) override;
 
 protected:
     /* TriggerBox */
 
-    virtual void OnTriggerBoxBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) override;
-    virtual void OnTriggerBoxEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex) override;
+    virtual void OnCollisionBeginOverlap_Implementation(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) override;
+    virtual void OnCollisionEndOverlap_Implementation(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex) override;
 
     /* 메서드 */
 

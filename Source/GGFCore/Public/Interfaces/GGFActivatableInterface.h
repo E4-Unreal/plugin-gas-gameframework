@@ -21,8 +21,8 @@ class GGFCORE_API IGGFActivatableInterface
 
 public:
     UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-    bool Activate(AActor* InstigatorActor);
+    bool TryActivate(AActor* InCauser, AActor* InInstigator);
 
     UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-    bool Deactivate(AActor* InstigatorActor);
+    bool TryDeactivate(AActor* InCauser, AActor* InInstigator);
 };

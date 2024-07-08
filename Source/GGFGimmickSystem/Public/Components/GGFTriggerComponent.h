@@ -16,33 +16,48 @@ class GGFGIMMICKSYSTEM_API UGGFTriggerComponent : public UGGFActorComponent
     GENERATED_BODY()
 
 public:
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Reference", meta = (MustImplement = "GGFActivationInterface"))
-    TArray<TObjectPtr<AActor>> Targets;
+    // 트리거 동작 시 활성화할 대상 액터 그룹
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Reference", meta = (MustImplement = "GGFActivatableInterface"))
+    TArray<TObjectPtr<AActor>> TargetsToActivate;
 
-    // 비활성화된 상태에서만 활성화가 가능해지는 옵션입니다.
+    // true 설정된 경우 트리거를 여러 번 동작시킬 수 있습니다.
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config")
-    bool bShouldToggle = true;
+    bool bCanRetrigger = true;
 
+    // true 설정 시 TargetsToActivate에 Owner를 포함합니다.
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config")
+    bool bIncludeOwner = true;
+
+protected:
+    // 트리거 동작 여부
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State", Transient)
-    bool bActivated = false;
+    bool bTriggered = false;
 
 public:
+    /* ActorComponent */
+
+    virtual void InitializeComponent() override;
+
     /* API */
 
-    UFUNCTION(BlueprintCallable, Category = "TriggerComponent")
-    virtual void ToggleActivateTargets();
+    // 대상 액터 그룹 활성화 혹은 비활성화
+    UFUNCTION(BlueprintCallable)
+    virtual void ToggleTargets(AActor* Instigator);
 
-    UFUNCTION(BlueprintCallable, Category = "TriggerComponent")
-    virtual void ActivateTargets();
+    // 대상 액터 그룹 활성화
+    UFUNCTION(BlueprintCallable)
+    virtual void ActivateTargets(AActor* Instigator);
 
-    UFUNCTION(BlueprintCallable, Category = "TriggerComponent")
-    virtual void DeactivateTargets();
+    // 대상 액터 그룹 비활성화
+    UFUNCTION(BlueprintCallable)
+    virtual void DeactivateTargets(AActor* Instigator);
 
-    UFUNCTION(BlueprintPure, Category = "TriggerComponent")
-    FORCEINLINE bool IsActivated() const { return bActivated; }
+    // 트리거 동작 여부
+    UFUNCTION(BlueprintPure)
+    FORCEINLINE bool IsTriggered() const { return bTriggered; }
 
 protected:
     /* GGFActorComponent */
 
-    virtual FORCEINLINE bool IsValid() const override { return !Targets.IsEmpty(); }
+    virtual FORCEINLINE bool IsValid() const override { return !TargetsToActivate.IsEmpty(); }
 };

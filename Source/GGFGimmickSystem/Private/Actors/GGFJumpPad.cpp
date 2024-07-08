@@ -2,27 +2,29 @@
 
 #include "Actors/GGFJumpPad.h"
 
-#include "GGFBlueprintFunctionLibrary.h"
 #include "Components/ArrowComponent.h"
 #include "GameFramework/Character.h"
-#include "GGFGimmickGameplayTags.h"
+#include "Effects/GGFEffectDefinition.h"
 
 AGGFJumpPad::AGGFJumpPad()
 {
+    /* 기본 설정 */
+    ActorClassToLaunch = AActor::StaticClass();
+
     /* LaunchDirectionComponent */
     LaunchDirectionComponent = CreateDefaultSubobject<UArrowComponent>(TEXT("LaunchDirectionComponent"));
     LaunchDirectionComponent->SetupAttachment(RootComponent);
     LaunchDirectionComponent->SetRelativeRotation(FRotator(90, 0, 0));
 
-    /* 기본 설정 */
-    ActorClassToLaunch = AActor::StaticClass();
-    LaunchCueTag.GameplayCueTag = GameplayCue::Launch::Default;
+    /* 기본 에셋 설정 */
+    ConstructorHelpers::FObjectFinder<UGGFEffectDefinition> EffectFinder(TEXT("/GASGameFramework/DataAssets/Effects/JumpPad_Default"));
+    if(EffectFinder.Succeeded()) LaunchEffect.EffectDefinition = EffectFinder.Object;
 }
 
-void AGGFJumpPad::OnTriggerBoxBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-    UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+void AGGFJumpPad::OnCollisionBeginOverlap_Implementation(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+                                           UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-    Super::OnTriggerBoxBeginOverlap(OverlappedComponent, OtherActor, OtherComp, OtherBodyIndex, bFromSweep,
+    Super::OnCollisionBeginOverlap_Implementation(OverlappedComponent, OtherActor, OtherComp, OtherBodyIndex, bFromSweep,
                                     SweepResult);
 
     if(OtherActor->GetClass()->IsChildOf(ActorClassToLaunch))
@@ -44,5 +46,9 @@ void AGGFJumpPad::Launch_Implementation(AActor* Target)
         PrimitiveComponent->SetPhysicsLinearVelocity(LaunchVelocity);
     }
 
-    UGGFBlueprintFunctionLibrary::LocalHandleGameplayCue(this, LaunchCueTag);
+    // 점프 이펙트 재생
+    if(auto EffectDefinition = LaunchEffect.GetEffectDefinition())
+    {
+        EffectDefinition->PlayEffectsAtActor(this);
+    }
 }

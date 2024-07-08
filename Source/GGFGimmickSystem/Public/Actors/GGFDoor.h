@@ -87,8 +87,8 @@ public:
 
     /* ActivationInterface */
 
-    virtual bool Activate_Implementation(AActor* InstigatorActor) override;
-    virtual bool Deactivate_Implementation(AActor* InstigatorActor) override;
+    virtual bool TryActivate_Implementation(AActor* InCauser, AActor* InInstigator) override;
+    virtual bool TryDeactivate_Implementation(AActor* InCauser, AActor* InInstigator) override;
 
 protected:
     /* TimelineActor */

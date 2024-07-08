@@ -3,8 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameplayCueInterface.h"
 #include "Actors/GGFTriggerBox.h"
+#include "Components/GGFEffectManager.h"
 #include "GGFJumpPad.generated.h"
 
 class UArrowComponent;
@@ -31,7 +31,7 @@ protected:
 
     // 점프 이펙트
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config")
-    FGameplayCueTag LaunchCueTag;
+    FGGFEffectDefinitionContainer LaunchEffect;
 
 public:
     AGGFJumpPad();
@@ -39,7 +39,7 @@ public:
 protected:
     /* TriggerBox */
 
-    virtual void OnTriggerBoxBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) override;
+    virtual void OnCollisionBeginOverlap_Implementation(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) override;
 
     /* 메서드 */
 

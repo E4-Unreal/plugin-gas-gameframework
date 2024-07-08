@@ -3,6 +3,7 @@
 #include "Actors/GGFDoor.h"
 
 #include "Components/AudioComponent.h"
+#include "Components/GGFTimelineComponent.h"
 #include "Net/UnrealNetwork.h"
 #include "Sound/SoundCue.h"
 
@@ -69,7 +70,7 @@ void AGGFDoor::PostInitializeComponents()
     TransformOffset = DoorMesh->GetRelativeTransform();
 }
 
-bool AGGFDoor::Activate_Implementation(AActor* InstigatorActor)
+bool AGGFDoor::TryActivate_Implementation(AActor* InCauser, AActor* InInstigator)
 {
     ++TriggerStack;
 
@@ -78,7 +79,7 @@ bool AGGFDoor::Activate_Implementation(AActor* InstigatorActor)
     return true;
 }
 
-bool AGGFDoor::Deactivate_Implementation(AActor* InstigatorActor)
+bool AGGFDoor::TryDeactivate_Implementation(AActor* InCauser, AActor* InInstigator)
 {
     --TriggerStack;
 
@@ -128,7 +129,7 @@ void AGGFDoor::PlaySound(USoundCue* Sound)
     if(Sound == nullptr) return;
 
     LocalAudioComponent->SetSound(Sound);
-    float PlayRate = bUseCustomDuration ? Sound->MaxDistance / Duration : 1;
+    float PlayRate = Sound->Duration / GetTimeline()->Duration;
     LocalAudioComponent->SetPitchMultiplier(PlayRate);
     LocalAudioComponent->Play();
 }
@@ -136,14 +137,14 @@ void AGGFDoor::PlaySound(USoundCue* Sound)
 void AGGFDoor::Open_Implementation()
 {
     bOpen = true;
-    PlayTimeline();
+    GetTimeline()->PlayTimeline();
     PlaySound(OpenSound);
 }
 
 void AGGFDoor::Close_Implementation()
 {
     bOpen = false;
-    PlayTimeline(true);
+    GetTimeline()->PlayTimeline(true);
     PlaySound(CloseSound);
 }
 

@@ -2,37 +2,46 @@
 
 #include "Actors/GGFTriggerPad.h"
 
-#include "GGFBlueprintFunctionLibrary.h"
 #include "Components/BoxComponent.h"
+#include "Components/GGFEffectManager.h"
 #include "Components/GGFTriggerComponent.h"
+#include "Effects/GGFEffectDefinition.h"
 #include "GameFramework/Character.h"
-#include "GGFGimmickGameplayTags.h"
 
 AGGFTriggerPad::AGGFTriggerPad()
 {
+    /* 기본 설정 */
+    TriggerConditionMap.Emplace(ACharacter::StaticClass(), 1);
+
     /* TriggerComponent */
     TriggerComponent = CreateDefaultSubobject<UGGFTriggerComponent>(TEXT("TriggerComponent"));
 
-    /* 기본 설정 */
-    TriggerConditionMap.Emplace(ACharacter::StaticClass(), 1);
-    ActivateCueTag.GameplayCueTag = GameplayCue::Button::Activate;
-    DeactivateCueTag.GameplayCueTag = GameplayCue::Button::Deactivate;
+    /* 기본 에셋 설정 */
+    {
+        ConstructorHelpers::FObjectFinder<UGGFEffectDefinition> EffectFinder(TEXT("/GASGameFramework/DataAssets/Effects/Activate_Default"));
+        if(EffectFinder.Succeeded()) ActivateEffect.EffectDefinition = EffectFinder.Object;
+    }
+
+    {
+        ConstructorHelpers::FObjectFinder<UGGFEffectDefinition> EffectFinder(TEXT("/GASGameFramework/DataAssets/Effects/Deactivate_Default"));
+        if(EffectFinder.Succeeded()) DeactivateEffect.EffectDefinition = EffectFinder.Object;
+    }
 }
 
-void AGGFTriggerPad::OnTriggerBoxBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-                                              UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+void AGGFTriggerPad::OnCollisionBeginOverlap_Implementation(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+                                                                     UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-    Super::OnTriggerBoxBeginOverlap(OverlappedComponent, OtherActor, OtherComp, OtherBodyIndex, bFromSweep,
+    Super::OnCollisionBeginOverlap_Implementation(OverlappedComponent, OtherActor, OtherComp, OtherBodyIndex, bFromSweep,
                                     SweepResult);
 
     // 트리거 조건 만족 여부에 따라 활성화 혹은 비활성화
     CheckTriggerCondition();
 }
 
-void AGGFTriggerPad::OnTriggerBoxEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+void AGGFTriggerPad::OnCollisionEndOverlap_Implementation(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
     UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-    Super::OnTriggerBoxEndOverlap(OverlappedComponent, OtherActor, OtherComp, OtherBodyIndex);
+    Super::OnCollisionEndOverlap_Implementation(OverlappedComponent, OtherActor, OtherComp, OtherBodyIndex);
 
     // 트리거 조건 만족 여부에 따라 활성화 혹은 비활성화
     CheckTriggerCondition();
@@ -40,21 +49,20 @@ void AGGFTriggerPad::OnTriggerBoxEndOverlap(UPrimitiveComponent* OverlappedCompo
 
 void AGGFTriggerPad::CheckTriggerCondition()
 {
-    // 중복 호출 방지
-    if(bTriggerOnce && GetTriggerComponent()->IsActivated()) return;
-
+    // 조건 달성
     if(IsTriggerConditionSatisfied())
     {
-        if(bTriggerOnce)
-        {
-            UnBindTriggerBoxEvents();
-        }
+        GetTriggerComponent()->ActivateTargets(this);
 
-        GetTriggerComponent()->ActivateTargets();
+        // 한 번만 트리거가 동작하도록 설정된 경우 오버랩 이벤트 언바인딩
+        if(!GetTriggerComponent()->bCanRetrigger)
+        {
+            UnbindOverlapEvents();
+        }
     }
-    else
+    else // 조건 달성 실패
     {
-        GetTriggerComponent()->DeactivateTargets();
+        GetTriggerComponent()->DeactivateTargets(this);
     }
 }
 
@@ -63,7 +71,7 @@ bool AGGFTriggerPad::IsTriggerConditionSatisfied()
     for (const auto& [ActorClass, Num] : TriggerConditionMap)
     {
         TArray<AActor*> OverlappingActors;
-        GetTriggerBox()->GetOverlappingActors(OverlappingActors, ActorClass);
+        GetBoxCollision()->GetOverlappingActors(OverlappingActors, ActorClass);
         OverlappingActors.RemoveSwap(this);
 
         if(OverlappingActors.Num() < Num) return false;
@@ -72,14 +80,22 @@ bool AGGFTriggerPad::IsTriggerConditionSatisfied()
     return true;
 }
 
-bool AGGFTriggerPad::Activate_Implementation(AActor* InstigatorActor)
+bool AGGFTriggerPad::TryActivate_Implementation(AActor* InCauser, AActor* InInstigator)
 {
-    UGGFBlueprintFunctionLibrary::LocalHandleGameplayCue(this, ActivateCueTag);
+    if(auto EffectDefinition = ActivateEffect.GetEffectDefinition())
+    {
+        EffectDefinition->PlayEffectsAtActor(this);
+    }
+
     return true;
 }
 
-bool AGGFTriggerPad::Deactivate_Implementation(AActor* InstigatorActor)
+bool AGGFTriggerPad::TryDeactivate_Implementation(AActor* InCauser, AActor* InInstigator)
 {
-    UGGFBlueprintFunctionLibrary::LocalHandleGameplayCue(this, DeactivateCueTag);
+    if(auto EffectDefinition = DeactivateEffect.GetEffectDefinition())
+    {
+        EffectDefinition->PlayEffectsAtActor(this);
+    }
+
     return true;
 }

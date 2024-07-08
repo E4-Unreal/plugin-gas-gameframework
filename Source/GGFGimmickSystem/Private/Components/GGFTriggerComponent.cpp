@@ -5,24 +5,31 @@
 #include "Interfaces/GGFActivatableInterface.h"
 #include "Logging.h"
 
-void UGGFTriggerComponent::ToggleActivateTargets()
+void UGGFTriggerComponent::InitializeComponent()
 {
-    if(IsActivated())
+    Super::InitializeComponent();
+
+    if(bIncludeOwner) TargetsToActivate.Emplace(GetOwner());
+}
+
+void UGGFTriggerComponent::ToggleTargets(AActor* Instigator)
+{
+    if(bTriggered)
     {
-        DeactivateTargets();
+        DeactivateTargets(Instigator);
     }
     else
     {
-        ActivateTargets();
+        ActivateTargets(Instigator);
     }
 }
 
-void UGGFTriggerComponent::ActivateTargets()
+void UGGFTriggerComponent::ActivateTargets(AActor* Instigator)
 {
-    if(bShouldToggle && bActivated) return;
-    bActivated = true;
+    if(!bCanRetrigger && bTriggered) return;
+    bTriggered = true;
 
-    for (auto Target : Targets)
+    for (auto Target : TargetsToActivate)
     {
         if(!Target)
         {
@@ -34,7 +41,7 @@ void UGGFTriggerComponent::ActivateTargets()
 
         if(Target->Implements<UGGFActivatableInterface>())
         {
-            IGGFActivatableInterface::Execute_Activate(Target, GetOwner());
+            IGGFActivatableInterface::Execute_TryActivate(Target, GetOwner(), Instigator);
 #if WITH_EDITOR
             LOG_ACTOR_COMPONENT_DETAIL(Log, TEXT("Try Activate %s"), *Target->GetName())
 #endif
@@ -42,16 +49,16 @@ void UGGFTriggerComponent::ActivateTargets()
     }
 }
 
-void UGGFTriggerComponent::DeactivateTargets()
+void UGGFTriggerComponent::DeactivateTargets(AActor* Instigator)
 {
-    if(bShouldToggle && !bActivated) return;
-    bActivated = false;
+    if(!bTriggered) return;
+    bTriggered = false;
 
-    for (auto Target : Targets)
+    for (auto Target : TargetsToActivate)
     {
         if(Target->Implements<UGGFActivatableInterface>())
         {
-            IGGFActivatableInterface::Execute_Deactivate(Target, GetOwner());
+            IGGFActivatableInterface::Execute_TryDeactivate(Target, GetOwner(), Instigator);
 #if WITH_EDITOR
             LOG_ACTOR_COMPONENT_DETAIL(Log, TEXT("Try Deactivate %s"), *Target->GetName())
 #endif
