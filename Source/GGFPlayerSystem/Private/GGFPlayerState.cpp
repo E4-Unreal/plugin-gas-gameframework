@@ -2,6 +2,7 @@
 
 #include "GGFPlayerState.h"
 
+#include "AbilitySystemGlobals.h"
 #include "GGFGameState.h"
 #include "Logging.h"
 #include "Net/UnrealNetwork.h"
@@ -12,6 +13,11 @@ void AGGFPlayerState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutL
 
     DOREPLIFETIME(ThisClass, bHost)
     DOREPLIFETIME(ThisClass, TeamInfo)
+}
+
+UAbilitySystemComponent* AGGFPlayerState::GetAbilitySystemComponent() const
+{
+    return UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(GetPawn());
 }
 
 void AGGFPlayerState::CopyProperties(APlayerState* PlayerState)

@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "AbilitySystemInterface.h"
 #include "GenericTeamAgentInterface.h"
 #include "GameFramework/PlayerState.h"
 #include "GGFPlayerState.generated.h"
@@ -28,7 +29,9 @@ struct FGGFTeamInfo
  * GASGameFramework 플러그인 전용 플레이어 스테이트
  */
 UCLASS()
-class GGFPLAYERSYSTEM_API AGGFPlayerState : public APlayerState, public IGenericTeamAgentInterface
+class GGFPLAYERSYSTEM_API AGGFPlayerState : public APlayerState,
+    public IAbilitySystemInterface,
+    public IGenericTeamAgentInterface
 {
     GENERATED_BODY()
 
@@ -43,6 +46,10 @@ public:
     /* Actor */
 
     virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
+    /* AbilitySystemInterface */
+
+    virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 
     /* GenericTeamAgentInterface */
 

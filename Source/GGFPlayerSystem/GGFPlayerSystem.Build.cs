@@ -14,6 +14,9 @@ public class GGFPlayerSystem : ModuleRules
                 "UMG",
                 "AIModule",
 
+                // GAS
+                "GameplayAbilities",
+
                 // GASGameFramework
                 "GGFCore",
                 "GGFWidgetSystem"
