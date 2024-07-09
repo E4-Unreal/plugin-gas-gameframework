@@ -51,6 +51,9 @@ void AGGFPlayerController::BeginPlay()
         EnhancedInputComponent->BindAction(SpectateNextAction, ETriggerEvent::Triggered, this, &ThisClass::OnSpectateNextActionTriggered);
         EnhancedInputComponent->BindAction(MenuAction, ETriggerEvent::Triggered, this, &ThisClass::OnMenuActionTriggered);
     }
+
+    // HUD 위젯 생성
+    CreateHUDWidget();
 }
 
 uint8 AGGFPlayerController::GetTeamID_Implementation() const
@@ -69,6 +72,22 @@ void AGGFPlayerController::SetTeamID_Implementation(uint8 NewTeamID)
     {
         return Execute_SetTeamID(PlayerState, NewTeamID);
     }
+}
+
+void AGGFPlayerController::CreateHUDWidget()
+{
+    // 로컬 플레이어 검사
+    if(!IsLocalController()) return;
+
+    // 중복 호출 방지
+    if(HUDWidget) return;
+
+    // 유효성 검사
+    if(HUDWidgetClass == nullptr) return;
+
+    // HUD 위젯 생성
+    HUDWidget = CreateWidget(this, HUDWidgetClass, *(GetName() + " HUD"));
+    HUDWidget->AddToViewport();
 }
 
 void AGGFPlayerController::OnMenuActionTriggered_Implementation()

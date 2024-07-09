@@ -36,12 +36,20 @@ protected:
     TObjectPtr<UInputAction> MenuAction;
 
     // 플레이어 메뉴 위젯 클래스
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config")
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|UI")
     TSubclassOf<UUserWidget> MenuWidgetClass;
 
+    // 플레이어 HUD 위젯 클래스
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|UI")
+    TSubclassOf<UUserWidget> HUDWidgetClass;
+
     // 메뉴 위젯 인스턴스
-    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State", Transient)
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State|UI", Transient)
     TObjectPtr<UUserWidget> MenuWidget;
+
+    // 플레이어 HUD 위젯 인스턴스
+    UPROPERTY(VisibleAnywhere, BlueprintGetter = GetHUDWidget, Category = "State|UI", Transient)
+    TObjectPtr<UUserWidget> HUDWidget;
 
 public:
     AGGFPlayerController();
@@ -54,6 +62,11 @@ public:
 
     virtual uint8 GetTeamID_Implementation() const override;
     virtual void SetTeamID_Implementation(uint8 NewTeamID) override;
+
+    /* Getter */
+
+    UFUNCTION(BlueprintGetter)
+    FORCEINLINE UUserWidget* GetHUDWidget() const { return HUDWidget; }
 
 protected:
     /* 이벤트 */
@@ -70,6 +83,12 @@ protected:
     UFUNCTION(BlueprintNativeEvent)
     void OnMenuActionTriggered();
 
+    /* 메서드 */
+
+    // 플레이어 HUD 위젯 생성
+    UFUNCTION(BlueprintCallable)
+    virtual void CreateHUDWidget();
+
     /* RPC */
 
     // 이전 플레이어 관전 (서버)
@@ -79,6 +98,4 @@ protected:
     // 다음 플레이어 관전 (서버)
     UFUNCTION(Server, Reliable)
     void ServerSpectateNext();
-
-
 };
