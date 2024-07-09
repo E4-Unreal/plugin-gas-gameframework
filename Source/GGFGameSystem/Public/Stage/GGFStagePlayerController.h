@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "GGFPlayerController.h"
-#include "GGFLobbyPlayerController.generated.h"
+#include "GGFStagePlayerController.generated.h"
 
 /**
- * 로비 전용 플레이어 컨트롤러
+ * 스테이지 전용 플레이어 컨트롤러
  */
 UCLASS()
-class GGFPLAYERSYSTEM_API AGGFLobbyPlayerController : public AGGFPlayerController
+class GGFGAMESYSTEM_API AGGFStagePlayerController : public AGGFPlayerController
 {
     GENERATED_BODY()
 };

@@ -22,7 +22,7 @@ struct FGGFPlayerControllerList
  * GASGameFramework 플러그인 전용 게임 모드
  */
 UCLASS()
-class GGFPLAYERSYSTEM_API AGGFGameMode : public AGameMode, public IGGFGameModeInterface
+class GGFGAMESYSTEM_API AGGFGameMode : public AGameMode, public IGGFGameModeInterface
 {
     GENERATED_BODY()
 

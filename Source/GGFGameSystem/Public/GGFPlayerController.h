@@ -14,7 +14,7 @@ class UInputAction;
  * GASGameFramework 플러그인 전용 플레이어 컨트롤러
  */
 UCLASS()
-class GGFPLAYERSYSTEM_API AGGFPlayerController : public APlayerController, public IGGFTeamInterface
+class GGFGAMESYSTEM_API AGGFPlayerController : public APlayerController, public IGGFTeamInterface
 {
     GENERATED_BODY()
 

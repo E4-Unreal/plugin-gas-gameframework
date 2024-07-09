@@ -20,7 +20,7 @@ public class GGFGimmickSystem : ModuleRules
                 "GGFCore",
                 "GGFInteractionSystem",
                 "GGFEffectSystem",
-                "GGFPlayerSystem"
+                "GGFGameSystem"
             }
         );
 

@@ -3,7 +3,7 @@
 #include "CoreMinimal.h"
 #include "Modules/ModuleManager.h"
 
-class FGGFPlayerSystemModule : public IModuleInterface
+class FGGFGameSystemModule : public IModuleInterface
 {
 public:
     virtual void StartupModule() override;

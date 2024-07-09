@@ -10,7 +10,7 @@
  * 로비 전용 게임 스테이트
  */
 UCLASS()
-class GGFPLAYERSYSTEM_API AGGFLobbyGameState : public AGGFGameState
+class GGFGAMESYSTEM_API AGGFLobbyGameState : public AGGFGameState
 {
     GENERATED_BODY()
 };

@@ -29,7 +29,7 @@ class AGGFPlayerState;
  * GASGameFramework 플러그인 전용 게임 스테이트
  */
 UCLASS()
-class GGFPLAYERSYSTEM_API AGGFGameState : public AGameState
+class GGFGAMESYSTEM_API AGGFGameState : public AGameState
 {
     GENERATED_BODY()
 

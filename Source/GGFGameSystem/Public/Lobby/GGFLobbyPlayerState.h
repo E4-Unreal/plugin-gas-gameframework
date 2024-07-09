@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "GGFPlayerState.h"
-#include "GGFStagePlayerState.generated.h"
+#include "GGFLobbyPlayerState.generated.h"
 
 /**
- * 스테이지 전용 플레이어 스테이트
+ * 로비 전용 플레이어 스테이트
  */
 UCLASS()
-class GGFPLAYERSYSTEM_API AGGFStagePlayerState : public AGGFPlayerState
+class GGFGAMESYSTEM_API AGGFLobbyPlayerState : public AGGFPlayerState
 {
     GENERATED_BODY()
 };

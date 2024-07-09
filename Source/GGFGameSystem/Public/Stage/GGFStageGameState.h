@@ -10,7 +10,7 @@
  * 스테이지 전용 게임 스테이트
  */
 UCLASS()
-class GGFPLAYERSYSTEM_API AGGFStageGameState : public AGGFGameState
+class GGFGAMESYSTEM_API AGGFStageGameState : public AGGFGameState
 {
     GENERATED_BODY()
 };

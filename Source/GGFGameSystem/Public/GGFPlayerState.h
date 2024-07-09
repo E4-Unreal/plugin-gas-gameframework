@@ -29,7 +29,7 @@ struct FGGFTeamInfo
  * GASGameFramework 플러그인 전용 플레이어 스테이트
  */
 UCLASS()
-class GGFPLAYERSYSTEM_API AGGFPlayerState : public APlayerState,
+class GGFGAMESYSTEM_API AGGFPlayerState : public APlayerState,
     public IAbilitySystemInterface,
     public IGenericTeamAgentInterface
 {

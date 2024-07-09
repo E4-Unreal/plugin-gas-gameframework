@@ -10,7 +10,7 @@
  * 스테이지 전용 게임 모드
  */
 UCLASS()
-class GGFPLAYERSYSTEM_API AGGFStageGameMode : public AGGFGameMode
+class GGFGAMESYSTEM_API AGGFStageGameMode : public AGGFGameMode
 {
     GENERATED_BODY()
 
