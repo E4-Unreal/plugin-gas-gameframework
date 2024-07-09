@@ -19,7 +19,8 @@ public class GGFGimmickSystem : ModuleRules
                 // GASGameFramework
                 "GGFCore",
                 "GGFInteractionSystem",
-                "GGFEffectSystem"
+                "GGFEffectSystem",
+                "GGFPlayerSystem"
             }
         );
 
