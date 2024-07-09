@@ -12,6 +12,7 @@ public class GGFPlayerSystem : ModuleRules
                 "Core",
                 "EnhancedInput",
                 "UMG",
+                "AIModule",
 
                 // GASGameFramework
                 "GGFCore",

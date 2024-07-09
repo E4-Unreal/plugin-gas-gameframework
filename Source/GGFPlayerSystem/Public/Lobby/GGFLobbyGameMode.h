@@ -19,4 +19,8 @@ class GGFPLAYERSYSTEM_API AGGFLobbyGameMode : public AGGFGameMode
 
 public:
     AGGFLobbyGameMode();
+
+    /* GameModeBase */
+
+    virtual void OnPostLogin(AController* NewPlayer) override;
 };
