@@ -126,6 +126,11 @@ public:
     UPROPERTY(BlueprintAssignable)
     FTeamSlotsUpdatedSignature OnTeamSlotsUpdated;
 
+public:
+    // true로 설정된 경우 아군 공격에 데미지를 입습니다.
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config")
+    bool bAllowTeamDamage = true;
+
 protected:
     // 팀 슬롯 목록
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State", Transient, ReplicatedUsing = OnRep_TeamSlots)
