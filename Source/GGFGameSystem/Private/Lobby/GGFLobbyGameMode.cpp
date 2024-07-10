@@ -17,15 +17,8 @@ void AGGFLobbyGameMode::OnPostLogin(AController* NewPlayer)
 {
     Super::OnPostLogin(NewPlayer);
 
-    if(auto NewPlayerState = NewPlayer->GetPlayerState<AGGFPlayerState>())
+    if(auto CastedGameState = GetGameState<AGGFGameState>())
     {
-        // 호스트 설정
-        if(NumPlayers == 1) NewPlayerState->SetHost(true);
-
-        // 팀 정보 설정
-        FGGFTeamInfo NewTeamInfo;
-        NewTeamInfo.TeamID = 0;
-        NewTeamInfo.MemberID = NumPlayers - 1;
-        NewPlayerState->SetTeamInfo(NewTeamInfo);
+        CastedGameState->AddPlayerToTeam(0, NewPlayer->GetPlayerState<APlayerState>());
     }
 }
