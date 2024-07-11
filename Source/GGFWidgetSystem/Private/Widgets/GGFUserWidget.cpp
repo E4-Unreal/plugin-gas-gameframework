@@ -18,6 +18,10 @@ void UGGFUserWidget::SetTargetActor(AActor* NewTargetActor)
 {
     TargetActor = NewTargetActor;
     SetTargetSystem(UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(TargetActor.Get()));
+
+#if WITH_EDITOR
+    LOG_WIDGET_DETAIL(Log, TEXT("%s"), *NewTargetActor->GetName())
+#endif
 }
 
 void UGGFUserWidget::SetTargetSystem(UAbilitySystemComponent* NewTargetSystem)
