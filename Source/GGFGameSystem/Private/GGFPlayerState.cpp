@@ -2,7 +2,17 @@
 
 #include "GGFPlayerState.h"
 
+#include "Logging.h"
 #include "AbilitySystemGlobals.h"
+#include "GGFGameState.h"
+#include "Net/UnrealNetwork.h"
+
+void AGGFPlayerState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+    Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+    DOREPLIFETIME(ThisClass, TeamInfo)
+}
 
 UAbilitySystemComponent* AGGFPlayerState::GetAbilitySystemComponent() const
 {
@@ -11,19 +21,30 @@ UAbilitySystemComponent* AGGFPlayerState::GetAbilitySystemComponent() const
 
 FGenericTeamId AGGFPlayerState::GetGenericTeamId() const
 {
-    if(auto GameState = GetWorld()->GetGameState<AGGFGameState>())
-    {
-        return GameState->GetTeamInfo(const_cast<AGGFPlayerState*>(this)).TeamID;
-    }
-
-    return FGenericTeamId::NoTeam;
+    return TeamInfo.TeamID;
 }
 
 void AGGFPlayerState::SetGenericTeamId(const FGenericTeamId& TeamID)
 {
     if(auto GameState = GetWorld()->GetGameState<AGGFGameState>())
     {
-        GameState->RemovePlayerFromTeam(this);
-        GameState->AddPlayerToTeam(TeamID, this);
+        GameState->SetPlayerTeam(this, TeamID);
+    }
+}
+
+void AGGFPlayerState::SetTeamInfo(const FGGFTeamInfo& NewTeamInfo)
+{
+    TeamInfo = NewTeamInfo;
+}
+
+void AGGFPlayerState::OnRep_TeamInfo(const FGGFTeamInfo& OldTeamInfo)
+{
+#if WITH_EDITOR
+    LOG_ACTOR_DETAIL(Log, TEXT("OldTeamInfo: (%d, %d), NewTeamInfo: (%d, %d)"), OldTeamInfo.TeamID, OldTeamInfo.MemberID, TeamInfo.TeamID, TeamInfo.MemberID)
+#endif
+
+    if(auto GameState = GetWorld()->GetGameState<AGGFGameState>())
+    {
+        GameState->SetPlayerTeamInfo(this, TeamInfo);
     }
 }

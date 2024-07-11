@@ -5,8 +5,8 @@
 #include "CoreMinimal.h"
 #include "AbilitySystemInterface.h"
 #include "GenericTeamAgentInterface.h"
-#include "GGFGameState.h"
 #include "GameFramework/PlayerState.h"
+#include "Types/GGFTeamTypes.h"
 #include "GGFPlayerState.generated.h"
 
 /**
@@ -19,7 +19,15 @@ class GGFGAMESYSTEM_API AGGFPlayerState : public APlayerState,
 {
     GENERATED_BODY()
 
+protected:
+    UPROPERTY(VisibleAnywhere, BlueprintGetter = GetTeamInfo, BlueprintSetter = SetTeamInfo, Category = "State", Transient, ReplicatedUsing = OnRep_TeamInfo)
+    FGGFTeamInfo TeamInfo;
+
 public:
+    /* Actor */
+
+    virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
     /* AbilitySystemInterface */
 
     virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
@@ -28,4 +36,20 @@ public:
 
     virtual FGenericTeamId GetGenericTeamId() const override;
     virtual void SetGenericTeamId(const FGenericTeamId& TeamID) override;
+
+    /* Getter */
+
+    UFUNCTION(BlueprintGetter)
+    const FORCEINLINE FGGFTeamInfo& GetTeamInfo() const { return TeamInfo; }
+
+    /* Setter */
+
+    UFUNCTION(BlueprintSetter)
+    virtual void SetTeamInfo(const FGGFTeamInfo& NewTeamInfo);
+
+protected:
+    /* 리플리케이트 */
+
+    UFUNCTION()
+    virtual void OnRep_TeamInfo(const FGGFTeamInfo& OldTeamInfo);
 };

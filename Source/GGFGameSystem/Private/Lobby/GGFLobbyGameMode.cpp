@@ -17,8 +17,9 @@ void AGGFLobbyGameMode::OnPostLogin(AController* NewPlayer)
 {
     Super::OnPostLogin(NewPlayer);
 
-    if(auto CastedGameState = GetGameState<AGGFGameState>())
+    // 팀 ID 할당
+    if(IGenericTeamAgentInterface* TeamAgent = Cast<IGenericTeamAgentInterface>(NewPlayer->GetPlayerState<APlayerState>()))
     {
-        CastedGameState->AddPlayerToTeam(0, NewPlayer->GetPlayerState<APlayerState>());
+        TeamAgent->SetGenericTeamId(0);
     }
 }
