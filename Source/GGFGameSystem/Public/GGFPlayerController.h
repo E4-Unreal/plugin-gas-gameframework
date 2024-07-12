@@ -57,6 +57,7 @@ public:
     /* Actor */
 
     virtual void BeginPlay() override;
+    virtual void OnRep_PlayerState() override;
 
     /* GGFTeamInterface */
 

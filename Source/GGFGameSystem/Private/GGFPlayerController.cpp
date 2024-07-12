@@ -9,6 +9,7 @@
 #include "Interfaces/GGFGameModeInterface.h"
 #include "InputMappingContext.h"
 #include "Blueprint/UserWidget.h"
+#include "Widgets/GGFPlayerWidget.h"
 #include "Widgets/GGFUserWidget.h"
 
 AGGFPlayerController::AGGFPlayerController()
@@ -52,7 +53,16 @@ void AGGFPlayerController::BeginPlay()
         EnhancedInputComponent->BindAction(MenuAction, ETriggerEvent::Triggered, this, &ThisClass::OnMenuActionTriggered);
     }
 
-    // HUD 위젯 생성
+    if(HasAuthority())
+    {
+        CreateHUDWidget();
+    }
+}
+
+void AGGFPlayerController::OnRep_PlayerState()
+{
+    Super::OnRep_PlayerState();
+
     CreateHUDWidget();
 }
 
@@ -88,6 +98,11 @@ void AGGFPlayerController::CreateHUDWidget()
     // HUD 위젯 생성
     HUDWidget = CreateWidget(this, HUDWidgetClass, *(GetName() + " HUD"));
     HUDWidget->AddToViewport();
+
+    if(auto CastedHUDWidget = Cast<UGGFPlayerWidget>(HUDWidget))
+    {
+        CastedHUDWidget->SetPlayerState(PlayerState);
+    }
 }
 
 void AGGFPlayerController::OnMenuActionTriggered_Implementation()

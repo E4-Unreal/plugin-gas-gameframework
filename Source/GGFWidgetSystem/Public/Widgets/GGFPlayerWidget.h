@@ -17,10 +17,13 @@ class GGFWIDGETSYSTEM_API UGGFPlayerWidget : public UUserWidget
 {
     GENERATED_BODY()
 
-    TWeakObjectPtr<APlayerState> PlayerState;
+    /* 컴포넌트 */
 
     UPROPERTY(meta = (BindWidgetOptional))
     TObjectPtr<UGGFActorWidget> PlayerPawnWidget;
+
+protected:
+    TWeakObjectPtr<APlayerState> PlayerState;
 
 public:
     UFUNCTION(BlueprintCallable)

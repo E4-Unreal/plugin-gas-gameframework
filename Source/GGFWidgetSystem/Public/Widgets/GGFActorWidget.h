@@ -14,6 +14,7 @@ class GGFWIDGETSYSTEM_API UGGFActorWidget : public UUserWidget
 {
     GENERATED_BODY()
 
+protected:
     TWeakObjectPtr<AActor> Actor;
 
 public:
