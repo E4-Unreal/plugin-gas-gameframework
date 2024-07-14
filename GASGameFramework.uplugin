@@ -85,7 +85,7 @@
 			"LoadingPhase": "PreDefault"
 		},
 		{
-			"Name": "GGFPlayerSystem",
+			"Name": "GGFGameSystem",
 			"Type": "Runtime",
 			"LoadingPhase": "PreDefault"
 		},

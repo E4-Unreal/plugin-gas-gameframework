@@ -37,9 +37,9 @@ AGGFTriggerBase::AGGFTriggerBase(const FObjectInitializer& ObjectInitializer) : 
     DisplayMesh->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
 }
 
-void AGGFTriggerBase::PostInitializeComponents()
+void AGGFTriggerBase::BeginPlay()
 {
-    Super::PostInitializeComponents();
+    Super::BeginPlay();
 
     BindOverlapEvents();
 }
@@ -65,20 +65,22 @@ bool AGGFTriggerBase::CheckOverlapCondition(AActor* OtherActor) const
 
 void AGGFTriggerBase::BindOverlapEvents()
 {
-    if(GetCollision())
-    {
-        GetCollision()->OnComponentBeginOverlap.AddDynamic(this, &ThisClass::InternalOnCollisionBeginOverlap);
-        GetCollision()->OnComponentEndOverlap.AddDynamic(this, &ThisClass::InternalOnCollisionEndOverlap);
-    }
+    // bServerOnly가 true로 설정된 경우에는 서버에서만 이벤트 바인딩을 진행합니다.
+    if(bServerOnly && !HasAuthority()) return;
+
+    // 이벤트 바인딩
+    GetCollision()->OnComponentBeginOverlap.AddDynamic(this, &ThisClass::InternalOnCollisionBeginOverlap);
+    GetCollision()->OnComponentEndOverlap.AddDynamic(this, &ThisClass::InternalOnCollisionEndOverlap);
 }
 
 void AGGFTriggerBase::UnbindOverlapEvents()
 {
-    if(GetCollision())
-    {
-        GetCollision()->OnComponentBeginOverlap.RemoveDynamic(this, &ThisClass::InternalOnCollisionBeginOverlap);
-        GetCollision()->OnComponentEndOverlap.RemoveDynamic(this, &ThisClass::InternalOnCollisionEndOverlap);
-    }
+    // bServerOnly가 true로 설정된 경우에는 서버에서만 이벤트 바인딩을 진행합니다.
+    if(bServerOnly && !HasAuthority()) return;
+
+    // 이벤트 언바인딩
+    GetCollision()->OnComponentBeginOverlap.RemoveDynamic(this, &ThisClass::InternalOnCollisionBeginOverlap);
+    GetCollision()->OnComponentEndOverlap.RemoveDynamic(this, &ThisClass::InternalOnCollisionEndOverlap);
 }
 
 void AGGFTriggerBase::InternalOnCollisionBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,

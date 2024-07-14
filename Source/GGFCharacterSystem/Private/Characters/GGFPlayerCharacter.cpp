@@ -7,6 +7,7 @@
 #include "Abilities/GGFGA_Interact.h"
 #include "Abilities/GGFGA_Sprint.h"
 #include "AbilitySystem/GGFAbilitySystem.h"
+#include "Blueprint/UserWidget.h"
 #include "Components/GGFCharacterManager.h"
 #include "Components/GGFCharacterMovement.h"
 #include "Components/GGFCharacterSkinManager.h"
@@ -16,6 +17,7 @@
 #include "Input/GGFInputManager.h"
 #include "Net/UnrealNetwork.h"
 #include "Components/GGFSkillManager.h"
+#include "Widgets/GGFUserWidget.h"
 
 FName AGGFPlayerCharacter::EquipmentManagerName(TEXT("EquipmentManager"));
 FName AGGFPlayerCharacter::CharacterManagerName(TEXT("CharacterManager"));
@@ -80,6 +82,20 @@ void AGGFPlayerCharacter::SetActorHiddenInGame(bool bNewHidden)
     {
         EquipmentManager->Activate(false);
     }
+}
+
+void AGGFPlayerCharacter::PossessedBy(AController* NewController)
+{
+    Super::PossessedBy(NewController);
+
+    CreateHUD();
+}
+
+void AGGFPlayerCharacter::OnRep_Controller()
+{
+    Super::OnRep_Controller();
+
+    CreateHUD();
 }
 
 void AGGFPlayerCharacter::Restart()
@@ -182,6 +198,28 @@ void AGGFPlayerCharacter::PlayAnimMontage_Implementation(UAnimMontage* NewAnimMo
     {
         float PlayRate = FMath::IsNearlyZero(Duration) ? 1 : NewAnimMontage->GetPlayLength() / Duration;
         AnimInstance->Montage_Play(NewAnimMontage, PlayRate);
+    }
+}
+
+void AGGFPlayerCharacter::CreateHUD()
+{
+    // 유효성 검사
+    if(HUDClass == nullptr) return;
+
+    // 중복 생성 방지
+    if(HUD) return;
+
+    // 로컬 플레이어인지 확인
+    if(!(Controller && Controller->IsLocalPlayerController())) return;
+
+    // HUD 생성
+    HUD = CreateWidget(Cast<APlayerController>(Controller), HUDClass, *(GetName() + " HUD"));
+    HUD->AddToViewport();
+
+    // Target 주입
+    if(auto CastedWidget = Cast<UGGFUserWidget>(HUD))
+    {
+        CastedWidget->SetTargetActor(this);
     }
 }
 

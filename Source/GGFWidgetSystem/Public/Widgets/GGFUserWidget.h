@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "Interfaces/GGFWidgetInterface.h"
 #include "GGFUserWidget.generated.h"
 
 class UAbilitySystemComponent;
@@ -12,7 +13,7 @@ class UAbilitySystemComponent;
  * GASGameFramework 플러그인에서 범용적으로 사용할 위젯 클래스
  */
 UCLASS()
-class GGFWIDGETSYSTEM_API UGGFUserWidget : public UUserWidget
+class GGFWIDGETSYSTEM_API UGGFUserWidget : public UUserWidget, public IGGFWidgetInterface
 {
     GENERATED_BODY()
 
@@ -24,6 +25,10 @@ protected:
     TWeakObjectPtr<UAbilitySystemComponent> TargetSystem;
 
 public:
+    /* GGFWidgetInterface */
+
+    virtual void Refresh_Implementation() override;
+
     /* Getter */
 
     UFUNCTION(BlueprintPure)

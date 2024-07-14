@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameplayEffectTypes.h"
-#include "GGFUserWidget.h"
+#include "GGFActorWidget.h"
 #include "GGFAttributesWidget.generated.h"
 
 /* 헤더 매크로 */
@@ -46,9 +46,12 @@ class UAbilitySystemComponent;
  * Attribute 전용 위젯 클래스
  */
 UCLASS()
-class GGFWIDGETSYSTEM_API UGGFAttributesWidget : public UGGFUserWidget
+class GGFWIDGETSYSTEM_API UGGFAttributesWidget : public UGGFActorWidget
 {
     GENERATED_BODY()
+
+protected:
+    TWeakObjectPtr<UAbilitySystemComponent> TargetSystem;
 
 public:
     /* Attribute */
@@ -81,12 +84,12 @@ public:
 
     FDelegateHandle OnAttributeRegenRateValueChangeHandle;
 
+public:
+    /* GGFActorWidget */
+
+    virtual void SetActor(AActor* NewActor) override;
+
 protected:
-
-    /* GFFUserWidget */
-
-    virtual void SetTargetSystem(UAbilitySystemComponent* NewTargetSystem) override;
-
     /* 이벤트 */
 
     void OnAttributeChange(const FOnAttributeChangeData& Data);

@@ -3,9 +3,12 @@
 #include "Widgets/GGFAttributesWidget.h"
 
 #include "AbilitySystemComponent.h"
+#include "AbilitySystemGlobals.h"
 
-void UGGFAttributesWidget::SetTargetSystem(UAbilitySystemComponent* NewTargetSystem)
+void UGGFAttributesWidget::SetActor(AActor* NewActor)
 {
+    Super::SetActor(NewActor);
+
     // 기존 시스템 이벤트 언바인딩
     if(TargetSystem.IsValid())
     {
@@ -13,7 +16,7 @@ void UGGFAttributesWidget::SetTargetSystem(UAbilitySystemComponent* NewTargetSys
     }
 
     // 시스템 교체
-    TargetSystem = NewTargetSystem;
+    TargetSystem = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(NewActor);
 
     // 새로운 시스템 이벤트 바인딩
     if(TargetSystem.IsValid())
