@@ -6,6 +6,7 @@
 #include "Blueprint/UserWidget.h"
 #include "GGFPlayerWidget.generated.h"
 
+class UTextBlock;
 class UGGFActorWidget;
 
 /**
@@ -17,12 +18,17 @@ class GGFWIDGETSYSTEM_API UGGFPlayerWidget : public UUserWidget
 {
     GENERATED_BODY()
 
+protected:
     /* 컴포넌트 */
+
+    UPROPERTY(meta = (BindWidgetOptional))
+    TObjectPtr<UTextBlock> PlayerNameText;
 
     UPROPERTY(meta = (BindWidgetOptional))
     TObjectPtr<UGGFActorWidget> PlayerPawnWidget;
 
-protected:
+    /* 레퍼런스 */
+
     TWeakObjectPtr<APlayerState> PlayerState;
 
 public:

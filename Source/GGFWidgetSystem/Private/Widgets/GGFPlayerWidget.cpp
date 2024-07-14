@@ -2,6 +2,7 @@
 
 #include "Widgets/GGFPlayerWidget.h"
 
+#include "Components/TextBlock.h"
 #include "GameFramework/PlayerState.h"
 #include "Widgets/GGFActorWidget.h"
 
@@ -23,6 +24,12 @@ void UGGFPlayerWidget::SetPlayerState(APlayerState* NewPlayerState)
     if(PlayerState.IsValid())
     {
         BindPlayerStateEvents(PlayerState.Get());
+    }
+
+    // PlayerName 설정
+    if(PlayerState.IsValid())
+    {
+        PlayerNameText->SetText(FText::FromString(PlayerState->GetPlayerName()));
     }
 
     // PlayerPawnWidget 업데이트
