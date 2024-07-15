@@ -3,8 +3,17 @@
 #include "Animations/GGFCharacterAnimInstance.h"
 
 #include "KismetAnimationLibrary.h"
+#include "Components/GGFFootstepManager.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
+
+UGGFCharacterAnimInstance::UGGFCharacterAnimInstance()
+{
+    /* 기본 설정 */
+
+    LeftFootstepNotifyNames.Emplace("Footstep_Left");
+    RightFootstepNotifyNames.Emplace("Footstep_Right");
+}
 
 void UGGFCharacterAnimInstance::NativeInitializeAnimation()
 {
@@ -70,4 +79,38 @@ void UGGFCharacterAnimInstance::FetchCharacterMovement(float DeltaSeconds)
     // 캐릭터 무브먼트 상태 가져오기
     bFalling = CharacterMovement->IsFalling();
     bCrouching = CharacterMovement->IsCrouching();
+}
+
+bool UGGFCharacterAnimInstance::HandleNotify(const FAnimNotifyEvent& AnimNotifyEvent)
+{
+    HandleFootstepNotify(AnimNotifyEvent);
+    
+    return Super::HandleNotify(AnimNotifyEvent);
+}
+
+bool UGGFCharacterAnimInstance::HandleFootstepNotify(const FAnimNotifyEvent& AnimNotifyEvent)
+{
+    bool bResult = false;
+
+    // TODO 인터페이스로 대체?
+    if(LeftFootstepNotifyNames.Contains(AnimNotifyEvent.NotifyName))
+    {
+        // 왼발 스텝 이벤트 처리
+        if(auto FootstepManager = Cast<UGGFFootstepManager>(GetOwningCharacter()->GetComponentByClass(UGGFFootstepManager::StaticClass())))
+        {
+            FootstepManager->SpawnLeftFootstepEffect();
+            bResult = true;
+        }
+    }
+    else if(RightFootstepNotifyNames.Contains(AnimNotifyEvent.NotifyName))
+    {
+        // 오른발 스텝 이벤트 처리
+        if(auto FootstepManager = Cast<UGGFFootstepManager>(GetOwningCharacter()->GetComponentByClass(UGGFFootstepManager::StaticClass())))
+        {
+            FootstepManager->SpawnRightFootstepEffect();
+            bResult = true;
+        }
+    }
+
+    return bResult;
 }

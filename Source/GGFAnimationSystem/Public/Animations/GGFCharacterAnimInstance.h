@@ -32,6 +32,14 @@ protected:
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Config|Character")
     float InterpSpeed = 15;
 
+    // 왼발 스텝 노티파이 이름
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|AnimNotify")
+    TArray<FName> LeftFootstepNotifyNames;
+
+    // 오른발 스텝 노티파이 이름
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Config|AnimNotify")
+    TArray<FName> RightFootstepNotifyNames;
+
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State|Character", Transient)
     FVector Velocity;
 
@@ -57,6 +65,8 @@ protected:
     float PitchOffset;
 
 public:
+    UGGFCharacterAnimInstance();
+
     /* AnimInstance */
 
     virtual void NativeInitializeAnimation() override;
@@ -66,13 +76,19 @@ public:
 
     virtual FORCEINLINE bool IsValid() const override { return Super::IsValid() && OwningCharacter != nullptr && OwningCharacterMovement != nullptr; }
 
+protected:
+    /* AnimInstance */
+
+    virtual bool HandleNotify(const FAnimNotifyEvent& AnimNotifyEvent) override;
+
     /* 메서드 */
 
     virtual void CalculateVelocity(float DeltaSeconds);
     virtual void CalculateAimOffset(float DeltaSeconds);
     virtual void FetchCharacterMovement(float DeltaSeconds);
 
-protected:
+    virtual bool HandleFootstepNotify(const FAnimNotifyEvent& AnimNotifyEvent);
+
     /* Getter */
 
     UFUNCTION(BlueprintGetter)
