@@ -21,7 +21,8 @@ public class GGFAnimationSystem : ModuleRules
 
                 // GASGameFramework
                 "GGFCore",
-                "GGFEquipmentSystem"
+                "GGFEquipmentSystem",
+                "GGFEffectSystem"
             }
         );
 
