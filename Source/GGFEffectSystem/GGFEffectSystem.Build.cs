@@ -11,6 +11,7 @@ public class GGFEffectSystem : ModuleRules
             {
                 "Core",
                 "Niagara",
+                "PhysicsCore",
 
                 // GASGameFramework
                 "GGFCore"
