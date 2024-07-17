@@ -2,6 +2,7 @@
 
 #include "Components/GGFWidgetComponent.h"
 
+#include "Widgets/GGFActorWidget.h"
 #include "Widgets/GGFUserWidget.h"
 
 UGGFWidgetComponent::UGGFWidgetComponent()
@@ -14,8 +15,8 @@ void UGGFWidgetComponent::InitWidget()
 {
     Super::InitWidget();
 
-    if(auto CastedWidget = Cast<UGGFUserWidget>(GetWidget()))
+    if(auto CastedWidget = Cast<UGGFActorWidget>(GetWidget()))
     {
-        CastedWidget->SetTargetActor(GetOwner());
+        CastedWidget->SetActor(GetOwner());
     }
 }
