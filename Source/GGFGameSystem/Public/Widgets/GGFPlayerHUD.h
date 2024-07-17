@@ -50,6 +50,9 @@ protected:
     UFUNCTION()
     virtual void OnTeamInfoUpdated(APlayerState* Player, const FGGFTeamInfo& OldTeamInfo, const FGGFTeamInfo& NewTeamInfo);
 
+    UFUNCTION()
+    virtual void OnGameStateSet(AGameStateBase* GameState);
+
     /* 메서드 */
 
     // 팀 플레이어 정보 패치

@@ -14,6 +14,16 @@ void AGGFPlayerState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutL
     DOREPLIFETIME(ThisClass, TeamInfo)
 }
 
+void AGGFPlayerState::BeginPlay()
+{
+    Super::BeginPlay();
+
+    if(auto GameState = GetWorld()->GetGameState<AGGFGameState>())
+    {
+        GameState->SetPlayerTeamInfo(this, TeamInfo);
+    }
+}
+
 UAbilitySystemComponent* AGGFPlayerState::GetAbilitySystemComponent() const
 {
     return UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(GetPawn());

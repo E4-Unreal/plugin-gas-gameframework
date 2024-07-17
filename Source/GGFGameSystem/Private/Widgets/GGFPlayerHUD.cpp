@@ -18,13 +18,15 @@ void UGGFPlayerHUD::NativeConstruct()
     LocalPlayerWidget->SetPlayerState(GetOwningPlayerState());
     LocalPlayerWidget->SetVisibility(ESlateVisibility::HitTestInvisible);
 
-    // 패치
-    FetchTeamSlots();
-
     // 이벤트 바인딩
-    if(auto GameState = GetWorld()->GetGameState<AGGFGameState>())
+    if(auto CastedGameState = GetWorld()->GetGameState<AGGFGameState>())
     {
-        GameState->OnTeamInfoUpdated.AddDynamic(this, &ThisClass::OnTeamInfoUpdated);
+        FetchTeamSlots();
+        CastedGameState->OnTeamInfoUpdated.AddDynamic(this, &ThisClass::OnTeamInfoUpdated);
+    }
+    else
+    {
+        GetWorld()->GameStateSetEvent.AddUObject(this, &ThisClass::OnGameStateSet);
     }
 }
 
@@ -32,6 +34,15 @@ void UGGFPlayerHUD::OnTeamInfoUpdated(APlayerState* Player, const FGGFTeamInfo& 
     const FGGFTeamInfo& NewTeamInfo)
 {
     FetchTeamSlots();
+}
+
+void UGGFPlayerHUD::OnGameStateSet(AGameStateBase* GameState)
+{
+    if(auto CastedGameState = GetWorld()->GetGameState<AGGFGameState>())
+    {
+        FetchTeamSlots();
+        CastedGameState->OnTeamInfoUpdated.AddDynamic(this, &ThisClass::OnTeamInfoUpdated);
+    }
 }
 
 void UGGFPlayerHUD::FetchTeamSlots_Implementation()
@@ -54,6 +65,13 @@ void UGGFPlayerHUD::FetchTeamSlots_Implementation()
         for(int32 Index = TeamPlayerCount; Index < TeamPlayerWidgets.Num(); ++Index)
         {
             TeamPlayerWidgets[Index]->SetVisibility(ESlateVisibility::Hidden);
+        }
+    }
+    else
+    {
+        for (auto TeamPlayerWidget : TeamPlayerWidgets)
+        {
+            TeamPlayerWidget->SetVisibility(ESlateVisibility::Hidden);
         }
     }
 }

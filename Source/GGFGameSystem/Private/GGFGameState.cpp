@@ -57,6 +57,8 @@ TArray<FGGFTeamSlot> AGGFGameState::GetTeamSlotsByPlayer(APlayerState* Player)
 
 void AGGFGameState::AddPlayerToTeam(APlayerState* Player, const FGGFTeamInfo& NewTeamInfo)
 {
+    if(NewTeamInfo.TeamID == 255) return;
+
     // TeamMap 등록
     if(TeamMap.Contains(NewTeamInfo.TeamID))
     {
